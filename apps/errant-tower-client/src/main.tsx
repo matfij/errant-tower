@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+import { StrictMode, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { AppComponent } from './app-component';
 
@@ -7,6 +7,8 @@ import './common/styles/main.scss';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-        <AppComponent />
+        <Suspense>
+            <AppComponent />
+        </Suspense>
     </StrictMode>,
 );
