@@ -1,10 +1,12 @@
 import { Navigate, Outlet } from 'react-router';
+import { useUserStore } from '../state/user-store';
 
 interface ProtectedRouteProps {
-    isAuthenticated: boolean;
     redirectTo: string;
 }
 
 export const ProtectedRoute = (props: ProtectedRouteProps) => {
-    return props.isAuthenticated ? <Outlet /> : <Navigate to={props.redirectTo} replace />;
+    const isAuthenticated = useUserStore((state) => Boolean(state.user));
+
+    return isAuthenticated ? <Outlet /> : <Navigate to={props.redirectTo} replace />;
 };

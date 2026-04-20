@@ -10,14 +10,7 @@ interface UserStore {
 
 export const useUserStore = create<UserStore>()(
     persist(
-        (set, get) => ({
-            hydrated: false,
-            update: (newUser: Partial<User>) => {
-                const user = get().user;
-                if (user) {
-                    set({ user: { ...user, ...newUser } });
-                }
-            },
+        (set) => ({
             signIn: (user: User) => set({ user }),
             signOut: () => set({ user: undefined }),
         }),
