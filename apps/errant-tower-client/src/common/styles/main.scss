@@ -1,0 +1,44 @@
+@use 'variables' as *;
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+*:focus {
+    outline: none;
+    border: none;
+}
+
+::selection {
+    background-color: $color-primary-600;
+    color: $color-dark-300;
+}
+
+:root {
+    font-family: $font-sans;
+    background-color: $color-dark-300;
+    color: $color-light-100;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body,
+#root {
+    height: 100%;
+    width: 100%;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    user-select: none;
+    pointer-events: none;
+    -webkit-user-drag: none;
+}

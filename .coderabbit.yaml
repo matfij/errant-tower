@@ -108,7 +108,7 @@ reviews:
         - API types must be defined in common/api/api-definitions.ts
 
         ## Routing
-        - Verify React Router conventions (route definitions in src/routes/ or src/app/)
+        - Verify React Router conventions (route definitions in src/routes/ or src/app-component/)
         - Protected routes must use an auth guard component or wrapper
         - Check proper typing of route params (useParams, useSearchParams)
         - Verify navigation uses useNavigate — no direct window.location manipulation
