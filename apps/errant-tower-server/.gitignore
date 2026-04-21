@@ -1,0 +1,54 @@
+# Build outputs
+bin/
+obj/
+out/
+dist/
+publish/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.rsuser
+
+# Code editors
+.vs/
+*.vcxproj.user
+.idea/
+*.sln.iml
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+
+# Environment / secrets
+.env
+.env.*
+appsettings.Development.json
+secrets.json
+
+# .NET specific
+*.runtimeconfig.dev.json
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*.nupkg
+*.snupkg
+packages/
+.nuget/packages/
+
+# Test results
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
