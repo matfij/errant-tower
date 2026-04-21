@@ -6,12 +6,10 @@ namespace ErrantTowerServer.Domains.User;
 [Route("user")]
 public class UserController(IUserService userService) : ControllerBase
 {
-    private readonly IUserService _userService = userService;
-
     [HttpPost("create")]
     public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
     {
-        await _userService.StartSignUp(request);
+        await userService.StartSignUp(request);
         return Ok();
     }
 }

@@ -12,21 +12,23 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactClient", policy =>
         policy
-            .WithOrigins("*")
+            .AllowAnyOrigin()
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
 
 builder.Services.AddSingleton(provider =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? throw new InvalidOperationException("ConnectionStrings:DefaultConnection is required");
     return new MongoClient(connectionString);
 });
 
 builder.Services.AddSingleton(provider =>
 {
     var client = provider.GetRequiredService<MongoClient>();
-    var databaseName = builder.Configuration.GetValue<string>("DatabaseName");
+    var databaseName = builder.Configuration.GetValue<string>("DatabaseName")
+        ?? throw new InvalidOperationException("DatabaseName configuration is required");
     return client.GetDatabase(databaseName);
 });
 
@@ -52,8 +54,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
 app.UseCors("ReactClient");
+app.UseAuthorization();
 
 app.MapControllers();
 

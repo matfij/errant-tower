@@ -7,8 +7,6 @@ public interface IUserService
 
 public class UserService(IUserRepository userRepository) : IUserService
 {
-    private readonly IUserRepository _userRepository = userRepository;
-
     public async Task StartSignUp(CreateUserRequest request)
     {
         // TODO #7 - validation, real implementation of password hashing, etc.
@@ -20,6 +18,6 @@ public class UserService(IUserRepository userRepository) : IUserService
             PasswordHash = passwordHash,
             Username = request.Username
         };
-        await _userRepository.CreateAsync(user);
+        await userRepository.CreateAsync(user);
     }
 }   
