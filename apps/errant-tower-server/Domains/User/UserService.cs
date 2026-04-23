@@ -8,17 +8,33 @@ public interface IUserService
     Task<Result<CompleteSignUpResponse>> CompleteSignUp(CompleteSignUpRequest request);
 }
 
-public class UserService(IUserRepository userRepository, IEmailService emailService) : IUserService
+public class UserService(
+    IUserRepository userRepository, 
+    IEmailService emailService,
+    ILogger<UserService> logger) : IUserService
 {
     public async Task<Result> StartSignUp(StartSignUpRequest request)
     {
-        if (await userRepository.FindByEmailAsync(request.Email) is not null)
+        var userByEmail = await userRepository.FindByEmailAsync(request.Email);
+        var restartSignUp = userByEmail is not null 
+            && userByEmail.IsConfirmed == false 
+            && userByEmail.ActionCodeExpiresAt < Utils.GetCurrentTimestamp();
+        if (restartSignUp == false && userByEmail is not null)
         {
-            return Result.Failure([new ApiError { Key = "errors.emailInUse" }]);
+            return userByEmail.IsConfirmed 
+                ? Result.Failure([new ApiError { Key = "errors.emailInUse" }])
+                : Result.Failure([new ApiError { Key = "errors.signUpStarted" }]);
         }
-        if (await userRepository.FindByUsernameAsync(request.Username) is not null)
+
+        var userByUsername = await userRepository.FindByUsernameAsync(request.Username);
+        if (userByUsername is not null && userByUsername.Id != userByEmail?.Id)
         {
             return Result.Failure([new ApiError { Key = "errors.usernameInUse" }]);
+        }
+
+        if (restartSignUp)
+        {
+            await userRepository.DeleteAsync(userByEmail!.Id);
         }
 
         var userId = Utils.GenerateGuid();
@@ -45,8 +61,9 @@ public class UserService(IUserRepository userRepository, IEmailService emailServ
                 "Welcome to Errant Tower",
                 UserEmailTemaplte.GetSignUpTemplate(user.Username, actionCode));
         }
-        catch
+        catch (Exception ex)
         {
+            logger.LogError(ex, "Failed to send sign-up email to {Email}", user.Email);
             await userRepository.DeleteAsync(userId);
             return Result.Failure([new ApiError { Key = "errors.emailSendFailed" }]);
         }

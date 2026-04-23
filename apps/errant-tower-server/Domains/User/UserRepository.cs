@@ -22,24 +22,36 @@ public class UserRepository(IMongoDatabase database) : IUserRepository
 
     public async Task<UserEntity?> FindByEmailAsync(string email)
     {
-        return await _collection.Find(u => u.Email == email).FirstOrDefaultAsync();
+        return await _collection
+            .Find(u => u.Email == email)
+            .FirstOrDefaultAsync();
     }
 
     public async Task<UserEntity?> FindByUsernameAsync(string username)
     {
-        return await _collection.Find(u => u.Username == username).FirstOrDefaultAsync();
+        return await _collection
+            .Find(u => u.Username == username)
+            .FirstOrDefaultAsync();
     }
 
     public async Task<UserEntity> UpdateAsync(UserEntity user)
     {
         var filter = Builders<UserEntity>.Filter.Eq(u => u.Id, user.Id);
-        await _collection.ReplaceOneAsync(filter, user);
+        var result = await _collection.ReplaceOneAsync(filter, user);
+        if (result.MatchedCount == 0)
+        {
+            throw new InvalidOperationException($"Failed to update user with id {user.Id}");
+        }
         return user;
     }
 
     public async Task DeleteAsync(string id)
     {
         var filter = Builders<UserEntity>.Filter.Eq(u => u.Id, id);
-        await _collection.DeleteOneAsync(filter);
+        var result = await _collection.DeleteOneAsync(filter);
+        if (result.DeletedCount == 0)
+        {
+            throw new InvalidOperationException($"Failed to delete user with id {id}");
+        }
     }
 }

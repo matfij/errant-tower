@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ErrantTowerServer.Domains.User;
 
 [ApiController]
-[Route("user")]
+[Route("users")]
 public class UserController(IUserService userService) : ControllerBase
 {
     [HttpPost("startSignUp")]

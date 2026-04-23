@@ -28,5 +28,5 @@ public record CompleteSignUpRequest
 
 public record CompleteSignUpResponse
 {
-    public required string Username;
+    public required string Username { get; init; }
 }

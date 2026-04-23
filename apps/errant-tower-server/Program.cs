@@ -32,6 +32,7 @@ builder.Services.AddSingleton(provider =>
         ?? throw new InvalidOperationException("DatabaseName configuration is required");
     return client.GetDatabase(databaseName);
 });
+builder.Services.AddHostedService<MongoDbIndexService>();
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
