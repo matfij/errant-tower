@@ -2,18 +2,31 @@
 
 namespace ErrantTowerServer.Domains.User;
 
-public record CreateUserRequest
+public record StartSignUpRequest
 {
     [Required]
     [EmailAddress]
     public required string Email { get; init; }
 
     [Required]
-    [MinLength(8)]
-    public required string Password { get; init; }
+    [MinLength(4)]
+    [MaxLength(16)]
+    public required string Username { get; init; }
+}
+
+public record CompleteSignUpRequest
+{
+    [Required]
+    [EmailAddress]
+    public required string Email { get; init; }
 
     [Required]
-    [MinLength(4)]
-    [MaxLength(40)]
+    [MinLength(6)]
+    [MaxLength(6)]
+    public required string ActionCode { get; init; }
+}
+
+public record CompleteSignUpResponse
+{
     public required string Username { get; init; }
 }

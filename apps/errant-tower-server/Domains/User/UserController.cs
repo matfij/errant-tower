@@ -1,15 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ErrantTowerServer.Common;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ErrantTowerServer.Domains.User;
 
 [ApiController]
-[Route("user")]
+[Route("users")]
 public class UserController(IUserService userService) : ControllerBase
 {
-    [HttpPost("create")]
-    public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
+    [HttpPost("startSignUp")]
+    public async Task<IActionResult> StartSignUp([FromBody] StartSignUpRequest request)
     {
-        await userService.StartSignUp(request);
-        return Ok();
+        return (await userService.StartSignUp(request)).ToActionResult();
     }
+
+    [HttpPost("completeSignUp")]
+    public async Task<IActionResult> CompleteSignUp([FromBody] CompleteSignUpRequest request)
+    {
+        return (await userService.CompleteSignUp(request)).ToActionResult();
+    }
+
 }

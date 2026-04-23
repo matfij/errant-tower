@@ -1,5 +1,6 @@
 using ErrantTowerServer.Common;
 using ErrantTowerServer.Domains.User;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using Resend;
 
@@ -30,6 +31,24 @@ builder.Services.AddSingleton(provider =>
     var databaseName = builder.Configuration.GetValue<string>("DatabaseName")
         ?? throw new InvalidOperationException("DatabaseName configuration is required");
     return client.GetDatabase(databaseName);
+});
+builder.Services.AddHostedService<MongoDbIndexService>();
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState
+            .Where(x => x.Value?.Errors.Count > 0)
+            .SelectMany(x => x.Value!.Errors.Select(e => new ApiError
+            {
+                Key = "errors.validation",
+                Field = x.Key
+            }))
+            .ToList();
+        var result = Result.Failure(errors);
+        return new BadRequestObjectResult(result);
+    };
 });
 
 builder.Services.AddOptions();

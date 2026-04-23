@@ -35,7 +35,7 @@ reviews:
 
         ## Controllers
         - Controllers must inherit ControllerBase and be annotated with [ApiController]
-        - Use [Route("resource")] at class level following RESTful conventions (plural nouns, lowercase)
+        - Use [Route("resource")] at class level following RESTful conventions (plural nouns, camelCase)
         - Enforce RESTful HTTP verb attributes: [HttpGet], [HttpPost], [HttpPut], [HttpDelete]
         - Protected controllers or actions must use [Authorize] attribute
         - Return ActionResult<T> or IActionResult for all actions
@@ -56,7 +56,7 @@ reviews:
         - Indexes should be created in repository constructors using await (not fire-and-forget)
         - Throw ApiException with translation keys (e.g., "errors.userNotFound")
         - Ensure proper validation in Validators (or Services if validation is simple) before DB operations
-        - Timestamps must be ulong (Unix timestamp milliseconds)
+        - Timestamps must be long (Unix timestamp milliseconds)
         - Entity IDs must be string type
 
         ## C# Conventions
