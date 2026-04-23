@@ -21,7 +21,7 @@ public class UserService(IUserRepository userRepository, IEmailService emailServ
             return Result.Failure([new ApiError { Key = "errors.usernameInUse" }]);
         }
 
-        var userId = Utils.GenerateGuidId();
+        var userId = Utils.GenerateGuid();
         var actionCode = Utils.GenerateSecureNumberString(6);
         var hashedActionCode = Utils.HashString(actionCode);
 

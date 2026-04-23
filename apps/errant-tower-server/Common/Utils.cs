@@ -4,7 +4,7 @@ namespace ErrantTowerServer.Common;
 
 public class Utils
 {
-    public static string GenerateGuidId()
+    public static string GenerateGuid()
     {
         return Guid.NewGuid().ToString();
     }

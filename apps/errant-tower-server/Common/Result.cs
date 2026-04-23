@@ -1,8 +1,11 @@
-﻿namespace ErrantTowerServer.Common;
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace ErrantTowerServer.Common;
 
 public class ApiError
 {
-    public string Key { get; set; } = default!;
+    public required string Key { get; set; }
+    public string? Field { get; set; } = null;
 }
 
 public class Result
@@ -39,6 +42,16 @@ public class Result<T> : Result
 
 public static class ResultExtensions
 {
+    public static IActionResult ToActionResult(this Result result)
+    {
+        return result.IsSuccess ? new OkResult() : new BadRequestObjectResult(result);
+    }
+
+    public static IActionResult ToActionResult<T>(this Result<T> result)
+    {
+        return result.IsSuccess ? new OkObjectResult(result.Value) : new BadRequestObjectResult(result);
+    }
+
     public static async Task<Result<U>> Bind<T, U>(
         this Task<Result<T>> resultTask,
         Func<T, Task<Result<U>>> function)
@@ -51,7 +64,7 @@ public static class ResultExtensions
         return await function(result.Value!);
     }
 
-    public static Result<U> Matp<T, U>(
+    public static Result<U> Map<T, U>(
         this Result<T> result,
         Func<T, U> function)
     {
