@@ -6,10 +6,26 @@ namespace ErrantTowerServer.Domains.User;
 [Route("user")]
 public class UserController(IUserService userService) : ControllerBase
 {
-    [HttpPost("create")]
-    public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
+    [HttpPost("startSignUp")]
+    public async Task<IActionResult> StartSignUp([FromBody] StartSignUpRequest request)
     {
-        await userService.StartSignUp(request);
-        return Ok();
+        var result = await userService.StartSignUp(request);
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result);
+        }
+        return Ok(result);
     }
+
+    [HttpPost("completeSignUp")]
+    public async Task<IActionResult> CompleteSignUp([FromBody] CompleteSignUpRequest request)
+    {
+        var result = await userService.CompleteSignUp(request);
+        if (!result.IsSuccess)
+        {
+            return BadRequest(result);
+        }
+        return Ok(result);
+    }
+
 }
