@@ -3,7 +3,7 @@ using System.Net;
 
 namespace ErrantTowerServer.Domains.User;
 
-public static class UserEmailTemaplte
+public static class UserEmailTemplate
 {
     public static string GetSignUpTemplate(string username, string authCode) =>
 $"""
@@ -43,7 +43,7 @@ $"""
 
         <div style="margin-top: 16px; padding-bottom: 16px; font-style: italic">
             Regards,
-            <div style="color: #fef3c6">Mat</div>
+            <div style="color: #fef3c6">Administrator</div>
         </div>
     </div>
 </div> 
