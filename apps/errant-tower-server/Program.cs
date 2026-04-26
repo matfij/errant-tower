@@ -15,11 +15,15 @@ builder
     .Services
     .AddCors(options =>
     {
+        var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+            ?? throw new InvalidOperationException("Cors:AllowedOrigins configuration is required");
+
         options.AddPolicy("ReactClient", policy =>
             policy
-                .AllowAnyOrigin()
+                .WithOrigins(allowedOrigins)
                 .AllowAnyHeader()
-                .AllowAnyMethod());
+                .AllowAnyMethod()
+                .AllowCredentials());
     });
 
 // Session authorization
@@ -31,7 +35,7 @@ builder
         options.Cookie.Name = "errant_tower_auth";
         options.Cookie.HttpOnly = true;
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        options.Cookie.SameSite = SameSiteMode.Lax;
+        options.Cookie.SameSite = SameSiteMode.None;
         options.ExpireTimeSpan = TimeSpan.FromDays(7);
         options.SlidingExpiration = true;
     });
@@ -74,10 +78,7 @@ builder
                 }))
                 .ToList();
 
-            return new BadRequestObjectResult(new
-            {
-                errors = errors
-            });
+            return new BadRequestObjectResult(new { errors });
         };
     });
 

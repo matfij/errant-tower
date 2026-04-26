@@ -1,12 +1,12 @@
 ﻿namespace ErrantTowerServer.Common;
 
-public class ApiError
+public record ApiError
 {
-    public string Key { get; set; } = String.Empty;
+    public required string Key { get; set; }
     public string? Field { get; set; }
 }
 
-public class ApiException(string key, string? field = null) : Exception(String.Empty)
+public class ApiException(string key, string? field = null) : Exception(key)
 {
     public string Key { get; } = key;
     public string? Field { get; } = field;
@@ -28,9 +28,15 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
             _logger.LogWarning(ex, "API Exception: {Key}", ex.Key);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            await context.Response.WriteAsJsonAsync(
-                new { error = new { key = ex.Key, field = ex.Field } }
-            );
+            await context.Response.WriteAsJsonAsync(new { error = new { key = ex.Key, field = ex.Field } });
+        }
+        catch (OperationCanceledException ex) when (context.RequestAborted.IsCancellationRequested)
+        {
+            _logger.LogWarning(ex, "Operation Canceled: {Message}", ex.Message);
+            if (!context.Response.HasStarted)
+            {
+                context.Response.StatusCode = StatusCodes.Status499ClientClosedRequest;
+            }
         }
         catch (Exception ex)
         {

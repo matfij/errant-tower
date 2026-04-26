@@ -94,16 +94,7 @@ public class UserService(
 
     public async Task StartSignIn(StartSignInRequest request)
     {
-        var user = await userRepository.FindByEmailAsync(request.Email);
-
-        if (user is null)
-        {
-            throw new ApiException("errors.userNotFound");
-        }
-        if (!user.IsConfirmed)
-        {
-            throw new ApiException("errors.userNotConfirmed");
-        }
+        var user = await GetUserByEmail(request.Email);
 
         var actionCode = Utils.GenerateSecureNumberString(6);
 

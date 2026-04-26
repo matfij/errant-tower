@@ -21,7 +21,7 @@ public class UserController(IUserService userService) : ControllerBase
     {
         var result = await userService.CompleteSignUp(request);
         await SetSession(result.UserId);
-        return Ok();
+        return Ok(result);
     }
 
     [HttpPost("startSignIn")]
@@ -36,14 +36,14 @@ public class UserController(IUserService userService) : ControllerBase
     {
         var result = await userService.CompleteSignIn(request);
         await SetSession(result.UserId);
-        return Ok();
+        return Ok(result);
     }
 
     private async Task SetSession(string userId)
     {
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, userId)
+            new(ClaimTypes.NameIdentifier, userId)
         };
 
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -53,7 +53,7 @@ public class UserController(IUserService userService) : ControllerBase
         await HttpContext.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme, 
             principal,
-            new AuthenticationProperties { IsPersistent = true, ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7) });
+            new AuthenticationProperties { IsPersistent = true });
     }
 
 }
