@@ -42,7 +42,6 @@ reviews:
         - Use Ok(), NotFound(), BadRequest(), CreatedAtAction() etc. — not raw Results.*
         - HttpContext is available via ControllerBase — do not inject it as a parameter
         - Use constructor injection (primary constructors, C# 12) for services
-        - Response mapping (Entity → DTO) must happen in the controller, not in the service
         - Verify all controllers are in a Controllers/ or Domain/*/Controller structure
 
         ## Registration
