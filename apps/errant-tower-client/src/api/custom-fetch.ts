@@ -1,4 +1,6 @@
-const BASE_URL = 'https://localhost:7135';
+import type { ApiErrorResponse } from './api-error';
+
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 interface FetchConfig {
     url: string;
@@ -38,11 +40,13 @@ export const customFetch = async <T>(config: FetchConfig, options?: RequestInit)
     });
 
     if (!response.ok) {
-        let error;
+        let error: ApiErrorResponse;
         try {
             error = await response.json();
         } catch {
-            error = { message: response.statusText };
+            error = {
+                errors: [{ key: 'errors.unknown', field: null }],
+            };
         }
         throw error;
     }

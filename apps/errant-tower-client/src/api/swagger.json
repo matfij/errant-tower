@@ -159,7 +159,7 @@
                 }
             }
         },
-        "/users": {
+        "/users/me": {
             "get": {
                 "tags": ["User"],
                 "operationId": "getCurrentUser",
@@ -312,6 +312,11 @@
             }
         }
     },
+    "security": [
+        {
+            "cookieAuth": []
+        }
+    ],
     "tags": [
         {
             "name": "User"

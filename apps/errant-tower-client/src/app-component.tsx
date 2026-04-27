@@ -4,7 +4,16 @@ import { ProtectedRoute } from './common/components/protected-route';
 import { HomePage } from './pages/home/home-page';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: 60 * 1000,
+            refetchOnWindowFocus: false,
+            retry: 1,
+        },
+    },
+});
+
 export const AppComponent = () => {
     return (
         <QueryClientProvider client={queryClient}>

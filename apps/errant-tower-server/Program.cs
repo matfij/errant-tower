@@ -22,7 +22,12 @@ builder
             Name = "errant_tower_auth",
             Description = "Cookie-based authentication"
         });
+        options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+        {
+            [new OpenApiSecuritySchemeReference("cookieAuth", document)] = []
+        });
     });
+
 
 // CORS
 builder

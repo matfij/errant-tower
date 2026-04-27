@@ -49,14 +49,14 @@ public class UserController(IUserService userService) : ControllerBase
     }
 
     [Authorize]
-    [HttpGet]
+    [HttpGet("me")]
     [EndpointName("getCurrentUser")]
     [ProducesResponseType(typeof(GetCurrentUserResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCurrentUser()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
         var user = await userService.GetCurrentUser(userId);
-        return user is null ? NotFound() : Ok(user);
+        return Ok(user);
     }
 
     private async Task SetSession(string userId)

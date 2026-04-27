@@ -28,7 +28,10 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
             _logger.LogWarning(ex, "API Exception: {Key}", ex.Key);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            await context.Response.WriteAsJsonAsync(new { error = new { key = ex.Key, field = ex.Field } });
+            await context.Response.WriteAsJsonAsync(new
+            {
+                errors = new[] { new { key = ex.Key, field = ex.Field } }
+            });
         }
         catch (OperationCanceledException ex) when (context.RequestAborted.IsCancellationRequested)
         {
@@ -43,7 +46,10 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
             _logger.LogError(ex, "Unhandled Exception: {Message}", ex.Message);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            await context.Response.WriteAsJsonAsync(new { error = new { key = "errors.fatal" } });
+            await context.Response.WriteAsJsonAsync(new
+            {
+                errors = new[] { new { key = "errors.fatal" } }
+            });
         }
     }
 }

@@ -1,3 +1,4 @@
+import type { ApiError } from './api-error';
 import type {
     StartSignInRequest,
     CompleteSignInRequest,
@@ -16,41 +17,51 @@ import {
  * User endpoints
  */
 export const useUserStartSignIn = () => {
-    const mutation = useStartSignIn();
+    const mutation = useStartSignIn<ApiError[]>();
     return {
         ...mutation,
+        errors: mutation.error,
+        isLoading: mutation.isPending,
         call: (data: StartSignInRequest) => mutation.mutate({ data }),
     };
 };
 
 export const useUserCompleteSignIn = () => {
-    const mutation = useCompleteSignIn();
+    const mutation = useCompleteSignIn<ApiError[]>();
     return {
         ...mutation,
+        errors: mutation.error,
+        isLoading: mutation.isPending,
         call: (data: CompleteSignInRequest) => mutation.mutate({ data }),
     };
 };
 
 export const useUserStartSignUp = () => {
-    const mutation = useStartSignUp();
+    const mutation = useStartSignUp<ApiError[]>();
     return {
         ...mutation,
+        errors: mutation.error,
+        isLoading: mutation.isPending,
         call: (data: StartSignUpRequest) => mutation.mutate({ data }),
     };
 };
 
 export const useUserCompleteSignUp = () => {
-    const mutation = useCompleteSignUp();
+    const mutation = useCompleteSignUp<ApiError[]>();
     return {
         ...mutation,
+        errors: mutation.error,
+        isLoading: mutation.isPending,
         call: (data: CompleteSignUpRequest) => mutation.mutate({ data }),
     };
 };
 
 export const useUserGetCurrentUser = () => {
-    const mutation = useGetCurrentUser({ query: { enabled: false } });
+    const query = useGetCurrentUser<ApiError[]>({ query: { enabled: false } });
     return {
-        ...mutation,
-        call: () => mutation.refetch(),
+        ...query,
+        errors: query.error,
+        isLoading: query.isPending,
+        call: () => query.refetch(),
     };
 };
