@@ -23,7 +23,7 @@ export default defineConfig([
             'no-restricted-imports': [
                 'error',
                 {
-                    patterns: ['**/api/generated'],
+                    patterns: ['**/api/generated', '**/api/definitions/*'],
                 },
             ],
         },
