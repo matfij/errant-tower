@@ -1,0 +1,320 @@
+{
+    "openapi": "3.0.4",
+    "info": {
+        "title": "ErrantTowerServer",
+        "version": "1.0"
+    },
+    "paths": {
+        "/users/sign-up/start": {
+            "post": {
+                "tags": ["User"],
+                "operationId": "startSignUp",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartSignUpRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartSignUpRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartSignUpRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/users/sign-up/complete": {
+            "post": {
+                "tags": ["User"],
+                "operationId": "completeSignUp",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompleteSignUpRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompleteSignUpRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompleteSignUpRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompleteSignUpResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompleteSignUpResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompleteSignUpResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/sign-in/start": {
+            "post": {
+                "tags": ["User"],
+                "operationId": "startSignIn",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartSignInRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartSignInRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartSignInRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/users/sign-in/complete": {
+            "post": {
+                "tags": ["User"],
+                "operationId": "completeSignIn",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompleteSignInRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompleteSignInRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompleteSignInRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompleteSignInResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompleteSignInResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompleteSignInResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": ["User"],
+                "operationId": "getCurrentUser",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetCurrentUserResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetCurrentUserResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetCurrentUserResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CompleteSignInRequest": {
+                "required": ["actionCode", "email"],
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "minLength": 1,
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "actionCode": {
+                        "maxLength": 6,
+                        "minLength": 6,
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "CompleteSignInResponse": {
+                "required": ["userId", "username"],
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "username": {
+                        "minLength": 1,
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "CompleteSignUpRequest": {
+                "required": ["actionCode", "email"],
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "minLength": 1,
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "actionCode": {
+                        "maxLength": 6,
+                        "minLength": 6,
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "CompleteSignUpResponse": {
+                "required": ["userId", "username"],
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "username": {
+                        "minLength": 1,
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "GetCurrentUserResponse": {
+                "required": ["email", "id", "username"],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "username": {
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "email": {
+                        "minLength": 1,
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "StartSignInRequest": {
+                "required": ["email"],
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "minLength": 1,
+                        "type": "string",
+                        "format": "email"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "StartSignUpRequest": {
+                "required": ["email", "username"],
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "minLength": 1,
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "username": {
+                        "maxLength": 16,
+                        "minLength": 4,
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "securitySchemes": {
+            "cookieAuth": {
+                "type": "apiKey",
+                "description": "Cookie-based authentication",
+                "name": "errant_tower_auth",
+                "in": "cookie"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "User"
+        }
+    ]
+}
