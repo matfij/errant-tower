@@ -1,14 +1,33 @@
 using ErrantTowerServer.Common;
 using ErrantTowerServer.Domains.User;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.OpenApi;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using Resend;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// API docs
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder
+    .Services
+    .AddSwaggerGen(options =>
+    {
+        options.AddSecurityDefinition("cookieAuth", new OpenApiSecurityScheme
+        {
+            Type = SecuritySchemeType.ApiKey,
+            In = ParameterLocation.Cookie,
+            Name = "errant_tower_auth",
+            Description = "Cookie-based authentication"
+        });
+        options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+        {
+            [new OpenApiSecuritySchemeReference("cookieAuth", document)] = []
+        });
+    });
+
 
 // CORS
 builder
@@ -104,7 +123,8 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseMiddleware<ExceptionMiddleware>();

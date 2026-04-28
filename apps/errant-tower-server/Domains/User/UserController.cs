@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ErrantTowerServer.Domains.User;
@@ -9,14 +10,18 @@ namespace ErrantTowerServer.Domains.User;
 [Route("users")]
 public class UserController(IUserService userService) : ControllerBase
 {
-    [HttpPost("startSignUp")]
+    [HttpPost("sign-up/start")]
+    [EndpointName("startSignUp")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> StartSignUp([FromBody] StartSignUpRequest request)
     {
         await userService.StartSignUp(request);
         return Ok();
     }
 
-    [HttpPost("completeSignUp")]
+    [HttpPost("sign-up/complete")]
+    [EndpointName("completeSignUp")]
+    [ProducesResponseType(typeof(CompleteSignUpResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> CompleteSignUp([FromBody] CompleteSignUpRequest request)
     {
         var result = await userService.CompleteSignUp(request);
@@ -24,19 +29,34 @@ public class UserController(IUserService userService) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("startSignIn")]
+    [HttpPost("sign-in/start")]
+    [EndpointName("startSignIn")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> StartSignIn([FromBody] StartSignInRequest request)
     {
         await userService.StartSignIn(request);
         return Ok();
     }
 
-    [HttpPost("completeSignIn")]
+    [HttpPost("sign-in/complete")]
+    [EndpointName("completeSignIn")]
+    [ProducesResponseType(typeof(CompleteSignInResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> CompleteSignIn([FromBody] CompleteSignInRequest request)
     {
         var result = await userService.CompleteSignIn(request);
         await SetSession(result.UserId);
         return Ok(result);
+    }
+
+    [Authorize]
+    [HttpGet("me")]
+    [EndpointName("getCurrentUser")]
+    [ProducesResponseType(typeof(GetCurrentUserResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetCurrentUser()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        var user = await userService.GetCurrentUser(userId);
+        return Ok(user);
     }
 
     private async Task SetSession(string userId)

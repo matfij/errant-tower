@@ -5,6 +5,7 @@ namespace ErrantTowerServer.Domains.User;
 public interface IUserRepository
 {
     Task CreateAsync(UserEntity user);
+    Task<UserEntity?> FindByIdAsync(string id);
     Task<UserEntity?> FindByEmailAsync(string email);
     Task<UserEntity?> FindByUsernameAsync(string username);
     Task<UserEntity> UpdateAsync(UserEntity user);
@@ -18,6 +19,13 @@ public class UserRepository(IMongoDatabase database) : IUserRepository
     public async Task CreateAsync(UserEntity user)
     {
         await _collection.InsertOneAsync(user);
+    }
+
+    public async Task<UserEntity?> FindByIdAsync(string id)
+    {
+        return await _collection
+            .Find(u => u.Id == id)
+            .FirstOrDefaultAsync();
     }
 
     public async Task<UserEntity?> FindByEmailAsync(string email)

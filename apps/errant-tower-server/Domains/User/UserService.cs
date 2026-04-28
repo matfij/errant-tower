@@ -8,6 +8,7 @@ public interface IUserService
     Task<CompleteSignUpResponse> CompleteSignUp(CompleteSignUpRequest request);
     Task StartSignIn(StartSignInRequest request);
     Task<CompleteSignInResponse> CompleteSignIn(CompleteSignInRequest request);
+    Task<GetCurrentUserResponse> GetCurrentUser(string id);
 }
 
 public class UserService(
@@ -132,6 +133,14 @@ public class UserService(
         await userRepository.UpdateAsync(user);
 
         return new CompleteSignInResponse { UserId = user.Id, Username = user.Username };
+    }
+
+    public async Task<GetCurrentUserResponse> GetCurrentUser(string id)
+    {
+        var user = await userRepository.FindByIdAsync(id);
+        return user is null 
+            ? throw new ApiException("errors.userNotFound") 
+            : new GetCurrentUserResponse { Id = user.Id, Username = user.Username, Email = user.Email };
     }
 
     private async Task<UserEntity> GetUserByEmail(string email)

@@ -28,7 +28,10 @@ public record CompleteSignUpRequest
 
 public record CompleteSignUpResponse
 {
+    [Required]
     public required string UserId { get; init; }
+
+    [Required]
     public required string Username { get; init; }
 }
 
@@ -53,6 +56,22 @@ public record CompleteSignInRequest
 
 public record CompleteSignInResponse
 {
+    [Required]
     public required string UserId { get; init; }
+
+    [Required]
     public required string Username { get; init; }
+}
+
+public record GetCurrentUserResponse
+{
+    [Required]
+    public required string Id { get; init; }
+
+    [Required]
+    public required string Username { get; init; }
+
+    [Required]
+    public required string Email { get; init; }
+
 }
