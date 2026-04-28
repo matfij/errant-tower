@@ -12,9 +12,8 @@ interface FetchConfig {
 }
 
 export const customFetch = async <T>(config: FetchConfig, options?: RequestInit): Promise<T> => {
-    const queryString = config.params
-        ? '?' +
-          new URLSearchParams(
+    const serializedParams = config.params
+        ? new URLSearchParams(
               Object.entries(config.params).reduce(
                   (acc, [key, value]) => {
                       if (value !== undefined && value !== null) {
@@ -26,11 +25,12 @@ export const customFetch = async <T>(config: FetchConfig, options?: RequestInit)
               ),
           ).toString()
         : '';
+    const queryString = serializedParams ? `?${serializedParams}` : '';
 
     const response = await fetch(BASE_URL + config.url + queryString, {
         ...options,
         method: config.method,
-        body: config.data ? JSON.stringify(config.data) : undefined,
+        body: config.data === undefined ? undefined : JSON.stringify(config.data),
         headers: {
             ...config.headers,
             'Content-Type': 'application/json',
