@@ -28,15 +28,15 @@ export const customFetch = async <T>(config: FetchConfig, options?: RequestInit)
         : '';
 
     const response = await fetch(BASE_URL + config.url + queryString, {
+        ...options,
         method: config.method,
         body: config.data ? JSON.stringify(config.data) : undefined,
         headers: {
-            'Content-Type': 'application/json',
             ...config.headers,
+            'Content-Type': 'application/json',
         },
         credentials: 'include',
         signal: config.signal,
-        ...options,
     });
 
     if (!response.ok) {
