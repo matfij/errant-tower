@@ -1,67 +1,42 @@
+import type { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 import type { ApiError } from './api-error';
-import type {
-    StartSignInRequest,
-    CompleteSignInRequest,
-    StartSignUpRequest,
-    CompleteSignUpRequest,
-} from './definitions';
-import {
-    useStartSignIn,
-    useCompleteSignIn,
-    useStartSignUp,
-    useCompleteSignUp,
-    useGetCurrentUser,
-} from './generated';
 
-/*
- * User endpoints
- */
-export const useUserStartSignIn = () => {
-    const mutation = useStartSignIn<ApiError[]>();
-    return {
-        ...mutation,
-        errors: mutation.error,
-        isLoading: mutation.isPending,
-        call: (data: StartSignInRequest) => mutation.mutate({ data }),
-    };
+type WrappedMutation<TData, TArguments> = {
+    data?: TData;
+    isLoading: boolean;
+    errors?: ApiError[];
+    call: (args: TArguments) => void;
 };
 
-export const useUserCompleteSignIn = () => {
-    const mutation = useCompleteSignIn<ApiError[]>();
-    return {
-        ...mutation,
-        errors: mutation.error,
-        isLoading: mutation.isPending,
-        call: (data: CompleteSignInRequest) => mutation.mutate({ data }),
+export function wrapMutation<TData, TArguments>(
+    mutationHook: () => UseMutationResult<TData, ApiError[], TArguments>,
+): () => WrappedMutation<TData, TArguments> {
+    return () => {
+        const mutation = mutationHook();
+        return {
+            data: mutation.data,
+            isLoading: mutation.isPending,
+            errors: mutation.error || undefined,
+            call: (args) => mutation.mutate(args),
+        };
     };
+}
+
+type WrappedQuery<TData> = {
+    data?: TData;
+    isLoading: boolean;
+    errors?: ApiError[];
 };
 
-export const useUserStartSignUp = () => {
-    const mutation = useStartSignUp<ApiError[]>();
-    return {
-        ...mutation,
-        errors: mutation.error,
-        isLoading: mutation.isPending,
-        call: (data: StartSignUpRequest) => mutation.mutate({ data }),
+export function wrapQuery<TData>(
+    queryHook: () => UseQueryResult<TData, ApiError[]>,
+): () => WrappedQuery<TData> {
+    return () => {
+        const query = queryHook();
+        return {
+            data: query.data,
+            isLoading: query.isPending,
+            errors: query.error || undefined,
+        };
     };
-};
-
-export const useUserCompleteSignUp = () => {
-    const mutation = useCompleteSignUp<ApiError[]>();
-    return {
-        ...mutation,
-        errors: mutation.error,
-        isLoading: mutation.isPending,
-        call: (data: CompleteSignUpRequest) => mutation.mutate({ data }),
-    };
-};
-
-export const useUserGetCurrentUser = () => {
-    const query = useGetCurrentUser<ApiError[]>({ query: { enabled: false } });
-    return {
-        ...query,
-        errors: query.error,
-        isLoading: query.isPending,
-        call: () => query.refetch(),
-    };
-};
+}

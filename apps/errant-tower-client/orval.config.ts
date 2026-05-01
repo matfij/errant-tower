@@ -3,8 +3,8 @@ export default {
         input: './src/api/swagger.json',
         output: {
             mode: 'split',
-            target: './src/api/generated.ts',
-            schemas: './src/api/definitions',
+            target: './src/api/generated/hooks.ts',
+            schemas: './src/api/generated/definitions',
             client: 'react-query',
             override: {
                 mutator: {

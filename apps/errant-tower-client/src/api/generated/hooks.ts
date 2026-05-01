@@ -33,7 +33,7 @@ import type {
   StartSignUpRequest
 } from './definitions';
 
-import { customFetch } from './custom-fetch';
+import { customFetch } from '../custom-fetch';
 
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];

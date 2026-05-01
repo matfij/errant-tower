@@ -1,20 +1,24 @@
+// Breakpoints
+$mobile-threshold: 768px;
+
 // Typography
 $font-sans:
     ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
     'Noto Color Emoji';
+
 $font-mono:
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 
 // Colors
-$color-primary-100: #fef3c6;
-$color-primary-200: #fde9ab;
-$color-primary-300: #ffd869;
-$color-primary-400: #ffb900;
-$color-primary-500: #fe9a00;
-$color-primary-600: #e17100;
-$color-primary-700: #bb4d00;
-$color-primary-800: #963c00;
-$color-primary-900: #7b3306;
+$color-primary-100: #faf5ff;
+$color-primary-200: #f3e8ff;
+$color-primary-300: #e3c9ff;
+$color-primary-400: #c27aff;
+$color-primary-500: #ad46ff;
+$color-primary-600: #9810fa;
+$color-primary-700: #8200db;
+$color-primary-800: #6e11b0;
+$color-primary-900: #59168b;
 
 $color-secondary-100: #dff2fe;
 $color-secondary-200: #b8e6fe;
@@ -26,15 +30,15 @@ $color-secondary-700: #0069a8;
 $color-secondary-800: #00598a;
 $color-secondary-900: #024a70;
 
-$color-accent-100: #faf5ff;
-$color-accent-200: #f3e8ff;
-$color-accent-300: #e3c9ff;
-$color-accent-400: #c27aff;
-$color-accent-500: #ad46ff;
-$color-accent-600: #9810fa;
-$color-accent-700: #8200db;
-$color-accent-800: #6e11b0;
-$color-accent-900: #59168b;
+$color-accent-100: #fef3c6;
+$color-accent-200: #fde9ab;
+$color-accent-300: #ffd869;
+$color-accent-400: #ffb900;
+$color-accent-500: #fe9a00;
+$color-accent-600: #e17100;
+$color-accent-700: #bb4d00;
+$color-accent-800: #963c00;
+$color-accent-900: #7b3306;
 
 $color-light-100: #fafafa;
 $color-light-200: #f4f4f5;

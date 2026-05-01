@@ -1,6 +1,5 @@
-import type { ApiErrorResponse } from './api-error';
-
-const BASE_URL = import.meta.env.VITE_API_URL;
+import { appConfig } from '../common/config';
+import type { ApiError } from './api-error';
 
 interface FetchConfig {
     url: string;
@@ -27,7 +26,7 @@ export const customFetch = async <T>(config: FetchConfig, options?: RequestInit)
         : '';
     const queryString = serializedParams ? `?${serializedParams}` : '';
 
-    const response = await fetch(BASE_URL + config.url + queryString, {
+    const response = await fetch(appConfig.baseUrl + config.url + queryString, {
         ...options,
         method: config.method,
         body: config.data === undefined ? undefined : JSON.stringify(config.data),
@@ -40,15 +39,13 @@ export const customFetch = async <T>(config: FetchConfig, options?: RequestInit)
     });
 
     if (!response.ok) {
-        let error: ApiErrorResponse;
+        let errors: ApiError[];
         try {
-            error = await response.json();
+            errors = await response.json();
         } catch {
-            error = {
-                errors: [{ key: 'errors.unknown', field: null }],
-            };
+            errors = [{ key: 'errors.unknown' }];
         }
-        throw error;
+        throw errors;
     }
 
     if (response.status === 204) {
