@@ -4,5 +4,5 @@ export interface ApiErrorResponse {
 
 export interface ApiError {
     key: string;
-    field: string | null;
+    field?: string;
 }
