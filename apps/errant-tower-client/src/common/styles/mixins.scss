@@ -1,0 +1,61 @@
+@use './variables.scss' as *;
+
+@mixin primaryButton {
+    padding: $spacing-2 $spacing-4;
+    border: none;
+    border-radius: $spacing-1;
+    color: $color-light-100;
+    background: $color-primary-700;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 1px;
+    transition: 0.4s background-color ease-in-out;
+
+    &:hover:not(:disabled) {
+        cursor: pointer;
+        background: rgba($color-primary-600, 0.3);
+    }
+
+    &:disabled {
+        opacity: 0.8;
+        filter: grayscale(0.8);
+    }
+}
+
+@mixin secondaryButton {
+    padding: $spacing-2 $spacing-4;
+    border: 1px solid $color-primary-700;
+    border-radius: $spacing-1;
+    color: $color-primary-600;
+    background: $color-dark-400;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 1px;
+    transition: 0.4s all ease-in-out;
+
+    &:hover:not(:disabled) {
+        cursor: pointer;
+        color: $color-dark-400;
+        background: $color-primary-600;
+    }
+
+    &:disabled {
+        opacity: 0.8;
+        filter: grayscale(0.8);
+    }
+}
+
+@mixin primaryDivider {
+    border: none;
+    height: 2px;
+    width: 60%;
+
+    background: linear-gradient(
+        to right,
+        transparent,
+        rgba($color-primary-400, 0.6),
+        rgba($color-primary-500, 0.6),
+        rgba($color-primary-400, 0.6),
+        transparent
+    );
+}

@@ -175,7 +175,7 @@ public class UserService(
         {
             user.ActionCodeAttempts++;
             await userRepository.UpdateAsync(user);
-            throw new ApiException("errors.invalidActionCode");
+            throw new ApiException("errors.actionCodeInvalid");
         }
     }
 }

@@ -4,6 +4,10 @@ import type { User } from '../definitions';
 
 interface UserStore {
     user?: User;
+    actions: UserStoreActions;
+}
+
+interface UserStoreActions {
     signIn: (user: User) => void;
     signOut: () => void;
 }
@@ -11,8 +15,10 @@ interface UserStore {
 export const useUserStore = create<UserStore>()(
     persist(
         (set) => ({
-            signIn: (user: User) => set({ user }),
-            signOut: () => set({ user: undefined }),
+            actions: {
+                signIn: (user: User) => set({ user }),
+                signOut: () => set({ user: undefined }),
+            },
         }),
         {
             name: 'errant-tower-user-store',

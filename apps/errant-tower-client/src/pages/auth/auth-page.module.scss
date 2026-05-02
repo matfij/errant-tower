@@ -1,26 +1,29 @@
+@use '../../common/styles/mixins.scss' as *;
 @use '../../common/styles/variables.scss' as *;
 
 .teaserWrapper {
     width: 90%;
     max-width: 40rem;
+    max-height: 90vh;
     position: fixed;
     top: 10%;
-    left: 15%;
+    left: 12%;
     padding: $spacing-4;
+    padding-bottom: $spacing-8;
     display: flex;
     flex-direction: column;
     gap: $spacing-2;
     border-radius: $spacing-4;
     background: rgba($color-dark-400, 0.4);
+    overflow-y: auto;
 }
 
 @media (max-width: $mobile-threshold) {
     .teaserWrapper {
-        position: absolute;
+        position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        overflow-y: scroll;
     }
 }
 
@@ -28,8 +31,12 @@
     width: 36rem;
 }
 
-.logoImage {
-    width: 64px;
+.titleImageSmall {
+    width: 16rem;
+    position: absolute;
+    top: 4rem;
+    left: 50%;
+    transform: translate(-50%, 0);
 }
 
 .teaserLabel {
@@ -42,37 +49,121 @@
     gap: $spacing-2;
 }
 
-.primaryButton {
-    padding: $spacing-2 $spacing-4;
-    border: none;
-    border-radius: $spacing-1;
-    color: $color-light-100;
-    background: $color-primary-600;
-    font-weight: 500;
-    font-size: 14px;
-    letter-spacing: 1px;
-    transition: 0.4s background-color ease-in-out;
+.teaserSignInButton {
+    @include primaryButton;
+}
 
-    &:hover {
-        cursor: pointer;
-        background: rgba($color-primary-600, 0.3);
+.teaserSignUpButton {
+    @include secondaryButton;
+}
+
+.formWrapper {
+    width: 90%;
+    max-width: 30rem;
+    position: fixed;
+    top: 12rem;
+    left: 50%;
+    transform: translate(-50%, 0);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $spacing-4;
+    gap: $spacing-2;
+    border-radius: $spacing-2;
+    border: 1px solid rgba($color-primary-200, 0.2);
+    background: rgba($color-dark-400, 0.4);
+    overflow-y: auto;
+}
+
+.formTitle {
+    font-size: 25px;
+    line-height: 32px;
+    color: $color-primary-300;
+    letter-spacing: 1px;
+}
+
+.titleDivider {
+    @include primaryDivider;
+}
+
+.formLabel {
+    width: 90%;
+    font-size: 12px;
+    color: $color-light-400;
+    margin-top: $spacing-2;
+    padding-left: $spacing-px;
+}
+
+.formInput {
+    width: 90%;
+    padding: $spacing-2;
+    border: 1px solid rgba($color-light-400, 0.2);
+    border-radius: $spacing-1;
+    background-color: rgba($color-dark-200, 0.8);
+    color: $color-light-400;
+
+    &[type='number'] {
+        appearance: textfield;
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    }
+
+    &:focus {
+        border: 1px solid rgba($color-primary-200, 0.4);
     }
 }
 
-.secondaryButton {
-    padding: $spacing-2 $spacing-4;
-    border: 1px solid $color-primary-700;
-    border-radius: $spacing-1;
-    color: $color-primary-600;
-    background: $color-dark-400;
-    font-weight: 500;
+.formSuccess {
     font-size: 14px;
-    letter-spacing: 1px;
+    margin-top: $spacing-1;
+    color: $color-green-300;
+}
+
+.formError {
+    width: 90%;
+    margin-top: -$spacing-1;
+    font-size: 12px;
+    color: $color-red-500;
+    padding-left: $spacing-px;
+}
+
+.formApiError {
+    margin-top: $spacing-1;
+    font-size: 12px;
+    color: $color-red-500;
+    padding-left: $spacing-px;
+}
+
+.signInFormButton {
+    @include primaryButton;
+
+    width: 90%;
+    margin-top: $spacing-2;
+}
+
+.infoDivider {
+    @include primaryDivider;
+
+    margin-top: $spacing-2;
+}
+
+.formInfoWrapper {
+    display: flex;
+    gap: $spacing-1;
+    font-size: 12px;
+}
+
+.formInfoLink {
+    text-decoration: underline;
+    color: $color-primary-500;
     transition: 0.4s all ease-in-out;
 
     &:hover {
         cursor: pointer;
-        color: $color-dark-400;
-        background: $color-primary-600;
+        color: $color-primary-100;
     }
 }
