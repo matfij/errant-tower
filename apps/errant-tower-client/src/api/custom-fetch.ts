@@ -1,5 +1,5 @@
 import { appConfig } from '../common/config';
-import type { ApiError } from './api-error';
+import type { ApiError, ApiErrorResponse } from './api-error';
 
 interface FetchConfig {
     url: string;
@@ -41,16 +41,17 @@ export const customFetch = async <T>(config: FetchConfig, options?: RequestInit)
     if (!response.ok) {
         let errors: ApiError[];
         try {
-            errors = await response.json();
+            errors = ((await response.json()) as ApiErrorResponse).errors;
         } catch {
             errors = [{ key: 'errors.unknown' }];
         }
         throw errors;
     }
 
-    if (response.status === 204) {
+    const text = await response.text();
+    if (!text) {
         return undefined as T;
     }
 
-    return response.json();
+    return JSON.parse(text);
 };
