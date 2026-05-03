@@ -1,13 +1,23 @@
 @use '../../common/styles/mixins.scss' as *;
 @use '../../common/styles/variables.scss' as *;
 
+.authWrapper {
+    // display: block;
+    // padding-top: $spacing-24;
+    // padding-left: $spacing-32;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    position: relative;
+}
+
 .teaserWrapper {
     width: 90%;
     max-width: 40rem;
-    max-height: 90vh;
-    position: fixed;
-    top: 10%;
-    left: 12%;
+    margin-right: 10%;
     padding: $spacing-4;
     padding-bottom: $spacing-8;
     display: flex;
@@ -15,15 +25,21 @@
     gap: $spacing-2;
     border-radius: $spacing-4;
     background: rgba($color-dark-400, 0.4);
-    overflow-y: auto;
 }
 
 @media (max-width: $mobile-threshold) {
+    .authWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow-y: auto;
+        position: relative;
+    }
+
     .teaserWrapper {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        margin: 0;
+        margin-top: $spacing-32;
     }
 }
 
@@ -33,10 +49,6 @@
 
 .titleImageSmall {
     width: 16rem;
-    position: absolute;
-    top: 4rem;
-    left: 50%;
-    transform: translate(-50%, 0);
 }
 
 .teaserLabel {
@@ -57,13 +69,21 @@
     @include secondaryButton;
 }
 
+.signInWrapper {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-4;
+    gap: $spacing-4;
+    overflow-y: auto;
+    position: relative;
+}
+
 .formWrapper {
     width: 90%;
     max-width: 30rem;
-    position: fixed;
-    top: 12rem;
-    left: 50%;
-    transform: translate(-50%, 0);
     display: flex;
     flex-direction: column;
     align-items: center;

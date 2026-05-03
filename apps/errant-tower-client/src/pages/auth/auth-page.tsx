@@ -8,7 +8,7 @@ export const AuthPage = () => {
     const navigate = useNavigate();
 
     return (
-        <section>
+        <section className={styles.authWrapper}>
             <div className={styles.teaserWrapper}>
                 <img src="./images/brand/title.png" className={styles.titleImage} />
                 <p className={styles.teaserLabel}>{t('root.description')}</p>

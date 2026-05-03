@@ -11,47 +11,53 @@ interface FetchConfig {
 }
 
 export const customFetch = async <T>(config: FetchConfig, options?: RequestInit): Promise<T> => {
-    const serializedParams = config.params
-        ? new URLSearchParams(
-              Object.entries(config.params).reduce(
-                  (acc, [key, value]) => {
-                      if (value !== undefined && value !== null) {
-                          acc[key] = String(value);
-                      }
-                      return acc;
-                  },
-                  {} as Record<string, string>,
-              ),
-          ).toString()
-        : '';
-    const queryString = serializedParams ? `?${serializedParams}` : '';
+    try {
+        const serializedParams = config.params
+            ? new URLSearchParams(
+                  Object.entries(config.params).reduce(
+                      (acc, [key, value]) => {
+                          if (value !== undefined && value !== null) {
+                              acc[key] = String(value);
+                          }
+                          return acc;
+                      },
+                      {} as Record<string, string>,
+                  ),
+              ).toString()
+            : '';
 
-    const response = await fetch(appConfig.baseUrl + config.url + queryString, {
-        ...options,
-        method: config.method,
-        body: config.data === undefined ? undefined : JSON.stringify(config.data),
-        headers: {
-            ...config.headers,
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        signal: config.signal,
-    });
+        const queryString = serializedParams ? `?${serializedParams}` : '';
 
-    if (!response.ok) {
-        let errors: ApiError[];
-        try {
-            errors = ((await response.json()) as ApiErrorResponse).errors ?? [{ key: 'errors.unknown' }];
-        } catch {
-            errors = [{ key: 'errors.unknown' }];
+        const response = await fetch(appConfig.baseUrl + config.url + queryString, {
+            ...options,
+            method: config.method,
+            body: config.data === undefined ? undefined : JSON.stringify(config.data),
+            headers: {
+                ...config.headers,
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            signal: config.signal,
+        });
+
+        if (!response.ok) {
+            let errors: ApiError[];
+            try {
+                errors = ((await response.json()) as ApiErrorResponse).errors ?? [{ key: 'errors.unknown' }];
+            } catch {
+                errors = [{ key: 'errors.unknown' }];
+            }
+            throw errors;
         }
-        throw errors;
-    }
 
-    const text = await response.text();
-    if (!text) {
-        return undefined as T;
-    }
+        const text = await response.text();
 
-    return JSON.parse(text);
+        if (!text) {
+            return undefined as T;
+        }
+
+        return JSON.parse(text);
+    } catch {
+        throw [{ key: 'errors.unknown' }];
+    }
 };

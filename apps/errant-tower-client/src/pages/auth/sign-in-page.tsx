@@ -77,7 +77,7 @@ export const SignInPage = () => {
     };
 
     return (
-        <section>
+        <section className={styles.signInWrapper}>
             <img src="./images/brand/title.png" className={styles.titleImageSmall} />
             <div className={styles.formWrapper}>
                 <p className={styles.formTitle}>{t('auth.signInTitle')}</p>
@@ -93,7 +93,7 @@ export const SignInPage = () => {
                     onChange={onEmailChange}
                 />
                 {emailError && <p className={styles.formError}>{t(emailError)}</p>}
-                {!startSignIn.isSuccess && (
+                {startSignIn.isSuccess && (
                     <>
                         <label htmlFor="authCode" className={styles.formLabel}>
                             {t('auth.authCode')}
