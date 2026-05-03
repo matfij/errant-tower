@@ -7,16 +7,19 @@
         "signIn": "Sign in",
         "signUp": "Create new account",
         "signInTitle": "Welcome back",
-        "signUpTitle": "Enter Errant Tower",
+        "signUpTitle": "Start a new journey",
         "email": "Email",
         "username": "Username",
-        "authCode": "Auth code (check email address)",
+        "actionCode": "Auth code (check email address)",
         "notSignedUp": "Not registered yet?",
-        "signUpNow": "Join now"
+        "signUpNow": "Join now",
+        "alreadySignedUp": "Already have an account?",
+        "signInNow": "Sign in"
     },
     "errors": {
         "unknown": "Unknown error, please try again later",
         "emailInvalid": "Enter a valid email",
+        "usernameInvalid": "Username should be between 3 and 12 characters",
         "userNotFound": "User not found",
         "actionCodeInvalid": "Enter a valid auth code",
         "actionCodeNotSet": "Start sign in first",
