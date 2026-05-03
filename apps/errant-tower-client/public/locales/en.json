@@ -7,6 +7,20 @@
         "signIn": "Sign in",
         "signUp": "Create new account",
         "signInTitle": "Welcome back",
-        "signUpTitle": "Enter Errant Tower"
+        "signUpTitle": "Enter Errant Tower",
+        "email": "Email",
+        "username": "Username",
+        "authCode": "Auth code (check email address)",
+        "notSignedUp": "Not registered yet?",
+        "signUpNow": "Join now"
+    },
+    "errors": {
+        "unknown": "Unknown error, please try again later",
+        "emailInvalid": "Enter a valid email",
+        "userNotFound": "User not found",
+        "actionCodeInvalid": "Enter a valid auth code",
+        "actionCodeNotSet": "Start sign in first",
+        "actionCodeExpired": "Auth code expired",
+        "actionCodeAttemptsExceeded": "Sign in limit reached, sign in again"
     }
 }
