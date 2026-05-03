@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { routes } from '../../common/config';
 import { wrapMutation } from '../../api/api-proxy';
 import { useCompleteSignIn, useStartSignIn } from '../../api/generated/hooks';
@@ -28,6 +28,16 @@ export const SignInPage = () => {
             navigate(routes.home);
         }
     }, [signIn, navigate, completeSignIn.isSuccess, completeSignIn.data]);
+
+    const onEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setEmailError('');
+        setEmail(event.target.value);
+    };
+
+    const onActionCodeChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setActionCodeError('');
+        setActionCode(event.target.value.replace(/\D/g, ''));
+    };
 
     const onStartSignIn = () => {
         if (startSignIn.isSuccess) {
@@ -80,20 +90,21 @@ export const SignInPage = () => {
                     type="text"
                     className={styles.formInput}
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={onEmailChange}
                 />
                 {emailError && <p className={styles.formError}>{t(emailError)}</p>}
-                {startSignIn.isSuccess && (
+                {!startSignIn.isSuccess && (
                     <>
                         <label htmlFor="authCode" className={styles.formLabel}>
                             {t('auth.authCode')}
                         </label>
                         <input
                             id="authCode"
-                            type="number"
+                            type="text"
+                            inputMode="numeric"
                             className={styles.formInput}
                             value={actionCode}
-                            onChange={(e) => setActionCode(e.target.value)}
+                            onChange={onActionCodeChange}
                         />
                         {actionCodeError && <p className={styles.formError}>{t(actionCodeError)}</p>}
                     </>
@@ -112,9 +123,9 @@ export const SignInPage = () => {
                 <hr className={styles.infoDivider} />
                 <p className={styles.formInfoWrapper}>
                     <span>{t('auth.notSignedUp')}</span>
-                    <span className={styles.formInfoLink} onClick={() => navigate(routes.signUp)}>
+                    <Link className={styles.formInfoLink} to={routes.signUp}>
                         {t('auth.signUpNow')}
-                    </span>
+                    </Link>
                 </p>
             </div>
         </section>

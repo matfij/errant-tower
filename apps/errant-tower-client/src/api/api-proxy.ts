@@ -1,6 +1,8 @@
 import type { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 import type { ApiError } from './api-error';
 
+const mutationCache = new WeakMap<() => unknown, () => unknown>();
+
 type WrappedMutation<TData, TArguments> = {
     data?: TData;
     isLoading: boolean;
@@ -12,17 +14,27 @@ type WrappedMutation<TData, TArguments> = {
 export function wrapMutation<TData, TArguments>(
     mutationHook: () => UseMutationResult<TData, ApiError[], { data: TArguments }>,
 ): () => WrappedMutation<TData, TArguments> {
-    return () => {
+    if (mutationCache.has(mutationHook)) {
+        return mutationCache.get(mutationHook) as () => WrappedMutation<TData, TArguments>;
+    }
+
+    const wrappedMutation = () => {
         const mutation = mutationHook();
         return {
             data: mutation.data,
             isLoading: mutation.isPending,
             isSuccess: mutation.isSuccess,
             errors: mutation.error || undefined,
-            call: (args) => mutation.mutate({ data: args }),
+            call: (args: TArguments) => mutation.mutate({ data: args }),
         };
     };
+
+    mutationCache.set(mutationHook, wrappedMutation);
+
+    return wrappedMutation;
 }
+
+const queryCache = new WeakMap<() => unknown, () => unknown>();
 
 type WrappedQuery<TData> = {
     data?: TData;
@@ -34,7 +46,11 @@ type WrappedQuery<TData> = {
 export function wrapQuery<TData>(
     queryHook: () => UseQueryResult<TData, ApiError[]>,
 ): () => WrappedQuery<TData> {
-    return () => {
+    if (queryCache.has(queryHook)) {
+        return queryCache.get(queryHook) as () => WrappedQuery<TData>;
+    }
+
+    const wrappedQuery = () => {
         const query = queryHook();
         return {
             data: query.data,
@@ -43,4 +59,8 @@ export function wrapQuery<TData>(
             errors: query.error || undefined,
         };
     };
+
+    queryCache.set(queryHook, wrappedQuery);
+
+    return wrappedQuery;
 }

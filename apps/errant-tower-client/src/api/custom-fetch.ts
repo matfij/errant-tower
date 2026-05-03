@@ -41,7 +41,7 @@ export const customFetch = async <T>(config: FetchConfig, options?: RequestInit)
     if (!response.ok) {
         let errors: ApiError[];
         try {
-            errors = ((await response.json()) as ApiErrorResponse).errors;
+            errors = ((await response.json()) as ApiErrorResponse).errors ?? [{ key: 'errors.unknown' }];
         } catch {
             errors = [{ key: 'errors.unknown' }];
         }
