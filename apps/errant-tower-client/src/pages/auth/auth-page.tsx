@@ -21,6 +21,9 @@ export const AuthPage = () => {
                     </button>
                 </div>
             </div>
+            <div className={styles.knightImage}>
+                <img src="./images/brand/dark-knight.png" />
+            </div>
         </section>
     );
 };

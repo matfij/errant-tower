@@ -57,7 +57,10 @@ export const customFetch = async <T>(config: FetchConfig, options?: RequestInit)
         }
 
         return JSON.parse(text);
-    } catch {
+    } catch (error) {
+        if (Array.isArray(error)) {
+            throw error;
+        }
         throw [{ key: 'errors.unknown' }];
     }
 };

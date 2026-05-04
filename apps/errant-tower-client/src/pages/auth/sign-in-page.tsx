@@ -78,10 +78,13 @@ export const SignInPage = () => {
 
     return (
         <section className={styles.signInWrapper}>
-            <img src="./images/brand/title.png" className={styles.titleImageSmall} />
+            <Link to={routes.root}>
+                <img src="./images/brand/title.png" className={styles.titleImageSmall} />
+            </Link>
             <div className={styles.formWrapper}>
                 <p className={styles.formTitle}>{t('auth.signInTitle')}</p>
                 <hr className={styles.titleDivider} />
+
                 <label htmlFor="email" className={styles.formLabel}>
                     {t('auth.email')}
                 </label>
@@ -93,13 +96,14 @@ export const SignInPage = () => {
                     onChange={onEmailChange}
                 />
                 {emailError && <p className={styles.formError}>{t(emailError)}</p>}
+
                 {startSignIn.isSuccess && (
                     <>
-                        <label htmlFor="authCode" className={styles.formLabel}>
-                            {t('auth.authCode')}
+                        <label htmlFor="actionCode" className={styles.formLabel}>
+                            {t('auth.actionCode')}
                         </label>
                         <input
-                            id="authCode"
+                            id="actionCode"
                             type="text"
                             inputMode="numeric"
                             className={styles.formInput}
@@ -109,17 +113,20 @@ export const SignInPage = () => {
                         {actionCodeError && <p className={styles.formError}>{t(actionCodeError)}</p>}
                     </>
                 )}
+
                 {signInErrors.map((error) => (
                     <p key={error.key} className={styles.formApiError}>
                         {t(error.key)}
                     </p>
                 ))}
+
                 <button
                     className={styles.signInFormButton}
                     disabled={signInDisabled}
                     onClick={startSignIn.isSuccess ? onCompleteSignIn : onStartSignIn}>
                     {t('auth.signIn')}
                 </button>
+
                 <hr className={styles.infoDivider} />
                 <p className={styles.formInfoWrapper}>
                     <span>{t('auth.notSignedUp')}</span>
