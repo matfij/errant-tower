@@ -111,7 +111,7 @@ export const SignUpPage = () => {
                 />
                 {emailError && <p className={styles.formError}>{t(emailError)}</p>}
 
-                <label htmlFor="email" className={styles.formLabel}>
+                <label htmlFor="username" className={styles.formLabel}>
                     {t('auth.username')}
                 </label>
                 <input
