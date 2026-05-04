@@ -22,9 +22,10 @@ export const useUserStore = create<UserStore>()(
         }),
         {
             name: 'errant-tower-user-store',
-            merge: (persistedState, currentState) => {
-                return { ...currentState, persistedState };
-            },
+            merge: (persistedState, currentState) => ({
+                ...currentState,
+                ...(persistedState as Partial<UserStore>),
+            }),
         },
     ),
 );
