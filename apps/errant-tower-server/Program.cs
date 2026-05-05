@@ -1,10 +1,11 @@
-using ErrantTowerServer.Common;
-using ErrantTowerServer.Domains.User;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.OpenApi;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using MongoDB.Driver;
 using Resend;
+using ErrantTowerServer.Common;
+using ErrantTowerServer.Domains.User;
+using ErrantTowerServer.Domains.Progress;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -118,6 +119,8 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 // Domain services
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<IProgressRepository, ProgressRepository>();
 
 var app = builder.Build();
 
