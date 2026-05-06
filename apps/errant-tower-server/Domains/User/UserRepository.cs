@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using ErrantTowerServer.Common;
+using MongoDB.Driver;
 
 namespace ErrantTowerServer.Domains.User;
 
@@ -23,23 +24,20 @@ public class UserRepository(IMongoDatabase database) : IUserRepository
 
     public async Task<UserEntity?> FindByIdAsync(string id)
     {
-        return await _collection
-            .Find(u => u.Id == id)
-            .FirstOrDefaultAsync();
+        var filter = Builders<UserEntity>.Filter.Eq(u => u.Id, id);
+        return await _collection.Find(filter).FirstOrDefaultAsync();
     }
 
     public async Task<UserEntity?> FindByEmailAsync(string email)
     {
-        return await _collection
-            .Find(u => u.Email == email)
-            .FirstOrDefaultAsync();
+        var filter = Builders<UserEntity>.Filter.Eq(u => u.Email, email);
+        return await _collection.Find(filter).FirstOrDefaultAsync();
     }
 
     public async Task<UserEntity?> FindByUsernameAsync(string username)
     {
-        return await _collection
-            .Find(u => u.Username == username)
-            .FirstOrDefaultAsync();
+        var filter = Builders<UserEntity>.Filter.Eq(u => u.Username, username);
+        return await _collection.Find(filter).FirstOrDefaultAsync();
     }
 
     public async Task<UserEntity> UpdateAsync(UserEntity user)
@@ -48,7 +46,7 @@ public class UserRepository(IMongoDatabase database) : IUserRepository
         var result = await _collection.ReplaceOneAsync(filter, user);
         if (result.MatchedCount == 0)
         {
-            throw new InvalidOperationException($"Failed to update user with id {user.Id}");
+            throw new ApiException("errors.userUpdateFailed");
         }
         return user;
     }
@@ -59,7 +57,7 @@ public class UserRepository(IMongoDatabase database) : IUserRepository
         var result = await _collection.DeleteOneAsync(filter);
         if (result.DeletedCount == 0)
         {
-            throw new InvalidOperationException($"Failed to delete user with id {id}");
+            throw new ApiException("errors.userDeleteFailed");
         }
     }
 }
