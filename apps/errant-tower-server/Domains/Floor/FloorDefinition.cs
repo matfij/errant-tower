@@ -1,0 +1,30 @@
+﻿namespace ErrantTowerServer.Domains.Floor;
+
+public record struct Floor
+{
+    public required string Guid { get; set; }
+    public required string MapBackgroundUrl { get; set; }
+    public required string BattleBackgroundUrl { get; set; }
+    public required string[] BattleEnemyGuids { get; set; }
+    public required string[] TreasureItemGuids { get; set; }
+    public required string[] NPCGuids { get; set; }
+    public required FloorTile[] Tiles { get; set; }
+}
+
+public record struct FloorTile
+{
+    public required int X { get; set; }
+    public required int Y { get; set; }
+    public required FloorTileType Type { get; set; }
+}
+
+public enum FloorTileType
+{
+    Start = 0,
+    Route = 1,
+    Wall = 2,
+    Battle = 3,
+    Treasure = 4,
+    NPC = 5,
+    Finish = 6,
+}
