@@ -17,15 +17,15 @@ public class ProgressEntity
     public required int CurrentFloor { get; set; } = 0;
     public required int MaxInitiative { get; set; } = 0;
     public required int Initiative { get; set; } = 0;
-    public required int MaxHealth { get; set; }
-    public required int Health { get; set; }
-    public required int MaxMana { get; set; }
-    public required int Mana { get; set; }
-    public required int MaxEnergy { get; set; }
-    public required int Energy { get; set; }
+    public required int MaxHealth { get; set; } = 0;
+    public required int Health { get; set; } = 0;
+    public required int MaxMana { get; set; } = 0;
+    public required int Mana { get; set; } = 0;
+    public required int MaxEnergy { get; set; } = 0;
+    public required int Energy { get; set; } = 0;
     public required int X { get; set; } = 0;
     public required int Y { get; set; } = 0;
-    public required FloorEvent[] FloorEvents { get; set; }
+    public required FloorEvent[] FloorEvents { get; set; } = [];
 }
 
 public enum TowerDomain

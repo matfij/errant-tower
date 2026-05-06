@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using ErrantTowerServer.Common;
+using MongoDB.Driver;
 
 namespace ErrantTowerServer.Domains.Progress;
 
@@ -30,7 +31,7 @@ public class ProgressRepository(IMongoDatabase database) : IProgressRepository
         var result = await _collection.ReplaceOneAsync(filter, progress);
         if (result.MatchedCount == 0)
         {
-            throw new InvalidOperationException($"Failed to update progress with id {progress.Id}");
+            throw new ApiException("errors.progressNotFound");
         }
         return progress;
     }
