@@ -4,7 +4,7 @@ public static class Floor1
 {
     public static readonly Floor floor = new()
     {
-        Guid = "floor-1",
+        Guid = FloorGuid.Floor1,
         MapBackgroundUrl = "floor-1-map.png",
         BattleBackgroundUrl = "floor-1-battle.png",
         BattleEnemyGuids = ["dungeon-rat", "white-mouse"],

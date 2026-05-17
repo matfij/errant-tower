@@ -2,7 +2,7 @@
 
 public record struct Floor
 {
-    public required string Guid { get; set; }
+    public required FloorGuid Guid { get; set; }
     public required string MapBackgroundUrl { get; set; }
     public required string BattleBackgroundUrl { get; set; }
     public required string[] BattleEnemyGuids { get; set; }
