@@ -12,6 +12,7 @@ public class ProgressEntity
     public required TowerDomain CompletedDomains { get; set; } = TowerDomain.None;
     public required int CompletedFloors { get; set; } = 0;
     public required int Stamina { get; set; } = 3;
+    public required int Silver { get; set; } = 0;
 
     public required TowerDomain CurrentDomain { get; set; } = TowerDomain.None;
     public required int CurrentFloor { get; set; } = 0;
