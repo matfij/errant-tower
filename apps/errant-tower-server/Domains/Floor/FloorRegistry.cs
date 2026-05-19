@@ -1,4 +1,6 @@
-﻿namespace ErrantTowerServer.Domains.Floor;
+﻿using ErrantTowerServer.Common;
+
+namespace ErrantTowerServer.Domains.Floor;
 
 public class FloorRegistry
 {
@@ -11,7 +13,7 @@ public class FloorRegistry
     {
         if (!floors.TryGetValue(guid, out var floor))
         {
-            throw new ArgumentException($"Floor with guid {guid} not found.");
+            throw new ApiException("errors.floorNotDefined");
         }
         return floor;
     }
@@ -20,6 +22,4 @@ public class FloorRegistry
 public enum FloorGuid
 {
     Floor1 = 100,
-    Floor2 = 101,
-    Floor3 = 102,
 }

@@ -12,7 +12,8 @@ interface IProgressRepository
 
 public class ProgressRepository(IMongoDatabase database) : IProgressRepository
 {
-    private readonly IMongoCollection<ProgressEntity> _collection = database.GetCollection<ProgressEntity>("progress");
+    private readonly IMongoCollection<ProgressEntity> _collection 
+        = database.GetCollection<ProgressEntity>("progress");
 
     public async Task CreateAsync(ProgressEntity progress)
     {
