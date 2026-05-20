@@ -7,7 +7,6 @@ public class ProgressEntity
     [BsonId]
     public required string Id { get; set; }
     public required string UserId { get; set; }
-    public required string Username { get; set; }
 
     public TowerDomain CompletedDomains { get; set; } = TowerDomain.None;
     public int CompletedFloors { get; set; } = 0;

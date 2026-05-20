@@ -1,21 +1,21 @@
 ﻿using ErrantTowerServer.Common;
-using ErrantTowerServer.Common.Events;
 
 namespace ErrantTowerServer.Domains.Progress;
 
-public interface IProgressService { }
+public interface IProgressService
+{ 
+    public Task CreateInitial(string userId);
+}
 
-public class ProgressService(IProgressRepository progressRepository) 
-    : IProgressService, IEventHandler<UserCreatedEvent>
+public class ProgressService(IProgressRepository progressRepository) : IProgressService
 {
-    public async Task HandleAsync(UserCreatedEvent userCreatedEvent)
+    public async Task CreateInitial(string userId)
     {
         var newProgress = new ProgressEntity
         {
             Id = Utils.GenerateGuid(),
-            UserId = userCreatedEvent.UserId,
-            Username = userCreatedEvent.Username,
+            UserId = userId,
         };
-        await progressRepository.CreateAsync(newProgress);
+        await progressRepository.CreateOne(newProgress);
     }
 }

@@ -7,7 +7,7 @@ using ErrantTowerServer.Common;
 using ErrantTowerServer.Domains.User;
 using ErrantTowerServer.Domains.Progress;
 using ErrantTowerServer.Domains.Statistics;
-using ErrantTowerServer.Common.Events;
+using ErrantTowerServer.Orchestrator;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -118,20 +118,18 @@ builder
 builder.Services.AddTransient<IResend, ResendClient>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
-// Utility services
-builder.Services.AddScoped<IEventPublisher, EventPublisher>();
-
 // Domain services
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IProgressRepository, ProgressRepository>();
 builder.Services.AddScoped<IProgressService, ProgressService>();
-builder.Services.AddScoped<IEventHandler<UserCreatedEvent>, ProgressService>();
 
 builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
 builder.Services.AddScoped<IStatisticsService, StatisticsService>();
-builder.Services.AddScoped<IEventHandler<UserCreatedEvent>, StatisticsService>();
+
+// Orchestrator services
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 

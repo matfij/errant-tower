@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ErrantTowerServer.Domains.User;
+namespace ErrantTowerServer.Orchestrator;
 
 public record StartSignUpRequest
 {
@@ -61,17 +61,4 @@ public record CompleteSignInResponse
 
     [Required]
     public required string Username { get; init; }
-}
-
-public record GetCurrentUserResponse
-{
-    [Required]
-    public required string Id { get; init; }
-
-    [Required]
-    public required string Username { get; init; }
-
-    [Required]
-    public required string Email { get; init; }
-
 }

@@ -1,18 +1,20 @@
 ﻿using ErrantTowerServer.Common;
-using ErrantTowerServer.Common.Events;
 
 namespace ErrantTowerServer.Domains.Statistics;
 
-public interface IStatisticsService { }
-public class StatisticsService(IStatisticsRepository statisticsRepository)
-    : IStatisticsService, IEventHandler<UserCreatedEvent>
+public interface IStatisticsService 
 {
-    public async Task HandleAsync(UserCreatedEvent userCreatedEvent)
+    public Task CreateInitial(string userId);
+}
+
+public class StatisticsService(IStatisticsRepository statisticsRepository) : IStatisticsService
+{
+    public async Task CreateInitial(string userId)
     {
         var newStatistics = new StatisticsEntity
         {
             Id = Utils.GenerateGuid(),
-            UserId = userCreatedEvent.UserId,
+            UserId = userId,
             Initiative = 0,
             HealthPoints = 100,
             ManaPoints = 50,
@@ -36,6 +38,6 @@ public class StatisticsService(IStatisticsRepository statisticsRepository)
             ManaRegen = 0,
             EnergyRegen = 0
         };
-        await statisticsRepository.CreateAsync(newStatistics);
+        await statisticsRepository.CreateOne(newStatistics);
     }
 }
