@@ -3,7 +3,7 @@ using MongoDB.Driver;
 
 namespace ErrantTowerServer.Domains.Progress;
 
-interface IProgressRepository
+public interface IProgressRepository
 {
     Task CreateAsync(ProgressEntity progress);
     Task<ProgressEntity> FindByUserIdAsync(string userId);

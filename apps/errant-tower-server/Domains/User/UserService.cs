@@ -1,4 +1,5 @@
 ﻿using ErrantTowerServer.Common;
+using ErrantTowerServer.Common.Events;
 
 namespace ErrantTowerServer.Domains.User;
 
@@ -14,7 +15,8 @@ public interface IUserService
 public class UserService(
     IUserRepository userRepository,
     IEmailService emailService,
-    ILogger<UserService> logger) : IUserService
+    ILogger<UserService> logger,
+    IEventPublisher eventPublisher) : IUserService
 {
     public async Task StartSignUp(StartSignUpRequest request)
     {
@@ -89,6 +91,8 @@ public class UserService(
         user.ActionCodeExpiresAt = null;
 
         await userRepository.UpdateAsync(user);
+
+        await eventPublisher.PublishAsync(new UserCreatedEvent { UserId = user.Id, Username = user.Username });
 
         return new CompleteSignUpResponse { UserId = user.Id, Username = user.Username };
     }
