@@ -7,26 +7,25 @@ public class ProgressEntity
     [BsonId]
     public required string Id { get; set; }
     public required string UserId { get; set; }
-    public required string Username { get; set; }
 
-    public required TowerDomain CompletedDomains { get; set; } = TowerDomain.None;
-    public required int CompletedFloors { get; set; } = 0;
-    public required int Stamina { get; set; } = 3;
-    public required int Silver { get; set; } = 0;
+    public TowerDomain CompletedDomains { get; set; } = TowerDomain.None;
+    public int CompletedFloors { get; set; } = 0;
+    public int Stamina { get; set; } = 3;
+    public int Silver { get; set; } = 0;
 
-    public required TowerDomain CurrentDomain { get; set; } = TowerDomain.None;
-    public required int CurrentFloor { get; set; } = 0;
-    public required int MaxInitiative { get; set; } = 0;
-    public required int Initiative { get; set; } = 0;
-    public required int MaxHealth { get; set; } = 0;
-    public required int Health { get; set; } = 0;
-    public required int MaxMana { get; set; } = 0;
-    public required int Mana { get; set; } = 0;
-    public required int MaxEnergy { get; set; } = 0;
-    public required int Energy { get; set; } = 0;
-    public required int X { get; set; } = 0;
-    public required int Y { get; set; } = 0;
-    public required FloorEvent[] FloorEvents { get; set; } = [];
+    public TowerDomain CurrentDomain { get; set; } = TowerDomain.None;
+    public int CurrentFloor { get; set; } = 0;
+    public int MaxInitiative { get; set; } = 0;
+    public int Initiative { get; set; } = 0;
+    public int MaxHealth { get; set; } = 0;
+    public int Health { get; set; } = 0;
+    public int MaxMana { get; set; } = 0;
+    public int Mana { get; set; } = 0;
+    public int MaxEnergy { get; set; } = 0;
+    public int Energy { get; set; } = 0;
+    public int X { get; set; } = 0;
+    public int Y { get; set; } = 0;
+    public FloorEvent[] FloorEvents { get; set; } = [];
 }
 
 public enum TowerDomain

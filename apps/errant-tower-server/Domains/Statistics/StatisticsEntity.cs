@@ -8,12 +8,12 @@ public class StatisticsEntity
     public required string Id { get; set; }
     public required string UserId { get; set; }
 
-    public required int AttributePoints { get; set; } = 0;
+    public int AttributePoints { get; set; } = 10;
 
-    public required int Strength { get; set; } = 0;
-    public required int Dexterity { get; set; } = 0;
-    public required int Constitution { get; set; } = 0;
-    public required int Spirit { get; set; } = 0;
+    public int Strength { get; set; } = 10;
+    public int Dexterity { get; set; } = 10;
+    public int Constitution { get; set; } = 10;
+    public int Spirit { get; set; } = 10;
 
     public required int Initiative { get; set; } = 0;
     public required int HealthPoints { get; set; } = 0;

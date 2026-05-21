@@ -21,7 +21,7 @@ $"""
     </h2>
 
     <div style="color: #fafafa">
-        <div style="width: 90%; max-width: 600px;">
+        <div style="width: 90%; max-width: 600px; margin: 0 auto">
             Greetings <b>{WebUtility.HtmlEncode(username)}</b>!
             Your journey is about to begin, in order to activate your account use following code:
         </div>

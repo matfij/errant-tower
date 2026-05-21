@@ -1,21 +1,20 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ErrantTowerServer.Domains.User;
+namespace ErrantTowerServer.Orchestrator;
 
 [ApiController]
-[Route("users")]
-public class UserController(IUserService userService) : ControllerBase
+[Route("auth")]
+public class AuthController(IAuthService authService) : ControllerBase
 {
     [HttpPost("sign-up/start")]
     [EndpointName("startSignUp")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> StartSignUp([FromBody] StartSignUpRequest request)
     {
-        await userService.StartSignUp(request);
+        await authService.StartSignUp(request);
         return Ok();
     }
 
@@ -24,7 +23,7 @@ public class UserController(IUserService userService) : ControllerBase
     [ProducesResponseType(typeof(CompleteSignUpResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> CompleteSignUp([FromBody] CompleteSignUpRequest request)
     {
-        var result = await userService.CompleteSignUp(request);
+        var result = await authService.CompleteSignUp(request);
         await SetSession(result.UserId);
         return Ok(result);
     }
@@ -34,7 +33,7 @@ public class UserController(IUserService userService) : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> StartSignIn([FromBody] StartSignInRequest request)
     {
-        await userService.StartSignIn(request);
+        await authService.StartSignIn(request);
         return Ok();
     }
 
@@ -43,20 +42,9 @@ public class UserController(IUserService userService) : ControllerBase
     [ProducesResponseType(typeof(CompleteSignInResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> CompleteSignIn([FromBody] CompleteSignInRequest request)
     {
-        var result = await userService.CompleteSignIn(request);
+        var result = await authService.CompleteSignIn(request);
         await SetSession(result.UserId);
         return Ok(result);
-    }
-
-    [Authorize]
-    [HttpGet("me")]
-    [EndpointName("getCurrentUser")]
-    [ProducesResponseType(typeof(GetCurrentUserResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetCurrentUser()
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-        var user = await userService.GetCurrentUser(userId);
-        return Ok(user);
     }
 
     private async Task SetSession(string userId)
@@ -71,9 +59,8 @@ public class UserController(IUserService userService) : ControllerBase
         var principal = new ClaimsPrincipal(identity);
 
         await HttpContext.SignInAsync(
-            CookieAuthenticationDefaults.AuthenticationScheme, 
+            CookieAuthenticationDefaults.AuthenticationScheme,
             principal,
             new AuthenticationProperties { IsPersistent = true });
     }
-
 }

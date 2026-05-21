@@ -4,21 +4,21 @@ namespace ErrantTowerServer.Domains.User;
 
 public interface IUserService
 {
-    Task StartSignUp(StartSignUpRequest request);
-    Task<CompleteSignUpResponse> CompleteSignUp(CompleteSignUpRequest request);
-    Task StartSignIn(StartSignInRequest request);
-    Task<CompleteSignInResponse> CompleteSignIn(CompleteSignInRequest request);
-    Task<GetCurrentUserResponse> GetCurrentUser(string id);
+    Task StartSignUp(string email, string username);
+    Task<UserEntity> CompleteSignUp(string email, string actionCode);
+    Task StartSignIn(string email);
+    Task<UserEntity> CompleteSignIn(string email, string actionCode);
 }
 
 public class UserService(
     IUserRepository userRepository,
     IEmailService emailService,
-    ILogger<UserService> logger) : IUserService
+    ILogger<UserService> logger
+    ) : IUserService
 {
-    public async Task StartSignUp(StartSignUpRequest request)
+    public async Task StartSignUp(string email, string username)
     {
-        var userByEmail = await userRepository.FindByEmailAsync(request.Email);
+        var userByEmail = await userRepository.FindOneByEmail(email);
         var restartSignUp = userByEmail is not null
             && userByEmail.IsConfirmed == false
             && userByEmail.ActionCodeExpiresAt < Utils.GetCurrentTimestamp();
@@ -29,7 +29,7 @@ public class UserService(
                 : "errors.signUpStarted");
         }
 
-        var userByUsername = await userRepository.FindByUsernameAsync(request.Username);
+        var userByUsername = await userRepository.FindOneByUsername(username);
         if (userByUsername is not null && userByUsername.Id != userByEmail?.Id)
         {
             throw new ApiException("errors.usernameInUse");
@@ -37,7 +37,7 @@ public class UserService(
 
         if (restartSignUp)
         {
-            await userRepository.DeleteAsync(userByEmail!.Id);
+            await userRepository.DeleteOne(userByEmail!.Id);
         }
 
         var userId = Utils.GenerateGuid();
@@ -47,15 +47,15 @@ public class UserService(
         var user = new UserEntity
         {
             Id = userId,
-            Email = request.Email,
-            Username = request.Username,
+            Email = email,
+            Username = username,
             ActionCodeHash = hashedActionCode,
             ActionCodeAttempts = 0,
             ActionCodeExpiresAt = Utils.GetFutureTimestamp(15),
             IsConfirmed = false,
         };
 
-        await userRepository.CreateAsync(user);
+        await userRepository.CreateOne(user);
 
         try
         {
@@ -67,35 +67,35 @@ public class UserService(
         catch (Exception ex)
         {
             logger.LogError(ex, "Failed to send sign-up email to {Email}", user.Email);
-            await userRepository.DeleteAsync(userId);
+            await userRepository.DeleteOne(userId);
             throw new ApiException("errors.emailSendFailed");
         }
     }
 
-    public async Task<CompleteSignUpResponse> CompleteSignUp(CompleteSignUpRequest request)
+    public async Task<UserEntity> CompleteSignUp(string email, string actionCode)
     {
-        var user = await userRepository.FindByEmailAsync(request.Email) 
+        var user = await userRepository.FindOneByEmail(email)
             ?? throw new ApiException("errors.userNotFound");
         if (user.IsConfirmed)
         {
             throw new ApiException("errors.userAlreadyConfirmed");
         }
 
-        await VerifyActionCode(user, request.ActionCode);
+        await VerifyActionCode(user, actionCode);
 
         user.IsConfirmed = true;
         user.ActionCodeHash = null;
         user.ActionCodeAttempts = null;
         user.ActionCodeExpiresAt = null;
 
-        await userRepository.UpdateAsync(user);
+        await userRepository.UpdateOne(user);
 
-        return new CompleteSignUpResponse { UserId = user.Id, Username = user.Username };
+        return user;
     }
 
-    public async Task StartSignIn(StartSignInRequest request)
+    public async Task StartSignIn(string email)
     {
-        var user = await GetUserByEmail(request.Email);
+        var user = await GetUserByEmail(email);
 
         var actionCode = Utils.GenerateSecureNumberString(6);
 
@@ -103,7 +103,7 @@ public class UserService(
         user.ActionCodeAttempts = 0;
         user.ActionCodeExpiresAt = Utils.GetFutureTimestamp(15);
 
-        await userRepository.UpdateAsync(user);
+        await userRepository.UpdateOne(user);
 
         try
         {
@@ -120,32 +120,24 @@ public class UserService(
         }
     }
 
-    public async Task<CompleteSignInResponse> CompleteSignIn(CompleteSignInRequest request)
+    public async Task<UserEntity> CompleteSignIn(string email, string actionCode)
     {
-        var user = await GetUserByEmail(request.Email);
+        var user = await GetUserByEmail(email);
 
-        await VerifyActionCode(user, request.ActionCode);
+        await VerifyActionCode(user, actionCode);
         
         user.ActionCodeHash = null;
         user.ActionCodeAttempts = null;
         user.ActionCodeExpiresAt = null;
 
-        await userRepository.UpdateAsync(user);
+        await userRepository.UpdateOne(user);
 
-        return new CompleteSignInResponse { UserId = user.Id, Username = user.Username };
-    }
-
-    public async Task<GetCurrentUserResponse> GetCurrentUser(string id)
-    {
-        var user = await userRepository.FindByIdAsync(id);
-        return user is null 
-            ? throw new ApiException("errors.userNotFound") 
-            : new GetCurrentUserResponse { Id = user.Id, Username = user.Username, Email = user.Email };
+        return user;
     }
 
     private async Task<UserEntity> GetUserByEmail(string email)
     {
-        var user = await userRepository.FindByEmailAsync(email);
+        var user = await userRepository.FindOneByEmail(email);
         if (user is null)
         {
             throw new ApiException("errors.userNotFound");
@@ -174,7 +166,7 @@ public class UserService(
         if (Utils.VerifyHash(actionCode, user.ActionCodeHash) == false)
         {
             user.ActionCodeAttempts++;
-            await userRepository.UpdateAsync(user);
+            await userRepository.UpdateOne(user);
             throw new ApiException("errors.actionCodeInvalid");
         }
     }

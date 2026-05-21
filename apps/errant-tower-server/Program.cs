@@ -6,6 +6,8 @@ using Resend;
 using ErrantTowerServer.Common;
 using ErrantTowerServer.Domains.User;
 using ErrantTowerServer.Domains.Progress;
+using ErrantTowerServer.Domains.Statistics;
+using ErrantTowerServer.Orchestrator;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -121,6 +123,13 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IProgressRepository, ProgressRepository>();
+builder.Services.AddScoped<IProgressService, ProgressService>();
+
+builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
+
+// Orchestrator services
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
