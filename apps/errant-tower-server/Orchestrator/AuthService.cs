@@ -25,6 +25,8 @@ public class AuthService(
     public async Task<CompleteSignUpResponse> CompleteSignUp(CompleteSignUpRequest request)
     {
         var user = await userService.CompleteSignUp(request.Email, request.ActionCode);
+        await progressService.CreateInitial(user.Id);
+        await statisticsService.CreateInitial(user.Id);
         return new CompleteSignUpResponse
         {
             UserId = user.Id,
@@ -40,8 +42,6 @@ public class AuthService(
     public async Task<CompleteSignInResponse> CompleteSignIn(CompleteSignInRequest request)
     {
         var user = await userService.CompleteSignIn(request.Email, request.ActionCode);
-        await progressService.CreateInitial(user.Id);
-        await statisticsService.CreateInitial(user.Id);
         return new CompleteSignInResponse
         {
             UserId = user.Id,

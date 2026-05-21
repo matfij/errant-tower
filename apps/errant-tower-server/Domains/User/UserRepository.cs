@@ -15,7 +15,8 @@ public interface IUserRepository
 
 public class UserRepository(IMongoDatabase database) : IUserRepository
 {
-    private readonly IMongoCollection<UserEntity> _collection = database.GetCollection<UserEntity>("users");
+    private readonly IMongoCollection<UserEntity> _collection 
+        = database.GetCollection<UserEntity>("Users");
 
     public async Task CreateOne(UserEntity user)
     {

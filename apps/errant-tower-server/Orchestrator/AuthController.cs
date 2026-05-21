@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ErrantTowerServer.Orchestrator;
 
 [ApiController]
-[Route("users")]
+[Route("auth")]
 public class AuthController(IAuthService authService) : ControllerBase
 {
     [HttpPost("sign-up/start")]
