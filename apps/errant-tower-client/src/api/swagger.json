@@ -5,9 +5,9 @@
         "version": "1.0"
     },
     "paths": {
-        "/users/sign-up/start": {
+        "/auth/sign-up/start": {
             "post": {
-                "tags": ["User"],
+                "tags": ["Auth"],
                 "operationId": "startSignUp",
                 "requestBody": {
                     "content": {
@@ -35,9 +35,9 @@
                 }
             }
         },
-        "/users/sign-up/complete": {
+        "/auth/sign-up/complete": {
             "post": {
-                "tags": ["User"],
+                "tags": ["Auth"],
                 "operationId": "completeSignUp",
                 "requestBody": {
                     "content": {
@@ -82,9 +82,9 @@
                 }
             }
         },
-        "/users/sign-in/start": {
+        "/auth/sign-in/start": {
             "post": {
-                "tags": ["User"],
+                "tags": ["Auth"],
                 "operationId": "startSignIn",
                 "requestBody": {
                     "content": {
@@ -112,9 +112,9 @@
                 }
             }
         },
-        "/users/sign-in/complete": {
+        "/auth/sign-in/complete": {
             "post": {
-                "tags": ["User"],
+                "tags": ["Auth"],
                 "operationId": "completeSignIn",
                 "requestBody": {
                     "content": {
@@ -152,34 +152,6 @@
                             "text/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/CompleteSignInResponse"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/users/me": {
-            "get": {
-                "tags": ["User"],
-                "operationId": "getCurrentUser",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "text/plain": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/GetCurrentUserResponse"
-                                }
-                            },
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/GetCurrentUserResponse"
-                                }
-                            },
-                            "text/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/GetCurrentUserResponse"
                                 }
                             }
                         }
@@ -254,25 +226,6 @@
                 },
                 "additionalProperties": false
             },
-            "GetCurrentUserResponse": {
-                "required": ["email", "id", "username"],
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "minLength": 1,
-                        "type": "string"
-                    },
-                    "username": {
-                        "minLength": 1,
-                        "type": "string"
-                    },
-                    "email": {
-                        "minLength": 1,
-                        "type": "string"
-                    }
-                },
-                "additionalProperties": false
-            },
             "StartSignInRequest": {
                 "required": ["email"],
                 "type": "object",
@@ -319,7 +272,7 @@
     ],
     "tags": [
         {
-            "name": "User"
+            "name": "Auth"
         }
     ]
 }
