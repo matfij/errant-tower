@@ -1,11 +1,13 @@
-﻿namespace ErrantTowerServer.Domains.Floor;
+﻿using ErrantTowerServer.Domains.Enemy;
+
+namespace ErrantTowerServer.Domains.Floor;
 
 public record struct Floor
 {
     public required FloorGuid Guid { get; set; }
     public required string MapBackgroundUrl { get; set; }
     public required string BattleBackgroundUrl { get; set; }
-    public required string[] BattleEnemyGuids { get; set; }
+    public required FloorEnemy[] Enemies { get; set; }
     public required string[] TreasureItemGuids { get; set; }
     public required string[] NPCGuids { get; set; }
     public required FloorTile[] Tiles { get; set; }
@@ -27,4 +29,10 @@ public enum FloorTileType
     Treasure = 4,
     NPC = 5,
     Finish = 6,
+}
+
+public record struct FloorEnemy
+{
+    public EnemyGuid Guid { get; set; }
+    public double EncounterChance { get; set; }
 }

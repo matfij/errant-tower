@@ -1,4 +1,6 @@
-﻿namespace ErrantTowerServer.Domains.Floor.Data;
+﻿using ErrantTowerServer.Domains.Enemy;
+
+namespace ErrantTowerServer.Domains.Floor.Data;
 
 public static class Floor1
 {
@@ -7,7 +9,10 @@ public static class Floor1
         Guid = FloorGuid.Floor1,
         MapBackgroundUrl = "floor-1-map.png",
         BattleBackgroundUrl = "floor-1-battle.png",
-        BattleEnemyGuids = ["dungeon-rat", "white-mouse"],
+        Enemies =
+        [
+            new FloorEnemy { Guid = EnemyGuid.Ratter, EncounterChance = 0.2 },
+        ],
         TreasureItemGuids = ["bronze-shard"],
         NPCGuids = [],
         Tiles =
