@@ -2,7 +2,7 @@
 
 namespace ErrantTowerServer.Domains.Floor;
 
-public class FloorRegistry
+public static class FloorRegistry
 {
     private static readonly IReadOnlyDictionary<FloorGuid, Floor> floors = new Dictionary<FloorGuid, Floor>
     {
