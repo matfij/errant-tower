@@ -4,13 +4,16 @@ namespace ErrantTowerServer.Domains.Enemy;
 
 public readonly record struct Enemy
 {
-    public EnemyGuid Guid { get; init; }
-    public string Name { get; init; }
-    public EnemyRace Race { get; init; }
+    public required EnemyGuid Guid { get; init; }
+    public required string Name { get; init; }
+    public required string ImageUrl { get; init; }
+    public required EnemyRace Race { get; init; }
     public string? Title { get; init; }
-    public BattleStatistics Statistics { get; init; }
+    public required BattleStatistics Statistics { get; init; }
 
     // TODO - loots
+
+    // TODO - skills
 }
 
 public enum EnemyRace

@@ -11,7 +11,7 @@ public static class Floor1
         BattleBackgroundUrl = "floor-1-battle.png",
         Enemies =
         [
-            new FloorEnemy { Guid = EnemyGuid.Ratter, EncounterChance = 0.2 },
+            new FloorEnemy { EnemyGuid = EnemyGuid.Ratter, EncounterChance = 0.2 },
         ],
         TreasureItemGuids = ["bronze-shard"],
         NPCGuids = [],

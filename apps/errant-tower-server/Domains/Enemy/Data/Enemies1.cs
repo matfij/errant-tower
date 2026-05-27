@@ -1,13 +1,16 @@
-﻿namespace ErrantTowerServer.Domains.Enemy.Data;
+﻿using ErrantTowerServer.Domains.Statistics;
+
+namespace ErrantTowerServer.Domains.Enemy.Data;
 
 public static class Enemies1
 {
     public static readonly Enemy ratter = new()
     {
         Guid = EnemyGuid.Ratter,
+        ImageUrl = "ratter.png",
         Name = "Ratter",
         Race = EnemyRace.Vermin,
-        Statistics =
+        Statistics = new BattleStatistics()
         {
             Initiative = 1.5,
             HealthPoints = 20,

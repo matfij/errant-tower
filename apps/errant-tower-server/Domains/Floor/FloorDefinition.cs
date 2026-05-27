@@ -33,6 +33,6 @@ public enum FloorTileType
 
 public record struct FloorEnemy
 {
-    public EnemyGuid Guid { get; set; }
-    public double EncounterChance { get; set; }
+    public required EnemyGuid EnemyGuid { get; set; }
+    public required double EncounterChance { get; set; }
 }
