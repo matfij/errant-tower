@@ -1,4 +1,5 @@
-﻿using ErrantTowerServer.Domains.Statistics;
+﻿using ErrantTowerServer.Domains.Skills;
+using ErrantTowerServer.Domains.Statistics;
 
 namespace ErrantTowerServer.Domains.Enemy;
 
@@ -10,10 +11,9 @@ public readonly record struct Enemy
     public required EnemyRace Race { get; init; }
     public string? Title { get; init; }
     public required BattleStatistics Statistics { get; init; }
+    public required SkillGuid[] Skills { get; init; }
 
     // TODO - loots
-
-    // TODO - skills
 }
 
 public enum EnemyRace

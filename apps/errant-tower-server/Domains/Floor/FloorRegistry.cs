@@ -1,13 +1,14 @@
-﻿using ErrantTowerServer.Common;
+﻿using System.Collections.Frozen;
+using ErrantTowerServer.Common;
 
 namespace ErrantTowerServer.Domains.Floor;
 
 public static class FloorRegistry
 {
-    private static readonly IReadOnlyDictionary<FloorGuid, Floor> floors = new Dictionary<FloorGuid, Floor>
+    private static readonly FrozenDictionary<FloorGuid, Floor> floors = new Dictionary<FloorGuid, Floor>
     {
         { FloorGuid.Floor1, Data.Floor1.floor },
-    };
+    }.ToFrozenDictionary();
 
     public static Floor GetFloor(FloorGuid guid)
     {

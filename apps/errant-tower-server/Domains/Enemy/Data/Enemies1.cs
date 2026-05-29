@@ -1,4 +1,5 @@
-﻿using ErrantTowerServer.Domains.Statistics;
+﻿using ErrantTowerServer.Domains.Skills;
+using ErrantTowerServer.Domains.Statistics;
 
 namespace ErrantTowerServer.Domains.Enemy.Data;
 
@@ -22,6 +23,7 @@ public static class Enemies1
             PhysicalCriticalPower = 1.2,
             PunctureChance = 0.1,
             DodgeChance = 0.2,
-        }
+        },
+        Skills = [SkillGuid.Scratch, SkillGuid.Scratch, SkillGuid.Bite],
     };
 }

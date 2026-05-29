@@ -1,13 +1,14 @@
-﻿using ErrantTowerServer.Common;
+﻿using System.Collections.Frozen;
+using ErrantTowerServer.Common;
 
 namespace ErrantTowerServer.Domains.Enemy;
 
 public static class EnemyRegistry
 {
-    private static readonly IReadOnlyDictionary <EnemyGuid, Enemy> enemies = new Dictionary<EnemyGuid, Enemy>
+    private static readonly FrozenDictionary <EnemyGuid, Enemy> enemies = new Dictionary<EnemyGuid, Enemy>
     {
         { EnemyGuid.Ratter, Data.Enemies1.ratter },
-    };
+    }.ToFrozenDictionary();
 
     public static Enemy GetEnemy(EnemyGuid guid)
     {
