@@ -1,10 +1,11 @@
-﻿using ErrantTowerServer.Domains.Skills.Data;
+﻿using System.Collections.Frozen;
+using ErrantTowerServer.Domains.Skills.Data;
 
 namespace ErrantTowerServer.Domains.Skills;
 
 public static class SkillRegistry
 {
-    public static readonly IReadOnlyDictionary<SkillGuid, Skill> Skills = new Dictionary<SkillGuid, Skill>
+    public static readonly FrozenDictionary<SkillGuid, Skill> Skills = new Dictionary<SkillGuid, Skill>
     {
         [SkillGuid.Scratch] = Skills1.Scratch,
         [SkillGuid.Bite] = Skills1.Bite,
@@ -13,7 +14,7 @@ public static class SkillRegistry
         [SkillGuid.Slash] = Skills2.Slash,
         [SkillGuid.Pierce] = Skills2.Pierce,
         [SkillGuid.Bash] = Skills2.Bash,
-    };
+    }.ToFrozenDictionary();
 }
 
 public enum SkillGuid
