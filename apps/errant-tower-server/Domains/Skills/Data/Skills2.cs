@@ -2,6 +2,15 @@
 
 public static class Skills2
 {
+    public static readonly Skill Punch = new()
+    {
+        Guid = SkillGuid.Punch,
+        Name = "Punch",
+        PhysicalAttackFactor = 0.6,
+        PhysicalDefenseFactor = 0.8,
+        Types = [SkillType.Blunt],
+    };
+
     public static readonly Skill Slash = new()
     {
         Guid = SkillGuid.Slash,
@@ -26,6 +35,6 @@ public static class Skills2
         Name = "Bash",
         PhysicalAttackFactor = 1.4,
         PhysicalDefenseFactor = 1,
-        Types = [SkillType.Bash],
+        Types = [SkillType.Blunt],
     };
 }

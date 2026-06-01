@@ -5,14 +5,14 @@ namespace ErrantTowerServer.Domains.Enemy;
 
 public static class EnemyRegistry
 {
-    private static readonly FrozenDictionary <EnemyGuid, Enemy> enemies = new Dictionary<EnemyGuid, Enemy>
+    private static readonly FrozenDictionary <EnemyGuid, Enemy> _enemies = new Dictionary<EnemyGuid, Enemy>
     {
         { EnemyGuid.Ratter, Data.Enemies1.ratter },
     }.ToFrozenDictionary();
 
     public static Enemy GetEnemy(EnemyGuid guid)
     {
-        if (!enemies.TryGetValue(guid, out var enemy))
+        if (!_enemies.TryGetValue(guid, out var enemy))
         {
             throw new ApiException("errors.enemyNotDefined");
         }

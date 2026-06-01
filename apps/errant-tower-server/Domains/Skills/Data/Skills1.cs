@@ -26,6 +26,6 @@ public static class Skills1
         Name = "Tail Whip",
         PhysicalAttackFactor = 0.8,
         PhysicalDefenseFactor = 1.2,
-        Types = [SkillType.Bash],
+        Types = [SkillType.Blunt],
     };
 }
