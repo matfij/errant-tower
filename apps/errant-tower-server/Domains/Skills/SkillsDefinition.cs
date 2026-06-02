@@ -25,7 +25,7 @@ public enum SkillType
     None = 0,
     Slash = 1,
     Pierce = 2,
-    Bash = 3,
+    Blunt = 3,
     Fire = 4,
     Water = 5,
     Earth = 6,

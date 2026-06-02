@@ -1,11 +1,12 @@
 ﻿using System.Collections.Frozen;
+using ErrantTowerServer.Common;
 using ErrantTowerServer.Domains.Skills.Data;
 
 namespace ErrantTowerServer.Domains.Skills;
 
 public static class SkillRegistry
 {
-    public static readonly FrozenDictionary<SkillGuid, Skill> Skills = new Dictionary<SkillGuid, Skill>
+    private static readonly FrozenDictionary<SkillGuid, Skill> _skills = new Dictionary<SkillGuid, Skill>
     {
         [SkillGuid.Scratch] = Skills1.Scratch,
         [SkillGuid.Bite] = Skills1.Bite,
@@ -15,6 +16,15 @@ public static class SkillRegistry
         [SkillGuid.Pierce] = Skills2.Pierce,
         [SkillGuid.Bash] = Skills2.Bash,
     }.ToFrozenDictionary();
+
+    public static Skill GetSkill(SkillGuid guid)
+    {
+        if (!_skills.TryGetValue(guid, out var skill))
+        {
+            throw new ApiException("errors.skillNotDefined");
+        }
+        return skill;
+    }
 }
 
 public enum SkillGuid
@@ -23,7 +33,8 @@ public enum SkillGuid
     Bite = 102,
     TailWhip = 103,
 
-    Slash = 200,
-    Pierce = 201,
-    Bash = 202,
+    Punch = 200,
+    Slash = 201,
+    Pierce = 202,
+    Bash = 203,
 }
