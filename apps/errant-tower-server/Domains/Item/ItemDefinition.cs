@@ -11,7 +11,10 @@ public readonly record struct Item
     public string? Description { get; init; }
     public required string ImageUrl { get; init; }
 
-    public ItemType Type { get; init; }
+    public required ItemType Type { get; init; }
+    public required ItemRarity Rarity { get; init; }
+    public required int Price { get; init; }
+    public bool Stackable { get; init; } = false;
     public BattleStatistics? Statistics { get; init; }
     public ItemRequirements? Requirements { get; init; }
 }
@@ -33,6 +36,16 @@ public enum ItemType
 
     Ingredient = 21,
     Consumable = 22,
+}
+
+public enum ItemRarity
+{
+    Mortal = 1,
+    Enchanced = 2,
+    Arcade = 3,
+    Heroic = 4,
+    Artifact = 5,
+    Divine = 6,
 }
 
 public readonly record struct ItemRequirements

@@ -6,7 +6,7 @@ namespace ErrantTowerServer.Domains.Item;
 
 public static class ItemRegistry
 {
-    private static FrozenDictionary<ItemGuid, Item> _items = new Dictionary<ItemGuid, Item>
+    private static readonly FrozenDictionary<ItemGuid, Item> _items = new Dictionary<ItemGuid, Item>
     {
         [ItemGuid.WoodenSword] = Items1.WoodenSword,
         [ItemGuid.WoodenPike] = Items1.WoodenPike,

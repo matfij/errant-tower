@@ -10,6 +10,8 @@ public class Items1
         Name = "Wooden Sword",
         ImageUrl = "wooden-sword.png",
         Type = ItemType.Sword,
+        Rarity = ItemRarity.Mortal,
+        Price = 10,
         Statistics = new BattleStatistics
         {
             PhysicalAttack = 7,
@@ -28,6 +30,8 @@ public class Items1
         Name = "Wooden Pike",
         ImageUrl = "wooden-pike.png",
         Type = ItemType.Lance,
+        Rarity = ItemRarity.Mortal,
+        Price = 10,
         Statistics = new BattleStatistics
         {
             PhysicalAttack = 6,
@@ -46,6 +50,8 @@ public class Items1
         Name = "Wooden Bow",
         ImageUrl = "wooden-bow.png",
         Type = ItemType.Bow,
+        Rarity = ItemRarity.Mortal,
+        Price = 10,
         Statistics = new BattleStatistics
         {
             PhysicalAttack = 5,
@@ -65,6 +71,8 @@ public class Items1
         Name = "Wooden Hammer",
         ImageUrl = "wooden-hammer.png",
         Type = ItemType.Hammer,
+        Rarity = ItemRarity.Mortal,
+        Price = 10,
         Statistics = new BattleStatistics
         {
             PhysicalAttack = 10,
@@ -81,6 +89,8 @@ public class Items1
         Guid = ItemGuid.WoodenStaff,
         Name = "Wooden Staff",
         ImageUrl = "wooden-staff.png",
+        Rarity = ItemRarity.Mortal,
+        Price = 10,
         Type = ItemType.Staff,
         Statistics = new BattleStatistics
         {
@@ -99,6 +109,8 @@ public class Items1
         Name = "Leather Bandana",
         ImageUrl = "leather-bandana.png",
         Type = ItemType.Helmet,
+        Rarity = ItemRarity.Mortal,
+        Price = 10,
         Statistics = new BattleStatistics
         {
             HealthPoints = 10,
@@ -117,6 +129,8 @@ public class Items1
         Name = "Leather Armor",
         ImageUrl = "leather-armor.png",
         Type = ItemType.Armor,
+        Rarity = ItemRarity.Mortal,
+        Price = 10,
         Statistics = new BattleStatistics
         {
             HealthPoints = 30,
@@ -135,6 +149,8 @@ public class Items1
         Name = "Leather Boots",
         ImageUrl = "leather-boots.png",
         Type = ItemType.Boots,
+        Rarity = ItemRarity.Mortal,
+        Price = 10,
         Statistics = new BattleStatistics
         {
             HealthPoints = 5,
@@ -154,6 +170,8 @@ public class Items1
         Name = "Copper Ring",
         ImageUrl = "copper-ring.png",
         Type = ItemType.Charm,
+        Rarity = ItemRarity.Mortal,
+        Price = 10,
         Statistics = new BattleStatistics
         {
             HealthRegen = 5,
