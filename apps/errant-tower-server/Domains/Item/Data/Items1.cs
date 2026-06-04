@@ -10,7 +10,7 @@ public class Items1
         Name = "Wooden Sword",
         ImageUrl = "wooden-sword.png",
         Type = ItemType.Sword,
-        Rarity = ItemRarity.Mortal,
+        Rarity = ItemRarity.Ordinary,
         Price = 10,
         Statistics = new BattleStatistics
         {
@@ -30,7 +30,7 @@ public class Items1
         Name = "Wooden Pike",
         ImageUrl = "wooden-pike.png",
         Type = ItemType.Lance,
-        Rarity = ItemRarity.Mortal,
+        Rarity = ItemRarity.Ordinary,
         Price = 10,
         Statistics = new BattleStatistics
         {
@@ -50,7 +50,7 @@ public class Items1
         Name = "Wooden Bow",
         ImageUrl = "wooden-bow.png",
         Type = ItemType.Bow,
-        Rarity = ItemRarity.Mortal,
+        Rarity = ItemRarity.Ordinary,
         Price = 10,
         Statistics = new BattleStatistics
         {
@@ -71,7 +71,7 @@ public class Items1
         Name = "Wooden Hammer",
         ImageUrl = "wooden-hammer.png",
         Type = ItemType.Hammer,
-        Rarity = ItemRarity.Mortal,
+        Rarity = ItemRarity.Ordinary,
         Price = 10,
         Statistics = new BattleStatistics
         {
@@ -89,7 +89,7 @@ public class Items1
         Guid = ItemGuid.WoodenStaff,
         Name = "Wooden Staff",
         ImageUrl = "wooden-staff.png",
-        Rarity = ItemRarity.Mortal,
+        Rarity = ItemRarity.Ordinary,
         Price = 10,
         Type = ItemType.Staff,
         Statistics = new BattleStatistics
@@ -109,7 +109,7 @@ public class Items1
         Name = "Leather Bandana",
         ImageUrl = "leather-bandana.png",
         Type = ItemType.Helmet,
-        Rarity = ItemRarity.Mortal,
+        Rarity = ItemRarity.Ordinary,
         Price = 10,
         Statistics = new BattleStatistics
         {
@@ -129,7 +129,7 @@ public class Items1
         Name = "Leather Armor",
         ImageUrl = "leather-armor.png",
         Type = ItemType.Armor,
-        Rarity = ItemRarity.Mortal,
+        Rarity = ItemRarity.Ordinary,
         Price = 10,
         Statistics = new BattleStatistics
         {
@@ -149,7 +149,7 @@ public class Items1
         Name = "Leather Boots",
         ImageUrl = "leather-boots.png",
         Type = ItemType.Boots,
-        Rarity = ItemRarity.Mortal,
+        Rarity = ItemRarity.Ordinary,
         Price = 10,
         Statistics = new BattleStatistics
         {
@@ -170,7 +170,7 @@ public class Items1
         Name = "Copper Ring",
         ImageUrl = "copper-ring.png",
         Type = ItemType.Charm,
-        Rarity = ItemRarity.Mortal,
+        Rarity = ItemRarity.Ordinary,
         Price = 10,
         Statistics = new BattleStatistics
         {

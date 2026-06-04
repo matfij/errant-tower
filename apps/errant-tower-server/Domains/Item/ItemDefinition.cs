@@ -40,8 +40,8 @@ public enum ItemType
 
 public enum ItemRarity
 {
-    Mortal = 1,
-    Enchanced = 2,
+    Ordinary = 1,
+    Enhanced = 2,
     Arcade = 3,
     Heroic = 4,
     Artifact = 5,
