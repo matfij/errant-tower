@@ -23,8 +23,8 @@ public record struct BagItem
 {
     public BagItem() { }
 
-    public required ItemGuid ItemGuid;
-    public required int Quantity;
-    public required int X;
-    public required int Y;
+    public required ItemGuid ItemGuid { get; set; }
+    public required int Quantity { get; set; }
+    public required int X { get; set; }
+    public required int Y { get; set; }
 }
