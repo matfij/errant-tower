@@ -1,4 +1,5 @@
-﻿using ErrantTowerServer.Domains.Progress;
+﻿using ErrantTowerServer.Domains.Equipment;
+using ErrantTowerServer.Domains.Progress;
 using ErrantTowerServer.Domains.Statistics;
 using ErrantTowerServer.Domains.User;
 
@@ -14,7 +15,8 @@ public interface IAuthService
 public class AuthService(
     IUserService userService,
     IProgressService progressService,
-    IStatisticsService statisticsService
+    IStatisticsService statisticsService,
+    IEquipmentService equipmentService
     ) : IAuthService
 {
     public async Task StartSignUp(StartSignUpRequest request)
@@ -27,6 +29,7 @@ public class AuthService(
         var user = await userService.CompleteSignUp(request.Email, request.ActionCode);
         await progressService.CreateInitial(user.Id);
         await statisticsService.CreateInitial(user.Id);
+        await equipmentService.CreateInitial(user.Id);
         return new CompleteSignUpResponse
         {
             UserId = user.Id,
