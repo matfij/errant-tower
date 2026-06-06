@@ -1,0 +1,108 @@
+:root {
+  font-family: Roboto, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+}
+
+h1 {
+  margin: 4rem 0;
+  text-align: center;
+}
+
+hr {
+  margin: 1rem 0;
+}
+
+.mainWrapper {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+.canvasWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid white;
+}
+
+.canvasWrapper canvas {
+  position: relative;
+  z-index: 10;
+  opacity: 0.5;
+}
+
+.mapImageWrapper {
+  position: absolute;
+  top: 1px;
+  left: 0;
+  overflow: hidden;
+}
+
+.mapImageWrapper img {
+  display: block;
+}
+
+.actionWrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: left;
+  padding: 1rem;
+  border: 1px solid white;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+}
+
+.rangeWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.actionItem {
+  cursor: pointer;
+  text-shadow: 2px 2px 9px #eee;
+}
+
+.printButton {
+  width: 4rem;
+  padding: 8px;
+  font-weight: 600;
+  border-radius: 8px;
+  background-color: #eee;
+  color: #111;
+  cursor: pointer;
+}
+
+.start {
+  color: #0f7b1f;
+}
+
+.route {
+  color: #55acef;
+}
+
+.wall {
+  color: #2c2448;
+}
+
+.battle {
+  color: #ce1b1b;
+}
+
+.treasure {
+  color: #d9e225;
+}
+
+.npc {
+  color: #ba1cd9;
+}
+
+.finish {
+  color: #9de96e;
+}
