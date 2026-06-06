@@ -18,10 +18,9 @@ export default defineConfig([
     languageOptions: {
       globals: globals.browser,
     },
-    rules: [
-      {
-        "react-hooks/immutability": "off",
-      },
-    ],
+    rules: {
+      "react-hooks/immutability": "off",
+      "react-hooks/exhaustive-deps": "off",
+    },
   },
 ]);

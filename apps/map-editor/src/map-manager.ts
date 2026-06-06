@@ -4,11 +4,11 @@ export class MapManager {
   public static createEmptyMap(rows: number, columns: number) {
     const emptyMap: FloorTileType[][] = [];
     for (let row = 0; row < rows; row++) {
-      const row: FloorTileType[] = [];
+      const newRow: FloorTileType[] = [];
       for (let col = 0; col < columns; col++) {
-        row.push(FloorTileType.Route);
+        newRow.push(FloorTileType.Route);
       }
-      emptyMap.push(row);
+      emptyMap.push(newRow);
     }
     return emptyMap;
   }
@@ -22,7 +22,7 @@ export class MapManager {
           y: scale * row,
           type: map[row][col],
         };
-        let fullType = "";
+        let fullType: string;
         switch (tile.type) {
           case FloorTileType.Start:
             fullType = "FloorTileType.Start";

@@ -33,6 +33,14 @@ export const AppComponent = () => {
     }
   }, [highlightedPoint, map]);
 
+  useEffect(() => {
+    return () => {
+      if (mapImage) {
+        URL.revokeObjectURL(mapImage);
+      }
+    };
+  }, [mapImage]);
+
   const loadMap = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
     if (!file) {
@@ -42,7 +50,10 @@ export const AppComponent = () => {
   };
 
   const drawMap = (ctx: CanvasRenderingContext2D, map: FloorTileType[][]) => {
-    ctx.clearRect(0, 0, canvasRef!.current!.width, canvasRef!.current!.height);
+    if (!canvasRef.current) {
+      return;
+    }
+    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     map.forEach((row, rowIndex) => {
       row.forEach((tile, colIndex) => {
         ctx.fillStyle = getTileColor(tile);
@@ -56,11 +67,10 @@ export const AppComponent = () => {
     });
     if (highlightedPoint) {
       const halfCursorSize = Math.floor(cursorSize / 2);
-      const shift = cursorSize % 2 === 0 ? 1 : 0;
       const rectX = (highlightedPoint.col - halfCursorSize) * TILE_SIZE;
       const rectY = (highlightedPoint.row - halfCursorSize) * TILE_SIZE;
-      const rectWidth = (cursorSize + shift) * TILE_SIZE;
-      const rectHeight = (cursorSize + shift) * TILE_SIZE;
+      const rectWidth = cursorSize * TILE_SIZE;
+      const rectHeight = cursorSize * TILE_SIZE;
       ctx.beginPath();
       ctx.strokeStyle = getTileColor(tileType);
       ctx.rect(rectX, rectY, rectWidth, rectHeight);
@@ -88,9 +98,12 @@ export const AppComponent = () => {
   };
 
   const onDraw = (e: MouseEvent, action: "paint" | "highlight") => {
-    const rect = canvasRef.current!.getBoundingClientRect();
-    const mouseX = e.clientX - rect!.left;
-    const mouseY = e.clientY - rect!.top;
+    if (!canvasRef.current) {
+      return;
+    }
+    const rect = canvasRef.current.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
     const col = Math.floor(mouseX / TILE_SIZE);
     const row = Math.floor(mouseY / TILE_SIZE);
     if (action === "paint") {
@@ -103,10 +116,10 @@ export const AppComponent = () => {
   const paintTiles = (row: number, col: number) => {
     const updatedMap = map.map((mapRow) => [...mapRow]);
     const halfCursorSize = Math.floor(cursorSize / 2);
-    for (let i = -halfCursorSize; i <= halfCursorSize; i++) {
-      for (let j = -halfCursorSize; j <= halfCursorSize; j++) {
-        const newRow = row + i;
-        const newCol = col + j;
+    for (let i = 0; i < cursorSize; i++) {
+      for (let j = 0; j < cursorSize; j++) {
+        const newRow = row - halfCursorSize + i;
+        const newCol = col - halfCursorSize + j;
         if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLUMNS) {
           updatedMap[newRow][newCol] = tileType;
         }
