@@ -7,7 +7,6 @@ public record struct Floor
 {
     public required FloorGuid Guid { get; set; }
     public required string MapBackgroundUrl { get; set; }
-    public required string BattleBackgroundUrl { get; set; }
     public required FloorEnemy[] Enemies { get; set; }
     public required FloorTreasure[] TreasureItemGuids { get; set; }
     public required string[] NPCGuids { get; set; }
