@@ -2,7 +2,7 @@
 
 ## Maps
 
-TOP-DOWN FANTASY RPG WORLD MAP, true orthographic top-down view, for a modern, dark and mature browser RPG with old-shool feel.
+TOP-DOWN FANTASY RPG WORLD MAP, true orthographic top-down view, for a modern, dark and mature browser RPG with old-school feel.
 
 Clear traversable routes, logical path connections, visible roads and trails connecting points of interest, gameplay-first map design. Terrain must be readable and navigable. Natural route flow suitable for player movement and questing.
 

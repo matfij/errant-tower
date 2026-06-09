@@ -186,6 +186,7 @@ public class DungeonItems
         Type = ItemType.Material,
         Rarity = ItemRarity.Ordinary,
         Price = 5,
+        Stackable = true,
     };
 
     public static readonly Item LeadBar = new()
@@ -196,6 +197,7 @@ public class DungeonItems
         Type = ItemType.Material,
         Rarity = ItemRarity.Enhanced,
         Price = 10,
+        Stackable = true,
     };
 
     public static readonly Item Emerald = new()
@@ -206,6 +208,7 @@ public class DungeonItems
         Type = ItemType.Material,
         Rarity = ItemRarity.Enhanced,
         Price = 10,
+        Stackable = true,
     };
 
     public static readonly Item ShinyEmerald = new()
@@ -216,6 +219,7 @@ public class DungeonItems
         Type = ItemType.Material,
         Rarity = ItemRarity.Arcade,
         Price = 25,
+        Stackable = true,
     };
 
     public static readonly Item SmallClaw = new()
@@ -226,6 +230,7 @@ public class DungeonItems
         Type = ItemType.Material,
         Rarity = ItemRarity.Ordinary,
         Price = 5,
+        Stackable = true,
     };
 
     public static readonly Item ShinyClaw = new()
@@ -236,6 +241,7 @@ public class DungeonItems
         Type = ItemType.Material,
         Rarity = ItemRarity.Enhanced,
         Price = 10,
+        Stackable = true,
     };
 
     public static readonly Item WornHide = new()
@@ -246,6 +252,7 @@ public class DungeonItems
         Type = ItemType.Material,
         Rarity = ItemRarity.Ordinary,
         Price = 5,
+        Stackable = true,
     };
 
     public static readonly Item ShinyHide = new()
@@ -256,5 +263,6 @@ public class DungeonItems
         Type = ItemType.Material,
         Rarity = ItemRarity.Enhanced,
         Price = 10,
+        Stackable = true,
     };
 }
