@@ -23,6 +23,7 @@ public enum EnemyRace
     Beast = 3,
     Reptile = 4,
     Human = 5,
+    Undead = 6,
     Mechanical = 100,
     Spirit = 101,
     Dragon = 102,

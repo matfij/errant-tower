@@ -2,7 +2,7 @@
 
 namespace ErrantTowerServer.Domains.Item.Data;
 
-public class Items1
+public class DungeonItems
 {
     public static readonly Item WoodenSword = new()
     {
@@ -176,5 +176,93 @@ public class Items1
         {
             HealthRegen = 5,
         },
+    };
+
+    public static readonly Item CopperBar = new()
+    {
+        Guid = ItemGuid.CopperBar,
+        Name = "Copper Bar",
+        ImageUrl = "copper-bar.png",
+        Type = ItemType.Material,
+        Rarity = ItemRarity.Ordinary,
+        Price = 5,
+        Stackable = true,
+    };
+
+    public static readonly Item LeadBar = new()
+    {
+        Guid = ItemGuid.LeadBar,
+        Name = "Lead Bar",
+        ImageUrl = "lead-bar.png",
+        Type = ItemType.Material,
+        Rarity = ItemRarity.Enhanced,
+        Price = 10,
+        Stackable = true,
+    };
+
+    public static readonly Item Emerald = new()
+    {
+        Guid = ItemGuid.Emerald,
+        Name = "Emerald",
+        ImageUrl = "emerald.png",
+        Type = ItemType.Material,
+        Rarity = ItemRarity.Enhanced,
+        Price = 10,
+        Stackable = true,
+    };
+
+    public static readonly Item ShinyEmerald = new()
+    {
+        Guid = ItemGuid.ShinyEmerald,
+        Name = "Shiny Emerald",
+        ImageUrl = "shiny-emerald.png",
+        Type = ItemType.Material,
+        Rarity = ItemRarity.Arcade,
+        Price = 25,
+        Stackable = true,
+    };
+
+    public static readonly Item SmallClaw = new()
+    {
+        Guid = ItemGuid.SmallClaw,
+        Name = "Small Claw",
+        ImageUrl = "small-claw.png",
+        Type = ItemType.Material,
+        Rarity = ItemRarity.Ordinary,
+        Price = 5,
+        Stackable = true,
+    };
+
+    public static readonly Item ShinyClaw = new()
+    {
+        Guid = ItemGuid.ShinyClaw,
+        Name = "Shiny Claw",
+        ImageUrl = "shiny-claw.png",
+        Type = ItemType.Material,
+        Rarity = ItemRarity.Enhanced,
+        Price = 10,
+        Stackable = true,
+    };
+
+    public static readonly Item WornHide = new()
+    {
+        Guid = ItemGuid.WornHide,
+        Name = "Worn Hide",
+        ImageUrl = "worn-hide.png",
+        Type = ItemType.Material,
+        Rarity = ItemRarity.Ordinary,
+        Price = 5,
+        Stackable = true,
+    };
+
+    public static readonly Item ShinyHide = new()
+    {
+        Guid = ItemGuid.ShinyHide,
+        Name = "Shiny Hide",
+        ImageUrl = "shiny-hide.png",
+        Type = ItemType.Material,
+        Rarity = ItemRarity.Enhanced,
+        Price = 10,
+        Stackable = true,
     };
 }

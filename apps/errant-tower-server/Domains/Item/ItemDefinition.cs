@@ -34,7 +34,7 @@ public enum ItemType
     Bow = 16,
     Hammer = 17,
 
-    Ingredient = 21,
+    Material = 21,
     Consumable = 22,
 }
 
