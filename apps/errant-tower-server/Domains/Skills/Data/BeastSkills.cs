@@ -1,6 +1,6 @@
 ﻿namespace ErrantTowerServer.Domains.Skills.Data;
 
-public static class Skills1
+public static class BeastSkills
 {
     public static readonly Skill Scratch = new()
     {
@@ -18,6 +18,10 @@ public static class Skills1
         PhysicalAttackFactor = 1.2,
         PhysicalDefenseFactor = 0.8,
         Types = [SkillType.Pierce],
+        Effects =
+        [
+            new () { Type = SkillEffectType.Bleeding, Value = 0.25, Chance = 0.25, Duration = 3 }
+        ],
     };
 
     public static readonly Skill TailWhip = new()
@@ -27,5 +31,9 @@ public static class Skills1
         PhysicalAttackFactor = 0.8,
         PhysicalDefenseFactor = 1.2,
         Types = [SkillType.Blunt],
+        Effects =
+        [
+            new () { Type = SkillEffectType.Stun, Chance = 0.1, Duration = 1 }
+        ]
     };
 }
