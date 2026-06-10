@@ -8,13 +8,17 @@ public static class SkillRegistry
 {
     private static readonly FrozenDictionary<SkillGuid, Skill> _skills = new Dictionary<SkillGuid, Skill>
     {
-        [SkillGuid.Scratch] = Skills1.Scratch,
-        [SkillGuid.Bite] = Skills1.Bite,
-        [SkillGuid.TailWhip] = Skills1.TailWhip,
+        // Beast skills
+        [SkillGuid.Scratch] = BeastSkills.Scratch,
+        [SkillGuid.Bite] = BeastSkills.Bite,
+        [SkillGuid.TailWhip] = BeastSkills.TailWhip,
 
-        [SkillGuid.Slash] = Skills2.Slash,
-        [SkillGuid.Pierce] = Skills2.Pierce,
-        [SkillGuid.Bash] = Skills2.Bash,
+        // Sword skills
+        [SkillGuid.Slash] = SwordSkills.Slash,
+        [SkillGuid.TwinEdge] = SwordSkills.TwinEdge,
+
+        // Tenacity skills
+        [SkillGuid.GreatVigor] = TenacitySkills.GreatVigor,
     }.ToFrozenDictionary();
 
     public static Skill GetSkill(SkillGuid guid)
@@ -29,12 +33,15 @@ public static class SkillRegistry
 
 public enum SkillGuid
 {
+    // Beast skills
     Scratch = 101,
     Bite = 102,
     TailWhip = 103,
 
-    Punch = 200,
-    Slash = 201,
-    Pierce = 202,
-    Bash = 203,
+    // Sword skills
+    Slash = 1001,
+    TwinEdge = 1002,
+
+    // Tenacity skills
+    GreatVigor = 1101,
 }
