@@ -1,6 +1,6 @@
 ﻿namespace ErrantTowerServer.Domains.Skills.Data;
 
-public class TenacitySkills
+public static class TenacitySkills
 {
     public static readonly Skill GreatVigor = new()
     {

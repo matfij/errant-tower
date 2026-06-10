@@ -57,7 +57,7 @@ public enum SkillEffectType
     MagicalDefense = 4,
     HealthPoints = 5,
     ManaPoints = 6,
-    EneegyPoints = 7,
+    EnergyPoints = 7,
     Stun = 100,
     Freeze = 101,
     Paralyze = 102,
