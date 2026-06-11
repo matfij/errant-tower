@@ -7,20 +7,19 @@ public readonly record struct Skill
     public required SkillGuid Guid { get; init; }
     public required string Name { get; init; }
     public string? Description { get; init; }
+    public required string ImageUrl { get; init; }
     public required SkillType[] Types { get; init; }
-    public double PhysicalAttackFactor { get; init; } = 0;
-    public double MagicalAttackFactor { get; init; } = 0;
-    public double PhysicalDefenseFactor { get; init; } = 0;
-    public double MagicalDefenseFactor { get; init; } = 0;
+    public double[] PhysicalAttackFactor { get; init; } = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    public double[] MagicalAttackFactor { get; init; } = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    public double[] PhysicalDefenseFactor { get; init; } = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    public double[] MagicalDefenseFactor { get; init; } = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     public bool IsPassive { get; init; } = false;
     public bool TargetSelf { get; init; } = false;
-    public int HitCount { get; init; } = 1;
-    public int EnergyCost { get; init; } = 0;
-    public int ManaCost { get; init; } = 0;
-    public SkillEffect[] Effects { get; init; } = [];  // For active skills - e.g. bleeding
-    public SkillProperty[] Properties { get; init; } = [];  // For passive skills - e.g. +10% physical attack
-    public int RequiredSkillPoints { get; init; } = 0;
-    public SkillGuid[] RequiredSkills { get; init; } = [];
+    public int[] HitCount { get; init; } = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+    public int[] EnergyCost { get; init; } = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    public int[] ManaCost { get; init; } = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    public SkillEffect[][] Effects { get; init; } = [[], [], [], [], [], [], [], [], [], []];  // For active skills - e.g. bleeding
+    public SkillProperty[][] Properties { get; init; } = [[], [], [], [], [], [], [], [], [], []];  // For passive skills - e.g. +10% physical attack
 }
 
 public enum SkillType
