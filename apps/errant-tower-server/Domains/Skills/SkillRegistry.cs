@@ -15,11 +15,24 @@ public static class SkillRegistry
 
         // Sword skills
         [SkillGuid.Slash] = SwordSkills.Slash,
+        [SkillGuid.SwiftStrike] = SwordSkills.SwiftStrike,
         [SkillGuid.TwinEdge] = SwordSkills.TwinEdge,
+        [SkillGuid.CrusherBlow] = SwordSkills.CrusherBlow,
+        [SkillGuid.FlashStrike] = SwordSkills.FlashStrike,
+        [SkillGuid.TriEdge] = SwordSkills.TriEdge,
+        [SkillGuid.BloodthirstyBlade] = SwordSkills.BloodthirstyBlade,
 
         // Tenacity skills
         [SkillGuid.GreatVigor] = TenacitySkills.GreatVigor,
     }.ToFrozenDictionary();
+
+    public static void ValidateAll()
+    {
+        foreach (var skill in _skills.Values)
+        {
+            skill.Validate();
+        }
+    }
 
     public static Skill GetSkill(SkillGuid guid)
     {
@@ -40,7 +53,12 @@ public enum SkillGuid
 
     // Sword skills
     Slash = 1001,
-    TwinEdge = 1002,
+    SwiftStrike = 1002,
+    TwinEdge = 1003,
+    CrusherBlow = 1004,
+    FlashStrike = 1005,
+    TriEdge = 1006,
+    BloodthirstyBlade = 1007,
 
     // Tenacity skills
     GreatVigor = 1101,

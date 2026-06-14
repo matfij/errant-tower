@@ -9,6 +9,7 @@ using ErrantTowerServer.Domains.Progress;
 using ErrantTowerServer.Domains.Statistics;
 using ErrantTowerServer.Orchestrator;
 using ErrantTowerServer.Domains.Equipment;
+using ErrantTowerServer.Domains.Skills;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -151,5 +152,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+SkillRegistry.ValidateAll();
 
 app.Run();
