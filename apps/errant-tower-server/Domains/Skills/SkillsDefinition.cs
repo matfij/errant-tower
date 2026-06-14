@@ -2,7 +2,33 @@
 
 public readonly record struct Skill
 {
+    public const int MinLevel = 1;
+    public const int MaxLevel = 10;
+
     public Skill() { }
+
+    public void Validate()
+    {
+        (string Name, int Length)[] attributes =
+            [
+                (nameof(PhysicalAttackFactor), PhysicalAttackFactor.Length),
+                (nameof(MagicalAttackFactor),  MagicalAttackFactor.Length),
+                (nameof(PhysicalDefenseFactor), PhysicalDefenseFactor.Length),
+                (nameof(MagicalDefenseFactor),  MagicalDefenseFactor.Length),
+                (nameof(HitCount),   HitCount.Length),
+                (nameof(EnergyCost), EnergyCost.Length),
+                (nameof(ManaCost),   ManaCost.Length),
+                (nameof(Effects),    Effects.Length),
+                (nameof(Properties), Properties.Length),
+            ];
+        foreach (var attribute in attributes)
+        {
+            if (attribute.Length != MinLevel && attribute.Length != MaxLevel)
+            {
+                throw new InvalidOperationException($"Skill {Name} > {attribute.Name} has {attribute.Length}");
+            }
+        }
+    }
 
     public required SkillGuid Guid { get; init; }
     public required string Name { get; init; }

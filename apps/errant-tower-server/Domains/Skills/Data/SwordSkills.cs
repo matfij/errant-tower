@@ -57,6 +57,7 @@ public static class SwordSkills
             [new () { Type = SkillEffectType.Initiative, Value = 1.22, Chance = 1, Duration = 2 }],
             [new () { Type = SkillEffectType.Initiative, Value = 1.24, Chance = 1, Duration = 2 }],
             [new () { Type = SkillEffectType.Initiative, Value = 1.26, Chance = 1, Duration = 2 }],
+            [new () { Type = SkillEffectType.Initiative, Value = 1.28, Chance = 1, Duration = 2 }],
         ],
         EnergyCost = [6, 6, 6, 6, 6, 7, 7, 7, 7, 5],
     };
@@ -71,6 +72,7 @@ public static class SwordSkills
         Types = [SkillType.Slash],
         Effects =
         [
+            [new () { Type = SkillEffectType.PhysicalDefense, Value = -0.1, Chance = 1 }],
             [new () { Type = SkillEffectType.PhysicalDefense, Value = -0.1, Chance = 1 }],
             [new () { Type = SkillEffectType.PhysicalDefense, Value = -0.1, Chance = 1 }],
             [new () { Type = SkillEffectType.PhysicalDefense, Value = -0.1, Chance = 1 }],
@@ -103,6 +105,7 @@ public static class SwordSkills
             [new () { Type = SkillEffectType.Initiative, Value = 1.32, Chance = 1, Duration = 2 }, new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
             [new () { Type = SkillEffectType.Initiative, Value = 1.34, Chance = 1, Duration = 2 }, new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
             [new () { Type = SkillEffectType.Initiative, Value = 1.36, Chance = 1, Duration = 2 }, new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Initiative, Value = 1.38, Chance = 1, Duration = 2 }, new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
         ],
         EnergyCost = [20, 20, 20, 22, 22, 22, 22, 24, 24, 21],
     };
@@ -152,7 +155,6 @@ public static class SwordSkills
             [new () { Type = SkillEffectType.Bleeding, Value = 0.27, Chance = 0.4, Duration = 3 }],
             [new () { Type = SkillEffectType.Bleeding, Value = 0.28, Chance = 0.4, Duration = 3 }],
             [new () { Type = SkillEffectType.Bleeding, Value = 0.29, Chance = 0.4, Duration = 3 }],
-            [new () { Type = SkillEffectType.Bleeding, Value = 0.30, Chance = 0.4, Duration = 3 }],
         ],
         EnergyCost = [30, 30, 30, 33, 33, 33, 36, 36, 36, 31],
     };

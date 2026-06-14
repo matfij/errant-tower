@@ -6,8 +6,9 @@ public static class BeastSkills
     {
         Guid = SkillGuid.Scratch,
         Name = "Scratch",
-        PhysicalAttackFactor = 1.1,
-        PhysicalDefenseFactor = 0.8,
+        ImageUrl = "scratch.png",
+        PhysicalAttackFactor = [1.1],
+        PhysicalDefenseFactor = [0.8],
         Types = [SkillType.Slash],
     };
 
@@ -15,12 +16,13 @@ public static class BeastSkills
     {
         Guid = SkillGuid.Bite,
         Name = "Bite",
-        PhysicalAttackFactor = 1.2,
-        PhysicalDefenseFactor = 0.8,
+        ImageUrl = "bite.png",
+        PhysicalAttackFactor = [1.2],
+        PhysicalDefenseFactor = [0.8],
         Types = [SkillType.Pierce],
         Effects =
         [
-            new () { Type = SkillEffectType.Bleeding, Value = 0.25, Chance = 0.25, Duration = 3 }
+            [new () { Type = SkillEffectType.Bleeding, Value = 0.25, Chance = 0.25, Duration = 3 }]
         ],
     };
 
@@ -28,12 +30,13 @@ public static class BeastSkills
     {
         Guid = SkillGuid.TailWhip,
         Name = "Tail Whip",
-        PhysicalAttackFactor = 0.8,
-        PhysicalDefenseFactor = 1.2,
+        ImageUrl = "tail-whip.png",
+        PhysicalAttackFactor = [0.8],
+        PhysicalDefenseFactor = [1.2],
         Types = [SkillType.Blunt],
         Effects =
         [
-            new () { Type = SkillEffectType.Stun, Chance = 0.1, Duration = 1 }
+            [new () { Type = SkillEffectType.Stun, Chance = 0.1, Duration = 1 }]
         ]
     };
 }

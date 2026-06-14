@@ -26,6 +26,14 @@ public static class SkillRegistry
         [SkillGuid.GreatVigor] = TenacitySkills.GreatVigor,
     }.ToFrozenDictionary();
 
+    public static void ValidateAll()
+    {
+        foreach (var skill in _skills.Values)
+        {
+            skill.Validate();
+        }
+    }
+
     public static Skill GetSkill(SkillGuid guid)
     {
         if (!_skills.TryGetValue(guid, out var skill))

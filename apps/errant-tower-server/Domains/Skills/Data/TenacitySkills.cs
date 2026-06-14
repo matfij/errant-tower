@@ -6,13 +6,12 @@ public static class TenacitySkills
     {
         Guid = SkillGuid.GreatVigor,
         Name = "Great Vigor",
-        PhysicalAttackFactor = 1.0,
-        PhysicalDefenseFactor = 1.5,
+        ImageUrl = "great-vigor.png",
         Types = [SkillType.Buff],
         IsPassive = true,
         Properties =
         [
-            new () { Type = SkillPropertyType.HealthPoints, Value = 0.01 }
+            [new () { Type = SkillPropertyType.HealthPoints, Value = 0.01 }],
         ]
     };
 }
