@@ -24,6 +24,10 @@ public static class SkillRegistry
 
         // Tenacity skills
         [SkillGuid.GreatVigor] = TenacitySkills.GreatVigor,
+        [SkillGuid.Armorer] = TenacitySkills.Armorer,
+        [SkillGuid.SmashingPower] = TenacitySkills.SmashingPower,
+        [SkillGuid.Thornmail] = TenacitySkills.Thornmail,
+
     }.ToFrozenDictionary();
 
     public static void ValidateAll()
@@ -62,4 +66,7 @@ public enum SkillGuid
 
     // Tenacity skills
     GreatVigor = 1101,
+    Armorer = 1102,
+    SmashingPower = 1103,
+    Thornmail = 1104,
 }
