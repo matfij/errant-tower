@@ -119,4 +119,6 @@ public enum SkillPropertyType
     CounterChance = 16,
     HealthRegen = 17,
     ManaRegen = 18,
+    PhysicalDeflect = 19,
+    MagicalDeflect = 20,
 }
