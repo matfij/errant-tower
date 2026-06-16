@@ -12,13 +12,13 @@ public readonly record struct Skill
         (string Name, int Length)[] attributes =
             [
                 (nameof(PhysicalAttackFactor), PhysicalAttackFactor.Length),
-                (nameof(MagicalAttackFactor),  MagicalAttackFactor.Length),
+                (nameof(MagicalAttackFactor), MagicalAttackFactor.Length),
                 (nameof(PhysicalDefenseFactor), PhysicalDefenseFactor.Length),
-                (nameof(MagicalDefenseFactor),  MagicalDefenseFactor.Length),
-                (nameof(HitCount),   HitCount.Length),
+                (nameof(MagicalDefenseFactor), MagicalDefenseFactor.Length),
+                (nameof(HitCount), HitCount.Length),
                 (nameof(EnergyCost), EnergyCost.Length),
-                (nameof(ManaCost),   ManaCost.Length),
-                (nameof(Effects),    Effects.Length),
+                (nameof(ManaCost), ManaCost.Length),
+                (nameof(Effects), Effects.Length),
                 (nameof(Properties), Properties.Length),
             ];
         foreach (var attribute in attributes)
@@ -34,6 +34,8 @@ public readonly record struct Skill
     public required string Name { get; init; }
     public string? Description { get; init; }
     public required string ImageUrl { get; init; }
+    public SkillPath Path { get; init; } = SkillPath.None;
+    public int Tier { get; init; } = 1;
     public required SkillType[] Types { get; init; }
     public double[] PhysicalAttackFactor { get; init; } = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     public double[] MagicalAttackFactor { get; init; } = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -46,6 +48,7 @@ public readonly record struct Skill
     public int[] ManaCost { get; init; } = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     public SkillEffect[][] Effects { get; init; } = [[], [], [], [], [], [], [], [], [], []];  // For active skills - e.g. bleeding
     public SkillProperty[][] Properties { get; init; } = [[], [], [], [], [], [], [], [], [], []];  // For passive skills - e.g. +10% physical attack
+    public SkillRequirement[] Requirements { get; init; } = [];
 }
 
 public enum SkillType
@@ -65,9 +68,24 @@ public enum SkillType
     Buff = 12,
 }
 
+public enum SkillPath
+{
+    None = 0,
+    Blade = 1,
+    Tenacity = 2,
+    Hammer = 3,
+    Bellicosity = 4,
+    Lance = 5,
+    Vivacity = 6,
+    Bow = 7,
+    Perspicacity = 8,
+    Staff = 9,
+    Sagacity = 10,
+}
+
 public readonly record struct SkillEffect
 {
-    public SkillEffectType Type { get; init; }
+    public required SkillEffectType Type { get; init; }
     public double Value { get; init; }
     public double Chance { get; init; }
     public int Duration { get; init; }
@@ -93,7 +111,7 @@ public enum SkillEffectType
 
 public readonly record struct SkillProperty
 {
-    public SkillPropertyType Type { get; init; }
+    public required SkillPropertyType Type { get; init; }
     public double Value { get; init; }
     public int Duration { get; init; }
 }
@@ -121,4 +139,10 @@ public enum SkillPropertyType
     ManaRegen = 18,
     PhysicalDeflect = 19,
     MagicalDeflect = 20,
+}
+
+public readonly record struct SkillRequirement
+{
+    public required SkillPath Path { get; init; }
+    public required int Points { get; init; }
 }

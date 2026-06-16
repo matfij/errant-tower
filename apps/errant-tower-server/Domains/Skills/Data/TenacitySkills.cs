@@ -7,6 +7,8 @@ public static class TenacitySkills
         Guid = SkillGuid.GreatVigor,
         Name = "Great Vigor",
         ImageUrl = "great-vigor.png",
+        Path = SkillPath.Tenacity,
+        Tier = 1,
         Types = [SkillType.Buff],
         IsPassive = true,
         Properties =
@@ -21,7 +23,8 @@ public static class TenacitySkills
             [new () { Type = SkillPropertyType.HealthPoints, Value = 0.08 }],
             [new () { Type = SkillPropertyType.HealthPoints, Value = 0.09 }],
             [new () { Type = SkillPropertyType.HealthPoints, Value = 0.10 }],
-        ]
+        ],
+        Requirements = [new () { Path = SkillPath.Tenacity, Points = 3 }],
     };
 
     public static readonly Skill Armorer = new()
@@ -29,6 +32,8 @@ public static class TenacitySkills
         Guid = SkillGuid.Armorer,
         Name = "Armorer",
         ImageUrl = "armorer.png",
+        Path = SkillPath.Tenacity,
+        Tier = 1,
         Types = [SkillType.Buff],
         IsPassive = true,
         Properties =
@@ -43,7 +48,8 @@ public static class TenacitySkills
             [new () { Type = SkillPropertyType.PhysicalDefense, Value = 0.08 }],
             [new () { Type = SkillPropertyType.PhysicalDefense, Value = 0.09 }],
             [new () { Type = SkillPropertyType.PhysicalDefense, Value = 0.10 }],
-        ]
+        ],
+        Requirements = [new() { Path = SkillPath.Tenacity, Points = 3 }],
     };
 
     public static readonly Skill SmashingPower = new()
@@ -51,6 +57,8 @@ public static class TenacitySkills
         Guid = SkillGuid.SmashingPower,
         Name = "Smashing Power",
         ImageUrl = "smashing-power.png",
+        Path = SkillPath.Tenacity,
+        Tier = 2,
         Types = [SkillType.Buff],
         IsPassive = true,
         Properties =
@@ -65,7 +73,8 @@ public static class TenacitySkills
             [new () { Type = SkillPropertyType.PhysicalCriticalPower, Value = 0.12 }],
             [new () { Type = SkillPropertyType.PhysicalCriticalPower, Value = 0.13 }],
             [new () { Type = SkillPropertyType.PhysicalCriticalPower, Value = 0.14 }],
-        ]
+        ],
+        Requirements = [new() { Path = SkillPath.Tenacity, Points = 12 }],
     };
 
     public static readonly Skill Thornmail = new()
@@ -73,6 +82,8 @@ public static class TenacitySkills
         Guid = SkillGuid.Thornmail,
         Name = "Thornmail",
         ImageUrl = "thornmail.png",
+        Path = SkillPath.Tenacity,
+        Tier = 2,
         Types = [SkillType.Buff],
         IsPassive = true,
         Properties =
@@ -87,6 +98,7 @@ public static class TenacitySkills
             [new () { Type = SkillPropertyType.PhysicalDeflect, Value = 0.08 }],
             [new () { Type = SkillPropertyType.PhysicalDeflect, Value = 0.09 }],
             [new () { Type = SkillPropertyType.PhysicalDeflect, Value = 0.10 }],
-        ]
+        ],
+        Requirements = [new() { Path = SkillPath.Tenacity, Points = 12 }],
     };
 }
