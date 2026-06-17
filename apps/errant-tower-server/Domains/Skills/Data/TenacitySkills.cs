@@ -8,7 +8,7 @@ public static class TenacitySkills
         Name = "Great Vigor",
         ImageUrl = "great-vigor.png",
         Path = SkillPath.Tenacity,
-        Tier = 1,
+        Tier = 0,
         Types = [SkillType.Buff],
         IsPassive = true,
         Properties =
@@ -24,7 +24,6 @@ public static class TenacitySkills
             [new () { Type = SkillPropertyType.HealthPoints, Value = 0.09 }],
             [new () { Type = SkillPropertyType.HealthPoints, Value = 0.10 }],
         ],
-        Requirements = [new () { Path = SkillPath.Tenacity, Points = 3 }],
     };
 
     public static readonly Skill Armorer = new()
@@ -52,52 +51,77 @@ public static class TenacitySkills
         Requirements = [new() { Path = SkillPath.Tenacity, Points = 3 }],
     };
 
-    public static readonly Skill SmashingPower = new()
+    public static readonly Skill Energizer = new()
     {
-        Guid = SkillGuid.SmashingPower,
-        Name = "Smashing Power",
-        ImageUrl = "smashing-power.png",
+        Guid = SkillGuid.Energizer,
+        Name = "Energizer",
+        ImageUrl = "energizer.png",
         Path = SkillPath.Tenacity,
         Tier = 2,
         Types = [SkillType.Buff],
         IsPassive = true,
         Properties =
         [
-            [new () { Type = SkillPropertyType.PhysicalCriticalPower, Value = 0.01 }],
-            [new () { Type = SkillPropertyType.PhysicalCriticalPower, Value = 0.03 }],
-            [new () { Type = SkillPropertyType.PhysicalCriticalPower, Value = 0.04 }],
-            [new () { Type = SkillPropertyType.PhysicalCriticalPower, Value = 0.06 }],
-            [new () { Type = SkillPropertyType.PhysicalCriticalPower, Value = 0.07 }],
-            [new () { Type = SkillPropertyType.PhysicalCriticalPower, Value = 0.09 }],
-            [new () { Type = SkillPropertyType.PhysicalCriticalPower, Value = 0.10 }],
-            [new () { Type = SkillPropertyType.PhysicalCriticalPower, Value = 0.12 }],
-            [new () { Type = SkillPropertyType.PhysicalCriticalPower, Value = 0.13 }],
-            [new () { Type = SkillPropertyType.PhysicalCriticalPower, Value = 0.14 }],
+            [new () { Type = SkillPropertyType.EnergyPoints, Value = 0.02 }],
+            [new () { Type = SkillPropertyType.EnergyPoints, Value = 0.04 }],
+            [new () { Type = SkillPropertyType.EnergyPoints, Value = 0.06 }],
+            [new () { Type = SkillPropertyType.EnergyPoints, Value = 0.08 }],
+            [new () { Type = SkillPropertyType.EnergyPoints, Value = 0.10 }],
+            [new () { Type = SkillPropertyType.EnergyPoints, Value = 0.12 }],
+            [new () { Type = SkillPropertyType.EnergyPoints, Value = 0.14 }],
+            [new () { Type = SkillPropertyType.EnergyPoints, Value = 0.16 }],
+            [new () { Type = SkillPropertyType.EnergyPoints, Value = 0.18 }],
+            [new () { Type = SkillPropertyType.EnergyPoints, Value = 0.20 }],
+        ],
+        Requirements = [new() { Path = SkillPath.Tenacity, Points = 3 }],
+    };
+
+    public static readonly Skill Deflect = new()
+    {
+        Guid = SkillGuid.Deflect,
+        Name = "Deflect",
+        ImageUrl = "deflect.png",
+        Path = SkillPath.Tenacity,
+        Tier = 2,
+        Types = [SkillType.Buff],
+        IsPassive = true,
+        Properties =
+        [
+            [new () { Type = SkillPropertyType.BlockChance, Value = 0.01 }],
+            [new () { Type = SkillPropertyType.BlockChance, Value = 0.02 }],
+            [new () { Type = SkillPropertyType.BlockChance, Value = 0.03 }],
+            [new () { Type = SkillPropertyType.BlockChance, Value = 0.04 }],
+            [new () { Type = SkillPropertyType.BlockChance, Value = 0.05 }],
+            [new () { Type = SkillPropertyType.BlockChance, Value = 0.06 }],
+            [new () { Type = SkillPropertyType.BlockChance, Value = 0.07 }],
+            [new () { Type = SkillPropertyType.BlockChance, Value = 0.08 }],
+            [new () { Type = SkillPropertyType.BlockChance, Value = 0.09 }],
+            [new () { Type = SkillPropertyType.BlockChance, Value = 0.10 }],
         ],
         Requirements = [new() { Path = SkillPath.Tenacity, Points = 12 }],
     };
 
-    public static readonly Skill Thornmail = new()
+    public static readonly Skill HeartsResolve = new()
     {
-        Guid = SkillGuid.Thornmail,
-        Name = "Thornmail",
-        ImageUrl = "thornmail.png",
+        Guid = SkillGuid.HeartsResolve,
+        Name = "Heart's Resolve",
+        ImageUrl = "hearts-resolve.png",
         Path = SkillPath.Tenacity,
         Tier = 2,
         Types = [SkillType.Buff],
         IsPassive = true,
         Properties =
         [
-            [new () { Type = SkillPropertyType.PhysicalDeflect, Value = 0.01 }],
-            [new () { Type = SkillPropertyType.PhysicalDeflect, Value = 0.02 }],
-            [new () { Type = SkillPropertyType.PhysicalDeflect, Value = 0.03 }],
-            [new () { Type = SkillPropertyType.PhysicalDeflect, Value = 0.04 }],
-            [new () { Type = SkillPropertyType.PhysicalDeflect, Value = 0.05 }],
-            [new () { Type = SkillPropertyType.PhysicalDeflect, Value = 0.06 }],
-            [new () { Type = SkillPropertyType.PhysicalDeflect, Value = 0.07 }],
-            [new () { Type = SkillPropertyType.PhysicalDeflect, Value = 0.08 }],
-            [new () { Type = SkillPropertyType.PhysicalDeflect, Value = 0.09 }],
-            [new () { Type = SkillPropertyType.PhysicalDeflect, Value = 0.10 }],
+            [new () { Type = SkillPropertyType.HealthRegen, Value = 0.01 }],
+            [new () { Type = SkillPropertyType.HealthRegen, Value = 0.02 }],
+            [new () { Type = SkillPropertyType.HealthRegen, Value = 0.03 }],
+            [new () { Type = SkillPropertyType.HealthRegen, Value = 0.04 }],
+            [new () { Type = SkillPropertyType.HealthRegen, Value = 0.05 }],
+            [new () { Type = SkillPropertyType.HealthRegen, Value = 0.06 }],
+            [new () { Type = SkillPropertyType.HealthRegen, Value = 0.07 }],
+            [new () { Type = SkillPropertyType.HealthRegen, Value = 0.08 }],
+            [new () { Type = SkillPropertyType.HealthRegen, Value = 0.09 }],
+            [new () { Type = SkillPropertyType.HealthRegen, Value = 0.10 }],
         ],
         Requirements = [new() { Path = SkillPath.Tenacity, Points = 12 }],
     };

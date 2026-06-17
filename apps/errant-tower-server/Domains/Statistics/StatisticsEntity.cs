@@ -21,7 +21,7 @@ public class StatisticsEntity
     public LearnedSkill[] LearnedSkills { get; set; } = [];
 }
 
-public record struct LearnedSkill
+public record LearnedSkill
 {
     public required SkillGuid Guid { get; init; }
     public required int Level { get; set; }

@@ -25,8 +25,9 @@ public static class SkillRegistry
         // Tenacity skills
         [SkillGuid.GreatVigor] = TenacitySkills.GreatVigor,
         [SkillGuid.Armorer] = TenacitySkills.Armorer,
-        [SkillGuid.SmashingPower] = TenacitySkills.SmashingPower,
-        [SkillGuid.Thornmail] = TenacitySkills.Thornmail,
+        [SkillGuid.Energizer] = TenacitySkills.Energizer,
+        [SkillGuid.Deflect] = TenacitySkills.Deflect,
+        [SkillGuid.HeartsResolve] = TenacitySkills.HeartsResolve,
 
     }.ToFrozenDictionary();
 
@@ -67,6 +68,7 @@ public enum SkillGuid
     // Tenacity skills
     GreatVigor = 1101,
     Armorer = 1102,
-    SmashingPower = 1103,
-    Thornmail = 1104,
+    Energizer = 1103,
+    Deflect = 1104,
+    HeartsResolve = 1105,
 }
