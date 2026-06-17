@@ -13,20 +13,21 @@ public static class SkillRegistry
         [SkillGuid.Bite] = BeastSkills.Bite,
         [SkillGuid.TailWhip] = BeastSkills.TailWhip,
 
-        // Sword skills
-        [SkillGuid.Slash] = SwordSkills.Slash,
-        [SkillGuid.SwiftStrike] = SwordSkills.SwiftStrike,
-        [SkillGuid.TwinEdge] = SwordSkills.TwinEdge,
-        [SkillGuid.CrusherBlow] = SwordSkills.CrusherBlow,
-        [SkillGuid.FlashStrike] = SwordSkills.FlashStrike,
-        [SkillGuid.TriEdge] = SwordSkills.TriEdge,
-        [SkillGuid.BloodthirstyBlade] = SwordSkills.BloodthirstyBlade,
+        // Blade skills
+        [SkillGuid.Slash] = BladeSkills.Slash,
+        [SkillGuid.SwiftStrike] = BladeSkills.SwiftStrike,
+        [SkillGuid.TwinEdge] = BladeSkills.TwinEdge,
+        [SkillGuid.CrusherBlow] = BladeSkills.CrusherBlow,
+        [SkillGuid.FlashStrike] = BladeSkills.FlashStrike,
+        [SkillGuid.TriEdge] = BladeSkills.TriEdge,
+        [SkillGuid.BloodthirstyBlade] = BladeSkills.BloodthirstyBlade,
 
         // Tenacity skills
         [SkillGuid.GreatVigor] = TenacitySkills.GreatVigor,
         [SkillGuid.Armorer] = TenacitySkills.Armorer,
-        [SkillGuid.SmashingPower] = TenacitySkills.SmashingPower,
-        [SkillGuid.Thornmail] = TenacitySkills.Thornmail,
+        [SkillGuid.Energizer] = TenacitySkills.Energizer,
+        [SkillGuid.Deflect] = TenacitySkills.Deflect,
+        [SkillGuid.HeartsResolve] = TenacitySkills.HeartsResolve,
 
     }.ToFrozenDictionary();
 
@@ -55,7 +56,7 @@ public enum SkillGuid
     Bite = 102,
     TailWhip = 103,
 
-    // Sword skills
+    // Blade skills
     Slash = 1001,
     SwiftStrike = 1002,
     TwinEdge = 1003,
@@ -67,6 +68,7 @@ public enum SkillGuid
     // Tenacity skills
     GreatVigor = 1101,
     Armorer = 1102,
-    SmashingPower = 1103,
-    Thornmail = 1104,
+    Energizer = 1103,
+    Deflect = 1104,
+    HeartsResolve = 1105,
 }

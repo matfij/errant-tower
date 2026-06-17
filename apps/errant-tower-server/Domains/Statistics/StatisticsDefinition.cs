@@ -1,7 +1,9 @@
 ﻿namespace ErrantTowerServer.Domains.Statistics;
 
-public class BattleStatistics
+public record struct BattleStatistics
 {
+    public BattleStatistics() { }
+
     public double Initiative { get; set; } = 0;
     public double HealthPoints { get; set; } = 0;
     public double ManaPoints { get; set; } = 0;
