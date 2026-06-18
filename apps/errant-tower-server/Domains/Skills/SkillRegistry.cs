@@ -12,6 +12,7 @@ public static class SkillRegistry
         [SkillGuid.Scratch] = BeastSkills.Scratch,
         [SkillGuid.Bite] = BeastSkills.Bite,
         [SkillGuid.TailWhip] = BeastSkills.TailWhip,
+        [SkillGuid.Tackle] = BeastSkills.Tackle,
 
         // Blade skills
         [SkillGuid.Slash] = BladeSkills.Slash,
@@ -55,6 +56,8 @@ public enum SkillGuid
     Scratch = 101,
     Bite = 102,
     TailWhip = 103,
+    Tackle = 104,
+    Cut = 105,
 
     // Blade skills
     Slash = 1001,

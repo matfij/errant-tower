@@ -1,4 +1,5 @@
-﻿using ErrantTowerServer.Domains.Skills;
+﻿using ErrantTowerServer.Domains.Item;
+using ErrantTowerServer.Domains.Skills;
 using ErrantTowerServer.Domains.Statistics;
 
 namespace ErrantTowerServer.Domains.Enemy;
@@ -12,8 +13,7 @@ public readonly record struct Enemy
     public string? Title { get; init; }
     public required BattleStatistics Statistics { get; init; }
     public required SkillGuid[] Skills { get; init; }
-
-    // TODO - loots
+    public EnemyLoot[] Loots { get; init; } = [];
 }
 
 public enum EnemyRace
@@ -24,7 +24,14 @@ public enum EnemyRace
     Reptile = 4,
     Human = 5,
     Undead = 6,
+    Insect = 7,
     Mechanical = 100,
     Spirit = 101,
     Dragon = 102,
+}
+
+public record struct EnemyLoot
+{
+    public required ItemGuid ItemGuid { get; init; }
+    public required double Chance { get; init; }
 }
