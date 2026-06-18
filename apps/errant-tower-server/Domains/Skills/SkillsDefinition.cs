@@ -33,7 +33,7 @@ public readonly record struct Skill
     public required SkillGuid Guid { get; init; }
     public required string Name { get; init; }
     public string? Description { get; init; }
-    public required string ImageUrl { get; init; }
+    public string ImageUrl { get; init; } = "blank.png";
     public SkillPath Path { get; init; } = SkillPath.None;
     public int Tier { get; init; } = 1;
     public required SkillType[] Types { get; init; }

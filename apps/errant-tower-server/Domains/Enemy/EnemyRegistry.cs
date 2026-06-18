@@ -7,7 +7,7 @@ public static class EnemyRegistry
 {
     private static readonly FrozenDictionary <EnemyGuid, Enemy> _enemies = new Dictionary<EnemyGuid, Enemy>
     {
-        { EnemyGuid.Ratter, Data.Enemies1.ratter },
+        { EnemyGuid.Ratter, Data.DungeonEnemies.ratter },
     }.ToFrozenDictionary();
 
     public static Enemy GetEnemy(EnemyGuid guid)
@@ -23,4 +23,9 @@ public static class EnemyRegistry
 public enum EnemyGuid
 {
     Ratter = 100,
+    Chembr = 101,
+    Kerramid = 102,
+    Glowpede = 103,
+    Scrapper = 104,
+    Boarus = 105,
 }
