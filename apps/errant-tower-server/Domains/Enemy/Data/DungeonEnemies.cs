@@ -9,7 +9,7 @@ public static class DungeonEnemies
     public static readonly Enemy ratter = new()
     {
         Guid = EnemyGuid.Ratter,
-        ImageUrl = "ratter.png",
+        ImageUrl = "dungeon/ratter.png",
         Name = "Ratter",
         Race = EnemyRace.Vermin,
         Statistics = new BattleStatistics()
@@ -32,7 +32,7 @@ public static class DungeonEnemies
     public static readonly Enemy chembr = new()
     {
         Guid = EnemyGuid.Chembr,
-        ImageUrl = "chember.png",
+        ImageUrl = "dungeon/chember.png",
         Name = "Chember",
         Race = EnemyRace.Beast,
         Statistics = new BattleStatistics()
@@ -54,7 +54,7 @@ public static class DungeonEnemies
     public static readonly Enemy kerramid = new()
     {
         Guid = EnemyGuid.Kerramid,
-        ImageUrl = "kerramid.png",
+        ImageUrl = "dungeon/kerramid.png",
         Name = "Kerramid",
         Race = EnemyRace.Insect,
         Statistics = new BattleStatistics()
@@ -77,7 +77,7 @@ public static class DungeonEnemies
     public static readonly Enemy glowpede = new()
     {
         Guid = EnemyGuid.Glowpede,
-        ImageUrl = "glowpede.png",
+        ImageUrl = "dungeon/glowpede.png",
         Name = "Glowpede",
         Race = EnemyRace.Insect,
         Statistics = new BattleStatistics()
@@ -104,7 +104,7 @@ public static class DungeonEnemies
     public static readonly Enemy scrapper = new()
     {
         Guid = EnemyGuid.Scrapper,
-        ImageUrl = "scrapper.png",
+        ImageUrl = "dungeon/scrapper.png",
         Name = "Scrapper",
         Race = EnemyRace.Vermin,
         Statistics = new BattleStatistics()
@@ -133,7 +133,7 @@ public static class DungeonEnemies
     public static readonly Enemy boarus = new()
     {
         Guid = EnemyGuid.Boarous,
-        ImageUrl = "boarus.png",
+        ImageUrl = "dungeon/boarus.png",
         Name = "Boarus",
         Race = EnemyRace.Beast,
         Statistics = new BattleStatistics()

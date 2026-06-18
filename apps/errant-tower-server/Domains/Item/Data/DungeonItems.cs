@@ -8,7 +8,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.WoodenSword,
         Name = "Wooden Sword",
-        ImageUrl = "wooden-sword.png",
+        ImageUrl = "baldes/wooden-sword.png",
         Type = ItemType.Sword,
         Rarity = ItemRarity.Ordinary,
         Price = 10,
@@ -28,7 +28,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.WoodenPike,
         Name = "Wooden Pike",
-        ImageUrl = "wooden-pike.png",
+        ImageUrl = "lances/wooden-pike.png",
         Type = ItemType.Lance,
         Rarity = ItemRarity.Ordinary,
         Price = 10,
@@ -48,7 +48,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.WoodenBow,
         Name = "Wooden Bow",
-        ImageUrl = "wooden-bow.png",
+        ImageUrl = "bows/wooden-bow.png",
         Type = ItemType.Bow,
         Rarity = ItemRarity.Ordinary,
         Price = 10,
@@ -69,7 +69,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.WoodenHammer,
         Name = "Wooden Hammer",
-        ImageUrl = "wooden-hammer.png",
+        ImageUrl = "hammers/wooden-hammer.png",
         Type = ItemType.Hammer,
         Rarity = ItemRarity.Ordinary,
         Price = 10,
@@ -88,7 +88,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.WoodenStaff,
         Name = "Wooden Staff",
-        ImageUrl = "wooden-staff.png",
+        ImageUrl = "staves/wooden-staff.png",
         Rarity = ItemRarity.Ordinary,
         Price = 10,
         Type = ItemType.Staff,
@@ -107,7 +107,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.LeatherBandana,
         Name = "Leather Bandana",
-        ImageUrl = "leather-bandana.png",
+        ImageUrl = "helmets/leather-bandana.png",
         Type = ItemType.Helmet,
         Rarity = ItemRarity.Ordinary,
         Price = 10,
@@ -127,7 +127,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.LeatherArmor,
         Name = "Leather Armor",
-        ImageUrl = "leather-armor.png",
+        ImageUrl = "armors/leather-armor.png",
         Type = ItemType.Armor,
         Rarity = ItemRarity.Ordinary,
         Price = 10,
@@ -147,7 +147,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.LeatherBoots,
         Name = "Leather Boots",
-        ImageUrl = "leather-boots.png",
+        ImageUrl = "boots/leather-boots.png",
         Type = ItemType.Boots,
         Rarity = ItemRarity.Ordinary,
         Price = 10,
@@ -168,7 +168,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.CopperRing,
         Name = "Copper Ring",
-        ImageUrl = "copper-ring.png",
+        ImageUrl = "charms/copper-ring.png",
         Type = ItemType.Charm,
         Rarity = ItemRarity.Ordinary,
         Price = 10,
@@ -182,7 +182,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.CopperBar,
         Name = "Copper Bar",
-        ImageUrl = "copper-bar.png",
+        ImageUrl = "materials/copper-bar.png",
         Type = ItemType.Material,
         Rarity = ItemRarity.Ordinary,
         Price = 5,
@@ -193,7 +193,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.LeadBar,
         Name = "Lead Bar",
-        ImageUrl = "lead-bar.png",
+        ImageUrl = "materials/lead-bar.png",
         Type = ItemType.Material,
         Rarity = ItemRarity.Enhanced,
         Price = 10,
@@ -204,7 +204,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.Emerald,
         Name = "Emerald",
-        ImageUrl = "emerald.png",
+        ImageUrl = "materials/emerald.png",
         Type = ItemType.Material,
         Rarity = ItemRarity.Enhanced,
         Price = 10,
@@ -215,7 +215,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.ShinyEmerald,
         Name = "Shiny Emerald",
-        ImageUrl = "shiny-emerald.png",
+        ImageUrl = "materials/shiny-emerald.png",
         Type = ItemType.Material,
         Rarity = ItemRarity.Arcade,
         Price = 25,
@@ -226,7 +226,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.SmallClaw,
         Name = "Small Claw",
-        ImageUrl = "small-claw.png",
+        ImageUrl = "materials/small-claw.png",
         Type = ItemType.Material,
         Rarity = ItemRarity.Ordinary,
         Price = 5,
@@ -237,7 +237,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.ShinyClaw,
         Name = "Shiny Claw",
-        ImageUrl = "shiny-claw.png",
+        ImageUrl = "materials/shiny-claw.png",
         Type = ItemType.Material,
         Rarity = ItemRarity.Enhanced,
         Price = 10,
@@ -248,7 +248,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.WornHide,
         Name = "Worn Hide",
-        ImageUrl = "worn-hide.png",
+        ImageUrl = "materials/worn-hide.png",
         Type = ItemType.Material,
         Rarity = ItemRarity.Ordinary,
         Price = 5,
@@ -259,7 +259,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.ShinyHide,
         Name = "Shiny Hide",
-        ImageUrl = "shiny-hide.png",
+        ImageUrl = "materials/shiny-hide.png",
         Type = ItemType.Material,
         Rarity = ItemRarity.Enhanced,
         Price = 10,

@@ -6,7 +6,7 @@ public static class TenacitySkills
     {
         Guid = SkillGuid.GreatVigor,
         Name = "Great Vigor",
-        ImageUrl = "great-vigor.png",
+        ImageUrl = "tenacity/great-vigor.png",
         Path = SkillPath.Tenacity,
         Tier = 0,
         Types = [SkillType.Buff],
@@ -30,7 +30,7 @@ public static class TenacitySkills
     {
         Guid = SkillGuid.Armorer,
         Name = "Armorer",
-        ImageUrl = "armorer.png",
+        ImageUrl = "tenacity/armorer.png",
         Path = SkillPath.Tenacity,
         Tier = 1,
         Types = [SkillType.Buff],
@@ -55,7 +55,7 @@ public static class TenacitySkills
     {
         Guid = SkillGuid.Energizer,
         Name = "Energizer",
-        ImageUrl = "energizer.png",
+        ImageUrl = "tenacity/energizer.png",
         Path = SkillPath.Tenacity,
         Tier = 2,
         Types = [SkillType.Buff],
@@ -80,7 +80,7 @@ public static class TenacitySkills
     {
         Guid = SkillGuid.Deflect,
         Name = "Deflect",
-        ImageUrl = "deflect.png",
+        ImageUrl = "tenacity/deflect.png",
         Path = SkillPath.Tenacity,
         Tier = 2,
         Types = [SkillType.Buff],
@@ -105,7 +105,7 @@ public static class TenacitySkills
     {
         Guid = SkillGuid.HeartsResolve,
         Name = "Heart's Resolve",
-        ImageUrl = "hearts-resolve.png",
+        ImageUrl = "tenacity/thearts-resolve.png",
         Path = SkillPath.Tenacity,
         Tier = 2,
         Types = [SkillType.Buff],

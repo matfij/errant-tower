@@ -30,7 +30,7 @@ public enum EnemyRace
     Dragon = 102,
 }
 
-public record struct EnemyLoot
+public readonly record struct EnemyLoot
 {
     public required ItemGuid ItemGuid { get; init; }
     public required double Chance { get; init; }
