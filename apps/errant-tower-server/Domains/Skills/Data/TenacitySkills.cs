@@ -105,7 +105,7 @@ public static class TenacitySkills
     {
         Guid = SkillGuid.HeartsResolve,
         Name = "Heart's Resolve",
-        ImageUrl = "tenacity/thearts-resolve.png",
+        ImageUrl = "tenacity/hearts-resolve.png",
         Path = SkillPath.Tenacity,
         Tier = 2,
         Types = [SkillType.Buff],

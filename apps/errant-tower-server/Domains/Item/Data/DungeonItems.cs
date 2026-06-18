@@ -8,7 +8,7 @@ public class DungeonItems
     {
         Guid = ItemGuid.WoodenSword,
         Name = "Wooden Sword",
-        ImageUrl = "baldes/wooden-sword.png",
+        ImageUrl = "blades/wooden-sword.png",
         Type = ItemType.Sword,
         Rarity = ItemRarity.Ordinary,
         Price = 10,

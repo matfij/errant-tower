@@ -27,5 +27,5 @@ public enum EnemyGuid
     Kerramid = 102,
     Glowpede = 103,
     Scrapper = 104,
-    Boarous = 105,
+    Boarus = 105,
 }

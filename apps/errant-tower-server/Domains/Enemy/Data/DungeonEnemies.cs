@@ -132,7 +132,7 @@ public static class DungeonEnemies
 
     public static readonly Enemy boarus = new()
     {
-        Guid = EnemyGuid.Boarous,
+        Guid = EnemyGuid.Boarus,
         ImageUrl = "dungeon/boarus.png",
         Name = "Boarus",
         Race = EnemyRace.Beast,

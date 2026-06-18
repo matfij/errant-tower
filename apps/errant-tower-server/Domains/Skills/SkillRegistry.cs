@@ -13,6 +13,7 @@ public static class SkillRegistry
         [SkillGuid.Bite] = BeastSkills.Bite,
         [SkillGuid.TailWhip] = BeastSkills.TailWhip,
         [SkillGuid.Tackle] = BeastSkills.Tackle,
+        [SkillGuid.Cut] = BeastSkills.Cut,
 
         // Blade skills
         [SkillGuid.Slash] = BladeSkills.Slash,
