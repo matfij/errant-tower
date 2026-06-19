@@ -17,7 +17,7 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
             UserId = userId,
             Statistics = new BattleStatistics
             {
-                Initiative = 0,
+                Speed = 0,
                 HealthPoints = 100,
                 ManaPoints = 50,
                 EnergyPoints = 50,

@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using ErrantTowerServer.Domains.Floor;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace ErrantTowerServer.Domains.Progress;
 
@@ -8,21 +9,19 @@ public class ProgressEntity
     public required string Id { get; set; }
     public required string UserId { get; set; }
 
-    public TowerDomain CompletedDomains { get; set; } = TowerDomain.None;
     public int CompletedFloors { get; set; } = 0;
     public int Stamina { get; set; } = 3;
     public int Silver { get; set; } = 0;
 
-    public TowerDomain CurrentDomain { get; set; } = TowerDomain.None;
-    public int CurrentFloor { get; set; } = 0;
-    public int MaxInitiative { get; set; } = 0;
+    public bool IsInExpedition {  get; set; } = false;
+    public FloorGuid CurrentFloor { get; set; } = 0;
     public int Initiative { get; set; } = 0;
-    public int MaxHealth { get; set; } = 0;
-    public int Health { get; set; } = 0;
-    public int MaxMana { get; set; } = 0;
-    public int Mana { get; set; } = 0;
-    public int MaxEnergy { get; set; } = 0;
-    public int Energy { get; set; } = 0;
+    public double MaxHealth { get; set; } = 0;
+    public double Health { get; set; } = 0;
+    public double MaxMana { get; set; } = 0;
+    public double Mana { get; set; } = 0;
+    public double MaxEnergy { get; set; } = 0;
+    public double Energy { get; set; } = 0;
     public int X { get; set; } = 0;
     public int Y { get; set; } = 0;
     public FloorEvent[] FloorEvents { get; set; } = [];

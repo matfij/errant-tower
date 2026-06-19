@@ -12,7 +12,7 @@ Vast region scale, large explorable area with wide terrain coverage. Large playa
 
 DARK FANTASY BESTIARY CREATURE PORTRAIT, designed for a modern browser RPG with old-school RPG atmosphere.
 
-Creature presented as a specimen from an ancient monster encyclopedia, hunter's field guide, or medieval bestiary. Serious, grounded, believable fantasy creature design. No exaggerated cartoon features. No comedic elements.
+Serious, grounded, believable fantasy creature design. No exaggerated cartoon features. No comedic elements.
 
 Single creature as the clear focal point. Full body visible. Neutral presentation suitable for documentation and classification. Creature anatomy must be readable and detailed.
 
