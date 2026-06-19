@@ -64,3 +64,12 @@ public class AuthController(IAuthService authService) : ControllerBase
             new AuthenticationProperties { IsPersistent = true });
     }
 }
+
+public static class ClaimsPrincipalExtensions
+{
+    public static string GetUserId(this ClaimsPrincipal user)
+    {
+        return user.FindFirstValue(ClaimTypes.NameIdentifier)
+            ?? throw new UnauthorizedAccessException();
+    }
+}

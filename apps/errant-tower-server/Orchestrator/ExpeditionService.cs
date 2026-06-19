@@ -1,22 +1,31 @@
 ﻿using ErrantTowerServer.Domains.Progress;
+using ErrantTowerServer.Domains.Statistics;
 
 namespace ErrantTowerServer.Orchestrator;
 
 public interface IExpeditionService
 {
-    public Task<GetFloorsResponse> GetFloors();
-    public Task StartExpedition();
+    public Task<GetFloorsResponse> GetFloors(string userId);
+    public Task StartExpedition(string userId, StartExpeditionRequest request);
 }
 
-public class ExpeditionService(IProgressService progressService) : IExpeditionService
+public class ExpeditionService(
+    IProgressService progressService,
+    IStatisticsService statisticsService
+    ) : IExpeditionService
 {
-    public Task<GetFloorsResponse> GetFloors()
+    public async Task<GetFloorsResponse> GetFloors(string userId)
     {
-        throw new NotImplementedException();
+        var floors = await progressService.GetFloors(userId);
+        return new GetFloorsResponse
+        {
+            Floors = floors
+        };
     }
 
-    public Task StartExpedition()
+    public async Task StartExpedition(string userId, StartExpeditionRequest request)
     {
-        throw new NotImplementedException();
+        var battleStatistics = await statisticsService.GetUserBattleStatistics(userId);
+        await progressService.StartExpedition(userId, request.FloorGuid, battleStatistics);
     }
 }

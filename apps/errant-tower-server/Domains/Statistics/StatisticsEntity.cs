@@ -17,7 +17,7 @@ public class StatisticsEntity
     public int Constitution { get; set; } = 10;
     public int Spirit { get; set; } = 10;
 
-    public required BattleStatistics Statistics { get; set; }
+    public required BattleStatistics BattleStatistics { get; set; }
     public LearnedSkill[] LearnedSkills { get; set; } = [];
 }
 

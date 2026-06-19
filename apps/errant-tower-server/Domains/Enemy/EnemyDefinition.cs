@@ -6,6 +6,8 @@ namespace ErrantTowerServer.Domains.Enemy;
 
 public readonly record struct Enemy
 {
+    public Enemy() { }
+
     public required EnemyGuid Guid { get; init; }
     public required string Name { get; init; }
     public required string ImageUrl { get; init; }

@@ -5,6 +5,7 @@ namespace ErrantTowerServer.Domains.Statistics;
 public interface IStatisticsService 
 {
     public Task CreateInitial(string userId);
+    public Task<BattleStatistics> GetUserBattleStatistics(string userId);
 }
 
 public class StatisticsService(IStatisticsRepository statisticsRepository) : IStatisticsService
@@ -15,7 +16,7 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
         {
             Id = Utils.GenerateGuid(),
             UserId = userId,
-            Statistics = new BattleStatistics
+            BattleStatistics = new BattleStatistics
             {
                 Speed = 0,
                 HealthPoints = 100,
@@ -42,5 +43,11 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
             },
         };
         await statisticsRepository.CreateOne(newStatistics);
+    }
+
+    public async Task<BattleStatistics> GetUserBattleStatistics(string userId)
+    {
+        var statistics = await statisticsRepository.FindOneByUserId(userId);
+        return statistics.BattleStatistics;
     }
 }
