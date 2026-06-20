@@ -14,7 +14,7 @@ public static class DungeonEnemies
         Race = EnemyRace.Vermin,
         Statistics = new BattleStatistics()
         {
-            Initiative = 1.5,
+            Speed = 1.5,
             HealthPoints = 20,
             PhysicalAttack = 5,
             MagicalAttack = 0,
@@ -37,7 +37,7 @@ public static class DungeonEnemies
         Race = EnemyRace.Beast,
         Statistics = new BattleStatistics()
         {
-            Initiative = 1.3,
+            Speed = 1.3,
             HealthPoints = 40,
             PhysicalAttack = 6,
             MagicalAttack = 0,
@@ -59,7 +59,7 @@ public static class DungeonEnemies
         Race = EnemyRace.Insect,
         Statistics = new BattleStatistics()
         {
-            Initiative = 1,
+            Speed = 1,
             HealthPoints = 120,
             PhysicalAttack = 4,
             MagicalAttack = 0,
@@ -82,7 +82,7 @@ public static class DungeonEnemies
         Race = EnemyRace.Insect,
         Statistics = new BattleStatistics()
         {
-            Initiative = 1,
+            Speed = 1,
             HealthPoints = 110,
             PhysicalAttack = 7,
             MagicalAttack = 0,
@@ -109,7 +109,7 @@ public static class DungeonEnemies
         Race = EnemyRace.Vermin,
         Statistics = new BattleStatistics()
         {
-            Initiative = 1.6,
+            Speed = 1.6,
             HealthPoints = 60,
             PhysicalAttack = 6,
             MagicalAttack = 0,
@@ -138,7 +138,7 @@ public static class DungeonEnemies
         Race = EnemyRace.Beast,
         Statistics = new BattleStatistics()
         {
-            Initiative = 1,
+            Speed = 1,
             HealthPoints = 140,
             PhysicalAttack = 4,
             MagicalAttack = 0,

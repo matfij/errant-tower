@@ -18,9 +18,12 @@ public static class FloorRegistry
         }
         return floor;
     }
+
+    public static int GetFloorCount() => _floors.Count;
 }
 
 public enum FloorGuid
 {
-    Floor1 = 100,
+    // Dungeon
+    Floor1 = 0,
 }

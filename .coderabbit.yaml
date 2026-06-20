@@ -25,38 +25,44 @@ reviews:
         This is .NET 10.0 Controller-based API code following Domain-Driven Design patterns.
 
         ## Architecture
-        - Enforce Domain-Driven Design structure: Entity → Repository → Service (with optional Validator) → Controller
-        - Services must depend on Repository, concentrate logic and react to events
+        - Enforce Domain-Driven Design structure: Entity → Repository → Service (with optional Validator) → Orchestrator
+        - Orchestrator is the main entrypoint which controls downstream services
         - All layers must be loosely coupled based on Interfaces
         - Validators must separate async DB checks from sync business rules
-        - Ensure proper domain event publishing after state changes
-        - Flag tight coupling between layers (e.g., controllers directly using repositories)
+        - Data is not exchanged between services, everything is managed by the Orchestrator
         - Promote Locality of Behavior, simple abstractions and uni-directional data flow
+        - All Repositories and Services must be registered as scoped in Program.cs, Controllers are mapped automatically by the application
+        - Mongo client is registered as singleton for efficient resource sharing and thread safety
+        - ResendClient is registered as transient using IHttpClientFactory. HTTP connection pooling is handled by the underlying HttpMessageHandler pool.
+        - Repositories expose persistence operations only and must not contain business logic.
+        - Services contain business rules and orchestration within a single domain.
+        - Services must not contain HTTP-specific concerns.
 
-        ## Controllers
-        - Controllers must inherit ControllerBase and be annotated with [ApiController]
-        - Use [Route("resource")] at class level following RESTful conventions (plural nouns, camelCase)
-        - Enforce RESTful HTTP verb attributes: [HttpGet], [HttpPost], [HttpPut], [HttpDelete]
-        - Protected controllers or actions must use [Authorize] attribute
-        - Return ActionResult<T> or IActionResult for all actions
-        - Use Ok(), NotFound(), BadRequest(), CreatedAtAction() etc. — not raw Results.*
-        - HttpContext is available via ControllerBase — do not inject it as a parameter
-        - Use constructor injection (primary constructors, C# 12) for services
-        - Verify all controllers are in a Controllers/ or Domain/*/Controller structure
-
-        ## Registration
-        - Verify all Repositories and Services are registered in Program.cs
-        - Controllers are registered via AddControllers() / MapControllers() — verify both are present
-        - Event handlers must be registered as IEventHandler<TEvent> in Program.cs
-        - MongoDB Client should be Singleton, Database should be Singleton, Repositories/Services should be Scoped
+        ## Orchestrator
+        - Manages all user requests
+        - Consists of Controllers that define routes and Services that delegate business logic
+        - Controllers must be decorated with "[ApiController]" and define a meaningful base route "[Route("auth")]"
+        - Each endpoint is an async Task decorated with route declaration "[HttpPost("sign-up/complete")]", generator-friendly name "[EndpointName("completeSignUp")]" and response "[ProducesResponseType(typeof(CompleteSignUpResponse), StatusCodes.Status200OK)]"
+        - Endpoint contain no logic and delegates execution to a corresponding Service method
+        - Controller is also responsible for managing authentication, authorization and setting sessions
 
         ## Domain & Data
         - Repository constructors must receive IMongoDatabase via DI
-        - Indexes should be created in repository constructors using await (not fire-and-forget)
-        - Throw ApiException with translation keys (e.g., "errors.userNotFound")
+        - Indexes should be created during application startup through MongoDbIndexService.
+        - Repositories must not create indexes in constructors.
         - Ensure proper validation in Validators (or Services if validation is simple) before DB operations
         - Timestamps must be long (Unix timestamp milliseconds)
         - Entity IDs must be string type
+
+        ## Security
+        - Authentication cookie creation and destruction is managed by AuthController.
+        - Authenticated user access is available throughout the application via HttpContext.User.
+        - Each Service is responsible for correct ownership handling (user.id == resource.userId)
+
+        ## Error handling
+        - Logic errors must not crush the application
+        - Errors must be logged for debugging
+        - Errors must be mapped to "ApiException" with translation string before returned from the consumer
 
         ## C# Conventions
         - Use primary constructors for DI (C# 12)
@@ -65,18 +71,8 @@ reviews:
         - Use init for immutable properties
         - Verify nullable reference types are properly annotated
         - Ensure async methods return Task or Task<T>
-        - Check that cancellation tokens are passed to async methods where appropriate
         - Verify proper null handling with nullable reference types
-
-        ## Security
-        - Verify API token authentication via Authorization header
-        - Ensure ownership checks are performed (authenticated user matches resource owner)
-        - Ensure sensitive data is not exposed in error messages
-        - Flag hardcoded secrets or connection strings
-
-        ## Error handling
-        - Logic errors must not crush the application
-        - Errors must be logged for debugging
+        - Access authenticated user IDs through a ClaimsPrincipal extension method (GetUserId) instead of directly querying claims.
 
     - path: "apps/errant-tower-client/src/**/*.{ts,tsx}"
       instructions: |

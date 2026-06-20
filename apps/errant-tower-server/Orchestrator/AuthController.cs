@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using ErrantTowerServer.Common;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -62,5 +63,14 @@ public class AuthController(IAuthService authService) : ControllerBase
             CookieAuthenticationDefaults.AuthenticationScheme,
             principal,
             new AuthenticationProperties { IsPersistent = true });
+    }
+}
+
+public static class ClaimsPrincipalExtensions
+{
+    public static string GetUserId(this ClaimsPrincipal user)
+    {
+        return user.FindFirstValue(ClaimTypes.NameIdentifier)
+            ?? throw new ApiException("errors.unauthorized");
     }
 }

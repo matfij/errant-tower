@@ -4,7 +4,7 @@ public record struct BattleStatistics
 {
     public BattleStatistics() { }
 
-    public double Initiative { get; set; } = 0;
+    public double Speed { get; set; } = 0;
     public double HealthPoints { get; set; } = 0;
     public double ManaPoints { get; set; } = 0;
     public double EnergyPoints { get; set; } = 0;

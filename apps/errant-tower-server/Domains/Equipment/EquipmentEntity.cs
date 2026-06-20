@@ -9,14 +9,15 @@ public class EquipmentEntity
     public required string Id { get; set; }
     public required string UserId { get; set; }
 
+    public int Silver { get; set; } = 0;
+    public BagItem[] Bag { get; set; } = [];
+
     public ItemGuid? Headgear { get; set; }
     public ItemGuid? Armor { get; set; }
     public ItemGuid? Footwear { get; set; }
     public ItemGuid? Charm { get; set; }
     public ItemGuid? RightHand { get; set; }
     public ItemGuid? LeftHand { get; set; }
-
-    public BagItem[] Bag { get; set; } = [];
 }
 
 public record struct BagItem

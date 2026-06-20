@@ -8,7 +8,8 @@ public static class Floor1
     public static readonly Floor floor = new()
     {
         Guid = FloorGuid.Floor1,
-        MapBackgroundUrl = "floor-1-map.png",
+        Domain = FloorDomain.Dungeon,
+        ImageUrl = "floor-1.png",
         Enemies =
         [
             new FloorEnemy { EnemyGuid = EnemyGuid.Ratter, EncounterChance = 0.2 },
@@ -18,6 +19,8 @@ public static class Floor1
             new FloorTreasure { ItemGuid = ItemGuid.CopperRing, EncounterChance = 0.5 }
         ],
         NPCGuids = [],
+        StartX = 40,
+        StartY = 450,
         Tiles =
         [
 new () { X = 0, Y = 0, Type = FloorTileType.Wall },
