@@ -69,6 +69,7 @@ public class ProgressService(IProgressRepository progressRepository) : IProgress
         progress.CurrentFloor = floor.Guid;
         progress.IsInExpedition = true;
         progress.Initiative = BASE_INITIATIVE;
+        progress.Stamina -= 1;
         progress.X = floor.StartX;
         progress.Y = floor.StartY;
 

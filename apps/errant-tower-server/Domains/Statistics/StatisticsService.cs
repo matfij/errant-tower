@@ -47,7 +47,8 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
 
     public async Task<BattleStatistics> GetUserBattleStatistics(string userId)
     {
-        var statistics = await statisticsRepository.FindOneByUserId(userId);
+        var statistics = await statisticsRepository.FindOneByUserId(userId)
+            ?? throw new ApiException("errors.statisticsNotFound");
         return statistics.BattleStatistics;
     }
 }

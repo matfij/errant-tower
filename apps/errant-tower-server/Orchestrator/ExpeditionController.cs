@@ -5,7 +5,7 @@ namespace ErrantTowerServer.Orchestrator;
 
 [Authorize]
 [ApiController]
-[Route("expedition")]
+[Route("expeditions")]
 public class ExpeditionController(IExpeditionService expeditionService) : ControllerBase
 {
     [HttpGet]

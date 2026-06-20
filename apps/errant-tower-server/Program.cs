@@ -135,6 +135,7 @@ builder.Services.AddScoped<IEquipmentService, EquipmentService>();
 
 // Orchestrator services
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IExpeditionService, ExpeditionService>();
 
 var app = builder.Build();
 

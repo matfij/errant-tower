@@ -11,7 +11,6 @@ public class ProgressEntity
 
     public int CompletedFloors { get; set; } = 0;
     public int Stamina { get; set; } = 3;
-    public int Silver { get; set; } = 0;
 
     public bool IsInExpedition {  get; set; } = false;
     public FloorGuid CurrentFloor { get; set; } = 0;
