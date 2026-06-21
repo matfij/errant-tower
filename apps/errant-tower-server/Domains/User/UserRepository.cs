@@ -10,12 +10,12 @@ public interface IUserRepository
     Task<UserEntity?> FindOneByEmail(string email);
     Task<UserEntity?> FindOneByUsername(string username);
     Task<UserEntity> UpdateOne(UserEntity user);
-    Task DeleteOne (string id);
+    Task DeleteOne(string id);
 }
 
 public class UserRepository(IMongoDatabase database) : IUserRepository
 {
-    private readonly IMongoCollection<UserEntity> _collection 
+    private readonly IMongoCollection<UserEntity> _collection
         = database.GetCollection<UserEntity>("Users");
 
     public async Task CreateOne(UserEntity user)

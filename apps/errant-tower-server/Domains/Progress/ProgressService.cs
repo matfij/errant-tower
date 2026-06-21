@@ -7,7 +7,7 @@ namespace ErrantTowerServer.Domains.Progress;
 public interface IProgressService
 {
     public Task CreateInitial(string userId);
-    public Task<FloorTeaser[]> GetFloors(string userId); 
+    public Task<FloorTeaser[]> GetFloors(string userId);
     public Task StartExpedition(string userId, FloorGuid floorGuid, BattleStatistics battleStatistics);
 }
 
@@ -34,8 +34,8 @@ public class ProgressService(IProgressRepository progressRepository) : IProgress
         for (int level = 0; level < maxFloors; level++)
         {
             var nextFloor = FloorRegistry.GetFloor((FloorGuid)level);
-            floors.Add(new() 
-            { 
+            floors.Add(new()
+            {
                 FloorGuid = nextFloor.Guid,
                 FloorDomain = nextFloor.Domain,
                 IsUnlocked = progress.CompletedFloors >= (int)nextFloor.Guid
@@ -45,8 +45,8 @@ public class ProgressService(IProgressRepository progressRepository) : IProgress
     }
 
     public async Task StartExpedition(
-        string userId, 
-        FloorGuid floorGuid, 
+        string userId,
+        FloorGuid floorGuid,
         BattleStatistics battleStatistics)
     {
         var progress = await progressRepository.FindOneByUserId(userId)

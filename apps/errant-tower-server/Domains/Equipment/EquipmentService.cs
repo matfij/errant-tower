@@ -16,7 +16,7 @@ public class EquipmentService(IEquipmentRepository equipmentRepository) : IEquip
         {
             Id = Utils.GenerateGuid(),
             UserId = userId,
-            Bag = 
+            Bag =
             [
                 new BagItem()
                 {

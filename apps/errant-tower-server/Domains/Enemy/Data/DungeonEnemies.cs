@@ -122,7 +122,7 @@ public static class DungeonEnemies
             BlockPower = 0.25,
         },
         Skills = [SkillGuid.Cut, SkillGuid.Bite],
-        Loots = 
+        Loots =
         [
             new() { ItemGuid = ItemGuid.WornHide, Chance = 0.2 },
             new() { ItemGuid = ItemGuid.SmallClaw, Chance = 0.2 },

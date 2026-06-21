@@ -12,7 +12,7 @@ public interface IProgressRepository
 
 public class ProgressRepository(IMongoDatabase database) : IProgressRepository
 {
-    private readonly IMongoCollection<ProgressEntity> _collection 
+    private readonly IMongoCollection<ProgressEntity> _collection
         = database.GetCollection<ProgressEntity>("Progresses");
 
     public async Task CreateOne(ProgressEntity progress)
