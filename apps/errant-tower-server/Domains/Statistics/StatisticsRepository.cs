@@ -12,9 +12,9 @@ public interface IStatisticsRepository
 
 public class StatisticsRepository(IMongoDatabase database) : IStatisticsRepository
 {
-    private readonly IMongoCollection<StatisticsEntity> _collection 
+    private readonly IMongoCollection<StatisticsEntity> _collection
         = database.GetCollection<StatisticsEntity>("Statistics");
-    
+
     public async Task CreateOne(StatisticsEntity statistics)
     {
         await _collection.InsertOneAsync(statistics);

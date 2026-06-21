@@ -125,7 +125,7 @@ public class UserService(
         var user = await GetUserByEmail(email);
 
         await VerifyActionCode(user, actionCode);
-        
+
         user.ActionCodeHash = null;
         user.ActionCodeAttempts = null;
         user.ActionCodeExpiresAt = null;

@@ -12,7 +12,7 @@ public class ProgressEntity
     public int CompletedFloors { get; set; } = 0;
     public int Stamina { get; set; } = 3;
 
-    public bool IsInExpedition {  get; set; } = false;
+    public bool IsInExpedition { get; set; } = false;
     public FloorGuid CurrentFloor { get; set; } = 0;
     public int Initiative { get; set; } = 0;
     public double MaxHealth { get; set; } = 0;

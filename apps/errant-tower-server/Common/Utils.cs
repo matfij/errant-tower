@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 
 namespace ErrantTowerServer.Common;
 
@@ -23,7 +23,7 @@ public class Utils
     {
         return DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     }
-    
+
     public static long GetFutureTimestamp(int minutes)
     {
         return DateTimeOffset.UtcNow.AddMinutes(minutes).ToUnixTimeMilliseconds();

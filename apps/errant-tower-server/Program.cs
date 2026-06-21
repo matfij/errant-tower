@@ -1,15 +1,15 @@
-using Microsoft.OpenApi;
-using Microsoft.AspNetCore.Mvc;
+using ErrantTowerServer.Common;
+using ErrantTowerServer.Domains.Equipment;
+using ErrantTowerServer.Domains.Progress;
+using ErrantTowerServer.Domains.Skills;
+using ErrantTowerServer.Domains.Statistics;
+using ErrantTowerServer.Domains.User;
+using ErrantTowerServer.Orchestrator;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi;
 using MongoDB.Driver;
 using Resend;
-using ErrantTowerServer.Common;
-using ErrantTowerServer.Domains.User;
-using ErrantTowerServer.Domains.Progress;
-using ErrantTowerServer.Domains.Statistics;
-using ErrantTowerServer.Orchestrator;
-using ErrantTowerServer.Domains.Equipment;
-using ErrantTowerServer.Domains.Skills;
 
 var builder = WebApplication.CreateBuilder(args);
 

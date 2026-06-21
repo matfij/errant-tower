@@ -2,7 +2,7 @@
 
 namespace ErrantTowerServer.Domains.Statistics;
 
-public interface IStatisticsService 
+public interface IStatisticsService
 {
     public Task CreateInitial(string userId);
     public Task<BattleStatistics> GetUserBattleStatistics(string userId);

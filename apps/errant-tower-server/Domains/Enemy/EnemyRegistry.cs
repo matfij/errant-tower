@@ -5,7 +5,7 @@ namespace ErrantTowerServer.Domains.Enemy;
 
 public static class EnemyRegistry
 {
-    private static readonly FrozenDictionary <EnemyGuid, Enemy> _enemies = new Dictionary<EnemyGuid, Enemy>
+    private static readonly FrozenDictionary<EnemyGuid, Enemy> _enemies = new Dictionary<EnemyGuid, Enemy>
     {
         { EnemyGuid.Ratter, Data.DungeonEnemies.ratter },
     }.ToFrozenDictionary();
