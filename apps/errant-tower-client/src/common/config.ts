@@ -1,10 +1,84 @@
 export const appConfig = {
     baseUrl: import.meta.env.VITE_API_URL,
-};
+} as const;
 
 export const routes = {
     root: '/',
     signIn: '/sign-in',
     signUp: '/sign-up',
     home: '/home',
-};
+    character: '/character',
+    skills: '/skills',
+    crafting: '/crafting',
+    explore: '/explore',
+} as const;
+
+export const colors = {
+    primary: {
+        100: '#faf5ff',
+        200: '#f3e8ff',
+        300: '#e3c9ff',
+        400: '#c27aff',
+        500: '#ad46ff',
+        600: '#9810fa',
+        700: '#8200db',
+        800: '#6e11b0',
+        900: '#59168b',
+    },
+    secondary: {
+        100: '#dff2fe',
+        200: '#b8e6fe',
+        300: '#74d4ff',
+        400: '#26beff',
+        500: '#00a6f4',
+        600: '#0084d1',
+        700: '#0069a8',
+        800: '#00598a',
+        900: '#024a70',
+    },
+    accent: {
+        100: '#fef3c6',
+        200: '#fde9ab',
+        300: '#ffd869',
+        400: '#ffb900',
+        500: '#fe9a00',
+        600: '#e17100',
+        700: '#bb4d00',
+        800: '#963c00',
+        900: '#7b3306',
+    },
+    light: {
+        100: '#fafafa',
+        200: '#f4f4f5',
+        300: '#e4e4e7',
+        400: '#d4d4d8',
+    },
+    dark: {
+        100: '#3f3f46',
+        200: '#27272a',
+        300: '#18181b',
+        400: '#09090b',
+    },
+    red: {
+        100: '#ffe2e2',
+        200: '#ffc9c9',
+        300: '#ffa2a2',
+        400: '#ff6467',
+        500: '#fb2c36',
+        600: '#e7000b',
+        700: '#c10007',
+        800: '#9f0715',
+        900: '#82181a',
+    },
+    green: {
+        100: '#dcfce7',
+        200: '#b9f8cf',
+        300: '#7bf1a8',
+        400: '#4ade80',
+        500: '#22c55e',
+        600: '#00a63e',
+        700: '#008236',
+        800: '#1c5f36',
+        900: '#194a2a',
+    },
+} as const;
