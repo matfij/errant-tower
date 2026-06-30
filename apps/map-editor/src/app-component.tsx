@@ -24,6 +24,9 @@ export const AppComponent = () => {
     row: number;
     col: number;
   }>();
+  const [showCsvDialog, setShowCsvDialog] = useState(false);
+  const [csvText, setCsvText] = useState("");
+  const [csvError, setCsvError] = useState<string | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -47,6 +50,37 @@ export const AppComponent = () => {
       return;
     }
     setMapImage(URL.createObjectURL(file));
+  };
+
+  const openImportDialog = () => {
+    setCsvText("");
+    setCsvError(null);
+    setShowCsvDialog(true);
+  };
+
+  const closeImportDialog = () => {
+    setShowCsvDialog(false);
+    setCsvError(null);
+  };
+
+  const importMap = () => {
+    try {
+      const parsedMap = MapManager.importMap(
+        csvText,
+        ROWS,
+        COLUMNS,
+        TILE_SIZE,
+      );
+      console.log("parsedMap", parsedMap);
+      setMap(parsedMap);
+      setShowCsvDialog(false);
+      setCsvText("");
+      setCsvError(null);
+    } catch (error) {
+      setCsvError(
+        error instanceof Error ? error.message : "Failed to parse CSV.",
+      );
+    }
   };
 
   const drawMap = (ctx: CanvasRenderingContext2D, map: FloorTileType[][]) => {
@@ -141,7 +175,7 @@ export const AppComponent = () => {
   };
 
   const printMap = () => {
-    const printedMap = MapManager.printMap(map, TILE_SIZE);
+    const printedMap = MapManager.exportMap(map, TILE_SIZE);
     navigator.clipboard.writeText(printedMap);
     alert("Map data copied to clipboard");
   };
@@ -220,10 +254,7 @@ export const AppComponent = () => {
           ∎ Finish
         </div>
         <hr />
-        <div>
-          <input type="file" accept="image/*" onChange={loadMap} />
-        </div>
-        <hr />
+
         <div className="rangeWrapper">
           <label>Cursor Size</label>
           <input
@@ -236,8 +267,75 @@ export const AppComponent = () => {
           />
         </div>
         <hr />
-        <button onClick={printMap}>Print</button>
+        <div>
+          <input type="file" accept="image/*" onChange={loadMap} />
+        </div>
+        <div>
+          <button onClick={openImportDialog}>Import</button>
+        </div>
+        <hr />
+        <button onClick={printMap}>Export</button>
       </div>
+      {showCsvDialog && (
+        <div
+          className="dialogOverlay"
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+        >
+          <div
+            className="dialog"
+            style={{
+              backgroundColor: "white",
+              borderRadius: "8px",
+              boxShadow: "0 4px 16px rgba(0, 0, 0, 0.2)",
+              maxWidth: "640px",
+              width: "100%",
+              padding: "20px",
+            }}
+          >
+            <h2>Paste CSV map data</h2>
+            <p>Paste the exported CSV content below and click Load.</p>
+            <textarea
+              value={csvText}
+              onChange={(e) => setCsvText(e.target.value)}
+              style={{
+                width: "100%",
+                minHeight: "200px",
+                marginBottom: "12px",
+                fontFamily: "monospace",
+                fontSize: "14px",
+              }}
+            />
+            {csvError && (
+              <div
+                style={{
+                  marginBottom: "12px",
+                  color: "#a12d2d",
+                }}
+              >
+                {csvError}
+              </div>
+            )}
+            <div
+              style={{
+                display: "flex",
+                gap: "12px",
+                justifyContent: "flex-end",
+              }}
+            >
+              <button onClick={closeImportDialog}>Cancel</button>
+              <button onClick={importMap}>Load</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
