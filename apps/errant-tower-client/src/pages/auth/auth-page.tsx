@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router';
 import styles from './auth-page.module.scss';
+import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { routes } from '../../common/config';
 
@@ -20,9 +20,6 @@ export const AuthPage = () => {
                         {t('auth.signUp')}
                     </button>
                 </div>
-            </div>
-            <div className={styles.knightImage}>
-                <img src="./images/brand/dark-knight.png" />
             </div>
         </section>
     );

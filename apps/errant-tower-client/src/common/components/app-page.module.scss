@@ -1,0 +1,13 @@
+@use '../../common/styles/mixins.scss' as *;
+@use '../../common/styles/variables.scss' as *;
+
+.pageWrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.pageContent {
+    padding: $spacing-8 $spacing-4;
+}
