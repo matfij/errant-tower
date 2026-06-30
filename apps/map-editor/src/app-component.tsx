@@ -26,7 +26,6 @@ export const AppComponent = () => {
   }>();
   const [showCsvDialog, setShowCsvDialog] = useState(false);
   const [csvText, setCsvText] = useState("");
-  const [csvError, setCsvError] = useState<string | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -44,7 +43,7 @@ export const AppComponent = () => {
     };
   }, [mapImage]);
 
-  const loadMap = (event: ChangeEvent<HTMLInputElement>) => {
+  const loadMapImage = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
     if (!file) {
       return;
@@ -54,32 +53,21 @@ export const AppComponent = () => {
 
   const openImportDialog = () => {
     setCsvText("");
-    setCsvError(null);
     setShowCsvDialog(true);
   };
 
   const closeImportDialog = () => {
     setShowCsvDialog(false);
-    setCsvError(null);
   };
 
   const importMap = () => {
     try {
-      const parsedMap = MapManager.importMap(
-        csvText,
-        ROWS,
-        COLUMNS,
-        TILE_SIZE,
-      );
-      console.log("parsedMap", parsedMap);
+      const parsedMap = MapManager.importMap(csvText, ROWS, COLUMNS, TILE_SIZE);
       setMap(parsedMap);
       setShowCsvDialog(false);
       setCsvText("");
-      setCsvError(null);
     } catch (error) {
-      setCsvError(
-        error instanceof Error ? error.message : "Failed to parse CSV.",
-      );
+      alert(error instanceof Error ? error.message : "Failed to parse CSV.");
     }
   };
 
@@ -174,9 +162,9 @@ export const AppComponent = () => {
     changeCursorSize(e.deltaY < 0 ? 1 : -1);
   };
 
-  const printMap = () => {
-    const printedMap = MapManager.exportMap(map, TILE_SIZE);
-    navigator.clipboard.writeText(printedMap);
+  const exportMap = () => {
+    const exportedMap = MapManager.exportMap(map, TILE_SIZE);
+    navigator.clipboard.writeText(exportedMap);
     alert("Map data copied to clipboard");
   };
 
@@ -268,13 +256,13 @@ export const AppComponent = () => {
         </div>
         <hr />
         <div>
-          <input type="file" accept="image/*" onChange={loadMap} />
+          <input type="file" accept="image/*" onChange={loadMapImage} />
         </div>
         <div>
           <button onClick={openImportDialog}>Import</button>
         </div>
         <hr />
-        <button onClick={printMap}>Export</button>
+        <button onClick={exportMap}>Export</button>
       </div>
       {showCsvDialog && (
         <div
@@ -313,16 +301,6 @@ export const AppComponent = () => {
                 fontSize: "14px",
               }}
             />
-            {csvError && (
-              <div
-                style={{
-                  marginBottom: "12px",
-                  color: "#a12d2d",
-                }}
-              >
-                {csvError}
-              </div>
-            )}
             <div
               style={{
                 display: "flex",
