@@ -17,8 +17,24 @@ export const AppIcon = (props: AppIconProps) => {
     const loadSvg = iconSvgs[path];
 
     useEffect(() => {
-        loadSvg().then((raw) => setSvg(raw));
-    }, [loadSvg, path]);
+        let cancelled = false;
+
+        loadSvg()
+            .then((raw) => {
+                if (!cancelled) {
+                    setSvg(raw);
+                }
+            })
+            .catch(() => {
+                if (!cancelled) {
+                    setSvg(undefined);
+                }
+            });
+
+        return () => {
+            cancelled = true;
+        };
+    }, [loadSvg]);
 
     return (
         <>
