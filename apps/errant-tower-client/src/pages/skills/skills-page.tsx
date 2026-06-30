@@ -1,9 +1,7 @@
-import { AppPage } from '../../common/components/app-page';
-
 export const SkillsPage = () => {
     return (
-        <AppPage>
+        <section>
             <h1>Skills</h1>
-        </AppPage>
+        </section>
     );
 };

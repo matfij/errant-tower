@@ -1,15 +1,13 @@
 import styles from './app-page.module.scss';
 import { AppNavbar } from '../../common/components/app-navbar';
-import type { ReactNode } from 'react';
+import { Outlet } from 'react-router';
 
-interface AppPageProps {
-    children: ReactNode;
-}
-
-export const AppPage = (props: AppPageProps) => {
+export const AppPage = () => {
     return (
         <section className={styles.pageWrapper}>
-            <section className={styles.pageContent}>{props.children}</section>
+            <section className={styles.pageContent}>
+                <Outlet />
+            </section>
             <AppNavbar />
         </section>
     );

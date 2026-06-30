@@ -1,9 +1,7 @@
-import { AppPage } from '../../common/components/app-page';
-
 export const CraftingPage = () => {
     return (
-        <AppPage>
+        <section>
             <h1>Crafting</h1>
-        </AppPage>
+        </section>
     );
 };

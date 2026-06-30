@@ -9,6 +9,8 @@ import { CharacterPage } from './pages/character/character-page';
 import { SkillsPage } from './pages/skills/skills-page';
 import { CraftingPage } from './pages/crafting/crafting-page';
 import { ExplorePage } from './pages/explore/explore-page';
+import { AppPage } from './common/components/app-page';
+import { ExpeditionPage } from './pages/expedition/expedition-page';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -29,10 +31,13 @@ export const AppComponent = () => {
                     <Route path={routes.signIn} element={<SignInPage />} />
                     <Route path={routes.signUp} element={<SignUpPage />} />
                     <Route element={<ProtectedRoute redirectTo={routes.root} />}>
-                        <Route path={routes.character} element={<CharacterPage />} />
-                        <Route path={routes.skills} element={<SkillsPage />} />
-                        <Route path={routes.crafting} element={<CraftingPage />} />
-                        <Route path={routes.explore} element={<ExplorePage />} />
+                        <Route element={<AppPage />}>
+                            <Route path={routes.character} element={<CharacterPage />} />
+                            <Route path={routes.skills} element={<SkillsPage />} />
+                            <Route path={routes.crafting} element={<CraftingPage />} />
+                            <Route path={routes.explore} element={<ExplorePage />} />
+                        </Route>
+                        <Route path={routes.expedition} element={<ExpeditionPage />} />
                     </Route>
                     <Route path="*" element={<Navigate to={routes.root} replace />} />
                 </Routes>

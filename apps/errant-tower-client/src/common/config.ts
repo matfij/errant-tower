@@ -10,4 +10,5 @@ export const routes = {
     skills: '/skills',
     crafting: '/crafting',
     explore: '/explore',
+    expedition: '/expedition',
 } as const;
