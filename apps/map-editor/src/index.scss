@@ -16,10 +16,6 @@ hr {
   margin: 1rem 0;
 }
 
-button {
-  margin-right: 1rem;
-}
-
 .mainWrapper {
   position: relative;
   width: 100%;
@@ -114,6 +110,10 @@ button {
   display: flex;
   gap: 12px;
   justify-content: flex-end;
+}
+
+.actionWrapper button + button {
+  margin-left: 1rem;
 }
 
 .start {

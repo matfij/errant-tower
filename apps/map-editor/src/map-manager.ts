@@ -90,8 +90,8 @@ export class MapManager {
         return;
       }
 
-      const x = Number(parts[0]);
-      const y = Number(parts[1]);
+      const x = parts[0].length ? Number(parts[0]) : NaN;
+      const y = parts[1].length ? Number(parts[1]) : NaN;
       const typeName = parts.slice(2).join(",");
       if (Number.isNaN(x) || Number.isNaN(y)) {
         return;
@@ -117,7 +117,9 @@ export class MapManager {
         const x = scale * col;
         const y = scale * row;
         const type = this.getTypeName(map[row][col]);
-        csv += `${x},${y},${type}\n`;
+        if (type !== "Route") {
+          csv += `${x},${y},${type}\n`;
+        }
       }
     }
 

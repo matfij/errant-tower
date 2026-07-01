@@ -167,13 +167,18 @@ export const AppComponent = () => {
 
   const exportMap = () => {
     const exportedMap = MapManager.exportMap(map, TILE_SIZE);
-    navigator.clipboard.writeText(exportedMap);
-    alert("Map data copied to clipboard");
+    navigator.clipboard
+      .writeText(exportedMap)
+      .then(() => alert("Map data copied to clipboard"))
+      .catch(() => alert("Failed to copy map data to clipboard"));
   };
 
   const handlePanelMouseDown = (e: React.MouseEvent) => {
     setIsDraggingPanel(true);
-    setDragStart({ x: e.clientX - panelOffset.x, y: e.clientY - panelOffset.y });
+    setDragStart({
+      x: e.clientX - panelOffset.x,
+      y: e.clientY - panelOffset.y,
+    });
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -190,7 +195,7 @@ export const AppComponent = () => {
   };
 
   return (
-    <div 
+    <div
       className="mainWrapper"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
@@ -224,13 +229,13 @@ export const AppComponent = () => {
           onWheel={onCanvasWheel}
         />
       </div>
-      <div 
+      <div
         className="actionWrapper"
         onMouseDown={handlePanelMouseDown}
         style={{
           transform: `translate(${panelOffset.x}px, ${panelOffset.y}px)`,
-          cursor: isDraggingPanel ? 'grabbing' : 'grab',
-          userSelect: isDraggingPanel ? 'none' : 'auto',
+          cursor: isDraggingPanel ? "grabbing" : "grab",
+          userSelect: isDraggingPanel ? "none" : "auto",
         }}
       >
         <div
