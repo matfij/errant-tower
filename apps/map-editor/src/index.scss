@@ -79,6 +79,43 @@ hr {
   cursor: pointer;
 }
 
+.dialogOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialogContent {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  max-width: 640px;
+  width: 100%;
+  padding: 20px;
+}
+
+.dialogInput {
+  width: 100%;
+  min-height: 200px;
+  margin-bottom: 12px;
+  font-family: monospace;
+  font-size: 14px;
+}
+
+.dialogActions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.actionWrapper button + button {
+  margin-left: 1rem;
+}
+
 .start {
   color: #0f7b1f;
 }

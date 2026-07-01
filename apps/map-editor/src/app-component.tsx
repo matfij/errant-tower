@@ -24,6 +24,11 @@ export const AppComponent = () => {
     row: number;
     col: number;
   }>();
+  const [showCsvDialog, setShowCsvDialog] = useState(false);
+  const [csvText, setCsvText] = useState("");
+  const [isDraggingPanel, setIsDraggingPanel] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [panelOffset, setPanelOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -41,12 +46,32 @@ export const AppComponent = () => {
     };
   }, [mapImage]);
 
-  const loadMap = (event: ChangeEvent<HTMLInputElement>) => {
+  const loadMapImage = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
     if (!file) {
       return;
     }
     setMapImage(URL.createObjectURL(file));
+  };
+
+  const openImportDialog = () => {
+    setCsvText("");
+    setShowCsvDialog(true);
+  };
+
+  const closeImportDialog = () => {
+    setShowCsvDialog(false);
+  };
+
+  const importMap = () => {
+    try {
+      const parsedMap = MapManager.importMap(csvText, ROWS, COLUMNS, TILE_SIZE);
+      setMap(parsedMap);
+      setShowCsvDialog(false);
+      setCsvText("");
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "Failed to parse CSV.");
+    }
   };
 
   const drawMap = (ctx: CanvasRenderingContext2D, map: FloorTileType[][]) => {
@@ -140,14 +165,42 @@ export const AppComponent = () => {
     changeCursorSize(e.deltaY < 0 ? 1 : -1);
   };
 
-  const printMap = () => {
-    const printedMap = MapManager.printMap(map, TILE_SIZE);
-    navigator.clipboard.writeText(printedMap);
-    alert("Map data copied to clipboard");
+  const exportMap = () => {
+    const exportedMap = MapManager.exportMap(map, TILE_SIZE);
+    navigator.clipboard
+      .writeText(exportedMap)
+      .then(() => alert("Map data copied to clipboard"))
+      .catch(() => alert("Failed to copy map data to clipboard"));
+  };
+
+  const handlePanelMouseDown = (e: React.MouseEvent) => {
+    setIsDraggingPanel(true);
+    setDragStart({
+      x: e.clientX - panelOffset.x,
+      y: e.clientY - panelOffset.y,
+    });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDraggingPanel) {
+      setPanelOffset({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y,
+      });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDraggingPanel(false);
   };
 
   return (
-    <div className="mainWrapper">
+    <div
+      className="mainWrapper"
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+    >
       <div className="canvasWrapper">
         <div
           className="mapImageWrapper"
@@ -176,7 +229,15 @@ export const AppComponent = () => {
           onWheel={onCanvasWheel}
         />
       </div>
-      <div className="actionWrapper">
+      <div
+        className="actionWrapper"
+        onMouseDown={handlePanelMouseDown}
+        style={{
+          transform: `translate(${panelOffset.x}px, ${panelOffset.y}px)`,
+          cursor: isDraggingPanel ? "grabbing" : "grab",
+          userSelect: isDraggingPanel ? "none" : "auto",
+        }}
+      >
         <div
           onClick={() => setTileType(FloorTileType.Start)}
           className="actionItem start"
@@ -220,10 +281,7 @@ export const AppComponent = () => {
           ∎ Finish
         </div>
         <hr />
-        <div>
-          <input type="file" accept="image/*" onChange={loadMap} />
-        </div>
-        <hr />
+
         <div className="rangeWrapper">
           <label>Cursor Size</label>
           <input
@@ -236,8 +294,32 @@ export const AppComponent = () => {
           />
         </div>
         <hr />
-        <button onClick={printMap}>Print</button>
+        <div>
+          <input type="file" accept="image/*" onChange={loadMapImage} />
+        </div>
+        <hr />
+        <div>
+          <button onClick={openImportDialog}>Import</button>
+          <button onClick={exportMap}>Export</button>
+        </div>
       </div>
+      {showCsvDialog && (
+        <div className="dialogOverlay">
+          <div className="dialogContent">
+            <h2>Paste CSV map data</h2>
+            <p>Paste the exported CSV content below and click Load.</p>
+            <textarea
+              value={csvText}
+              className="dialogInput"
+              onChange={(e) => setCsvText(e.target.value)}
+            />
+            <div className="dialogActions">
+              <button onClick={closeImportDialog}>Cancel</button>
+              <button onClick={importMap}>Load</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
