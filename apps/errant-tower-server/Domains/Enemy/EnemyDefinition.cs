@@ -1,4 +1,4 @@
-﻿using ErrantTowerServer.Domains.Item;
+using ErrantTowerServer.Domains.Item;
 using ErrantTowerServer.Domains.Skills;
 using ErrantTowerServer.Domains.Statistics;
 
@@ -27,6 +27,7 @@ public enum EnemyRace
     Human = 5,
     Undead = 6,
     Insect = 7,
+    Avian = 8,
     Mechanical = 100,
     Spirit = 101,
     Dragon = 102,

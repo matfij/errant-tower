@@ -23,7 +23,7 @@ public class ProgressEntity
     public double Energy { get; set; } = 0;
     public int X { get; set; } = 0;
     public int Y { get; set; } = 0;
-    public FloorEvent[] FloorEvents { get; set; } = [];
+    public FloorTile[] FloorTiles { get; set; } = [];
 }
 
 public enum TowerDomain
@@ -32,20 +32,4 @@ public enum TowerDomain
     Dungeon = 1,
     Forest = 2,
     Desert = 3,
-}
-
-public record struct FloorEvent(
-    int X,
-    int Y,
-    FloorEventType Type,
-    string Reference
-);
-
-public enum FloorEventType
-{
-    None = 0,
-    Enemy = 1,
-    Treasure = 2,
-    NPC = 3,
-    Exit = 4,
 }

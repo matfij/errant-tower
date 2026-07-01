@@ -1,4 +1,4 @@
-﻿using ErrantTowerServer.Common;
+using ErrantTowerServer.Common;
 using ErrantTowerServer.Domains.Floor;
 using ErrantTowerServer.Domains.Statistics;
 
@@ -80,6 +80,55 @@ public class ProgressService(IProgressRepository progressRepository) : IProgress
         progress.MaxEnergy = battleStatistics.EnergyPoints;
         progress.Energy = battleStatistics.EnergyPoints;
 
+        progress.FloorTiles = LoadTilesFromCsv(floor.TilesUrl);
+
         await progressRepository.UpdateOne(progress);
+    }
+
+    private FloorTile[] LoadTilesFromCsv(string tilesUrl)
+    {
+        var baseDirectory = AppContext.BaseDirectory;
+        var filePath = Path.Combine(
+            baseDirectory,
+            "..",
+            "..",
+            "..",
+            "..",
+            "apps",
+            "errant-tower-server",
+            "Domains",
+            "Floor",
+            "Data",
+            "Tiles",
+            tilesUrl
+        );
+
+        filePath = Path.GetFullPath(filePath);
+
+        if (!File.Exists(filePath))
+        {
+            throw new ApiException("errors.tilesNotFound");
+        }
+
+        var lines = File.ReadAllLines(filePath);
+        var tiles = new List<FloorTile>();
+
+        for (int i = 1; i < lines.Length; i++)
+        {
+            var parts = lines[i].Split(',');
+            if (parts.Length != 3)
+            {
+
+            }
+
+            if (int.TryParse(parts[0], out var x) &&
+                int.TryParse(parts[1], out var y) &&
+                Enum.TryParse<FloorTileType>(parts[2], out var type))
+            {
+                tiles.Add(new FloorTile { X = x, Y = y, Type = type });
+            }
+        }
+
+        return tiles.ToArray();
     }
 }
