@@ -87,9 +87,8 @@ public class ProgressService(IProgressRepository progressRepository) : IProgress
 
     private FloorTile[] LoadTilesFromCsv(string tilesUrl)
     {
-        var baseDirectory = AppContext.BaseDirectory;
         var filePath = Path.Combine(
-            baseDirectory,
+            AppContext.BaseDirectory,
             "..",
             "..",
             "..",
@@ -118,14 +117,18 @@ public class ProgressService(IProgressRepository progressRepository) : IProgress
             var parts = lines[i].Split(',');
             if (parts.Length != 3)
             {
-
+                throw new ApiException("errors.tilesInvalid");
             }
 
-            if (int.TryParse(parts[0], out var x) &&
-                int.TryParse(parts[1], out var y) &&
-                Enum.TryParse<FloorTileType>(parts[2], out var type))
+            if (int.TryParse(parts[0], out var x)
+                && int.TryParse(parts[1], out var y)
+                && Enum.TryParse<FloorTileType>(parts[2], out var type))
             {
                 tiles.Add(new FloorTile { X = x, Y = y, Type = type });
+            }
+            else
+            {
+                throw new ApiException("errors.tilesInvalid");
             }
         }
 
