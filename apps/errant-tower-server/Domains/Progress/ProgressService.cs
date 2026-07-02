@@ -11,7 +11,10 @@ public interface IProgressService
     public Task StartExpedition(string userId, FloorGuid floorGuid, BattleStatistics battleStatistics);
 }
 
-public class ProgressService(IProgressRepository progressRepository) : IProgressService
+public class ProgressService(
+    IProgressRepository progressRepository,
+    IHostEnvironment hostEnvironment
+    ) : IProgressService
 {
     private const int BASE_INITIATIVE = 100;
 
@@ -87,29 +90,16 @@ public class ProgressService(IProgressRepository progressRepository) : IProgress
 
     private FloorTile[] LoadTilesFromCsv(string tilesUrl)
     {
-        var filePath = Path.Combine(
-            AppContext.BaseDirectory,
-            "..",
-            "..",
-            "..",
-            "..",
-            "apps",
-            "errant-tower-server",
+        var tilesDirectory = Path.Combine(
+            hostEnvironment.ContentRootPath,
             "Domains",
             "Floor",
             "Data",
-            "Tiles",
-            tilesUrl
+            "Tiles"
         );
+        var tilesPath = Path.Combine(tilesDirectory, tilesUrl);
 
-        filePath = Path.GetFullPath(filePath);
-
-        if (!File.Exists(filePath))
-        {
-            throw new ApiException("errors.tilesNotFound");
-        }
-
-        var lines = File.ReadAllLines(filePath);
+        var lines = File.ReadAllLines(tilesPath);
         var tiles = new List<FloorTile>();
 
         for (int i = 1; i < lines.Length; i++)
