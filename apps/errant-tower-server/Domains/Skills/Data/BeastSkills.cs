@@ -1,4 +1,4 @@
-﻿namespace ErrantTowerServer.Domains.Skills.Data;
+namespace ErrantTowerServer.Domains.Skills.Data;
 
 public static class BeastSkills
 {
@@ -61,5 +61,14 @@ public static class BeastSkills
         [
             [new () { Type = SkillEffectType.Bleeding, Value = 0.3, Chance = 0.3, Duration = 3 }]
         ],
+    };
+
+    public static readonly Skill Peck = new()
+    {
+        Guid = SkillGuid.Peck,
+        Name = "Peck",
+        PhysicalAttackFactor = [1.3],
+        PhysicalDefenseFactor = [0.8],
+        Types = [SkillType.Pierce],
     };
 }

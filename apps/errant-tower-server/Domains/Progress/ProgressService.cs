@@ -1,4 +1,4 @@
-﻿using ErrantTowerServer.Common;
+using ErrantTowerServer.Common;
 using ErrantTowerServer.Domains.Floor;
 using ErrantTowerServer.Domains.Statistics;
 
@@ -11,7 +11,10 @@ public interface IProgressService
     public Task StartExpedition(string userId, FloorGuid floorGuid, BattleStatistics battleStatistics);
 }
 
-public class ProgressService(IProgressRepository progressRepository) : IProgressService
+public class ProgressService(
+    IProgressRepository progressRepository,
+    IHostEnvironment hostEnvironment
+    ) : IProgressService
 {
     private const int BASE_INITIATIVE = 100;
 
@@ -80,6 +83,50 @@ public class ProgressService(IProgressRepository progressRepository) : IProgress
         progress.MaxEnergy = battleStatistics.EnergyPoints;
         progress.Energy = battleStatistics.EnergyPoints;
 
+        progress.FloorTiles = LoadTilesFromCsv(floor.TilesUrl);
+
         await progressRepository.UpdateOne(progress);
+    }
+
+    private FloorTile[] LoadTilesFromCsv(string tilesUrl)
+    {
+        var tilesDirectory = Path.Combine(
+            hostEnvironment.ContentRootPath,
+            "Domains",
+            "Floor",
+            "Data",
+            "Tiles"
+        );
+        var tilesPath = Path.Combine(tilesDirectory, tilesUrl);
+
+        if (!File.Exists(tilesPath))
+        {
+            throw new ApiException("errors.tilesNotFound");
+        }
+
+        var lines = File.ReadAllLines(tilesPath);
+        var tiles = new List<FloorTile>();
+
+        for (int i = 1; i < lines.Length; i++)
+        {
+            var parts = lines[i].Split(',');
+            if (parts.Length != 3)
+            {
+                throw new ApiException("errors.tilesInvalid");
+            }
+
+            if (int.TryParse(parts[0], out var x)
+                && int.TryParse(parts[1], out var y)
+                && Enum.TryParse<FloorTileType>(parts[2], out var type))
+            {
+                tiles.Add(new FloorTile { X = x, Y = y, Type = type });
+            }
+            else
+            {
+                throw new ApiException("errors.tilesInvalid");
+            }
+        }
+
+        return tiles.ToArray();
     }
 }

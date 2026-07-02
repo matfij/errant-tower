@@ -1,4 +1,4 @@
-﻿using ErrantTowerServer.Domains.Enemy;
+using ErrantTowerServer.Domains.Enemy;
 using ErrantTowerServer.Domains.Item;
 
 namespace ErrantTowerServer.Domains.Floor;
@@ -8,9 +8,10 @@ public record struct Floor
     public required FloorGuid Guid { get; set; }
     public required FloorDomain Domain { get; set; }
     public required string ImageUrl { get; set; }
+    public required string TilesUrl { get; set; }
     public required FloorEnemy[] Enemies { get; set; }
+    public required FloorEnemy[] SpecialEnemies { get; set; }
     public required FloorTreasure[] TreasureItemGuids { get; set; }
-    public required string[] NPCGuids { get; set; }
     public required int StartX { get; set; }
     public required int StartY { get; set; }
     public required FloorTile[] Tiles { get; set; }

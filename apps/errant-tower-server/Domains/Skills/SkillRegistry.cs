@@ -1,4 +1,4 @@
-﻿using System.Collections.Frozen;
+using System.Collections.Frozen;
 using ErrantTowerServer.Common;
 using ErrantTowerServer.Domains.Skills.Data;
 
@@ -14,6 +14,7 @@ public static class SkillRegistry
         [SkillGuid.TailWhip] = BeastSkills.TailWhip,
         [SkillGuid.Tackle] = BeastSkills.Tackle,
         [SkillGuid.Cut] = BeastSkills.Cut,
+        [SkillGuid.Peck] = BeastSkills.Peck,
 
         // Blade skills
         [SkillGuid.Slash] = BladeSkills.Slash,
@@ -59,6 +60,7 @@ public enum SkillGuid
     TailWhip = 103,
     Tackle = 104,
     Cut = 105,
+    Peck = 106,
 
     // Blade skills
     Slash = 1001,
