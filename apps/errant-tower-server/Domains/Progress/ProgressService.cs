@@ -99,6 +99,11 @@ public class ProgressService(
         );
         var tilesPath = Path.Combine(tilesDirectory, tilesUrl);
 
+        if (!File.Exists(tilesPath))
+        {
+            throw new ApiException("errors.tilesNotFound");
+        }
+
         var lines = File.ReadAllLines(tilesPath);
         var tiles = new List<FloorTile>();
 
