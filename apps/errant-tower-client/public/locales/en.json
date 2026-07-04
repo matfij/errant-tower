@@ -22,6 +22,15 @@
         "alreadySignedUp": "Already have an account?",
         "signInNow": "Sign in"
     },
+    "explore": {
+        "expeditionLevel": "Expedition level",
+        "start": "Start",
+        "locked": "Locked",
+        "domains": {
+            "dungeon": "Dungeon",
+            "dungeonDescription": "The Tower's lowest reaches are a maze of damp corridors, ruined chambers, and forgotten cellars overrun by vermin and feral beasts. Though lacking the horrors of deeper floors, these halls remain dangerous to the unprepared, where every shadow may conceal another predator, and every expedition is a battle against attrition as much as the creatures that inhabit it."
+        }
+    },
     "errors": {
         "unknown": "Unknown error, please try again later",
         "emailInvalid": "Enter a valid email",

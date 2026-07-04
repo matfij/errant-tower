@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using ErrantTowerServer.Common;
 using ErrantTowerServer.Domains.Equipment;
 using ErrantTowerServer.Domains.Progress;
@@ -14,7 +15,9 @@ using Resend;
 var builder = WebApplication.CreateBuilder(args);
 
 // API docs
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddEndpointsApiExplorer();
 builder
     .Services

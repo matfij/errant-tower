@@ -1,4 +1,4 @@
-﻿using ErrantTowerServer.Domains.Progress;
+using ErrantTowerServer.Domains.Progress;
 using ErrantTowerServer.Domains.Statistics;
 
 namespace ErrantTowerServer.Orchestrator;
@@ -16,10 +16,10 @@ public class ExpeditionService(
 {
     public async Task<GetFloorsResponse> GetFloors(string userId)
     {
-        var floors = await progressService.GetFloors(userId);
+        var domainFloors = await progressService.GetFloors(userId);
         return new GetFloorsResponse
         {
-            Floors = floors
+            DomainFloors = domainFloors
         };
     }
 

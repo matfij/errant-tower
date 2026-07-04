@@ -5,13 +5,22 @@
  * OpenAPI spec version: 1.0
  */
 import {
-  useMutation
+  useMutation,
+  useQuery
 } from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
   QueryClient,
+  QueryFunction,
+  QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
-  UseMutationResult
+  UseMutationResult,
+  UseQueryOptions,
+  UseQueryResult
 } from '@tanstack/react-query';
 
 import type {
@@ -19,6 +28,8 @@ import type {
   CompleteSignInResponse,
   CompleteSignUpRequest,
   CompleteSignUpResponse,
+  GetFloorsResponse,
+  StartExpeditionRequest,
   StartSignInRequest,
   StartSignUpRequest
 } from './definitions';
@@ -262,6 +273,152 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
 
       const mutationOptions = getCompleteSignInMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    
+export const getFloors = (
+    
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetFloorsResponse>(
+      {url: `/expeditions`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+
+
+export const getGetFloorsQueryKey = () => {
+    return [
+    `/expeditions`
+    ] as const;
+    }
+
+    
+export const getGetFloorsQueryOptions = <TData = Awaited<ReturnType<typeof getFloors>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFloors>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetFloorsQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFloors>>> = ({ signal }) => getFloors(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFloors>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetFloorsQueryResult = NonNullable<Awaited<ReturnType<typeof getFloors>>>
+export type GetFloorsQueryError = unknown
+
+
+export function useGetFloors<TData = Awaited<ReturnType<typeof getFloors>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFloors>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFloors>>,
+          TError,
+          Awaited<ReturnType<typeof getFloors>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFloors<TData = Awaited<ReturnType<typeof getFloors>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFloors>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFloors>>,
+          TError,
+          Awaited<ReturnType<typeof getFloors>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFloors<TData = Awaited<ReturnType<typeof getFloors>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFloors>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetFloors<TData = Awaited<ReturnType<typeof getFloors>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFloors>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetFloorsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+
+export const startExpedition = (
+    startExpeditionRequest: StartExpeditionRequest,
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<void>(
+      {url: `/expeditions`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: startExpeditionRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getStartExpeditionMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startExpedition>>, TError,{data: StartExpeditionRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof startExpedition>>, TError,{data: StartExpeditionRequest}, TContext> => {
+
+const mutationKey = ['startExpedition'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof startExpedition>>, {data: StartExpeditionRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  startExpedition(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type StartExpeditionMutationResult = NonNullable<Awaited<ReturnType<typeof startExpedition>>>
+    export type StartExpeditionMutationBody = StartExpeditionRequest
+    export type StartExpeditionMutationError = unknown
+
+    export const useStartExpedition = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startExpedition>>, TError,{data: StartExpeditionRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof startExpedition>>,
+        TError,
+        {data: StartExpeditionRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getStartExpeditionMutationOptions(options);
 
       return useMutation(mutationOptions, queryClient);
     }
