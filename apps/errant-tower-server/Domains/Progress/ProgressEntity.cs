@@ -1,4 +1,4 @@
-﻿using ErrantTowerServer.Domains.Floor;
+using ErrantTowerServer.Domains.Floor;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace ErrantTowerServer.Domains.Progress;
@@ -9,7 +9,8 @@ public class ProgressEntity
     public required string Id { get; set; }
     public required string UserId { get; set; }
 
-    public int CompletedFloors { get; set; } = 0;
+    public FloorGuid UnlockedFloors { get; set; } = FloorGuid.Floor1;
+    public FloorDomain UnlockedDomain { get; set; } = FloorDomain.Dungeon;
     public int Stamina { get; set; } = 3;
 
     public bool IsInExpedition { get; set; } = false;

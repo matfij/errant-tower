@@ -20,6 +20,7 @@ public record struct Floor
 public enum FloorDomain
 {
     Dungeon = 1,
+    Forest = 2,
 }
 
 public record struct FloorTile

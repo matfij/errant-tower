@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using ErrantTowerServer.Domains.Floor;
 using ErrantTowerServer.Domains.Progress;
 
@@ -7,7 +7,7 @@ namespace ErrantTowerServer.Orchestrator;
 public record GetFloorsResponse
 {
     [Required]
-    public required FloorTeaser[] Floors { get; init; }
+    public required DomainFloors[] DomainFloors { get; set; }
 }
 
 public record StartExpeditionRequest

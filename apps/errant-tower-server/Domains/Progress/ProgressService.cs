@@ -7,7 +7,7 @@ namespace ErrantTowerServer.Domains.Progress;
 public interface IProgressService
 {
     public Task CreateInitial(string userId);
-    public Task<FloorTeaser[]> GetFloors(string userId);
+    public Task<DomainFloors[]> GetFloors(string userId);
     public Task StartExpedition(string userId, FloorGuid floorGuid, BattleStatistics battleStatistics);
 }
 
@@ -28,23 +28,43 @@ public class ProgressService(
         await progressRepository.CreateOne(newProgress);
     }
 
-    public async Task<FloorTeaser[]> GetFloors(string userId)
+    public async Task<DomainFloors[]> GetFloors(string userId)
     {
         var progress = await progressRepository.FindOneByUserId(userId)
             ?? throw new ApiException("errors.progressNotFound");
-        var floors = new List<FloorTeaser>();
-        var maxFloors = Math.Min(FloorRegistry.GetFloorCount(), progress.CompletedFloors + 3);
-        for (int level = 0; level < maxFloors; level++)
+
+        var domainFloorsMap = new Dictionary<FloorDomain, (List<FloorTeaser> Floors, bool IsUnlocked)>();
+        var floors = FloorRegistry.GetAllFloors();
+
+        foreach (var floor in floors)
         {
-            var nextFloor = FloorRegistry.GetFloor((FloorGuid)level);
-            floors.Add(new()
+            var teaser = new FloorTeaser
             {
-                FloorGuid = nextFloor.Guid,
-                FloorDomain = nextFloor.Domain,
-                IsUnlocked = progress.CompletedFloors >= (int)nextFloor.Guid
-            });
+                Guid = floor.Guid,
+                IsUnlocked = progress.UnlockedFloors >= floor.Guid
+            };
+            if (domainFloorsMap.TryGetValue(floor.Domain, out var existing))
+            {
+                existing.Floors.Add(teaser);
+            }
+            else
+            {
+                domainFloorsMap[floor.Domain] = (
+                    new List<FloorTeaser> { teaser },
+                    (int)progress.UnlockedDomain >= (int)floor.Domain
+                );
+            }
         }
-        return [.. floors];
+
+        return domainFloorsMap
+            .Select(kvp => new DomainFloors
+            {
+                Domain = kvp.Key,
+                IsUnlocked = kvp.Value.IsUnlocked,
+                Floors = [.. kvp.Value.Floors],
+            })
+            .OrderBy(x => x.Domain)
+            .ToArray();
     }
 
     public async Task StartExpedition(
@@ -64,7 +84,7 @@ public class ProgressService(
         }
 
         var floor = FloorRegistry.GetFloor(floorGuid);
-        if (progress.CompletedFloors < (int)floor.Guid)
+        if ((int)progress.UnlockedFloors < (int)floor.Guid)
         {
             throw new ApiException("errors.floorLocked");
         }

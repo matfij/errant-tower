@@ -27,7 +27,7 @@ export const SignUpPage = () => {
     useEffect(() => {
         if (completeSignUp.isSuccess && completeSignUp.data) {
             signIn({ username: completeSignUp.data.username });
-            navigate(routes.home);
+            navigate(routes.character);
         }
     }, [signIn, navigate, completeSignUp.isSuccess, completeSignUp.data]);
 

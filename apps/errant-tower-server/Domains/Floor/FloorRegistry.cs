@@ -22,6 +22,8 @@ public static class FloorRegistry
         return floor;
     }
 
+    public static Floor[] GetAllFloors() => _floors.Values.ToArray();
+
     public static int GetFloorCount() => _floors.Count;
 }
 

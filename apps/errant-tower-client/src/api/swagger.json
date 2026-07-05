@@ -158,6 +158,62 @@
                     }
                 }
             }
+        },
+        "/expeditions": {
+            "get": {
+                "tags": ["Expedition"],
+                "operationId": "getFloors",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetFloorsResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetFloorsResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetFloorsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Expedition"],
+                "operationId": "startExpedition",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartExpeditionRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartExpeditionRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartExpeditionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -226,6 +282,69 @@
                 },
                 "additionalProperties": false
             },
+            "DomainFloors": {
+                "required": ["domain", "floors", "isUnlocked"],
+                "type": "object",
+                "properties": {
+                    "isUnlocked": {
+                        "type": "boolean"
+                    },
+                    "domain": {
+                        "$ref": "#/components/schemas/FloorDomain"
+                    },
+                    "floors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FloorTeaser"
+                        }
+                    }
+                },
+                "additionalProperties": false
+            },
+            "FloorDomain": {
+                "enum": ["Dungeon"],
+                "type": "string"
+            },
+            "FloorGuid": {
+                "enum": ["Floor1", "Floor2", "Floor3", "Floor4", "Floor5", "Floor6"],
+                "type": "string"
+            },
+            "FloorTeaser": {
+                "required": ["guid"],
+                "type": "object",
+                "properties": {
+                    "isUnlocked": {
+                        "type": "boolean"
+                    },
+                    "guid": {
+                        "$ref": "#/components/schemas/FloorGuid"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "GetFloorsResponse": {
+                "required": ["domainFloors"],
+                "type": "object",
+                "properties": {
+                    "domainFloors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DomainFloors"
+                        }
+                    }
+                },
+                "additionalProperties": false
+            },
+            "StartExpeditionRequest": {
+                "required": ["floorGuid"],
+                "type": "object",
+                "properties": {
+                    "floorGuid": {
+                        "$ref": "#/components/schemas/FloorGuid"
+                    }
+                },
+                "additionalProperties": false
+            },
             "StartSignInRequest": {
                 "required": ["email"],
                 "type": "object",
@@ -273,6 +392,9 @@
     "tags": [
         {
             "name": "Auth"
+        },
+        {
+            "name": "Expedition"
         }
     ]
 }
