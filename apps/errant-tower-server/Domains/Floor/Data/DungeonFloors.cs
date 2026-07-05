@@ -26,8 +26,8 @@ public static class DungeonFloors
             new FloorTreasure { ItemGuid = ItemGuid.CopperBar, EncounterChance = 0.5 },
             new FloorTreasure { ItemGuid = ItemGuid.LeadBar, EncounterChance = 0.5 },
         ],
-        StartX = 0,
-        StartY = 0,
+        StartX = 60,
+        StartY = 460,
         Tiles = []
     };
 

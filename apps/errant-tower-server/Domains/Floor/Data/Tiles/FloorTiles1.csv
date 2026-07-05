@@ -732,6 +732,7 @@ X,Y,Type
 900,40,Wall
 910,40,Wall
 920,40,Wall
+960,40,Finish
 1000,40,Wall
 1010,40,Wall
 1020,40,Wall
@@ -5172,6 +5173,7 @@ X,Y,Type
 30,460,Wall
 40,460,Wall
 50,460,Wall
+60,460,Start
 130,460,Wall
 140,460,Wall
 360,460,Wall
@@ -5215,6 +5217,7 @@ X,Y,Type
 140,470,Wall
 360,470,Wall
 370,470,Wall
+530,470,Battle
 790,470,Battle
 1270,470,Wall
 1280,470,Wall
