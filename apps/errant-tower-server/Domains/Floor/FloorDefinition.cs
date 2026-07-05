@@ -1,3 +1,4 @@
+using ErrantTowerServer.Common;
 using ErrantTowerServer.Domains.Enemy;
 using ErrantTowerServer.Domains.Item;
 
@@ -5,16 +6,20 @@ namespace ErrantTowerServer.Domains.Floor;
 
 public record struct Floor
 {
-    public required FloorGuid Guid { get; set; }
-    public required FloorDomain Domain { get; set; }
-    public required string ImageUrl { get; set; }
-    public required string TilesUrl { get; set; }
-    public required FloorEnemy[] Enemies { get; set; }
-    public required FloorEnemy[] SpecialEnemies { get; set; }
-    public required FloorTreasure[] TreasureItemGuids { get; set; }
-    public required int StartX { get; set; }
-    public required int StartY { get; set; }
-    public required FloorTile[] Tiles { get; set; }
+    public required FloorGuid Guid { get; init; }
+    public required FloorDomain Domain { get; init; }
+    public required string ImageUrl { get; init; }
+    public required string TilesUrl { get; init; }
+    public required FloorEnemy[] Enemies { get; init; }
+    public required double SpecialEnemyChance { get; init; }
+    public required FloorEnemy[] SpecialEnemies { get; init; }
+    public required double TreasureChance { get; init; }
+    public required FloorTreasure[] TreasureItemGuids { get; init; }
+    public required int TreasureSilverMin { get; init; }
+    public required int TreasureSilverMax { get; init; }
+    public required int StartX { get; init; }
+    public required int StartY { get; init; }
+    public required FloorTile[] Tiles { get; init; }
 }
 
 public enum FloorDomain
@@ -25,9 +30,9 @@ public enum FloorDomain
 
 public record struct FloorTile
 {
-    public required int X { get; set; }
-    public required int Y { get; set; }
-    public required FloorTileType Type { get; set; }
+    public required int X { get; init; }
+    public required int Y { get; init; }
+    public required FloorTileType Type { get; init; }
 }
 
 public enum FloorTileType
@@ -41,14 +46,14 @@ public enum FloorTileType
     Finish = 6,
 }
 
-public record struct FloorEnemy
+public record struct FloorEnemy : IWeightedItem<EnemyGuid>
 {
-    public required EnemyGuid EnemyGuid { get; set; }
-    public required double EncounterChance { get; set; }
+    public required EnemyGuid Guid { get; init; }
+    public required double Chance { get; init; }
 }
 
-public record struct FloorTreasure
+public record struct FloorTreasure : IWeightedItem<ItemGuid>
 {
-    public required ItemGuid ItemGuid { get; set; }
-    public required double EncounterChance { get; set; }
+    public required ItemGuid Guid { get; init; }
+    public required double Chance { get; init; }
 }

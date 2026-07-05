@@ -41,4 +41,43 @@ public class Utils
         var stored = Convert.FromBase64String(hash);
         return CryptographicOperations.FixedTimeEquals(computed, stored);
     }
+
+    public static bool CheckChance(double chance)
+    {
+        return chance > Random.Shared.NextDouble();
+    }
+
+    public static int RandRange(int min, int max)
+    {
+        return Random.Shared.Next(min, max);
+    }
+
+    public static double RandRange(double min, double max)
+    {
+        return (Random.Shared.NextDouble() * (max - min)) + min;
+    }
+
+    public static TGuid GetWeightedRandomItem<TItem, TGuid>(IReadOnlyList<TItem> items)
+        where TItem : IWeightedItem<TGuid>
+    {
+        var totalChances = items.Sum(x => x.Chance);
+        var targetChance = RandRange(0, totalChances);
+
+        foreach (var item in items)
+        {
+            targetChance -= item.Chance;
+            if (targetChance <= 0)
+            {
+                return item.Guid;
+            }
+        }
+
+        return items[^1].Guid;
+    }
+}
+
+public interface IWeightedItem<out TGuid>
+{
+    public TGuid Guid { get; }
+    public double Chance { get; }
 }

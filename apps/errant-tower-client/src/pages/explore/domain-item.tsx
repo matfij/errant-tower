@@ -1,9 +1,13 @@
 import styles from './explore-page.module.scss';
-import type { DomainFloors } from '../../api/generated/definitions';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AppSegmentButton } from '../../common/components/app-segment-button';
-import { useState } from 'react';
+import type { DomainFloors } from '../../api/generated/definitions';
+import { wrapMutation } from '../../api/api-proxy';
+import { useStartExpedition } from '../../api/generated/hooks';
 import { arabicToRoman } from '../../common/utils';
+import { AppSegmentButton } from '../../common/components/app-segment-button';
+import { useNavigate } from 'react-router';
+import { routes } from '../../common/config';
 
 interface DomainItemProps {
     domain: DomainFloors;
@@ -11,9 +15,22 @@ interface DomainItemProps {
 
 export const DomainItem = (props: DomainItemProps) => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
+    const startExpedition = wrapMutation(useStartExpedition)();
     const [selectedFloorGuid, setSelectedFloorGuid] = useState(props.domain.floors[0].guid);
 
-    const onStartExpedition = () => {};
+    const onStartExpedition = () => {
+        const selectedFloor = props.domain.floors.find((floor) => floor.guid === selectedFloorGuid);
+        if (selectedFloor) {
+            startExpedition.call({ floorGuid: selectedFloor.guid });
+        }
+    };
+
+    useEffect(() => {
+        if (startExpedition.isSuccess) {
+            navigate(routes.expedition);
+        }
+    }, [startExpedition.isSuccess, navigate]);
 
     return (
         <div key={props.domain.domain} className={styles.domainItem}>
@@ -35,10 +52,16 @@ export const DomainItem = (props: DomainItemProps) => {
                         }))}
                     />
                 </div>
-                <button className={styles.startButton} onClick={onStartExpedition}>
+                <button
+                    disabled={startExpedition.isLoading}
+                    onClick={onStartExpedition}
+                    className={styles.startButton}>
                     {t('explore.start')}
                 </button>
             </div>
+            {startExpedition.errors?.map((error) => (
+                <p className={styles.startError}>{t(error.key)}</p>
+            ))}
         </div>
     );
 };
