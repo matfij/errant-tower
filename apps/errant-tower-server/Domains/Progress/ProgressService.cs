@@ -193,7 +193,7 @@ public class ProgressService(
                         };
                     }
                 case FloorTileType.Treasure:
-                    if (Utils.CheckChance(floor.SpecialEnemyChance))
+                    if (Utils.CheckChance(floor.TreasureChance))
                     {
                         var itemGuid
                             = Utils.GetWeightedRandomItem<FloorTreasure, ItemGuid>(floor.TreasureItemGuids);
