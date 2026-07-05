@@ -1,7 +1,6 @@
 using ErrantTowerServer.Common;
 using ErrantTowerServer.Domains.Floor;
 using ErrantTowerServer.Domains.Statistics;
-using ErrantTowerServer.Orchestrator;
 
 namespace ErrantTowerServer.Domains.Progress;
 
@@ -64,6 +63,7 @@ public class ProgressService(
                 IsUnlocked = kvp.Value.IsUnlocked,
                 Floors = [.. kvp.Value.Floors],
             })
+            .OrderBy(x => x.Domain)
             .ToArray();
     }
 

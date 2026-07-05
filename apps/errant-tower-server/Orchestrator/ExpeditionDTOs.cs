@@ -8,17 +8,6 @@ public record GetFloorsResponse
 {
     [Required]
     public required DomainFloors[] DomainFloors { get; set; }
-
-}
-
-public record DomainFloors
-{
-    [Required]
-    public required bool IsUnlocked { get; set; }
-    [Required]
-    public required FloorDomain Domain { get; init; }
-    [Required]
-    public required FloorTeaser[] Floors { get; init; }
 }
 
 public record StartExpeditionRequest
