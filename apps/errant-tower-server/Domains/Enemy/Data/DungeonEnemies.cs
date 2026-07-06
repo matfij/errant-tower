@@ -26,7 +26,7 @@ public static class DungeonEnemies
             DodgeChance = 0.3,
         },
         Skills = [SkillGuid.Scratch, SkillGuid.Scratch, SkillGuid.Bite],
-        Loots = [new() { ItemGuid = ItemGuid.WornHide, Chance = 0.3 }],
+        Loots = [new() { Guid = ItemGuid.WornHide, Chance = 0.3 }],
     };
 
     public static readonly Enemy chembr = new()
@@ -48,7 +48,7 @@ public static class DungeonEnemies
             DodgeChance = 0.1,
         },
         Skills = [SkillGuid.Scratch, SkillGuid.Bite, SkillGuid.Bite],
-        Loots = [new() { ItemGuid = ItemGuid.WornHide, Chance = 0.4 }],
+        Loots = [new() { Guid = ItemGuid.WornHide, Chance = 0.4 }],
     };
 
     public static readonly Enemy kerramid = new()
@@ -71,7 +71,7 @@ public static class DungeonEnemies
             BlockPower = 0.5,
         },
         Skills = [SkillGuid.Tackle, SkillGuid.Bite, SkillGuid.TailWhip],
-        Loots = [new() { ItemGuid = ItemGuid.SmallClaw, Chance = 0.5 }],
+        Loots = [new() { Guid = ItemGuid.SmallClaw, Chance = 0.5 }],
     };
 
     public static readonly Enemy glowpede = new()
@@ -96,8 +96,8 @@ public static class DungeonEnemies
         Skills = [SkillGuid.Tackle, SkillGuid.Bite, SkillGuid.TailWhip],
         Loots =
         [
-            new() { ItemGuid = ItemGuid.SmallClaw, Chance = 0.7 },
-            new() { ItemGuid = ItemGuid.ShinyClaw, Chance = 0.2 },
+            new() { Guid = ItemGuid.SmallClaw, Chance = 0.7 },
+            new() { Guid = ItemGuid.ShinyClaw, Chance = 0.2 },
         ],
     };
 
@@ -124,9 +124,9 @@ public static class DungeonEnemies
         Skills = [SkillGuid.Cut, SkillGuid.Bite, SkillGuid.TailWhip],
         Loots =
         [
-            new() { ItemGuid = ItemGuid.WornHide, Chance = 0.2 },
-            new() { ItemGuid = ItemGuid.SmallClaw, Chance = 0.2 },
-            new() { ItemGuid = ItemGuid.CopperBar, Chance = 0.2 },
+            new() { Guid = ItemGuid.WornHide, Chance = 0.2 },
+            new() { Guid = ItemGuid.SmallClaw, Chance = 0.2 },
+            new() { Guid = ItemGuid.CopperBar, Chance = 0.2 },
         ],
     };
 
@@ -150,8 +150,8 @@ public static class DungeonEnemies
         Skills = [SkillGuid.Tackle, SkillGuid.Bite, SkillGuid.TailWhip],
         Loots =
         [
-            new() { ItemGuid = ItemGuid.WornHide, Chance = 0.7 },
-            new() { ItemGuid = ItemGuid.ShinyHide, Chance = 0.2 },
+            new() { Guid = ItemGuid.WornHide, Chance = 0.7 },
+            new() { Guid = ItemGuid.ShinyHide, Chance = 0.2 },
         ],
     };
 
@@ -175,7 +175,7 @@ public static class DungeonEnemies
             DodgeChance = 0.4,
         },
         Skills = [SkillGuid.Peck, SkillGuid.Scratch],
-        Loots = [new() { ItemGuid = ItemGuid.WornHide, Chance = 0.4 }],
+        Loots = [new() { Guid = ItemGuid.WornHide, Chance = 0.4 }],
     };
 
     public static readonly Enemy morus = new()
@@ -201,8 +201,8 @@ public static class DungeonEnemies
         Skills = [SkillGuid.Slash, SkillGuid.SwiftStrike, SkillGuid.CrusherBlow],
         Loots =
         [
-            new() { ItemGuid = ItemGuid.CopperBar, Chance = 0.6 },
-            new() { ItemGuid = ItemGuid.LeadBar, Chance = 0.2 },
+            new() { Guid = ItemGuid.CopperBar, Chance = 0.6 },
+            new() { Guid = ItemGuid.LeadBar, Chance = 0.2 },
         ],
     };
 
@@ -225,7 +225,7 @@ public static class DungeonEnemies
             DodgeChance = 0.2,
         },
         Skills = [SkillGuid.Scratch, SkillGuid.Bite, SkillGuid.Bite],
-        Loots = [new() { ItemGuid = ItemGuid.WornHide, Chance = 0.6 }],
+        Loots = [new() { Guid = ItemGuid.WornHide, Chance = 0.6 }],
     };
 
     public static readonly Enemy regewur = new()
@@ -248,6 +248,6 @@ public static class DungeonEnemies
             BlockPower = 0.5,
         },
         Skills = [SkillGuid.Tackle, SkillGuid.Bite, SkillGuid.Slash],
-        Loots = [new() { ItemGuid = ItemGuid.SmallClaw, Chance = 0.5 }],
+        Loots = [new() { Guid = ItemGuid.SmallClaw, Chance = 0.5 }],
     };
 }

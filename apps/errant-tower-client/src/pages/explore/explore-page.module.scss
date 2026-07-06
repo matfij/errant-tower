@@ -55,3 +55,10 @@
 .startButton {
     @include secondaryButton;
 }
+
+.startError {
+    width: 100%;
+    margin-top: $spacing-1;
+    text-align: right;
+    color: $color-red-500;
+}

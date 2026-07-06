@@ -9,8 +9,9 @@
 }
 
 .segmentItem {
+    min-width: 2rem;
     appearance: none;
-    padding: $spacing-2 $spacing-4;
+    padding: $spacing-2 0;
     border: 1px solid transparent;
     border-radius: $radius-md;
     background: transparent;

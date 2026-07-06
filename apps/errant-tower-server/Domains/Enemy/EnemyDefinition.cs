@@ -1,3 +1,4 @@
+using ErrantTowerServer.Common;
 using ErrantTowerServer.Domains.Item;
 using ErrantTowerServer.Domains.Skills;
 using ErrantTowerServer.Domains.Statistics;
@@ -33,8 +34,8 @@ public enum EnemyRace
     Dragon = 102,
 }
 
-public readonly record struct EnemyLoot
+public readonly record struct EnemyLoot : IWeightedItem<ItemGuid>
 {
-    public required ItemGuid ItemGuid { get; init; }
+    public required ItemGuid Guid { get; init; }
     public required double Chance { get; init; }
 }

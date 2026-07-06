@@ -1,5 +1,7 @@
 using ErrantTowerServer.Common;
+using ErrantTowerServer.Domains.Enemy;
 using ErrantTowerServer.Domains.Floor;
+using ErrantTowerServer.Domains.Item;
 using ErrantTowerServer.Domains.Statistics;
 
 namespace ErrantTowerServer.Domains.Progress;
@@ -103,9 +105,11 @@ public class ProgressService(
         progress.MaxEnergy = battleStatistics.EnergyPoints;
         progress.Energy = battleStatistics.EnergyPoints;
 
-        progress.FloorTiles = LoadTilesFromCsv(floor.TilesUrl);
+        var tiles = LoadTilesFromCsv(floor.TilesUrl);
 
-        await progressRepository.UpdateOne(progress);
+        progress.FloorTiles = MapFloorTiles(floor, tiles);
+
+        _ = await progressRepository.UpdateOne(progress);
     }
 
     private FloorTile[] LoadTilesFromCsv(string tilesUrl)
@@ -148,5 +152,75 @@ public class ProgressService(
         }
 
         return tiles.ToArray();
+    }
+
+    private FloorTileInfo[] MapFloorTiles(ErrantTowerServer.Domains.Floor.Floor floor, FloorTile[] tiles)
+    {
+        return [.. tiles.Select<FloorTile, FloorTileInfo>(tile =>
+        {
+            switch (tile.Type)
+            {
+                case FloorTileType.Route:
+                case FloorTileType.Wall:
+                case FloorTileType.Start:
+                case FloorTileType.Finish:
+                    return new()
+                    {
+                        X = tile.X,
+                        Y = tile.Y,
+                        Type = tile.Type
+                    };
+                case FloorTileType.Battle:
+                    if (Utils.CheckChance(floor.SpecialEnemyChance))
+                    {
+                        var enemyGuid
+                            = Utils.GetWeightedRandomItem<FloorEnemy, EnemyGuid>(floor.SpecialEnemies);
+                        return new()
+                        {
+                            X = tile.X,
+                            Y = tile.Y,
+                            Type = tile.Type,
+                            EnemyGuid = enemyGuid
+                        };
+                    }
+                    else
+                    {
+                        return new()
+                        {
+                            X = tile.X,
+                            Y = tile.Y,
+                            Type = FloorTileType.Route
+                        };
+                    }
+                case FloorTileType.Treasure:
+                    if (Utils.CheckChance(floor.TreasureChance))
+                    {
+                        var itemGuid
+                            = Utils.GetWeightedRandomItem<FloorTreasure, ItemGuid>(floor.TreasureItemGuids);
+                        var silver = Utils.RandRange(floor.TreasureSilverMin, floor.TreasureSilverMax);
+                        return new()
+                        {
+                            X = tile.X,
+                            Y = tile.Y,
+                            Type = tile.Type,
+                            ItemGuid = itemGuid,
+                            Silver = silver
+                        };
+                    }
+                    else
+                    {
+                        return new()
+                        {
+                            X = tile.X,
+                            Y = tile.Y,
+                            Type = FloorTileType.Route
+                        };
+                    }
+                case FloorTileType.NPC:
+                    throw new ApiException("errors.npcFeatureUnsupported");
+                default:
+                    throw new ApiException("errors.tilesInvalid");
+            }
+        })];
     }
 }
