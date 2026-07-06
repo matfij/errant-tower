@@ -219,7 +219,7 @@ public class ProgressService(
                 case FloorTileType.NPC:
                     throw new ApiException("errors.npcFeatureUnsupported");
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(tile.Type), tile.Type, null);
+                    throw new ApiException("errors.tilesInvalid");
             }
         })];
     }

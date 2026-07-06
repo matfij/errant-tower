@@ -20,10 +20,7 @@ export const DomainItem = (props: DomainItemProps) => {
     const [selectedFloorGuid, setSelectedFloorGuid] = useState(props.domain.floors[0].guid);
 
     const onStartExpedition = () => {
-        const selectedFloor = props.domain.floors.find((floor) => floor.guid === selectedFloorGuid);
-        if (selectedFloor) {
-            startExpedition.call({ floorGuid: selectedFloor.guid });
-        }
+        startExpedition.call({ floorGuid: selectedFloorGuid });
     };
 
     useEffect(() => {
@@ -60,7 +57,7 @@ export const DomainItem = (props: DomainItemProps) => {
                 </button>
             </div>
             {startExpedition.errors?.map((error) => (
-                <p className={styles.startError}>{t(error.key)}</p>
+                <p key={error.key} className={styles.startError}>{t(error.key)}</p>
             ))}
         </div>
     );

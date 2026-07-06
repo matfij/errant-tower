@@ -49,7 +49,7 @@ public class Utils
 
     public static int RandRange(int min, int max)
     {
-        return Random.Shared.Next(min, max);
+        return Random.Shared.Next(min, max + 1);
     }
 
     public static double RandRange(double min, double max)
