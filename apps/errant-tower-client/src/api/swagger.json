@@ -5,7 +5,7 @@
         "version": "1.0"
     },
     "paths": {
-        "/auth/sign-up/start": {
+        "/auth/sign-up-start": {
             "post": {
                 "tags": ["Auth"],
                 "operationId": "startSignUp",
@@ -35,7 +35,7 @@
                 }
             }
         },
-        "/auth/sign-up/complete": {
+        "/auth/sign-up-complete": {
             "post": {
                 "tags": ["Auth"],
                 "operationId": "completeSignUp",
@@ -82,7 +82,7 @@
                 }
             }
         },
-        "/auth/sign-in/start": {
+        "/auth/sign-in-start": {
             "post": {
                 "tags": ["Auth"],
                 "operationId": "startSignIn",
@@ -112,7 +112,7 @@
                 }
             }
         },
-        "/auth/sign-in/complete": {
+        "/auth/sign-in-complete": {
             "post": {
                 "tags": ["Auth"],
                 "operationId": "completeSignIn",
@@ -159,7 +159,7 @@
                 }
             }
         },
-        "/expeditions": {
+        "/get-floors": {
             "get": {
                 "tags": ["Expedition"],
                 "operationId": "getFloors",
@@ -185,7 +185,9 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/start-expedition": {
             "post": {
                 "tags": ["Expedition"],
                 "operationId": "startExpedition",
@@ -211,6 +213,34 @@
                 "responses": {
                     "200": {
                         "description": "OK"
+                    }
+                }
+            }
+        },
+        "/get-expedition": {
+            "get": {
+                "tags": ["Expedition"],
+                "operationId": "getExpedition",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetExpeditionResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetExpeditionResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetExpeditionResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -302,7 +332,7 @@
                 "additionalProperties": false
             },
             "FloorDomain": {
-                "enum": ["Dungeon"],
+                "enum": ["Dungeon", "Forest"],
                 "type": "string"
             },
             "FloorGuid": {
@@ -318,6 +348,97 @@
                     },
                     "guid": {
                         "$ref": "#/components/schemas/FloorGuid"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "FloorTile": {
+                "required": ["type", "x", "y"],
+                "type": "object",
+                "properties": {
+                    "x": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "y": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/FloorTileType"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "FloorTileType": {
+                "enum": ["Start", "Route", "Wall", "Battle", "Treasure", "NPC", "Finish"],
+                "type": "string"
+            },
+            "GetExpeditionResponse": {
+                "required": [
+                    "energy",
+                    "floorGuid",
+                    "floorImageUrl",
+                    "floorTiles",
+                    "health",
+                    "initiative",
+                    "mana",
+                    "maxEnergy",
+                    "maxHealth",
+                    "maxMana",
+                    "x",
+                    "y"
+                ],
+                "type": "object",
+                "properties": {
+                    "floorGuid": {
+                        "$ref": "#/components/schemas/FloorGuid"
+                    },
+                    "floorImageUrl": {
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "initiative": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "maxHealth": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "health": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "maxMana": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "mana": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "maxEnergy": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "energy": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "x": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "y": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "floorTiles": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FloorTile"
+                        }
                     }
                 },
                 "additionalProperties": false

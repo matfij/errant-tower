@@ -11,4 +11,5 @@ export type FloorDomain = typeof FloorDomain[keyof typeof FloorDomain];
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FloorDomain = {
   Dungeon: 'Dungeon',
+  Forest: 'Forest',
 } as const;

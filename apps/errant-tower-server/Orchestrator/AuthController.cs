@@ -10,7 +10,7 @@ namespace ErrantTowerServer.Orchestrator;
 [Route("auth")]
 public class AuthController(IAuthService authService) : ControllerBase
 {
-    [HttpPost("sign-up/start")]
+    [HttpPost("sign-up-start")]
     [EndpointName("startSignUp")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> StartSignUp([FromBody] StartSignUpRequest request)
@@ -19,7 +19,7 @@ public class AuthController(IAuthService authService) : ControllerBase
         return Ok();
     }
 
-    [HttpPost("sign-up/complete")]
+    [HttpPost("sign-up-complete")]
     [EndpointName("completeSignUp")]
     [ProducesResponseType(typeof(CompleteSignUpResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> CompleteSignUp([FromBody] CompleteSignUpRequest request)
@@ -29,7 +29,7 @@ public class AuthController(IAuthService authService) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("sign-in/start")]
+    [HttpPost("sign-in-start")]
     [EndpointName("startSignIn")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> StartSignIn([FromBody] StartSignInRequest request)
@@ -38,7 +38,7 @@ public class AuthController(IAuthService authService) : ControllerBase
         return Ok();
     }
 
-    [HttpPost("sign-in/complete")]
+    [HttpPost("sign-in-complete")]
     [EndpointName("completeSignIn")]
     [ProducesResponseType(typeof(CompleteSignInResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> CompleteSignIn([FromBody] CompleteSignInRequest request)

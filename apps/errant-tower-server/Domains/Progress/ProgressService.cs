@@ -11,6 +11,7 @@ public interface IProgressService
     public Task CreateInitial(string userId);
     public Task<DomainFloors[]> GetFloors(string userId);
     public Task StartExpedition(string userId, FloorGuid floorGuid, BattleStatistics battleStatistics);
+    public Task<Expedition> GetExpedition(string userId);
 }
 
 public class ProgressService(
@@ -110,6 +111,43 @@ public class ProgressService(
         progress.FloorTiles = MapFloorTiles(floor, tiles);
 
         _ = await progressRepository.UpdateOne(progress);
+    }
+
+    public async Task<Expedition> GetExpedition(string userId)
+    {
+        var progress = await progressRepository.FindOneByUserId(userId)
+            ?? throw new ApiException("errors.progressNotFound");
+
+        if (!progress.IsInExpedition)
+        {
+            throw new ApiException("errors.expeditionNotStarted");
+        }
+
+        var floor = FloorRegistry.GetFloor(progress.CurrentFloor);
+
+        var tiles = progress.FloorTiles.Select<FloorTileInfo, FloorTile>(tile => new()
+        {
+            X = tile.X,
+            Y = tile.Y,
+            Type = tile.Type,
+            // Filter out specific encounter/treasure data
+        }).ToArray();
+
+        return new Expedition
+        {
+            FloorGuid = progress.CurrentFloor,
+            FloorImageUrl = floor.ImageUrl,
+            Initiative = progress.Initiative,
+            MaxHealth = progress.MaxHealth,
+            Health = progress.Health,
+            MaxMana = progress.MaxMana,
+            Mana = progress.Mana,
+            MaxEnergy = progress.MaxEnergy,
+            Energy = progress.Energy,
+            X = progress.X,
+            Y = progress.Y,
+            FloorTiles = tiles,
+        };
     }
 
     private FloorTile[] LoadTilesFromCsv(string tilesUrl)

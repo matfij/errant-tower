@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ErrantTowerServer.Orchestrator;
@@ -8,7 +8,7 @@ namespace ErrantTowerServer.Orchestrator;
 [Route("expeditions")]
 public class ExpeditionController(IExpeditionService expeditionService) : ControllerBase
 {
-    [HttpGet]
+    [HttpGet("/get-floors")]
     [EndpointName("getFloors")]
     [ProducesResponseType(typeof(GetFloorsResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetFloors()
@@ -18,7 +18,7 @@ public class ExpeditionController(IExpeditionService expeditionService) : Contro
         return Ok(result);
     }
 
-    [HttpPost]
+    [HttpPost("/start-expedition")]
     [EndpointName("startExpedition")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> StartExpedition([FromBody] StartExpeditionRequest request)
@@ -27,4 +27,15 @@ public class ExpeditionController(IExpeditionService expeditionService) : Contro
         await expeditionService.StartExpedition(userId, request);
         return Ok();
     }
+
+    [HttpGet("/get-expedition")]
+    [EndpointName("getExpedition")]
+    [ProducesResponseType(typeof(GetExpeditionResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetExpedition()
+    {
+        var userId = User.GetUserId();
+        var result = await expeditionService.GetExpedition(userId);
+        return Ok(result);
+    }
+
 }
