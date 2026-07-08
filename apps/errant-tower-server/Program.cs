@@ -124,6 +124,9 @@ builder
 builder.Services.AddTransient<IResend, ResendClient>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
+// WebSocket
+builder.Services.AddSignalR();
+
 // Domain services
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -157,6 +160,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ExpeditionHub>("/hubs/expedition");
 
 SkillRegistry.ValidateAll();
 

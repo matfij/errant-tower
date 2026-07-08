@@ -3,8 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { wrapQuery } from '../../api/api-proxy';
 import type { GetExpeditionResponse } from '../../api/generated/definitions';
 import { useGetExpedition } from '../../api/generated/hooks';
-
-const PLAYER_SPEED = 5;
+import { ExpeditionHub, MoveDirection, type MoveResponse } from './expedition-hub';
 
 export const ExpeditionPage = () => {
     const expedition = wrapQuery<GetExpeditionResponse>(useGetExpedition)();
@@ -15,6 +14,10 @@ export const ExpeditionPage = () => {
 
     const cameraX = position.x - viewport.width / 2;
     const cameraY = position.y - viewport.height / 2;
+
+    useEffect(() => {
+        ExpeditionHub.connect().catch(console.error);
+    }, []);
 
     useEffect(() => {
         if (expedition.data && !hasInitializedRef.current) {
@@ -42,30 +45,41 @@ export const ExpeditionPage = () => {
             if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
                 event.preventDefault();
             }
-            setPosition(({ x, y }) => {
-                switch (event.key) {
-                    case 'ArrowUp':
-                    case 'w':
-                        y -= PLAYER_SPEED;
-                        break;
-                    case 'ArrowDown':
-                    case 's':
-                        y += PLAYER_SPEED;
-                        break;
-                    case 'ArrowLeft':
-                    case 'a':
-                        x -= PLAYER_SPEED;
-                        break;
-                    case 'ArrowRight':
-                    case 'd':
-                        x += PLAYER_SPEED;
-                        break;
-                }
-                return { x, y };
+
+            switch (event.key) {
+                case 'ArrowUp':
+                case 'w':
+                    ExpeditionHub.move(MoveDirection.Up);
+                    break;
+                case 'ArrowDown':
+                case 's':
+                    ExpeditionHub.move(MoveDirection.Down);
+                    break;
+                case 'ArrowLeft':
+                case 'a':
+                    ExpeditionHub.move(MoveDirection.Left);
+                    break;
+                case 'ArrowRight':
+                case 'd':
+                    ExpeditionHub.move(MoveDirection.Right);
+                    break;
+            }
+        };
+
+        const updatePosition = (response: MoveResponse) => {
+            setPosition({
+                x: response.x,
+                y: response.y,
             });
         };
+
         window.addEventListener('keydown', onKeyDown);
-        return () => window.removeEventListener('keydown', onKeyDown);
+        ExpeditionHub.onPlayerMoved(updatePosition);
+
+        return () => {
+            window.removeEventListener('keydown', onKeyDown);
+            ExpeditionHub.offPlayerMoved(updatePosition);
+        };
     }, []);
 
     return (

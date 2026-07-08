@@ -1,3 +1,4 @@
+using ErrantTowerServer.Common;
 using ErrantTowerServer.Domains.Progress;
 using ErrantTowerServer.Domains.Statistics;
 
@@ -8,6 +9,7 @@ public interface IExpeditionService
     public Task<GetFloorsResponse> GetFloors(string userId);
     public Task StartExpedition(string userId, StartExpeditionRequest request);
     public Task<GetExpeditionResponse> GetExpedition(string userId);
+    public Task<MoveResponse> Move(string userId, MoveRequest request);
 }
 
 public class ExpeditionService(
@@ -15,6 +17,8 @@ public class ExpeditionService(
     IStatisticsService statisticsService
     ) : IExpeditionService
 {
+    private const int MOVE_SPEED = 10;
+
     public async Task<GetFloorsResponse> GetFloors(string userId)
     {
         var domainFloors = await progressService.GetFloors(userId);
@@ -48,6 +52,28 @@ public class ExpeditionService(
             Energy = expedition.Energy,
             X = expedition.X,
             Y = expedition.Y,
+        };
+    }
+
+    public async Task<MoveResponse> Move(string userId, MoveRequest request)
+    {
+        var expedition = await progressService.GetExpedition(userId);
+        var newX = expedition.X;
+        var newY = expedition.Y;
+
+        switch (request.Direction)
+        {
+            case MoveDirection.Up: newY += MOVE_SPEED; break;
+            case MoveDirection.Down: newY -= MOVE_SPEED; break;
+            case MoveDirection.Left: newX += MOVE_SPEED; break;
+            case MoveDirection.Right: newX -= MOVE_SPEED; break;
+            default: throw new ApiException("errors.invalidMoveDirection");
+        }
+
+        return new MoveResponse
+        {
+            X = newX,
+            Y = newY
         };
     }
 }

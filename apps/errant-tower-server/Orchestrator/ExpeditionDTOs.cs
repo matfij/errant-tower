@@ -43,3 +43,25 @@ public record GetExpeditionResponse
     [Required]
     public required FloorTile[] FloorTiles { get; init; }
 }
+
+public record MoveRequest
+{
+    [Required]
+    public required MoveDirection Direction { get; init; }
+}
+
+public enum MoveDirection
+{
+    Up = 1,
+    Down = 2,
+    Left = 3,
+    Right = 4,
+}
+
+public record MoveResponse
+{
+    [Required]
+    public required int X { get; init; }
+    [Required]
+    public required int Y { get; init; }
+}
