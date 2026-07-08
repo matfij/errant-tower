@@ -28,6 +28,7 @@ import type {
   CompleteSignInResponse,
   CompleteSignUpRequest,
   CompleteSignUpResponse,
+  GetExpeditionResponse,
   GetFloorsResponse,
   StartExpeditionRequest,
   StartSignInRequest,
@@ -48,7 +49,7 @@ export const startSignUp = (
       
       
       return customFetch<void>(
-      {url: `/auth/sign-up/start`, method: 'POST',
+      {url: `/auth/sign-up-start`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: startSignUpRequest, signal
     },
@@ -107,7 +108,7 @@ export const completeSignUp = (
       
       
       return customFetch<CompleteSignUpResponse>(
-      {url: `/auth/sign-up/complete`, method: 'POST',
+      {url: `/auth/sign-up-complete`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: completeSignUpRequest, signal
     },
@@ -166,7 +167,7 @@ export const startSignIn = (
       
       
       return customFetch<void>(
-      {url: `/auth/sign-in/start`, method: 'POST',
+      {url: `/auth/sign-in-start`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: startSignInRequest, signal
     },
@@ -225,7 +226,7 @@ export const completeSignIn = (
       
       
       return customFetch<CompleteSignInResponse>(
-      {url: `/auth/sign-in/complete`, method: 'POST',
+      {url: `/auth/sign-in-complete`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: completeSignInRequest, signal
     },
@@ -284,7 +285,7 @@ export const getFloors = (
       
       
       return customFetch<GetFloorsResponse>(
-      {url: `/expeditions`, method: 'GET', signal
+      {url: `/expeditions/get-floors`, method: 'GET', signal
     },
       options);
     }
@@ -294,7 +295,7 @@ export const getFloors = (
 
 export const getGetFloorsQueryKey = () => {
     return [
-    `/expeditions`
+    `/expeditions/get-floors`
     ] as const;
     }
 
@@ -371,7 +372,7 @@ export const startExpedition = (
       
       
       return customFetch<void>(
-      {url: `/expeditions`, method: 'POST',
+      {url: `/expeditions/start-expedition`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: startExpeditionRequest, signal
     },
@@ -423,3 +424,90 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       return useMutation(mutationOptions, queryClient);
     }
     
+export const getExpedition = (
+    
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetExpeditionResponse>(
+      {url: `/expeditions/get-expedition`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+
+
+export const getGetExpeditionQueryKey = () => {
+    return [
+    `/expeditions/get-expedition`
+    ] as const;
+    }
+
+    
+export const getGetExpeditionQueryOptions = <TData = Awaited<ReturnType<typeof getExpedition>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpedition>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetExpeditionQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getExpedition>>> = ({ signal }) => getExpedition(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getExpedition>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetExpeditionQueryResult = NonNullable<Awaited<ReturnType<typeof getExpedition>>>
+export type GetExpeditionQueryError = unknown
+
+
+export function useGetExpedition<TData = Awaited<ReturnType<typeof getExpedition>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpedition>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getExpedition>>,
+          TError,
+          Awaited<ReturnType<typeof getExpedition>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetExpedition<TData = Awaited<ReturnType<typeof getExpedition>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpedition>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getExpedition>>,
+          TError,
+          Awaited<ReturnType<typeof getExpedition>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetExpedition<TData = Awaited<ReturnType<typeof getExpedition>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpedition>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetExpedition<TData = Awaited<ReturnType<typeof getExpedition>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpedition>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetExpeditionQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+

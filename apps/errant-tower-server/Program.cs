@@ -34,6 +34,7 @@ builder
         {
             [new OpenApiSecuritySchemeReference("cookieAuth", document)] = []
         });
+        options.SupportNonNullableReferenceTypes();
     });
 
 
