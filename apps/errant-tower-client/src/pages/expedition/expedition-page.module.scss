@@ -17,9 +17,13 @@
         pointer-events: none;
         background: radial-gradient(
             ellipse 35% 45% at 50% 50%,
-            transparent 0,
-            rgba($color-dark-400, 0.16) 30%,
-            rgba($color-dark-400, 0.98) 60%
+            transparent 0%,
+            transparent 12%,
+            rgba(0, 0, 0, 0.15) 22%,
+            rgba(0, 0, 0, 0.35) 30%,
+            rgba(0, 0, 0, 0.6) 38%,
+            rgba(0, 0, 0, 0.85) 48%,
+            rgba(0, 0, 0, 1) 60%
         );
     }
 }

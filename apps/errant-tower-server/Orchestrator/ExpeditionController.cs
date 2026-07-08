@@ -8,7 +8,7 @@ namespace ErrantTowerServer.Orchestrator;
 [Route("expeditions")]
 public class ExpeditionController(IExpeditionService expeditionService) : ControllerBase
 {
-    [HttpGet("/get-floors")]
+    [HttpGet("get-floors")]
     [EndpointName("getFloors")]
     [ProducesResponseType(typeof(GetFloorsResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetFloors()
@@ -18,7 +18,7 @@ public class ExpeditionController(IExpeditionService expeditionService) : Contro
         return Ok(result);
     }
 
-    [HttpPost("/start-expedition")]
+    [HttpPost("start-expedition")]
     [EndpointName("startExpedition")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> StartExpedition([FromBody] StartExpeditionRequest request)
@@ -28,7 +28,7 @@ public class ExpeditionController(IExpeditionService expeditionService) : Contro
         return Ok();
     }
 
-    [HttpGet("/get-expedition")]
+    [HttpGet("get-expedition")]
     [EndpointName("getExpedition")]
     [ProducesResponseType(typeof(GetExpeditionResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetExpedition()

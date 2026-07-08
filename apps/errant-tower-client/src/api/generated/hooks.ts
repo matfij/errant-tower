@@ -285,7 +285,7 @@ export const getFloors = (
       
       
       return customFetch<GetFloorsResponse>(
-      {url: `/get-floors`, method: 'GET', signal
+      {url: `/expeditions/get-floors`, method: 'GET', signal
     },
       options);
     }
@@ -295,7 +295,7 @@ export const getFloors = (
 
 export const getGetFloorsQueryKey = () => {
     return [
-    `/get-floors`
+    `/expeditions/get-floors`
     ] as const;
     }
 
@@ -372,7 +372,7 @@ export const startExpedition = (
       
       
       return customFetch<void>(
-      {url: `/start-expedition`, method: 'POST',
+      {url: `/expeditions/start-expedition`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: startExpeditionRequest, signal
     },
@@ -431,7 +431,7 @@ export const getExpedition = (
       
       
       return customFetch<GetExpeditionResponse>(
-      {url: `/get-expedition`, method: 'GET', signal
+      {url: `/expeditions/get-expedition`, method: 'GET', signal
     },
       options);
     }
@@ -441,7 +441,7 @@ export const getExpedition = (
 
 export const getGetExpeditionQueryKey = () => {
     return [
-    `/get-expedition`
+    `/expeditions/get-expedition`
     ] as const;
     }
 

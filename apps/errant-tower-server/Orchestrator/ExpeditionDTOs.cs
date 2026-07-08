@@ -19,27 +19,27 @@ public record StartExpeditionRequest
 public record GetExpeditionResponse
 {
     [Required]
-    public FloorGuid FloorGuid { get; set; }
+    public required FloorGuid FloorGuid { get; init; }
     [Required]
-    public required string FloorImageUrl { get; set; }
+    public required string FloorImageUrl { get; init; }
     [Required]
-    public int Initiative { get; set; }
+    public required int Initiative { get; init; }
     [Required]
-    public double MaxHealth { get; set; }
+    public required double MaxHealth { get; init; }
     [Required]
-    public double Health { get; set; }
+    public required double Health { get; init; }
     [Required]
-    public double MaxMana { get; set; }
+    public required double MaxMana { get; init; }
     [Required]
-    public double Mana { get; set; }
+    public required double Mana { get; init; }
     [Required]
-    public double MaxEnergy { get; set; }
+    public required double MaxEnergy { get; init; }
     [Required]
-    public double Energy { get; set; }
+    public required double Energy { get; init; }
     [Required]
-    public int X { get; set; }
+    public required int X { get; init; }
     [Required]
-    public int Y { get; set; }
+    public required int Y { get; init; }
     [Required]
-    public required FloorTile[] FloorTiles { get; set; }
+    public required FloorTile[] FloorTiles { get; init; }
 }

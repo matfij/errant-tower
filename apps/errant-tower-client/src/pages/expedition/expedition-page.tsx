@@ -9,6 +9,7 @@ const PLAYER_SPEED = 5;
 export const ExpeditionPage = () => {
     const expedition = wrapQuery<GetExpeditionResponse>(useGetExpedition)();
     const wrapperRef = useRef<HTMLDivElement>(null);
+    const hasInitializedRef = useRef(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [viewport, setViewport] = useState({ width: 0, height: 0 });
 
@@ -16,8 +17,9 @@ export const ExpeditionPage = () => {
     const cameraY = position.y - viewport.height / 2;
 
     useEffect(() => {
-        if (expedition.data) {
+        if (expedition.data && !hasInitializedRef.current) {
             setPosition({ x: expedition.data.x, y: expedition.data.y });
+            hasInitializedRef.current = true;
         }
     }, [expedition.data]);
 
@@ -37,6 +39,9 @@ export const ExpeditionPage = () => {
 
     useEffect(() => {
         const onKeyDown = (event: KeyboardEvent) => {
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+                event.preventDefault();
+            }
             setPosition(({ x, y }) => {
                 switch (event.key) {
                     case 'ArrowUp':
@@ -65,9 +70,6 @@ export const ExpeditionPage = () => {
 
     return (
         <section>
-            <p>
-                {position.x}, {position.y}
-            </p>
             <div ref={wrapperRef} className={styles.mapWrapper}>
                 <img
                     className={styles.mapItem}
