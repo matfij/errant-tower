@@ -1,4 +1,5 @@
 using ErrantTowerServer.Common;
+using ErrantTowerServer.Domains.Floor;
 using ErrantTowerServer.Domains.Progress;
 using ErrantTowerServer.Domains.Statistics;
 
@@ -14,7 +15,8 @@ public interface IExpeditionService
 
 public class ExpeditionService(
     IProgressService progressService,
-    IStatisticsService statisticsService
+    IStatisticsService statisticsService,
+    IExpeditionSessionManager expeditionSessionManager
     ) : IExpeditionService
 {
     private const int MOVE_SPEED = 10;
@@ -36,39 +38,52 @@ public class ExpeditionService(
 
     public async Task<GetExpeditionResponse> GetExpedition(string userId)
     {
-        var expedition = await progressService.GetExpedition(userId);
+        var session = await expeditionSessionManager.Create(userId);
+        var progress = session.Progress;
+
+        var floor = FloorRegistry.GetFloor(progress.CurrentFloor);
+        var tiles = progress.FloorTiles.Select<FloorTileInfo, FloorTile>(tile => new()
+        {
+            X = tile.X,
+            Y = tile.Y,
+            Type = tile.Type,
+        }).ToArray();
+
         return new GetExpeditionResponse
         {
-
-            FloorGuid = expedition.FloorGuid,
-            FloorImageUrl = expedition.FloorImageUrl,
-            Initiative = expedition.Initiative,
-            FloorTiles = expedition.FloorTiles,
-            MaxHealth = expedition.MaxHealth,
-            Health = expedition.Health,
-            MaxMana = expedition.MaxMana,
-            Mana = expedition.Mana,
-            MaxEnergy = expedition.MaxEnergy,
-            Energy = expedition.Energy,
-            X = expedition.X,
-            Y = expedition.Y,
+            FloorGuid = progress.CurrentFloor,
+            FloorImageUrl = floor.ImageUrl,
+            Initiative = progress.Initiative,
+            FloorTiles = tiles,
+            MaxHealth = progress.MaxHealth,
+            Health = progress.Health,
+            MaxMana = progress.MaxMana,
+            Mana = progress.Mana,
+            MaxEnergy = progress.MaxEnergy,
+            Energy = progress.Energy,
+            X = progress.X,
+            Y = progress.Y,
         };
     }
 
     public async Task<MoveResponse> Move(string userId, MoveRequest request)
     {
-        var expedition = await progressService.GetExpedition(userId);
-        var newX = expedition.X;
-        var newY = expedition.Y;
+        var session = await expeditionSessionManager.Create(userId);
+        var progress = session.Progress;
+        var newX = progress.X;
+        var newY = progress.Y;
 
         switch (request.Direction)
         {
-            case MoveDirection.Up: newY += MOVE_SPEED; break;
-            case MoveDirection.Down: newY -= MOVE_SPEED; break;
-            case MoveDirection.Left: newX += MOVE_SPEED; break;
-            case MoveDirection.Right: newX -= MOVE_SPEED; break;
+            case MoveDirection.Up: newY -= MOVE_SPEED; break;
+            case MoveDirection.Down: newY += MOVE_SPEED; break;
+            case MoveDirection.Left: newX -= MOVE_SPEED; break;
+            case MoveDirection.Right: newX += MOVE_SPEED; break;
             default: throw new ApiException("errors.invalidMoveDirection");
         }
+
+        progress.X = newX;
+        progress.Y = newY;
 
         return new MoveResponse
         {

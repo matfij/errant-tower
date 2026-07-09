@@ -31,20 +31,21 @@ export class ExpeditionHub {
 
     static async move(direction: MoveDirection) {
         if (this.connection.state === HubConnectionState.Connected) {
-            try {
-                console.log('move', direction);
-                await this.connection.invoke('Move', { direction });
-            } catch (err) {
-                console.log('err', err);
-            }
+            await this.connection.invoke('Move', { direction });
         }
     }
 
     static onPlayerMoved(handler: (event: MoveResponse) => void) {
-        this.connection.on('PlayerMoved', handler);
+        this.connection.on('moved', handler);
     }
 
     static offPlayerMoved(handler: (event: MoveResponse) => void) {
-        this.connection.off('PlayerMoved', handler);
+        this.connection.off('moved', handler);
+    }
+
+    static async disconnect() {
+        if (this.connection.state !== HubConnectionState.Disconnected) {
+            await this.connection.stop();
+        }
     }
 }

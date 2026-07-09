@@ -17,6 +17,16 @@ export const ExpeditionPage = () => {
 
     useEffect(() => {
         ExpeditionHub.connect().catch(console.error);
+        const updatePosition = (response: MoveResponse) => {
+            setPosition({
+                x: response.x,
+                y: response.y,
+            });
+        };
+        ExpeditionHub.onPlayerMoved(updatePosition);
+        return () => {
+            ExpeditionHub.offPlayerMoved(updatePosition);
+        };
     }, []);
 
     useEffect(() => {
@@ -37,7 +47,9 @@ export const ExpeditionPage = () => {
         };
         updateViewport();
         window.addEventListener('resize', updateViewport);
-        return () => window.removeEventListener('resize', updateViewport);
+        return () => {
+            window.removeEventListener('resize', updateViewport);
+        };
     }, []);
 
     useEffect(() => {
@@ -66,19 +78,10 @@ export const ExpeditionPage = () => {
             }
         };
 
-        const updatePosition = (response: MoveResponse) => {
-            setPosition({
-                x: response.x,
-                y: response.y,
-            });
-        };
-
         window.addEventListener('keydown', onKeyDown);
-        ExpeditionHub.onPlayerMoved(updatePosition);
 
         return () => {
             window.removeEventListener('keydown', onKeyDown);
-            ExpeditionHub.offPlayerMoved(updatePosition);
         };
     }, []);
 

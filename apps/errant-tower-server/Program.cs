@@ -128,21 +128,23 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddSignalR();
 
 // Domain services
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
-builder.Services.AddScoped<IProgressRepository, ProgressRepository>();
+builder.Services.AddSingleton<IProgressRepository, ProgressRepository>();
 builder.Services.AddScoped<IProgressService, ProgressService>();
 
-builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
+builder.Services.AddSingleton<IStatisticsRepository, StatisticsRepository>();
 builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 
-builder.Services.AddScoped<IEquipmentRepository, EquipmentRepository>();
+builder.Services.AddSingleton<IEquipmentRepository, EquipmentRepository>();
 builder.Services.AddScoped<IEquipmentService, EquipmentService>();
 
 // Orchestrator services
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddSingleton<IExpeditionSessionManager, ExpeditionSessionManager>();
 builder.Services.AddScoped<IExpeditionService, ExpeditionService>();
+
 
 var app = builder.Build();
 
