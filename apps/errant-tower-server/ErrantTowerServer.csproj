@@ -21,7 +21,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="Domains\Floor\Data\Tiles\*.csv">
+		<Content Include="Domains\Floors\Data\Tiles\*.csv">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>

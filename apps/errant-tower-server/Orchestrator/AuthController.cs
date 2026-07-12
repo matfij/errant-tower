@@ -8,7 +8,7 @@ namespace ErrantTowerServer.Orchestrator;
 
 [ApiController]
 [Route("auth")]
-public class AuthController(IAuthService authService) : ControllerBase
+public class AuthController(IAuthOrchestrator authService) : ControllerBase
 {
     [HttpPost("sign-up-start")]
     [EndpointName("startSignUp")]

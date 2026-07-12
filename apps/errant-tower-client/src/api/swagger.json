@@ -159,9 +159,9 @@
                 }
             }
         },
-        "/expeditions/get-floors": {
+        "/progresses/get-floors": {
             "get": {
-                "tags": ["Expedition"],
+                "tags": ["Progress"],
                 "operationId": "getFloors",
                 "responses": {
                     "200": {
@@ -187,9 +187,9 @@
                 }
             }
         },
-        "/expeditions/start-expedition": {
+        "/progresses/start-expedition": {
             "post": {
-                "tags": ["Expedition"],
+                "tags": ["Progress"],
                 "operationId": "startExpedition",
                 "requestBody": {
                     "content": {
@@ -217,9 +217,9 @@
                 }
             }
         },
-        "/expeditions/get-expedition": {
+        "/progresses/get-expedition": {
             "get": {
-                "tags": ["Expedition"],
+                "tags": ["Progress"],
                 "operationId": "getExpedition",
                 "responses": {
                     "200": {
@@ -515,7 +515,7 @@
             "name": "Auth"
         },
         {
-            "name": "Expedition"
+            "name": "Progress"
         }
     ]
 }
