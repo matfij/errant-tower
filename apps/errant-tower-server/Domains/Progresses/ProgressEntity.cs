@@ -22,7 +22,7 @@ public class ProgressEntity
     public int Adrenaline { get; set; } = 0;
     public string? BattleId { get; set; }
     public int GainedSilver { get; set; } = 0;
-    public List<BagItem> GainedItems { get; set; } = [];
+    public List<BagItemData> GainedItems { get; set; } = [];
     public double MaxHealth { get; set; } = 0;
     public double Health { get; set; } = 0;
     public double MaxMana { get; set; } = 0;
@@ -42,7 +42,7 @@ public enum TowerDomain
     Desert = 3,
 }
 
-public readonly record struct FloorTileInfo
+public record FloorTileInfo
 {
     public required int X { get; init; }
     public required int Y { get; init; }

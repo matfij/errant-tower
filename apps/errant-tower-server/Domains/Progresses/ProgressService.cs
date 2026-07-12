@@ -161,6 +161,11 @@ public class ProgressService(
         var progress = await progressRepository.FindOneByUserId(userId)
             ?? throw new ApiException("errors.progressNotFound");
 
+        if (!progress.IsInExpedition)
+        {
+            throw new ApiException("errors.expeditionNotStarted");
+        }
+
         progress.IsInExpedition = false;
 
         if (hasFinished)

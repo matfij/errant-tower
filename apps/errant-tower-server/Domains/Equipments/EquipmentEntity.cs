@@ -27,3 +27,11 @@ public record BagItem
     public required ItemGuid ItemGuid { get; init; }
     public required int Quantity { get; set; }
 }
+
+public record BagItemData
+{
+    public BagItemData() { }
+
+    public required Item Item { get; init; }
+    public required int Quantity { get; set; }
+}

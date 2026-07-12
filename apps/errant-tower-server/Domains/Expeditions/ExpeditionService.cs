@@ -1,16 +1,14 @@
 using ErrantTowerServer.Common;
 using ErrantTowerServer.Domains.Equipments;
 using ErrantTowerServer.Domains.Floors;
-using ErrantTowerServer.Domains.Items;
 using ErrantTowerServer.Domains.Progresses;
 using ErrantTowerServer.Domains.Statistics;
-using ErrantTowerServer.Orchestrator;
 
 namespace ErrantTowerServer.Domains.Expeditions;
 
 public interface IExpeditionService
 {
-    public Task<MoveResult> Move(string userId, MoveRequest request);
+    public Task<MoveResult> Move(string userId, MoveDirection direction);
 }
 
 public class ExpeditionService(
@@ -21,7 +19,7 @@ public class ExpeditionService(
 {
     private const int MOVE_SPEED = 10;
 
-    public async Task<MoveResult> Move(string userId, MoveRequest request)
+    public async Task<MoveResult> Move(string userId, MoveDirection direction)
     {
         var session = await expeditionSessionManager.Create(userId);
         var progress = session.Progress;
@@ -33,7 +31,7 @@ public class ExpeditionService(
             return await Finish(false, false, progress);
         }
 
-        switch (request.Direction)
+        switch (direction)
         {
             case MoveDirection.Up: newY -= MOVE_SPEED; break;
             case MoveDirection.Down: newY += MOVE_SPEED; break;
@@ -42,7 +40,16 @@ public class ExpeditionService(
             default: throw new ApiException("errors.invalidMoveDirection");
         }
 
-        var newTile = progress.FloorTiles.First(tile => tile.X == newX && tile.Y == newY);
+        var newTile = progress.FloorTiles.FirstOrDefault(tile => tile.X == newX && tile.Y == newY);
+
+        if (newTile is null)
+        {
+            return new MoveResult
+            {
+                X = progress.X,
+                Y = progress.Y
+            };
+        }
 
         switch (newTile.Type)
         {
@@ -101,13 +108,19 @@ public class ExpeditionService(
             ? Math.Floor(Utils.RandRange(0.3, 0.5) * progress.Adrenaline)
             : Math.Floor(Utils.RandRange(0.2, 0.3) * progress.Adrenaline));
 
+        var gainedItemsMeta = gainedItems.Select(item => new BagItem()
+        {
+            Quantity = item.Quantity,
+            ItemGuid = item.Item.Guid
+        }).ToList();
+
         await Task.WhenAll(
             progressService.FinishExpedition(progress.UserId, hasFinished),
-            equipmentService.AwardItems(progress.UserId, gainedSilver, gainedItems),
+            equipmentService.AwardItems(progress.UserId, gainedSilver, gainedItemsMeta),
             statisticsService.AwardPoints(progress.UserId, gainedAttributePoints, gainedSkillPoints)
         );
 
-        var gainedItemsData = gainedItems.Select(item => ItemRegistry.GetItem(item.ItemGuid)).ToList();
+        expeditionSessionManager.Remove(progress.UserId);
 
         return new MoveResult()
         {
@@ -118,7 +131,7 @@ public class ExpeditionService(
                 IsSuccess = isSuccess,
                 HasFinished = hasFinished,
                 GainedSilver = gainedSilver,
-                GainedItems = gainedItemsData,
+                GainedItems = gainedItems,
                 GainedAttributePoints = gainedAttributePoints,
                 GainedSkillPoints = gainedSkillPoints
             }

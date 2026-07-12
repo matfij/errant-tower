@@ -8,7 +8,7 @@ public interface IExpeditionSessionManager
 {
     public Task<ExpeditionSession> Create(string userId);
     public Task Persist(string userId);
-    public Task Remove(string userId);
+    public void Remove(string userId);
 }
 
 public sealed class ExpeditionSession
@@ -54,9 +54,8 @@ public class ExpeditionSessionManager(IProgressRepository progressRepository) : 
         _ = await progressRepository.UpdateOne(session.Progress);
     }
 
-    public Task Remove(string userId)
+    public void Remove(string userId)
     {
         _ = _sessions.TryRemove(userId, out _);
-        return Task.CompletedTask;
     }
 }
