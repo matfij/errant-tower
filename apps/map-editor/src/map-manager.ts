@@ -117,9 +117,7 @@ export class MapManager {
         const x = scale * col;
         const y = scale * row;
         const type = this.getTypeName(map[row][col]);
-        if (type !== "Route") {
-          csv += `${x},${y},${type}\n`;
-        }
+        csv += `${x},${y},${type}\n`;
       }
     }
 

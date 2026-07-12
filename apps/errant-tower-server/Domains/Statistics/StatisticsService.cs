@@ -1,4 +1,4 @@
-﻿using ErrantTowerServer.Common;
+using ErrantTowerServer.Common;
 
 namespace ErrantTowerServer.Domains.Statistics;
 
@@ -6,6 +6,7 @@ public interface IStatisticsService
 {
     public Task CreateInitial(string userId);
     public Task<BattleStatistics> GetUserBattleStatistics(string userId);
+    public Task AwardPoints(string userId, int attributePoints, int skillPoints);
 }
 
 public class StatisticsService(IStatisticsRepository statisticsRepository) : IStatisticsService
@@ -50,5 +51,16 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
         var statistics = await statisticsRepository.FindOneByUserId(userId)
             ?? throw new ApiException("errors.statisticsNotFound");
         return statistics.BattleStatistics;
+    }
+
+    public async Task AwardPoints(string userId, int attributePoints, int skillPoints)
+    {
+        var statistics = await statisticsRepository.FindOneByUserId(userId)
+            ?? throw new ApiException("errors.statisticsNotFound");
+
+        statistics.AttributePoints += attributePoints;
+        statistics.SkillPoints += skillPoints;
+
+        _ = await statisticsRepository.UpdateOne(statistics);
     }
 }

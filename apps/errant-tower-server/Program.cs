@@ -1,10 +1,11 @@
 using System.Text.Json.Serialization;
 using ErrantTowerServer.Common;
-using ErrantTowerServer.Domains.Equipment;
-using ErrantTowerServer.Domains.Progress;
+using ErrantTowerServer.Domains.Equipments;
+using ErrantTowerServer.Domains.Expeditions;
+using ErrantTowerServer.Domains.Progresses;
 using ErrantTowerServer.Domains.Skills;
 using ErrantTowerServer.Domains.Statistics;
-using ErrantTowerServer.Domains.User;
+using ErrantTowerServer.Domains.Users;
 using ErrantTowerServer.Orchestrator;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -140,11 +141,12 @@ builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 builder.Services.AddSingleton<IEquipmentRepository, EquipmentRepository>();
 builder.Services.AddScoped<IEquipmentService, EquipmentService>();
 
-// Orchestrator services
-builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSingleton<IExpeditionSessionManager, ExpeditionSessionManager>();
 builder.Services.AddScoped<IExpeditionService, ExpeditionService>();
 
+// Orchestrator services
+builder.Services.AddScoped<IAuthOrchestrator, AuthOrchestrator>();
+builder.Services.AddScoped<IProgressOrchestrator, ProgressOrchestrator>();
 
 var app = builder.Build();
 

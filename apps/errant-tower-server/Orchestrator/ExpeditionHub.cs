@@ -1,4 +1,5 @@
 using ErrantTowerServer.Common;
+using ErrantTowerServer.Domains.Expeditions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
@@ -9,13 +10,6 @@ public class ExpeditionHub(
     IExpeditionService expeditionService,
     IExpeditionSessionManager expeditionSessionManager) : Hub
 {
-    public override async Task OnConnectedAsync()
-    {
-        var userId = Context.User?.GetUserId()
-            ?? throw new ApiException("errors.unauthorized");
-        await base.OnConnectedAsync();
-    }
-
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
         var userId = Context.User?.GetUserId()
@@ -29,7 +23,14 @@ public class ExpeditionHub(
     {
         var userId = Context.User?.GetUserId()
             ?? throw new ApiException("errors.unauthorized");
-        var response = await expeditionService.Move(userId, command);
-        await Clients.Caller.SendAsync("Moved", new MoveResponse() { X = response.X, Y = response.Y });
+        try
+        {
+            var response = await expeditionService.Move(userId, command);
+            await Clients.Caller.SendAsync("Moved", new MoveResponse() { X = response.X, Y = response.Y });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
     }
 }
