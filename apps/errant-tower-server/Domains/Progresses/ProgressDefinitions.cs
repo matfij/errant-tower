@@ -17,16 +17,16 @@ public record FloorTeaser
 
 public record Expedition
 {
-    public FloorGuid FloorGuid { get; set; }
+    public required FloorGuid FloorGuid { get; set; }
     public required string FloorImageUrl { get; set; }
-    public int Initiative { get; set; }
-    public double MaxHealth { get; set; }
-    public double Health { get; set; }
-    public double MaxMana { get; set; }
-    public double Mana { get; set; }
-    public double MaxEnergy { get; set; }
-    public double Energy { get; set; }
-    public int X { get; set; }
-    public int Y { get; set; }
+    public required int Initiative { get; set; }
+    public required double MaxHealth { get; set; }
+    public required double Health { get; set; }
+    public required double MaxMana { get; set; }
+    public required double Mana { get; set; }
+    public required double MaxEnergy { get; set; }
+    public required double Energy { get; set; }
+    public required int X { get; set; }
+    public required int Y { get; set; }
     public required FloorTile[] FloorTiles { get; set; }
 }

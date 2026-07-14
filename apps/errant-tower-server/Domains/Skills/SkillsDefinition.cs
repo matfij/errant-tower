@@ -1,11 +1,9 @@
-﻿namespace ErrantTowerServer.Domains.Skills;
+namespace ErrantTowerServer.Domains.Skills;
 
-public readonly record struct Skill
+public record Skill
 {
     public const int MinLevel = 1;
     public const int MaxLevel = 10;
-
-    public Skill() { }
 
     public void Validate()
     {
