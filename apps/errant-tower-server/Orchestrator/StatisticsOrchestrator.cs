@@ -13,8 +13,21 @@ public class StatisticsOrchestrator(IStatisticsService statisticsService) : ISta
 {
     public async Task<GetSkillTreeResponse> GetSkillTree(string userId)
     {
-        var result = await statisticsService.GetSkillTree(userId);
-        return (GetSkillTreeResponse)result;
+        var skillTree = await statisticsService.GetSkillTree(userId);
+        return new GetSkillTreeResponse()
+        {
+
+            Blade = skillTree.Blade,
+            Tenacity = skillTree.Tenacity,
+            Hammer = skillTree.Hammer,
+            Bellicosity = skillTree.Bellicosity,
+            Lance = skillTree.Lance,
+            Vivacity = skillTree.Vivacity,
+            Bow = skillTree.Bow,
+            Perspicacity = skillTree.Perspicacity,
+            Staff = skillTree.Staff,
+            Sagacity = skillTree.Sagacity,
+        };
     }
 
     public async Task LearnSkill(string userId, LearnSkillRequest request)
@@ -24,7 +37,19 @@ public class StatisticsOrchestrator(IStatisticsService statisticsService) : ISta
 
     public async Task<ResetSkillsTreeResponse> ResetSkills(string userId)
     {
-        var result = await statisticsService.ResetSkills(userId);
-        return (ResetSkillsTreeResponse)result;
+        var skillTree = await statisticsService.ResetSkills(userId);
+        return new ResetSkillsTreeResponse()
+        {
+            Blade = skillTree.Blade,
+            Tenacity = skillTree.Tenacity,
+            Hammer = skillTree.Hammer,
+            Bellicosity = skillTree.Bellicosity,
+            Lance = skillTree.Lance,
+            Vivacity = skillTree.Vivacity,
+            Bow = skillTree.Bow,
+            Perspicacity = skillTree.Perspicacity,
+            Staff = skillTree.Staff,
+            Sagacity = skillTree.Sagacity,
+        };
     }
 }

@@ -27,7 +27,7 @@ public class ExpeditionHub(
         try
         {
             var moveResult = await expeditionService.Move(userId, command.Direction);
-            await Clients.Caller.SendAsync("Moved", (MoveResponse)moveResult);
+            await Clients.Caller.SendAsync("Moved", moveResult);
         }
         catch (Exception ex)
         {
