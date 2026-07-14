@@ -1,4 +1,6 @@
-﻿namespace ErrantTowerServer.Domains.Statistics;
+using ErrantTowerServer.Domains.Skills;
+
+namespace ErrantTowerServer.Domains.Statistics;
 
 public record struct BattleStatistics
 {
@@ -26,4 +28,24 @@ public record struct BattleStatistics
     public double HealthRegen { get; set; } = 0;
     public double ManaRegen { get; set; } = 0;
     public double EnergyRegen { get; set; } = 0;
+}
+
+
+public record SkillTree
+{
+    public required List<UserSkill> Blade { get; set; }
+    public required List<UserSkill> Tenacity { get; set; }
+    public required List<UserSkill> Hammer { get; set; }
+    public required List<UserSkill> Bellicosity { get; set; }
+    public required List<UserSkill> Lance { get; set; }
+    public required List<UserSkill> Vivacity { get; set; }
+    public required List<UserSkill> Bow { get; set; }
+    public required List<UserSkill> Perspicacity { get; set; }
+    public required List<UserSkill> Staff { get; set; }
+    public required List<UserSkill> Sagacity { get; set; }
+}
+
+public record UserSkill : Skill
+{
+    public required int Level { get; init; } = 0;
 }

@@ -1,4 +1,3 @@
-using DnsClient.Internal;
 using ErrantTowerServer.Common;
 using ErrantTowerServer.Domains.Expeditions;
 using Microsoft.AspNetCore.Authorization;
@@ -43,7 +42,8 @@ public class ExpeditionHub(
         catch (Exception ex)
         {
             logger.LogError(ex, "Move failed for user {UserId}", userId);
-            await Clients.Caller.SendAsync("Error", new { key = "errors.expeditionMoveFailed" });
+            var key = ex is ApiException apiEx ? apiEx.Message : "errors.expeditionMoveFailed";
+            await Clients.Caller.SendAsync("Error", new { key });
         }
     }
 }

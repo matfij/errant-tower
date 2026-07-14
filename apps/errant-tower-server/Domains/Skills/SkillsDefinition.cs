@@ -1,11 +1,11 @@
-﻿namespace ErrantTowerServer.Domains.Skills;
+using ErrantTowerServer.Domains.Statistics;
 
-public readonly record struct Skill
+namespace ErrantTowerServer.Domains.Skills;
+
+public record Skill
 {
     public const int MinLevel = 1;
     public const int MaxLevel = 10;
-
-    public Skill() { }
 
     public void Validate()
     {
@@ -145,4 +145,34 @@ public readonly record struct SkillRequirement
 {
     public required SkillPath Path { get; init; }
     public required int Points { get; init; }
+}
+
+public static class SkillExtensions
+{
+    public static UserSkill ToUserSkill(this Skill skill, int level)
+    {
+        return new UserSkill
+        {
+            Guid = skill.Guid,
+            Name = skill.Name,
+            Description = skill.Description,
+            ImageUrl = skill.ImageUrl,
+            Path = skill.Path,
+            Tier = skill.Tier,
+            Types = skill.Types,
+            PhysicalAttackFactor = skill.PhysicalAttackFactor,
+            MagicalAttackFactor = skill.MagicalAttackFactor,
+            PhysicalDefenseFactor = skill.PhysicalDefenseFactor,
+            MagicalDefenseFactor = skill.MagicalDefenseFactor,
+            IsPassive = skill.IsPassive,
+            TargetSelf = skill.TargetSelf,
+            HitCount = skill.HitCount,
+            EnergyCost = skill.EnergyCost,
+            ManaCost = skill.ManaCost,
+            Effects = skill.Effects,
+            Properties = skill.Properties,
+            Requirements = skill.Requirements,
+            Level = level
+        };
+    }
 }

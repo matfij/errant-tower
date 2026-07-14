@@ -1,4 +1,4 @@
-﻿using ErrantTowerServer.Domains.Skills;
+using ErrantTowerServer.Domains.Skills;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace ErrantTowerServer.Domains.Statistics;
@@ -18,7 +18,7 @@ public class StatisticsEntity
     public int Spirit { get; set; } = 10;
 
     public required BattleStatistics BattleStatistics { get; set; }
-    public LearnedSkill[] LearnedSkills { get; set; } = [];
+    public List<LearnedSkill> LearnedSkills { get; set; } = [];
 }
 
 public record LearnedSkill

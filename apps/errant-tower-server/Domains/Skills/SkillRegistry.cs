@@ -50,6 +50,11 @@ public static class SkillRegistry
         }
         return skill;
     }
+
+    public static IList<Skill> GetAll()
+    {
+        return _skills.Values.ToList();
+    }
 }
 
 public enum SkillGuid
