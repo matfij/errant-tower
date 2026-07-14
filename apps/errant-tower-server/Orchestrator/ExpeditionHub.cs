@@ -26,18 +26,8 @@ public class ExpeditionHub(
             ?? throw new ApiException("errors.unauthorized");
         try
         {
-            var response = await expeditionService.Move(userId, command.Direction);
-            await Clients.Caller.SendAsync(
-                "Moved",
-                new MoveResponse()
-                {
-                    X = response.X,
-                    Y = response.Y,
-                    BattleId = response.BattleId,
-                    Silver = response.Silver,
-                    Items = response.Loots,
-                    Summary = response.Summary,
-                });
+            var moveResult = await expeditionService.Move(userId, command.Direction);
+            await Clients.Caller.SendAsync("Moved", (MoveResponse)moveResult);
         }
         catch (Exception ex)
         {

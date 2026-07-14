@@ -8,7 +8,7 @@ public interface IStatisticsService
     public Task CreateInitial(string userId);
     public Task<BattleStatistics> GetUserBattleStatistics(string userId);
     public Task AwardPoints(string userId, int attributePoints, int skillPoints);
-    public Task<SkillTree> GetSkills(string userId);
+    public Task<SkillTree> GetSkillTree(string userId);
     public Task LearnSkill(string userId, SkillGuid skill);
     public Task<SkillTree> ResetSkills(string userId);
 }
@@ -66,7 +66,7 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
         _ = await statisticsRepository.UpdateOne(statistics);
     }
 
-    public async Task<SkillTree> GetSkills(string userId)
+    public async Task<SkillTree> GetSkillTree(string userId)
     {
         var statistics = await GetStatistics(userId);
 
@@ -140,7 +140,7 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
 
         _ = await statisticsRepository.UpdateOne(statistics);
 
-        return await GetSkills(userId);
+        return await GetSkillTree(userId);
     }
 
     private async Task<StatisticsEntity> GetStatistics(string userId)
