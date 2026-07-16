@@ -30,6 +30,9 @@ import type {
   CompleteSignUpResponse,
   GetExpeditionResponse,
   GetFloorsResponse,
+  GetSkillTreeResponse,
+  LearnSkillRequest,
+  ResetSkillsTreeResponse,
   StartExpeditionRequest,
   StartSignInRequest,
   StartSignUpRequest
@@ -511,3 +514,206 @@ export function useGetExpedition<TData = Awaited<ReturnType<typeof getExpedition
 
 
 
+export const getSkillTree = (
+    
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetSkillTreeResponse>(
+      {url: `/statistics/get-skill-tree`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+
+
+export const getGetSkillTreeQueryKey = () => {
+    return [
+    `/statistics/get-skill-tree`
+    ] as const;
+    }
+
+    
+export const getGetSkillTreeQueryOptions = <TData = Awaited<ReturnType<typeof getSkillTree>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSkillTree>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSkillTreeQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSkillTree>>> = ({ signal }) => getSkillTree(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSkillTree>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetSkillTreeQueryResult = NonNullable<Awaited<ReturnType<typeof getSkillTree>>>
+export type GetSkillTreeQueryError = unknown
+
+
+export function useGetSkillTree<TData = Awaited<ReturnType<typeof getSkillTree>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSkillTree>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSkillTree>>,
+          TError,
+          Awaited<ReturnType<typeof getSkillTree>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSkillTree<TData = Awaited<ReturnType<typeof getSkillTree>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSkillTree>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSkillTree>>,
+          TError,
+          Awaited<ReturnType<typeof getSkillTree>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSkillTree<TData = Awaited<ReturnType<typeof getSkillTree>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSkillTree>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSkillTree<TData = Awaited<ReturnType<typeof getSkillTree>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSkillTree>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSkillTreeQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+
+export const learnSkill = (
+    learnSkillRequest: LearnSkillRequest,
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<void>(
+      {url: `/statistics/learn-skill`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: learnSkillRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getLearnSkillMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof learnSkill>>, TError,{data: LearnSkillRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof learnSkill>>, TError,{data: LearnSkillRequest}, TContext> => {
+
+const mutationKey = ['learnSkill'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof learnSkill>>, {data: LearnSkillRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  learnSkill(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type LearnSkillMutationResult = NonNullable<Awaited<ReturnType<typeof learnSkill>>>
+    export type LearnSkillMutationBody = LearnSkillRequest
+    export type LearnSkillMutationError = unknown
+
+    export const useLearnSkill = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof learnSkill>>, TError,{data: LearnSkillRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof learnSkill>>,
+        TError,
+        {data: LearnSkillRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getLearnSkillMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    
+export const resetSkills = (
+    
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<ResetSkillsTreeResponse>(
+      {url: `/statistics/reset-skills`, method: 'POST', signal
+    },
+      options);
+    }
+  
+
+
+export const getResetSkillsMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetSkills>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof resetSkills>>, TError,void, TContext> => {
+
+const mutationKey = ['resetSkills'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof resetSkills>>, void> = () => {
+          
+
+          return  resetSkills(requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ResetSkillsMutationResult = NonNullable<Awaited<ReturnType<typeof resetSkills>>>
+    
+    export type ResetSkillsMutationError = unknown
+
+    export const useResetSkills = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetSkills>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof resetSkills>>,
+        TError,
+        void,
+        TContext
+      > => {
+
+      const mutationOptions = getResetSkillsMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    

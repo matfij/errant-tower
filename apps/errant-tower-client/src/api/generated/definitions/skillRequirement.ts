@@ -4,9 +4,9 @@
  * ErrantTowerServer
  * OpenAPI spec version: 1.0
  */
-import type { FloorGuid } from './floorGuid';
+import type { SkillPath } from './skillPath';
 
-export interface FloorTeaser {
-  isUnlocked: boolean;
-  guid: FloorGuid;
+export interface SkillRequirement {
+  path: SkillPath;
+  points: number;
 }

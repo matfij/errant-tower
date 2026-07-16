@@ -1,4 +1,4 @@
-﻿namespace ErrantTowerServer.Domains.Skills.Data;
+namespace ErrantTowerServer.Domains.Skills.Data;
 
 public static class BladeSkills
 {
@@ -6,7 +6,7 @@ public static class BladeSkills
     {
         Guid = SkillGuid.Slash,
         Name = "Slash",
-        ImageUrl = "blade/slash.png",
+        ImageUrl = "blade/slash.svg",
         Path = SkillPath.Blade,
         Tier = 0,
         PhysicalAttackFactor = [1.1, 1.11, 1.12, 1.13, 1.14, 1.15, 1.16, 1.17, 1.18, 1.2],
@@ -19,7 +19,7 @@ public static class BladeSkills
     {
         Guid = SkillGuid.TwinEdge,
         Name = "Twin Edge",
-        ImageUrl = "blade/twin-edge.png",
+        ImageUrl = "blade/twin-edge.svg",
         Path = SkillPath.Blade,
         Tier = 1,
         HitCount = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
@@ -47,7 +47,7 @@ public static class BladeSkills
     {
         Guid = SkillGuid.SwiftStrike,
         Name = "Swift Strike",
-        ImageUrl = "blade/swift-strike.png",
+        ImageUrl = "blade/swift-strike.svg",
         Path = SkillPath.Blade,
         Tier = 1,
         PhysicalAttackFactor = [1.1, 1.12, 1.14, 1.16, 1.18, 1.2, 1.22, 1.24, 1.26, 1.28],
@@ -74,7 +74,7 @@ public static class BladeSkills
     {
         Guid = SkillGuid.CrusherBlow,
         Name = "Crusher Blow",
-        ImageUrl = "blade/crusher-blow.png",
+        ImageUrl = "blade/crusher-blow.svg",
         Path = SkillPath.Blade,
         Tier = 1,
         PhysicalAttackFactor = [1.2, 1.22, 1.24, 1.26, 1.28, 1.3, 1.32, 1.34, 1.36, 1.38],
@@ -101,7 +101,7 @@ public static class BladeSkills
     {
         Guid = SkillGuid.FlashStrike,
         Name = "Flash Strike",
-        ImageUrl = "blade/flash-strike.png",
+        ImageUrl = "blade/flash-strike.svg",
         Path = SkillPath.Blade,
         Tier = 2,
         PhysicalAttackFactor = [1.25, 1.28, 1.31, 1.34, 1.37, 1.40, 1.43, 1.46, 1.49, 1.52],
@@ -128,7 +128,7 @@ public static class BladeSkills
     {
         Guid = SkillGuid.TriEdge,
         Name = "Tri Edge",
-        ImageUrl = "blade/tri-edge.png",
+        ImageUrl = "blade/tri-edge.svg",
         Path = SkillPath.Blade,
         Tier = 2,
         HitCount = [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
@@ -156,7 +156,7 @@ public static class BladeSkills
     {
         Guid = SkillGuid.BloodthirstyBlade,
         Name = "Bloodthirsty Blade",
-        ImageUrl = "blade/bloodthirsty-blade.png",
+        ImageUrl = "blade/bloodthirsty-blade.svg",
         Path = SkillPath.Blade,
         Tier = 2,
         PhysicalAttackFactor = [1.1, 1.13, 1.16, 1.19, 1.22, 1.25, 1.28, 1.31, 1.34, 1.37],

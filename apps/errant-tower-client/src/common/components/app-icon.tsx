@@ -1,7 +1,7 @@
 import styles from './app-icon.module.scss';
 import { useEffect, useState } from 'react';
 
-const iconSvgs = import.meta.glob<string>('./icons/*.svg', { query: '?raw', import: 'default' });
+const iconAssets = import.meta.glob<string>('./icons/*.svg', { query: '?raw', import: 'default' });
 
 export type IconName = 'character' | 'crafting' | 'explore' | 'skills';
 
@@ -14,7 +14,7 @@ export interface AppIconProps {
 export const AppIcon = (props: AppIconProps) => {
     const [svg, setSvg] = useState<string>();
     const path = `./icons/${props.name}.svg`;
-    const loadSvg = iconSvgs[path];
+    const loadSvg = iconAssets[path];
 
     useEffect(() => {
         let cancelled = false;
@@ -42,7 +42,6 @@ export const AppIcon = (props: AppIconProps) => {
                 <span
                     role="img"
                     dangerouslySetInnerHTML={{ __html: svg }}
-                    data-size={props.size}
                     className={styles.iconItem}
                     style={{
                         width: props.size,
