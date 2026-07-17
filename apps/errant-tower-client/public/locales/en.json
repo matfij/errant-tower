@@ -31,6 +31,20 @@
             "dungeonDescription": "The Tower's lowest reaches are a maze of damp corridors, ruined chambers, and forgotten cellars overrun by vermin and feral beasts. Though lacking the horrors of deeper floors, these halls remain dangerous to the unprepared, where every shadow may conceal another predator, and every expedition is a battle against attrition as much as the creatures that inhabit it."
         }
     },
+    "skills": {
+        "path": "Path",
+        "level": "{{level}} Level",
+        "bellicosity": "Bellicosity",
+        "blade": "Blade",
+        "bow": "Bow",
+        "hammer": "Hammer",
+        "lance": "Lance",
+        "perspicacity": "Perspicacity",
+        "sagacity": "Sagacity",
+        "staff": "Staff",
+        "tenacity": "Tenacity",
+        "vivacity": "Vivacity"
+    },
     "errors": {
         "unknown": "Unknown error, please try again later",
         "emailInvalid": "Enter a valid email",

@@ -244,6 +244,92 @@
                     }
                 }
             }
+        },
+        "/statistics/get-skill-tree": {
+            "get": {
+                "tags": ["Statistics"],
+                "operationId": "getSkillTree",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetSkillTreeResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetSkillTreeResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetSkillTreeResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/statistics/learn-skill": {
+            "post": {
+                "tags": ["Statistics"],
+                "operationId": "learnSkill",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LearnSkillRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LearnSkillRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LearnSkillRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/statistics/reset-skills": {
+            "post": {
+                "tags": ["Statistics"],
+                "operationId": "resetSkills",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResetSkillsTreeResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResetSkillsTreeResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResetSkillsTreeResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -340,7 +426,7 @@
                 "type": "string"
             },
             "FloorTeaser": {
-                "required": ["guid"],
+                "required": ["guid", "isUnlocked"],
                 "type": "object",
                 "properties": {
                     "isUnlocked": {
@@ -395,7 +481,6 @@
                         "$ref": "#/components/schemas/FloorGuid"
                     },
                     "floorImageUrl": {
-                        "minLength": 1,
                         "type": "string"
                     },
                     "initiative": {
@@ -456,6 +541,328 @@
                 },
                 "additionalProperties": false
             },
+            "GetSkillTreeResponse": {
+                "required": [
+                    "bellicosity",
+                    "blade",
+                    "bow",
+                    "hammer",
+                    "lance",
+                    "perspicacity",
+                    "sagacity",
+                    "staff",
+                    "tenacity",
+                    "vivacity"
+                ],
+                "type": "object",
+                "properties": {
+                    "blade": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "tenacity": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "hammer": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "bellicosity": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "lance": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "vivacity": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "bow": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "perspicacity": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "staff": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "sagacity": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    }
+                },
+                "additionalProperties": false
+            },
+            "LearnSkillRequest": {
+                "required": ["skillGuid"],
+                "type": "object",
+                "properties": {
+                    "skillGuid": {
+                        "$ref": "#/components/schemas/SkillGuid"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "ResetSkillsTreeResponse": {
+                "required": [
+                    "bellicosity",
+                    "blade",
+                    "bow",
+                    "hammer",
+                    "lance",
+                    "perspicacity",
+                    "sagacity",
+                    "staff",
+                    "tenacity",
+                    "vivacity"
+                ],
+                "type": "object",
+                "properties": {
+                    "blade": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "tenacity": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "hammer": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "bellicosity": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "lance": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "vivacity": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "bow": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "perspicacity": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "staff": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "sagacity": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    }
+                },
+                "additionalProperties": false
+            },
+            "SkillEffect": {
+                "required": ["chance", "duration", "type", "value"],
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "$ref": "#/components/schemas/SkillEffectType"
+                    },
+                    "value": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "chance": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "duration": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "SkillEffectType": {
+                "enum": [
+                    "Initiative",
+                    "PhysicalAttack",
+                    "MagicalAttack",
+                    "PhysicalDefense",
+                    "MagicalDefense",
+                    "HealthPoints",
+                    "ManaPoints",
+                    "EnergyPoints",
+                    "Stun",
+                    "Freeze",
+                    "Paralyze",
+                    "Bleeding",
+                    "Poison",
+                    "Barrier"
+                ],
+                "type": "string"
+            },
+            "SkillGuid": {
+                "enum": [
+                    "Scratch",
+                    "Bite",
+                    "TailWhip",
+                    "Tackle",
+                    "Cut",
+                    "Peck",
+                    "Slash",
+                    "SwiftStrike",
+                    "TwinEdge",
+                    "CrusherBlow",
+                    "FlashStrike",
+                    "TriEdge",
+                    "BloodthirstyBlade",
+                    "GreatVigor",
+                    "Armorer",
+                    "Energizer",
+                    "Deflect",
+                    "HeartsResolve"
+                ],
+                "type": "string"
+            },
+            "SkillPath": {
+                "enum": [
+                    "None",
+                    "Blade",
+                    "Tenacity",
+                    "Hammer",
+                    "Bellicosity",
+                    "Lance",
+                    "Vivacity",
+                    "Bow",
+                    "Perspicacity",
+                    "Staff",
+                    "Sagacity"
+                ],
+                "type": "string"
+            },
+            "SkillProperty": {
+                "required": ["duration", "type", "value"],
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "$ref": "#/components/schemas/SkillPropertyType"
+                    },
+                    "value": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "duration": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "SkillPropertyType": {
+                "enum": [
+                    "Initiative",
+                    "PhysicalAttack",
+                    "MagicalAttack",
+                    "PhysicalDefense",
+                    "MagicalDefense",
+                    "HealthPoints",
+                    "ManaPoints",
+                    "EnergyPoints",
+                    "CriticalChance",
+                    "PhysicalCriticalPower",
+                    "MagicalCriticalPower",
+                    "PunctureChance",
+                    "DodgeChance",
+                    "ParryChance",
+                    "BlockChance",
+                    "BlockPower",
+                    "CounterChance",
+                    "HealthRegen",
+                    "ManaRegen",
+                    "PhysicalDeflect",
+                    "MagicalDeflect"
+                ],
+                "type": "string"
+            },
+            "SkillRequirement": {
+                "required": ["path", "points"],
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "$ref": "#/components/schemas/SkillPath"
+                    },
+                    "points": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "SkillType": {
+                "enum": [
+                    "None",
+                    "Slash",
+                    "Pierce",
+                    "Blunt",
+                    "Fire",
+                    "Water",
+                    "Earth",
+                    "Wind",
+                    "Electric",
+                    "Light",
+                    "Dark",
+                    "Heal",
+                    "Buff"
+                ],
+                "type": "string"
+            },
             "StartExpeditionRequest": {
                 "required": ["floorGuid"],
                 "type": "object",
@@ -494,6 +901,142 @@
                     }
                 },
                 "additionalProperties": false
+            },
+            "UserSkill": {
+                "required": [
+                    "effects",
+                    "energyCost",
+                    "guid",
+                    "hitCount",
+                    "imageUrl",
+                    "isPassive",
+                    "level",
+                    "magicalAttackFactor",
+                    "magicalDefenseFactor",
+                    "manaCost",
+                    "name",
+                    "path",
+                    "physicalAttackFactor",
+                    "physicalDefenseFactor",
+                    "properties",
+                    "requirements",
+                    "targetSelf",
+                    "tier",
+                    "types"
+                ],
+                "type": "object",
+                "properties": {
+                    "guid": {
+                        "$ref": "#/components/schemas/SkillGuid"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "imageUrl": {
+                        "type": "string"
+                    },
+                    "path": {
+                        "$ref": "#/components/schemas/SkillPath"
+                    },
+                    "tier": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "types": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SkillType"
+                        }
+                    },
+                    "physicalAttackFactor": {
+                        "type": "array",
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    },
+                    "magicalAttackFactor": {
+                        "type": "array",
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    },
+                    "physicalDefenseFactor": {
+                        "type": "array",
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    },
+                    "magicalDefenseFactor": {
+                        "type": "array",
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    },
+                    "isPassive": {
+                        "type": "boolean"
+                    },
+                    "targetSelf": {
+                        "type": "boolean"
+                    },
+                    "hitCount": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    "energyCost": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    "manaCost": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    "effects": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/SkillEffect"
+                            }
+                        }
+                    },
+                    "properties": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/SkillProperty"
+                            }
+                        }
+                    },
+                    "requirements": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SkillRequirement"
+                        }
+                    },
+                    "level": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
             }
         },
         "securitySchemes": {
@@ -516,6 +1059,9 @@
         },
         {
             "name": "Progress"
+        },
+        {
+            "name": "Statistics"
         }
     ]
 }

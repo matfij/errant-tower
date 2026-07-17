@@ -9,7 +9,6 @@ import type { FloorTile } from './floorTile';
 
 export interface GetExpeditionResponse {
   floorGuid: FloorGuid;
-  /** @minLength 1 */
   floorImageUrl: string;
   initiative: number;
   maxHealth: number;

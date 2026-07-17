@@ -47,3 +47,24 @@ img {
     pointer-events: none;
     -webkit-user-drag: none;
 }
+
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    cursor: grab;
+}
+
+*::-webkit-scrollbar-track {
+    background: rgba($color-dark-400, 0.7);
+    border-radius: $radius-full;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: rgba($color-primary-500, 0.7);
+    border-radius: 8px;
+
+    &:hover {
+        background: rgba($color-primary-500, 0.9);
+        cursor: grab;
+    }
+}

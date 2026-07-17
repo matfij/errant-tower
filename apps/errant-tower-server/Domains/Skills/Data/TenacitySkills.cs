@@ -1,4 +1,4 @@
-﻿namespace ErrantTowerServer.Domains.Skills.Data;
+namespace ErrantTowerServer.Domains.Skills.Data;
 
 public static class TenacitySkills
 {
@@ -6,7 +6,7 @@ public static class TenacitySkills
     {
         Guid = SkillGuid.GreatVigor,
         Name = "Great Vigor",
-        ImageUrl = "tenacity/great-vigor.png",
+        ImageUrl = "tenacity/great-vigor.svg",
         Path = SkillPath.Tenacity,
         Tier = 0,
         Types = [SkillType.Buff],
@@ -30,7 +30,7 @@ public static class TenacitySkills
     {
         Guid = SkillGuid.Armorer,
         Name = "Armorer",
-        ImageUrl = "tenacity/armorer.png",
+        ImageUrl = "tenacity/armorer.svg",
         Path = SkillPath.Tenacity,
         Tier = 1,
         Types = [SkillType.Buff],
@@ -55,7 +55,7 @@ public static class TenacitySkills
     {
         Guid = SkillGuid.Energizer,
         Name = "Energizer",
-        ImageUrl = "tenacity/energizer.png",
+        ImageUrl = "tenacity/energizer.svg",
         Path = SkillPath.Tenacity,
         Tier = 2,
         Types = [SkillType.Buff],
@@ -80,7 +80,7 @@ public static class TenacitySkills
     {
         Guid = SkillGuid.Deflect,
         Name = "Deflect",
-        ImageUrl = "tenacity/deflect.png",
+        ImageUrl = "tenacity/deflect.svg",
         Path = SkillPath.Tenacity,
         Tier = 2,
         Types = [SkillType.Buff],
@@ -105,7 +105,7 @@ public static class TenacitySkills
     {
         Guid = SkillGuid.HeartsResolve,
         Name = "Heart's Resolve",
-        ImageUrl = "tenacity/hearts-resolve.png",
+        ImageUrl = "tenacity/hearts-resolve.svg",
         Path = SkillPath.Tenacity,
         Tier = 2,
         Types = [SkillType.Buff],
