@@ -56,7 +56,7 @@ img {
 
 *::-webkit-scrollbar-track {
     background: rgba($color-dark-400, 0.7);
-    border-radius: 999px;
+    border-radius: $radius-full;
 }
 
 *::-webkit-scrollbar-thumb {

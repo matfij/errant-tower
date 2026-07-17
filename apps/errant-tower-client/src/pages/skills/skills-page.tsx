@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { wrapQuery } from '../../api/api-proxy';
 import type { GetSkillTreeResponse, UserSkill } from '../../api/generated/definitions';
 import { useGetSkillTree } from '../../api/generated/hooks';
-import { Skill } from './skill-component';
+import { SkillItem } from './skill-item';
 
 const SKILL_KEYS = [
     'blade',
@@ -54,7 +54,7 @@ export const SkillsPage = () => {
                     {Object.entries(path.skillTiers).map(([tier, skills]) => (
                         <div key={tier} className={styles.tierWrapper}>
                             {skills.map((skill) => (
-                                <Skill key={skill.guid} skill={skill} />
+                                <SkillItem key={skill.guid} skill={skill} />
                             ))}
                         </div>
                     ))}

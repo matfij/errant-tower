@@ -18,11 +18,11 @@ const skillFill = {
     [SkillPath.Sagacity]: ['#5c4a1f', '#8a712f', '#c2a049', '#ffe98f', '#fff8db'],
 } as const satisfies Record<SkillPath, string[]>;
 
-export interface AppIconProps {
+export interface SkillItemProps {
     skill: UserSkill;
 }
 
-export const Skill = (props: AppIconProps) => {
+export const SkillItem = (props: SkillItemProps) => {
     const [svg, setSvg] = useState<string>();
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -54,10 +54,10 @@ export const Skill = (props: AppIconProps) => {
     }, [loadSvg]);
 
     return (
-        <div className={styles.skillContainer} ref={containerRef} tabIndex={0}>
+        <div className={styles.skillItem} ref={containerRef} tabIndex={0}>
             <span
                 role="img"
-                className={styles.iconItem}
+                className={styles.skillIcon}
                 dangerouslySetInnerHTML={{ __html: svg ?? '' }}
                 style={{
                     width: '4rem',
