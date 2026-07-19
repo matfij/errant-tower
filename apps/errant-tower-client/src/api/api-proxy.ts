@@ -16,7 +16,7 @@ type WrappedMutationVoid<TData> = {
     isLoading: boolean;
     isSuccess: boolean;
     errors?: ApiError[];
-    call: (options?: { onSuccess?: (data: TData) => void }) => void;
+    call: (args?: void, options?: { onSuccess?: (data: TData) => void }) => void;
 };
 
 export function wrapMutation<TData>(
@@ -43,13 +43,7 @@ export function wrapMutation(
             isLoading: mutation.isPending,
             isSuccess: mutation.isSuccess,
             errors: mutation.error || undefined,
-            call: (argsOrOptions?: unknown, maybeOptions?: { onSuccess?: (data: unknown) => void }) => {
-                const hasArgs = maybeOptions !== undefined;
-                const args = hasArgs ? argsOrOptions : undefined;
-                const options = hasArgs
-                    ? maybeOptions
-                    : (argsOrOptions as { onSuccess?: (data: unknown) => void } | undefined);
-
+            call: (args?: unknown, options?: { onSuccess?: (data: unknown) => void }) => {
                 const mutateOptions = options?.onSuccess ? { onSuccess: options.onSuccess } : undefined;
 
                 if (args === undefined) {
