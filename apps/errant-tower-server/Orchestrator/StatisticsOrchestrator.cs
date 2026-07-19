@@ -5,8 +5,8 @@ namespace ErrantTowerServer.Orchestrator;
 public interface IStatisticsOrchestrator
 {
     public Task<GetSkillTreeResponse> GetSkillTree(string userId);
-    public Task LearnSkill(string userId, LearnSkillRequest request);
-    public Task<ResetSkillsTreeResponse> ResetSkills(string userId);
+    public Task<LearnSkillResponse> LearnSkill(string userId, LearnSkillRequest request);
+    public Task<ResetSkillsResponse> ResetSkills(string userId);
 }
 
 public class StatisticsOrchestrator(IStatisticsService statisticsService) : IStatisticsOrchestrator
@@ -16,40 +16,28 @@ public class StatisticsOrchestrator(IStatisticsService statisticsService) : ISta
         var skillTree = await statisticsService.GetSkillTree(userId);
         return new GetSkillTreeResponse()
         {
-
-            Blade = skillTree.Blade,
-            Tenacity = skillTree.Tenacity,
-            Hammer = skillTree.Hammer,
-            Bellicosity = skillTree.Bellicosity,
-            Lance = skillTree.Lance,
-            Vivacity = skillTree.Vivacity,
-            Bow = skillTree.Bow,
-            Perspicacity = skillTree.Perspicacity,
-            Staff = skillTree.Staff,
-            Sagacity = skillTree.Sagacity,
+            SkillPoints = skillTree.SkillPoints,
+            Paths = skillTree.Paths
         };
     }
 
-    public async Task LearnSkill(string userId, LearnSkillRequest request)
+    public async Task<LearnSkillResponse> LearnSkill(string userId, LearnSkillRequest request)
     {
-        await statisticsService.LearnSkill(userId, request.SkillGuid);
+        var skillTree = await statisticsService.LearnSkill(userId, request.SkillGuid);
+        return new LearnSkillResponse()
+        {
+            SkillPoints = skillTree.SkillPoints,
+            Paths = skillTree.Paths
+        };
     }
 
-    public async Task<ResetSkillsTreeResponse> ResetSkills(string userId)
+    public async Task<ResetSkillsResponse> ResetSkills(string userId)
     {
         var skillTree = await statisticsService.ResetSkills(userId);
-        return new ResetSkillsTreeResponse()
+        return new ResetSkillsResponse()
         {
-            Blade = skillTree.Blade,
-            Tenacity = skillTree.Tenacity,
-            Hammer = skillTree.Hammer,
-            Bellicosity = skillTree.Bellicosity,
-            Lance = skillTree.Lance,
-            Vivacity = skillTree.Vivacity,
-            Bow = skillTree.Bow,
-            Perspicacity = skillTree.Perspicacity,
-            Staff = skillTree.Staff,
-            Sagacity = skillTree.Sagacity,
+            SkillPoints = skillTree.SkillPoints,
+            Paths = skillTree.Paths
         };
     }
 }

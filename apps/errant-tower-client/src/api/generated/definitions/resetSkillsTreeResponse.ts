@@ -4,17 +4,9 @@
  * ErrantTowerServer
  * OpenAPI spec version: 1.0
  */
-import type { UserSkill } from './userSkill';
+import type { SkillTreePaths } from './skillTreePaths';
 
 export interface ResetSkillsTreeResponse {
-  blade: UserSkill[];
-  tenacity: UserSkill[];
-  hammer: UserSkill[];
-  bellicosity: UserSkill[];
-  lance: UserSkill[];
-  vivacity: UserSkill[];
-  bow: UserSkill[];
-  perspicacity: UserSkill[];
-  staff: UserSkill[];
-  sagacity: UserSkill[];
+  skillPoints: number;
+  paths: SkillTreePaths;
 }

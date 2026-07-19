@@ -34,16 +34,22 @@
     "skills": {
         "path": "Path",
         "level": "{{level}} Level",
-        "bellicosity": "Bellicosity",
-        "blade": "Blade",
-        "bow": "Bow",
-        "hammer": "Hammer",
-        "lance": "Lance",
-        "perspicacity": "Perspicacity",
-        "sagacity": "Sagacity",
-        "staff": "Staff",
-        "tenacity": "Tenacity",
-        "vivacity": "Vivacity"
+        "levelProgress": "{{level}}/{{maxLevel}}",
+        "skillPoints": "<0>{{skillPoints}}</0> Skill points",
+        "learn": "Learn",
+        "resetAll": "Reset all",
+        "paths": {
+            "bellicosity": "Bellicosity",
+            "blade": "Blade",
+            "bow": "Bow",
+            "hammer": "Hammer",
+            "lance": "Lance",
+            "perspicacity": "Perspicacity",
+            "sagacity": "Sagacity",
+            "staff": "Staff",
+            "tenacity": "Tenacity",
+            "vivacity": "Vivacity"
+        }
     },
     "errors": {
         "unknown": "Unknown error, please try again later",

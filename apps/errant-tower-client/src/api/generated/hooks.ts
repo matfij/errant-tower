@@ -32,7 +32,8 @@ import type {
   GetFloorsResponse,
   GetSkillTreeResponse,
   LearnSkillRequest,
-  ResetSkillsTreeResponse,
+  LearnSkillResponse,
+  ResetSkillsResponse,
   StartExpeditionRequest,
   StartSignInRequest,
   StartSignUpRequest
@@ -607,7 +608,7 @@ export const learnSkill = (
 ) => {
       
       
-      return customFetch<void>(
+      return customFetch<LearnSkillResponse>(
       {url: `/statistics/learn-skill`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: learnSkillRequest, signal
@@ -666,7 +667,7 @@ export const resetSkills = (
 ) => {
       
       
-      return customFetch<ResetSkillsTreeResponse>(
+      return customFetch<ResetSkillsResponse>(
       {url: `/statistics/reset-skills`, method: 'POST', signal
     },
       options);

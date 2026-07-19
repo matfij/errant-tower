@@ -25,6 +25,7 @@ export const SkillGuid = {
   BloodthirstyBlade: 'BloodthirstyBlade',
   GreatVigor: 'GreatVigor',
   Armorer: 'Armorer',
+  Resistance: 'Resistance',
   Energizer: 'Energizer',
   Deflect: 'Deflect',
   HeartsResolve: 'HeartsResolve',

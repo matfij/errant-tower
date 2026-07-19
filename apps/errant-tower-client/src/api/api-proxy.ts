@@ -8,14 +8,14 @@ type WrappedMutation<TData, TArguments> = {
     isLoading: boolean;
     isSuccess: boolean;
     errors?: ApiError[];
-    call: (args: TArguments) => void;
+    call: (args?: TArguments | undefined) => void;
 };
 
 export function wrapMutation<TData, TArguments>(
-    mutationHook: () => UseMutationResult<TData, ApiError[], { data: TArguments }>,
-): () => WrappedMutation<TData, TArguments> {
+    mutationHook: () => UseMutationResult<TData, ApiError[], { data: TArguments | undefined }>,
+): () => WrappedMutation<TData, TArguments | undefined> {
     if (mutationCache.has(mutationHook)) {
-        return mutationCache.get(mutationHook) as () => WrappedMutation<TData, TArguments>;
+        return mutationCache.get(mutationHook) as () => WrappedMutation<TData, TArguments | undefined>;
     }
 
     const wrappedMutation = () => {
@@ -25,7 +25,7 @@ export function wrapMutation<TData, TArguments>(
             isLoading: mutation.isPending,
             isSuccess: mutation.isSuccess,
             errors: mutation.error || undefined,
-            call: (args: TArguments) => mutation.mutate({ data: args }),
+            call: (args?: TArguments | undefined) => mutation.mutate({ data: args }),
         };
     };
 

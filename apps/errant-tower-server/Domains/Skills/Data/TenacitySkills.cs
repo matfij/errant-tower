@@ -51,6 +51,31 @@ public static class TenacitySkills
         Requirements = [new() { Path = SkillPath.Tenacity, Points = 3 }],
     };
 
+    public static readonly Skill Resistance = new()
+    {
+        Guid = SkillGuid.Resistance,
+        Name = "Resistance",
+        ImageUrl = "tenacity/resistance.svg",
+        Path = SkillPath.Tenacity,
+        Tier = 1,
+        Types = [SkillType.Buff],
+        IsPassive = true,
+        Properties =
+        [
+            [new () { Type = SkillPropertyType.MagicalDefense, Value = 0.01 }],
+            [new () { Type = SkillPropertyType.MagicalDefense, Value = 0.02 }],
+            [new () { Type = SkillPropertyType.MagicalDefense, Value = 0.03 }],
+            [new () { Type = SkillPropertyType.MagicalDefense, Value = 0.04 }],
+            [new () { Type = SkillPropertyType.MagicalDefense, Value = 0.05 }],
+            [new () { Type = SkillPropertyType.MagicalDefense, Value = 0.06 }],
+            [new () { Type = SkillPropertyType.MagicalDefense, Value = 0.07 }],
+            [new () { Type = SkillPropertyType.MagicalDefense, Value = 0.08 }],
+            [new () { Type = SkillPropertyType.MagicalDefense, Value = 0.09 }],
+            [new () { Type = SkillPropertyType.MagicalDefense, Value = 0.10 }],
+        ],
+        Requirements = [new() { Path = SkillPath.Tenacity, Points = 3 }],
+    };
+
     public static readonly Skill Energizer = new()
     {
         Guid = SkillGuid.Energizer,

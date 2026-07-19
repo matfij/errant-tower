@@ -30,8 +30,13 @@ public record struct BattleStatistics
     public double EnergyRegen { get; init; } = 0;
 }
 
-
 public record SkillTree
+{
+    public required int SkillPoints { get; init; }
+    public required SkillTreePaths Paths { get; init; }
+}
+
+public record SkillTreePaths
 {
     public required List<UserSkill> Blade { get; init; }
     public required List<UserSkill> Tenacity { get; init; }
