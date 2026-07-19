@@ -1,10 +1,13 @@
 import styles from './skills-page.module.scss';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SkillPath, type UserSkill } from '../../api/generated/definitions';
 
 const iconAssets = import.meta.glob<string>('./icons/*/*.svg', { query: '?raw', import: 'default' });
 
-const skillFill = {
+const MAX_LEVEL = 10;
+
+const SKILL_FILLS = {
     [SkillPath.None]: [],
     [SkillPath.Blade]: ['#7a1f1f', '#b3242c', '#e63946', '#ff4d5e', '#ffdf6c'],
     [SkillPath.Tenacity]: ['#2f5d34', '#3f8e42', '#5cbf5f', '#8ef28f', '#d4ffb8'],
@@ -20,9 +23,11 @@ const skillFill = {
 
 export interface SkillItemProps {
     skill: UserSkill;
+    showLevel?: boolean;
 }
 
 export const SkillItem = (props: SkillItemProps) => {
+    const { t } = useTranslation();
     const [svg, setSvg] = useState<string>();
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -62,9 +67,14 @@ export const SkillItem = (props: SkillItemProps) => {
                 style={{
                     width: '4rem',
                     height: '4rem',
-                    color: skillFill[props.skill.path][props.skill.tier],
+                    color: SKILL_FILLS[props.skill.path][props.skill.tier],
                 }}
             />
+            {props.showLevel && (
+                <p className={styles.skillProgress}>
+                    {t('skills.levelProgress', { level: props.skill.level, maxLevel: MAX_LEVEL })}
+                </p>
+            )}
         </div>
     );
 };

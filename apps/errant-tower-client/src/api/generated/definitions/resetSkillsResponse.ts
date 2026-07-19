@@ -6,7 +6,7 @@
  */
 import type { SkillTreePaths } from './skillTreePaths';
 
-export interface GetSkillTreeResponse {
+export interface ResetSkillsResponse {
   skillPoints: number;
   paths: SkillTreePaths;
 }

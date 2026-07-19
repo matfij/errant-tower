@@ -20,17 +20,17 @@ public class StatisticsController(IStatisticsOrchestrator statisticsOrchestrator
 
     [HttpPost("learn-skill")]
     [EndpointName("learnSkill")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(LearnSkillResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> LearnSkill([FromBody] LearnSkillRequest request)
     {
         var userId = User.GetUserId();
-        await statisticsOrchestrator.LearnSkill(userId, request);
-        return Ok();
+        var result = await statisticsOrchestrator.LearnSkill(userId, request);
+        return Ok(result);
     }
 
     [HttpPost("reset-skills")]
     [EndpointName("resetSkills")]
-    [ProducesResponseType(typeof(ResetSkillsTreeResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResetSkillsResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> ResetSkills()
     {
         var userId = User.GetUserId();

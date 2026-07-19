@@ -5,7 +5,8 @@ using ErrantTowerServer.Domains.Statistics;
 namespace ErrantTowerServer.Orchestrator;
 
 public record GetSkillTreeResponse : SkillTree { }
-public record ResetSkillsTreeResponse : SkillTree { }
+public record LearnSkillResponse : SkillTree { }
+public record ResetSkillsResponse : SkillTree { }
 
 public record LearnSkillRequest
 {

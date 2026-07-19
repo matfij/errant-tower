@@ -9,7 +9,7 @@ public interface IStatisticsService
     public Task<BattleStatistics> GetUserBattleStatistics(string userId);
     public Task AwardPoints(string userId, int attributePoints, int skillPoints);
     public Task<SkillTree> GetSkillTree(string userId);
-    public Task LearnSkill(string userId, SkillGuid skill);
+    public Task<SkillTree> LearnSkill(string userId, SkillGuid skill);
     public Task<SkillTree> ResetSkills(string userId);
 }
 
@@ -74,20 +74,24 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
 
         return new SkillTree
         {
-            Blade = [.. skillsByPath[SkillPath.Blade]],
-            Tenacity = [.. skillsByPath[SkillPath.Tenacity]],
-            Hammer = [.. skillsByPath[SkillPath.Hammer]],
-            Bellicosity = [.. skillsByPath[SkillPath.Bellicosity]],
-            Lance = [.. skillsByPath[SkillPath.Lance]],
-            Vivacity = [.. skillsByPath[SkillPath.Vivacity]],
-            Bow = [.. skillsByPath[SkillPath.Bow]],
-            Perspicacity = [.. skillsByPath[SkillPath.Perspicacity]],
-            Staff = [.. skillsByPath[SkillPath.Staff]],
-            Sagacity = [.. skillsByPath[SkillPath.Sagacity]],
+            SkillPoints = statistics.SkillPoints,
+            Paths = new SkillTreePaths
+            {
+                Blade = [.. skillsByPath[SkillPath.Blade]],
+                Tenacity = [.. skillsByPath[SkillPath.Tenacity]],
+                Hammer = [.. skillsByPath[SkillPath.Hammer]],
+                Bellicosity = [.. skillsByPath[SkillPath.Bellicosity]],
+                Lance = [.. skillsByPath[SkillPath.Lance]],
+                Vivacity = [.. skillsByPath[SkillPath.Vivacity]],
+                Bow = [.. skillsByPath[SkillPath.Bow]],
+                Perspicacity = [.. skillsByPath[SkillPath.Perspicacity]],
+                Staff = [.. skillsByPath[SkillPath.Staff]],
+                Sagacity = [.. skillsByPath[SkillPath.Sagacity]],
+            }
         };
     }
 
-    public async Task LearnSkill(string userId, SkillGuid skillGuid)
+    public async Task<SkillTree> LearnSkill(string userId, SkillGuid skillGuid)
     {
         var statistics = await GetStatistics(userId);
         var targetSkill = statistics.LearnedSkills.FirstOrDefault(skill => skill.Guid == skillGuid);
@@ -128,6 +132,8 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
 
         statistics.SkillPoints--;
         _ = await statisticsRepository.UpdateOne(statistics);
+
+        return await GetSkillTree(userId);
     }
 
     public async Task<SkillTree> ResetSkills(string userId)
