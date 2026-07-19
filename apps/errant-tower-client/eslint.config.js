@@ -20,10 +20,7 @@ export default defineConfig([
             globals: globals.browser,
         },
         rules: {
-            // react-hooks/set-state-in-effect
-            reactHooks: {
-                "set-state-in-effect": "off"
-            }
-        }
+            'set-state-in-effect': 'warn',
+        },
     },
 ]);

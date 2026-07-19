@@ -1,7 +1,7 @@
 import styles from './skills-page.module.scss';
 import { useEffect, useRef, useState } from 'react';
-import { SkillPath, type UserSkill } from '../../api/generated/definitions';
 import { useTranslation } from 'react-i18next';
+import { SkillPath, type UserSkill } from '../../api/generated/definitions';
 
 const iconAssets = import.meta.glob<string>('./icons/*/*.svg', { query: '?raw', import: 'default' });
 

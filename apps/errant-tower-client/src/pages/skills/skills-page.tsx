@@ -19,7 +19,7 @@ const PATH_KEYS = [
     'sagacity',
 ] as const;
 
-const PATH_KEY_TO_PATH: Record<SkillPath, PathKey | undefined> = {
+const PATH_TO_PATH_KEY: Record<SkillPath, PathKey | undefined> = {
     [SkillPath.None]: undefined,
     [SkillPath.Blade]: 'blade',
     [SkillPath.Tenacity]: 'tenacity',
@@ -55,13 +55,14 @@ export const SkillsPage = () => {
     const canLearn =
         !learnSkill.isLoading &&
         !resetSkills.isLoading &&
-        getSkillTree.data &&
         activeSkill &&
         paths &&
-        getSkillTree.data.skillPoints > 0 &&
-        activeSkill.requirements.every(
-            (requirement) => paths[PATH_KEY_TO_PATH[requirement.path] as PathKey].level >= requirement.points,
-        );
+        skillPoints &&
+        skillPoints > 0 &&
+        activeSkill.requirements.every((requirement) => {
+            const pathKey = PATH_TO_PATH_KEY[requirement.path];
+            return !pathKey || paths[pathKey].level >= requirement.points;
+        });
 
     const canReset = !learnSkill.isLoading && !resetSkills.isLoading;
 
@@ -108,7 +109,7 @@ export const SkillsPage = () => {
 
     const onLearn = () => {
         if (canLearn && activeSkill) {
-            learnSkill.call({ skillGuid: activeSkill.guid });
+            learnSkill.call({ skillGuid: activeSkill.guid }, { onSuccess: updateSkillTree });
         }
     };
 

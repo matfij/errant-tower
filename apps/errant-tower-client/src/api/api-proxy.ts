@@ -8,24 +8,56 @@ type WrappedMutation<TData, TArguments> = {
     isLoading: boolean;
     isSuccess: boolean;
     errors?: ApiError[];
-    call: (args?: TArguments | undefined) => void;
+    call: (args: TArguments, options?: { onSuccess?: (data: TData) => void }) => void;
 };
 
+type WrappedMutationVoid<TData> = {
+    data?: TData;
+    isLoading: boolean;
+    isSuccess: boolean;
+    errors?: ApiError[];
+    call: (options?: { onSuccess?: (data: TData) => void }) => void;
+};
+
+export function wrapMutation<TData>(
+    mutationHook: () => UseMutationResult<TData, ApiError[], void>,
+): () => WrappedMutationVoid<TData>;
+
 export function wrapMutation<TData, TArguments>(
-    mutationHook: () => UseMutationResult<TData, ApiError[], { data: TArguments | undefined }>,
-): () => WrappedMutation<TData, TArguments | undefined> {
+    mutationHook: () => UseMutationResult<TData, ApiError[], { data: TArguments }>,
+): () => WrappedMutation<TData, TArguments>;
+
+export function wrapMutation(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mutationHook: () => UseMutationResult<unknown, ApiError[], any>,
+): () => WrappedMutationVoid<unknown> {
     if (mutationCache.has(mutationHook)) {
-        return mutationCache.get(mutationHook) as () => WrappedMutation<TData, TArguments | undefined>;
+        return mutationCache.get(mutationHook) as () => WrappedMutationVoid<unknown>;
     }
 
     const wrappedMutation = () => {
         const mutation = mutationHook();
+
         return {
             data: mutation.data,
             isLoading: mutation.isPending,
             isSuccess: mutation.isSuccess,
             errors: mutation.error || undefined,
-            call: (args?: TArguments | undefined) => mutation.mutate({ data: args }),
+            call: (argsOrOptions?: unknown, maybeOptions?: { onSuccess?: (data: unknown) => void }) => {
+                const hasArgs = maybeOptions !== undefined;
+                const args = hasArgs ? argsOrOptions : undefined;
+                const options = hasArgs
+                    ? maybeOptions
+                    : (argsOrOptions as { onSuccess?: (data: unknown) => void } | undefined);
+
+                const mutateOptions = options?.onSuccess ? { onSuccess: options.onSuccess } : undefined;
+
+                if (args === undefined) {
+                    mutation.mutate(undefined, mutateOptions);
+                } else {
+                    mutation.mutate({ data: args }, mutateOptions);
+                }
+            },
         };
     };
 
