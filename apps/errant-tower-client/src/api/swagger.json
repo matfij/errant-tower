@@ -886,7 +886,6 @@
             },
             "UserSkill": {
                 "required": [
-                    "effects",
                     "energyCost",
                     "guid",
                     "hitCount",
@@ -900,8 +899,11 @@
                     "path",
                     "physicalAttackFactor",
                     "physicalDefenseFactor",
-                    "properties",
                     "requirements",
+                    "selfEffects",
+                    "selfProperties",
+                    "targetEffects",
+                    "targetProperties",
                     "targetSelf",
                     "tier",
                     "types"
@@ -989,7 +991,7 @@
                             "format": "int32"
                         }
                     },
-                    "effects": {
+                    "targetEffects": {
                         "type": "array",
                         "items": {
                             "type": "array",
@@ -998,7 +1000,25 @@
                             }
                         }
                     },
-                    "properties": {
+                    "selfEffects": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/SkillEffect"
+                            }
+                        }
+                    },
+                    "targetProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/SkillProperty"
+                            }
+                        }
+                    },
+                    "selfProperties": {
                         "type": "array",
                         "items": {
                             "type": "array",

@@ -77,8 +77,8 @@ public static class SkillExtensions
             HitCount = skill.HitCount,
             EnergyCost = skill.EnergyCost,
             ManaCost = skill.ManaCost,
-            Effects = skill.Effects,
-            Properties = skill.Properties,
+            TargetEffects = skill.TargetEffects,
+            TargetProperties = skill.TargetProperties,
             Requirements = skill.Requirements,
             Level = level
         };

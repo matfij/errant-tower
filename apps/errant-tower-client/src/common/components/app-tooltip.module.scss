@@ -1,0 +1,16 @@
+@use '../../common/styles/variables.scss' as *;
+
+.tooltipWrapper {
+    // position: relative;
+}
+
+.tooltipContent {
+    position: absolute;
+    z-index: 1000;
+    width: 16rem;
+    padding: $spacing-4;
+    border-radius: $radius-md;
+    border: 1px solid rgb($color-dark-200, 0.9);
+    background: rgb($color-dark-400, 0.9);
+    pointer-events: none;
+}

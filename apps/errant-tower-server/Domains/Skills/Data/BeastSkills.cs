@@ -18,7 +18,7 @@ public static class BeastSkills
         PhysicalAttackFactor = [1.2],
         PhysicalDefenseFactor = [0.8],
         Types = [SkillType.Pierce],
-        Effects =
+        TargetEffects =
         [
             [new () { Type = SkillEffectType.Bleeding, Value = 0.25, Chance = 0.25, Duration = 3 }]
         ],
@@ -31,7 +31,7 @@ public static class BeastSkills
         PhysicalAttackFactor = [0.8],
         PhysicalDefenseFactor = [1.2],
         Types = [SkillType.Blunt],
-        Effects =
+        TargetEffects =
         [
             [new () { Type = SkillEffectType.Stun, Chance = 0.1, Duration = 1 }]
         ]
@@ -44,7 +44,7 @@ public static class BeastSkills
         PhysicalAttackFactor = [1.0],
         PhysicalDefenseFactor = [1.0],
         Types = [SkillType.Blunt],
-        Effects =
+        TargetEffects =
         [
             [new () { Type = SkillEffectType.Stun, Chance = 0.2, Duration = 1 }]
         ]
@@ -57,7 +57,7 @@ public static class BeastSkills
         PhysicalAttackFactor = [1.2],
         PhysicalDefenseFactor = [0.8],
         Types = [SkillType.Slash],
-        Effects =
+        TargetEffects =
         [
             [new () { Type = SkillEffectType.Bleeding, Value = 0.3, Chance = 0.3, Duration = 3 }]
         ],

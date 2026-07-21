@@ -29,8 +29,10 @@ export interface UserSkill {
   hitCount: number[];
   energyCost: number[];
   manaCost: number[];
-  effects: SkillEffect[][];
-  properties: SkillProperty[][];
+  targetEffects: SkillEffect[][];
+  selfEffects: SkillEffect[][];
+  targetProperties: SkillProperty[][];
+  selfProperties: SkillProperty[][];
   requirements: SkillRequirement[];
   level: number;
 }

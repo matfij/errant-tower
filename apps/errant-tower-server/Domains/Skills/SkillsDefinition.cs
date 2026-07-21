@@ -16,8 +16,8 @@ public record Skill
                 (nameof(HitCount), HitCount.Length),
                 (nameof(EnergyCost), EnergyCost.Length),
                 (nameof(ManaCost), ManaCost.Length),
-                (nameof(Effects), Effects.Length),
-                (nameof(Properties), Properties.Length),
+                (nameof(TargetEffects), TargetEffects.Length),
+                (nameof(TargetProperties), TargetProperties.Length),
             ];
         foreach (var attribute in attributes)
         {
@@ -44,8 +44,10 @@ public record Skill
     public int[] HitCount { get; init; } = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
     public int[] EnergyCost { get; init; } = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     public int[] ManaCost { get; init; } = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    public SkillEffect[][] Effects { get; init; } = [[], [], [], [], [], [], [], [], [], []];  // For active skills - e.g. bleeding
-    public SkillProperty[][] Properties { get; init; } = [[], [], [], [], [], [], [], [], [], []];  // For passive skills - e.g. +10% physical attack
+    public SkillEffect[][] TargetEffects { get; init; } = [[], [], [], [], [], [], [], [], [], []];  // For active skills - e.g. bleeding
+    public SkillEffect[][] SelfEffects { get; init; } = [[], [], [], [], [], [], [], [], [], []];  // For active skills - e.g. bleeding
+    public SkillProperty[][] TargetProperties { get; init; } = [[], [], [], [], [], [], [], [], [], []];  // For passive skills - e.g. +10% physical attack
+    public SkillProperty[][] SelfProperties { get; init; } = [[], [], [], [], [], [], [], [], [], []];  // For passive skills - e.g. +10% physical attack
     public SkillRequirement[] Requirements { get; init; } = [];
 }
 

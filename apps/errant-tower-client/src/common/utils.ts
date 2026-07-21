@@ -14,9 +14,9 @@ const ROMAN_NUMERALS: [number, string][] = [
     [1, 'I'],
 ];
 
-export function arabicToRoman(input: number): string {
+export const arabicToRoman = (value: number) => {
     let result = '';
-    let remaining = input;
+    let remaining = value;
 
     for (const [value, symbol] of ROMAN_NUMERALS) {
         while (remaining >= value) {
@@ -26,4 +26,13 @@ export function arabicToRoman(input: number): string {
     }
 
     return result;
-}
+};
+
+export const toLowerFirst = (value: string) => {
+    if (typeof value !== 'string' || value.length === 0) {
+        return '';
+    }
+    return value[0].toLowerCase() + value.slice(1);
+};
+
+export const toPercentLabel = (value: number) => `${Math.round(100 * value)}%`;
