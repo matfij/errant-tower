@@ -11,7 +11,7 @@ public static class TenacitySkills
         Tier = 0,
         Types = [SkillType.Buff],
         IsPassive = true,
-        Properties =
+        SelfProperties =
         [
             [new () { Type = SkillPropertyType.HealthPoints, Value = 0.01 }],
             [new () { Type = SkillPropertyType.HealthPoints, Value = 0.02 }],
@@ -35,7 +35,7 @@ public static class TenacitySkills
         Tier = 1,
         Types = [SkillType.Buff],
         IsPassive = true,
-        Properties =
+        SelfProperties =
         [
             [new () { Type = SkillPropertyType.PhysicalDefense, Value = 0.01 }],
             [new () { Type = SkillPropertyType.PhysicalDefense, Value = 0.02 }],
@@ -60,7 +60,7 @@ public static class TenacitySkills
         Tier = 1,
         Types = [SkillType.Buff],
         IsPassive = true,
-        Properties =
+        SelfProperties =
         [
             [new () { Type = SkillPropertyType.MagicalDefense, Value = 0.01 }],
             [new () { Type = SkillPropertyType.MagicalDefense, Value = 0.02 }],
@@ -85,7 +85,7 @@ public static class TenacitySkills
         Tier = 2,
         Types = [SkillType.Buff],
         IsPassive = true,
-        Properties =
+        SelfProperties =
         [
             [new () { Type = SkillPropertyType.EnergyPoints, Value = 0.02 }],
             [new () { Type = SkillPropertyType.EnergyPoints, Value = 0.04 }],
@@ -110,7 +110,7 @@ public static class TenacitySkills
         Tier = 2,
         Types = [SkillType.Buff],
         IsPassive = true,
-        Properties =
+        SelfProperties =
         [
             [new () { Type = SkillPropertyType.BlockChance, Value = 0.01 }],
             [new () { Type = SkillPropertyType.BlockChance, Value = 0.02 }],
@@ -135,7 +135,7 @@ public static class TenacitySkills
         Tier = 2,
         Types = [SkillType.Buff],
         IsPassive = true,
-        Properties =
+        SelfProperties =
         [
             [new () { Type = SkillPropertyType.HealthRegen, Value = 0.01 }],
             [new () { Type = SkillPropertyType.HealthRegen, Value = 0.02 }],

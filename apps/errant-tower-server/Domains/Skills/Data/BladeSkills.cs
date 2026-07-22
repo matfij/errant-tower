@@ -26,7 +26,7 @@ public static class BladeSkills
         PhysicalAttackFactor = [1, 1.02, 1.04, 1.06, 1.08, 1.1, 1.12, 1.14, 1.16, 1.18],
         PhysicalDefenseFactor = [0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9],
         Types = [SkillType.Slash],
-        Effects =
+        SelfEffects =
         [
             [new () { Type = SkillEffectType.PhysicalDefense, Value = -0.2, Chance = 1, Duration = 1 }],
             [new () { Type = SkillEffectType.PhysicalDefense, Value = -0.2, Chance = 1, Duration = 1 }],
@@ -53,7 +53,7 @@ public static class BladeSkills
         PhysicalAttackFactor = [1.1, 1.12, 1.14, 1.16, 1.18, 1.2, 1.22, 1.24, 1.26, 1.28],
         PhysicalDefenseFactor = [0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95],
         Types = [SkillType.Slash],
-        Effects =
+        SelfEffects =
         [
             [new () { Type = SkillEffectType.Initiative, Value = 1.10, Chance = 1, Duration = 2 }],
             [new () { Type = SkillEffectType.Initiative, Value = 1.12, Chance = 1, Duration = 2 }],
@@ -80,7 +80,7 @@ public static class BladeSkills
         PhysicalAttackFactor = [1.2, 1.22, 1.24, 1.26, 1.28, 1.3, 1.32, 1.34, 1.36, 1.38],
         PhysicalDefenseFactor = [0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
         Types = [SkillType.Blunt],
-        Effects =
+        TargetEffects =
         [
             [new () { Type = SkillEffectType.PhysicalDefense, Value = -0.1, Chance = 1 }],
             [new () { Type = SkillEffectType.PhysicalDefense, Value = -0.1, Chance = 1 }],
@@ -107,18 +107,31 @@ public static class BladeSkills
         PhysicalAttackFactor = [1.25, 1.28, 1.31, 1.34, 1.37, 1.40, 1.43, 1.46, 1.49, 1.52],
         PhysicalDefenseFactor = [0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9],
         Types = [SkillType.Slash],
-        Effects =
+        TargetEffects =
         [
-            [new () { Type = SkillEffectType.Initiative, Value = 1.20, Chance = 1, Duration = 2 }, new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
-            [new () { Type = SkillEffectType.Initiative, Value = 1.22, Chance = 1, Duration = 2 }, new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
-            [new () { Type = SkillEffectType.Initiative, Value = 1.24, Chance = 1, Duration = 2 }, new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
-            [new () { Type = SkillEffectType.Initiative, Value = 1.26, Chance = 1, Duration = 2 }, new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
-            [new () { Type = SkillEffectType.Initiative, Value = 1.28, Chance = 1, Duration = 2 }, new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
-            [new () { Type = SkillEffectType.Initiative, Value = 1.30, Chance = 1, Duration = 2 }, new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
-            [new () { Type = SkillEffectType.Initiative, Value = 1.32, Chance = 1, Duration = 2 }, new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
-            [new () { Type = SkillEffectType.Initiative, Value = 1.34, Chance = 1, Duration = 2 }, new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
-            [new () { Type = SkillEffectType.Initiative, Value = 1.36, Chance = 1, Duration = 2 }, new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
-            [new () { Type = SkillEffectType.Initiative, Value = 1.38, Chance = 1, Duration = 2 }, new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+        ],
+        SelfEffects =
+        [
+            [new () { Type = SkillEffectType.Initiative, Value = 1.20, Chance = 1, Duration = 2 }],
+            [new () { Type = SkillEffectType.Initiative, Value = 1.22, Chance = 1, Duration = 2 }],
+            [new () { Type = SkillEffectType.Initiative, Value = 1.24, Chance = 1, Duration = 2 }],
+            [new () { Type = SkillEffectType.Initiative, Value = 1.26, Chance = 1, Duration = 2 }],
+            [new () { Type = SkillEffectType.Initiative, Value = 1.28, Chance = 1, Duration = 2 }],
+            [new () { Type = SkillEffectType.Initiative, Value = 1.30, Chance = 1, Duration = 2 }],
+            [new () { Type = SkillEffectType.Initiative, Value = 1.32, Chance = 1, Duration = 2 }],
+            [new () { Type = SkillEffectType.Initiative, Value = 1.34, Chance = 1, Duration = 2 }],
+            [new () { Type = SkillEffectType.Initiative, Value = 1.36, Chance = 1, Duration = 2 }],
+            [new () { Type = SkillEffectType.Initiative, Value = 1.38, Chance = 1, Duration = 2 }],
         ],
         EnergyCost = [20, 20, 20, 22, 22, 22, 22, 24, 24, 21],
         Requirements = [new() { Path = SkillPath.Blade, Points = 12 }],
@@ -135,7 +148,7 @@ public static class BladeSkills
         PhysicalAttackFactor = [1.0, 1.01, 1.02, 1.03, 1.04, 1.05, 1.06, 1.07, 1.08, 1.1],
         PhysicalDefenseFactor = [0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9],
         Types = [SkillType.Slash],
-        Effects =
+        SelfEffects =
         [
             [new () { Type = SkillEffectType.PhysicalDefense, Value = -0.15, Chance = 1, Duration = 2 }],
             [new () { Type = SkillEffectType.PhysicalDefense, Value = -0.15, Chance = 1, Duration = 2 }],
@@ -162,7 +175,7 @@ public static class BladeSkills
         PhysicalAttackFactor = [1.1, 1.13, 1.16, 1.19, 1.22, 1.25, 1.28, 1.31, 1.34, 1.37],
         PhysicalDefenseFactor = [0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8],
         Types = [SkillType.Slash],
-        Effects =
+        TargetEffects =
         [
             [new () { Type = SkillEffectType.Bleeding, Value = 0.20, Chance = 0.4, Duration = 3 }],
             [new () { Type = SkillEffectType.Bleeding, Value = 0.21, Chance = 0.4, Duration = 3 }],
