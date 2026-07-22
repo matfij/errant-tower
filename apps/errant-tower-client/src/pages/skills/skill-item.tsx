@@ -116,13 +116,13 @@ const SkillTooltipContent = memo(({ skill }: { skill: UserSkill }) => {
         ': ' +
         (effect.value != 0 ? toPercentLabel(effect.value) : t('skills.notApplicable')) +
         (effect.chance > 0 ? ', ' + t('skills.chance', { chance: toPercentLabel(effect.chance) }) : '') +
-        (effect.duration > 0 ? ', ' + t('skills.duration', { duration: effect.duration }) : '');
+        (effect.duration > 0 ? ', ' + t('skills.duration', { count: effect.duration }) : '');
 
     const getPropertyLabel = (property: SkillProperty) =>
         t(skillPropertyToLabel(property)) +
         ': ' +
         toPercentLabel(property.value) +
-        (property.duration > 0 ? ', ' + t('skills.duration', { duration: property.duration }) : '');
+        (property.duration > 0 ? ', ' + t('skills.duration', { count: property.duration }) : '');
 
     return (
         <div>

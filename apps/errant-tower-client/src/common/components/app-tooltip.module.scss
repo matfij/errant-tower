@@ -1,9 +1,5 @@
 @use '../../common/styles/variables.scss' as *;
 
-.tooltipWrapper {
-    // position: relative;
-}
-
 .tooltipContent {
     position: absolute;
     z-index: 1000;
