@@ -19,10 +19,9 @@ export const AppTooltip = (props: AppTooltipProps) => {
         if (!showTooltip) {
             return;
         }
-        console.log(event);
-        const offsetX = event.clientX > window.innerWidth / 2 ? -280 : 20;
-        const offsetY = event.clientY > window.innerHeight / 2 ? -60 : 30;
-        setPosition({ x: event.clientX + offsetX, y: event.pageY + offsetY });
+        const offsetX = event.pageX > window.innerWidth / 2 ? -280 : 20;
+        const offsetY = event.pageY > window.innerHeight / 2 ? -60 : 30;
+        setPosition({ x: event.pageX + offsetX, y: event.pageY + offsetY });
     };
 
     return (

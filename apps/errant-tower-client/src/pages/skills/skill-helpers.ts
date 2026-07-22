@@ -1,4 +1,4 @@
-import { SkillPath, SkillType, type SkillEffect } from '../../api/generated/definitions';
+import { SkillPath, SkillType, type SkillEffect, type SkillProperty } from '../../api/generated/definitions';
 import { toLowerFirst } from '../../common/utils';
 
 export const SKILL_FILLS = {
@@ -23,4 +23,5 @@ export const skillPassiveToLabel = (isPassive: boolean) => (isPassive ? `skills.
 
 export const skillEffectToLabel = (effect: SkillEffect) => `skills.effects.${toLowerFirst(effect.type)}`;
 
-export const skillPropertyToLabel = (effect: SkillEffect) => `skills.properties.${toLowerFirst(effect.type)}`;
+export const skillPropertyToLabel = (property: SkillProperty) =>
+    `skills.properties.${toLowerFirst(property.type)}`;

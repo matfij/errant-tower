@@ -78,7 +78,9 @@ public static class SkillExtensions
             EnergyCost = skill.EnergyCost,
             ManaCost = skill.ManaCost,
             TargetEffects = skill.TargetEffects,
+            SelfEffects = skill.SelfEffects,
             TargetProperties = skill.TargetProperties,
+            SelfProperties = skill.SelfProperties,
             Requirements = skill.Requirements,
             Level = level
         };

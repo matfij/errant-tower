@@ -1,10 +1,17 @@
 import styles from './skills-page.module.scss';
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { SkillEffect, SkillProperty, UserSkill } from '../../api/generated/definitions';
 import { AppTooltip } from '../../common/components/app-tooltip';
-import { getSkillColor, SKILL_FILLS, skillPassiveToLabel, skillTypeToLabel } from './skill-helpers';
-import { toPercentLabel, toLowerFirst } from '../../common/utils';
+import {
+    getSkillColor,
+    SKILL_FILLS,
+    skillEffectToLabel,
+    skillPassiveToLabel,
+    skillPropertyToLabel,
+    skillTypeToLabel,
+} from './skill-helpers';
+import { toPercentLabel } from '../../common/utils';
 
 const iconAssets = import.meta.glob<string>('./icons/*/*.svg', { query: '?raw', import: 'default' });
 
@@ -77,7 +84,7 @@ const baseAttributes = [
     'magicalDefenseFactor',
 ] as const;
 
-const SkillTooltipContent = ({ skill }: { skill: UserSkill }) => {
+const SkillTooltipContent = memo(({ skill }: { skill: UserSkill }) => {
     const { t } = useTranslation();
 
     const isLearned = skill.level > 0;
@@ -89,7 +96,7 @@ const SkillTooltipContent = ({ skill }: { skill: UserSkill }) => {
         skill.types.map((type) => t(skillTypeToLabel(type))).join(', ');
 
     const isRelevant = (attribute: unknown) =>
-        attribute instanceof Array && attribute.every((item) => item !== 0);
+        attribute instanceof Array && attribute.some((item) => item !== 0);
     const relevantAttributes = baseAttributes
 
         .map((attribute) => ({ name: attribute, levels: skill[attribute] }))
@@ -105,14 +112,14 @@ const SkillTooltipContent = ({ skill }: { skill: UserSkill }) => {
         t(`skills.attributes.${name}`) + ': ' + toPercentLabel(value);
 
     const getEffectLabel = (effect: SkillEffect) =>
-        t(`skills.effects.${toLowerFirst(effect.type)}`) +
+        t(skillEffectToLabel(effect)) +
         ': ' +
         (effect.value != 0 ? toPercentLabel(effect.value) : t('skills.notApplicable')) +
         (effect.chance > 0 ? ', ' + t('skills.chance', { chance: toPercentLabel(effect.chance) }) : '') +
         (effect.duration > 0 ? ', ' + t('skills.duration', { duration: effect.duration }) : '');
 
     const getPropertyLabel = (property: SkillProperty) =>
-        t(`skills.properties.${toLowerFirst(property.type)}`) +
+        t(skillPropertyToLabel(property)) +
         ': ' +
         toPercentLabel(property.value) +
         (property.duration > 0 ? ', ' + t('skills.duration', { duration: property.duration }) : '');
@@ -174,4 +181,4 @@ const SkillTooltipContent = ({ skill }: { skill: UserSkill }) => {
                 ))}
         </div>
     );
-};
+});

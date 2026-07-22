@@ -107,6 +107,19 @@ public static class BladeSkills
         PhysicalAttackFactor = [1.25, 1.28, 1.31, 1.34, 1.37, 1.40, 1.43, 1.46, 1.49, 1.52],
         PhysicalDefenseFactor = [0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9],
         Types = [SkillType.Slash],
+        TargetEffects =
+        [
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+            [new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
+        ],
         SelfEffects =
         [
             [new () { Type = SkillEffectType.Initiative, Value = 1.20, Chance = 1, Duration = 2 }, new () { Type = SkillEffectType.Paralyze, Chance = 0.2, Duration = 1}],
