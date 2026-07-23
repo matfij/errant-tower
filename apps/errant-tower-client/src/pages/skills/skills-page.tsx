@@ -5,6 +5,7 @@ import { wrapMutation, wrapQuery } from '../../api/api-proxy';
 import { SkillPath, type GetSkillTreeResponse, type UserSkill } from '../../api/generated/definitions';
 import { useGetSkillTree, useLearnSkill, useResetSkills } from '../../api/generated/hooks';
 import { SkillItem } from './skill-item';
+import { SkillSummary } from './skill-summary';
 
 const PATH_KEYS = [
     'blade',
@@ -81,6 +82,15 @@ export const SkillsPage = () => {
 
         setPaths(newPaths);
         setSkillPoints(skillTree.skillPoints);
+
+        const prevActiveSkillGuid = activeSkill?.guid;
+        if (activeSkill && prevActiveSkillGuid) {
+            const pathKey = PATH_TO_PATH_KEY[activeSkill.path];
+            const nextActiveSkill = pathKey
+                ? skillTree.paths[pathKey].find((skill) => skill.guid === prevActiveSkillGuid)
+                : undefined;
+            setActiveSkill(nextActiveSkill);
+        }
     };
 
     useEffect(() => {
@@ -144,15 +154,7 @@ export const SkillsPage = () => {
                     ))}
             </div>
             <div className={styles.summaryWrapper}>
-                {activeSkill && (
-                    <div className={styles.activeSkillWrapper}>
-                        <p>{activeSkill.name}</p>
-                        <button className={styles.learnButton} disabled={!canLearn} onClick={onLearn}>
-                            {t('skills.learn')}
-                        </button>
-                        <hr />
-                    </div>
-                )}
+                {activeSkill && <SkillSummary skill={activeSkill} canLearn={!!canLearn} onLearn={onLearn} />}
                 <div className={styles.actionsWrapper}>
                     <p>
                         <Trans i18nKey="skills.skillPoints" values={{ skillPoints }} components={[<b />]} />

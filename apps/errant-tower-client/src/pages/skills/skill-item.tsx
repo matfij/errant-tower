@@ -1,21 +1,13 @@
 import styles from './skills-page.module.scss';
 import { memo, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { SkillEffect, SkillProperty, UserSkill } from '../../api/generated/definitions';
+import type { UserSkill } from '../../api/generated/definitions';
 import { AppTooltip } from '../../common/components/app-tooltip';
-import {
-    getSkillColor,
-    SKILL_FILLS,
-    skillEffectToLabel,
-    skillPassiveToLabel,
-    skillPropertyToLabel,
-    skillTypeToLabel,
-} from './skill-helpers';
-import { toPercentLabel } from '../../common/utils';
+import { getSkillColor, SKILL_FILLS, SKILL_MAX_LEVEL, useSkillLabels } from './skill-helpers';
 
 const iconAssets = import.meta.glob<string>('./icons/*/*.svg', { query: '?raw', import: 'default' });
 
-const MAX_LEVEL = 10;
+
 
 export interface SkillItemProps {
     skill: UserSkill;
@@ -70,59 +62,25 @@ export const SkillItem = (props: SkillItemProps) => {
             </AppTooltip>
             {props.showLevel && (
                 <p className={styles.skillProgress}>
-                    {t('skills.levelProgress', { level: props.skill.level, maxLevel: MAX_LEVEL })}
+                    {t('skills.levelProgress', { level: props.skill.level, maxLevel: SKILL_MAX_LEVEL })}
                 </p>
             )}
         </div>
     );
 };
 
-const baseAttributes = [
-    'physicalAttackFactor',
-    'magicalAttackFactor',
-    'physicalDefenseFactor',
-    'magicalDefenseFactor',
-] as const;
-
 const SkillTooltipContent = memo(({ skill }: { skill: UserSkill }) => {
     const { t } = useTranslation();
-
-    const isLearned = skill.level > 0;
-    const currentLevel = isLearned ? skill.level - 1 : 0;
-
-    const skillMeta =
-        t(skillPassiveToLabel(skill.isPassive)) +
-        ', ' +
-        skill.types.map((type) => t(skillTypeToLabel(type))).join(', ');
-
-    const isRelevant = (attribute: unknown) =>
-        attribute instanceof Array && attribute.some((item) => item !== 0);
-    const relevantAttributes = baseAttributes
-
-        .map((attribute) => ({ name: attribute, levels: skill[attribute] }))
-        .filter((attribute) => isRelevant(attribute.levels));
-
-    const hasSelfSection =
-        skill.selfEffects[currentLevel].length > 0 || skill.selfProperties[currentLevel].length > 0;
-
-    const hasTargetSection =
-        skill.targetEffects[currentLevel].length > 0 || skill.targetProperties[currentLevel].length > 0;
-
-    const getAttributeLabel = (name: string, value: number) =>
-        t(`skills.attributes.${name}`) + ': ' + toPercentLabel(value);
-
-    const getEffectLabel = (effect: SkillEffect) =>
-        t(skillEffectToLabel(effect)) +
-        ': ' +
-        (effect.value != 0 ? toPercentLabel(effect.value) : t('skills.notApplicable')) +
-        (effect.chance > 0 ? ', ' + t('skills.chance', { chance: toPercentLabel(effect.chance) }) : '') +
-        (effect.duration > 0 ? ', ' + t('skills.duration', { count: effect.duration }) : '');
-
-    const getPropertyLabel = (property: SkillProperty) =>
-        t(skillPropertyToLabel(property)) +
-        ': ' +
-        toPercentLabel(property.value) +
-        (property.duration > 0 ? ', ' + t('skills.duration', { count: property.duration }) : '');
+    const {
+        currentLevel,
+        skillMeta,
+        relevantAttributes,
+        hasSelfSection,
+        hasTargetSection,
+        getAttributeLabel,
+        getEffectLabel,
+        getPropertyLabel,
+    } = useSkillLabels(skill);
 
     return (
         <div>
@@ -136,7 +94,7 @@ const SkillTooltipContent = memo(({ skill }: { skill: UserSkill }) => {
                     <hr className={styles.tooltipSeparator} />
                     {relevantAttributes.map((attribute) => (
                         <p key={attribute.name} className={styles.tooltipAttribute}>
-                            {getAttributeLabel(attribute.name, attribute.levels[currentLevel])}
+                            {getAttributeLabel(t, attribute.name, attribute.levels[currentLevel])}
                         </p>
                     ))}
                 </>
@@ -151,13 +109,13 @@ const SkillTooltipContent = memo(({ skill }: { skill: UserSkill }) => {
             {skill.selfEffects[currentLevel].length > 0 &&
                 skill.selfEffects[currentLevel].map((effect) => (
                     <p key={effect.type} className={styles.tooltipAttribute}>
-                        {getEffectLabel(effect)}
+                        {getEffectLabel(t, effect)}
                     </p>
                 ))}
             {skill.selfProperties[currentLevel].length > 0 &&
                 skill.selfProperties[currentLevel].map((property) => (
                     <p key={property.type} className={styles.tooltipAttribute}>
-                        {getPropertyLabel(property)}
+                        {getPropertyLabel(t, property)}
                     </p>
                 ))}
 
@@ -170,13 +128,13 @@ const SkillTooltipContent = memo(({ skill }: { skill: UserSkill }) => {
             {skill.targetEffects[currentLevel].length > 0 &&
                 skill.targetEffects[currentLevel].map((effect) => (
                     <p key={effect.type} className={styles.tooltipAttribute}>
-                        {getEffectLabel(effect)}
+                        {getEffectLabel(t, effect)}
                     </p>
                 ))}
             {skill.targetProperties[currentLevel].length > 0 &&
                 skill.targetProperties[currentLevel].map((property) => (
                     <p key={property.type} className={styles.tooltipAttribute}>
-                        {getPropertyLabel(property)}
+                        {getPropertyLabel(t, property)}
                     </p>
                 ))}
         </div>

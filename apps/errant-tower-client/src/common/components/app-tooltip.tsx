@@ -9,6 +9,7 @@ interface TooltipPosition {
 interface AppTooltipProps {
     content: ReactNode;
     children: ReactNode;
+    isHidden?: boolean;
 }
 
 export const AppTooltip = (props: AppTooltipProps) => {
@@ -24,12 +25,21 @@ export const AppTooltip = (props: AppTooltipProps) => {
         setPosition({ x: event.pageX + offsetX, y: event.pageY + offsetY });
     };
 
+    const onMouseEnter = () => {
+        if (!props.isHidden) {
+            setShowTooltip(true);
+        } else {
+            setShowTooltip(false);
+        }
+    };
+
+    const onMouseLeave = () => {
+        setShowTooltip(false);
+    };
+
     return (
         <div>
-            <div
-                onMouseMove={onMouseMove}
-                onMouseEnter={() => setShowTooltip(true)}
-                onMouseLeave={() => setShowTooltip(false)}>
+            <div onMouseMove={onMouseMove} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
                 {props.children}
             </div>
             {showTooltip && (

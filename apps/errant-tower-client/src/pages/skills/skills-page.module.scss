@@ -83,13 +83,6 @@
     background: rgba($color-dark-400, 0.6);
     border-radius: $radius-md;
     border: 1px solid rgba($color-light-100, 0.2);
-
-    hr {
-        @include primaryDivider;
-
-        width: calc(100% - 2 * $spacing-2);
-        margin: $spacing-2 auto;
-    }
 }
 
 .actionsWrapper {
@@ -101,22 +94,32 @@
 .resetButton {
     @include secondaryButton;
 
-    scale: 0.8;
-    font-size: 16px;
-    font-weight: 600;
+    margin: 0;
+    padding: $spacing-1 $spacing-2;
+    font-size: 13px;
+    font-weight: 500;
 }
 
 .activeSkillWrapper {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+}
+
+.activeSkillHeader {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .learnButton {
     @include primaryButton;
 
-    scale: 0.8;
-    font-size: 16px;
-    font-weight: 600;
+    margin: 0;
+    padding: $spacing-2 $spacing-4;
+    font-size: 12px;
+    font-weight: 500;
 }
 
 .tooltipTitle {
@@ -133,6 +136,14 @@
 
 .tooltipAttribute {
     font-size: 13px;
+}
+
+.tooltipAttributeSeparator {
+    margin: 0 $spacing-1;
+}
+
+.tooltipNextAttribute {
+    color: $color-green-200;
 }
 
 .tooltipSeparator {

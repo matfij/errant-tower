@@ -1,5 +1,15 @@
-import { SkillPath, SkillType, type SkillEffect, type SkillProperty } from '../../api/generated/definitions';
-import { toLowerFirst } from '../../common/utils';
+import type { TFunction } from 'i18next';
+import {
+    SkillPath,
+    SkillType,
+    type SkillEffect,
+    type SkillProperty,
+    type UserSkill,
+} from '../../api/generated/definitions';
+import { toLowerFirst, toPercentLabel } from '../../common/utils';
+import { useTranslation } from 'react-i18next';
+
+export const SKILL_MAX_LEVEL = 10;
 
 export const SKILL_FILLS = {
     [SkillPath.None]: [],
@@ -15,6 +25,13 @@ export const SKILL_FILLS = {
     [SkillPath.Sagacity]: ['#5c4a1f', '#8a712f', '#c2a049', '#ffe98f', '#fff8db'],
 } as const satisfies Record<SkillPath, string[]>;
 
+const SKILL_BASE_ATTRIBUTES = [
+    'physicalAttackFactor',
+    'magicalAttackFactor',
+    'physicalDefenseFactor',
+    'magicalDefenseFactor',
+] as const;
+
 export const getSkillColor = (path: SkillPath, tier?: number) => SKILL_FILLS[path][tier ?? 2];
 
 export const skillTypeToLabel = (type: SkillType) => `skills.types.${toLowerFirst(type)}`;
@@ -25,3 +42,53 @@ export const skillEffectToLabel = (effect: SkillEffect) => `skills.effects.${toL
 
 export const skillPropertyToLabel = (property: SkillProperty) =>
     `skills.properties.${toLowerFirst(property.type)}`;
+
+export const useSkillLabels = (skill: UserSkill) => {
+    const { t } = useTranslation();
+
+    const isLearned = skill.level > 0;
+    const currentLevel = isLearned ? skill.level - 1 : 0;
+
+    const skillMeta =
+        t(skillPassiveToLabel(skill.isPassive)) +
+        ', ' +
+        skill.types.map((type) => t(skillTypeToLabel(type))).join(', ');
+
+    const isRelevant = (attribute: unknown) =>
+        attribute instanceof Array && attribute.some((item) => item !== 0);
+    const relevantAttributes = SKILL_BASE_ATTRIBUTES.map((attribute) => ({
+        name: attribute,
+        levels: skill[attribute],
+    })).filter((attribute) => isRelevant(attribute.levels));
+
+    const hasSelfSection =
+        skill.selfEffects[currentLevel].length > 0 || skill.selfProperties[currentLevel].length > 0;
+
+    const hasTargetSection =
+        skill.targetEffects[currentLevel].length > 0 || skill.targetProperties[currentLevel].length > 0;
+
+    const getAttributeLabel = (t: TFunction, name: string, value: number) =>
+        t(`skills.attributes.${name}`) + ': ' + toPercentLabel(value);
+
+    const getEffectLabel = (t: TFunction, effect: SkillEffect, skipName?: boolean) =>
+        (skipName ? '' : t(skillEffectToLabel(effect)) + ': ') +
+        (effect.value != 0 ? toPercentLabel(effect.value) : t('skills.notApplicable')) +
+        (effect.chance > 0 ? ', ' + t('skills.chance', { chance: toPercentLabel(effect.chance) }) : '') +
+        (effect.duration > 0 ? ', ' + t('skills.duration', { count: effect.duration }) : '');
+
+    const getPropertyLabel = (t: TFunction, property: SkillProperty, skipName?: boolean) =>
+        (skipName ? '' : t(skillPropertyToLabel(property)) + ': ') +
+        toPercentLabel(property.value) +
+        (property.duration > 0 ? ', ' + t('skills.duration', { count: property.duration }) : '');
+
+    return {
+        currentLevel,
+        skillMeta,
+        relevantAttributes,
+        hasSelfSection,
+        hasTargetSection,
+        getAttributeLabel,
+        getEffectLabel,
+        getPropertyLabel,
+    };
+};

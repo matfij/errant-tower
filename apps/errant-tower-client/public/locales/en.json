@@ -47,6 +47,12 @@
         "notApplicable": "n/a",
         "appliesToUser": "Applies to user",
         "appliesToTarget": "Apples to enemy",
+        "requirements": "Requirements",
+        "requiredSkillPoints": "Skill points: {{skillPoints}}",
+        "requiredPathLevel": "{{path}} level: {{level}}",
+        "manaCost": "Mana cost: {{cost}}",
+        "energyCost": "Energy cost: {{cost}}",
+        "next": "→",
         "attributes": {
             "physicalAttackFactor": "Physical attack",
             "magicalAttackFactor": "Magical attack",
