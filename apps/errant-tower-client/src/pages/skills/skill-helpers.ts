@@ -1,4 +1,3 @@
-import type { TFunction } from 'i18next';
 import {
     SkillPath,
     SkillType,
@@ -34,6 +33,8 @@ const SKILL_BASE_ATTRIBUTES = [
 
 export const getSkillColor = (path: SkillPath, tier?: number) => SKILL_FILLS[path][tier ?? 2];
 
+export const skillPathToLabel = (path: SkillPath) => `skills.paths.${toLowerFirst(path)}`;
+
 export const skillTypeToLabel = (type: SkillType) => `skills.types.${toLowerFirst(type)}`;
 
 export const skillPassiveToLabel = (isPassive: boolean) => (isPassive ? `skills.passive` : `skills.active`);
@@ -67,16 +68,16 @@ export const useSkillLabels = (skill: UserSkill) => {
     const hasTargetSection =
         skill.targetEffects[currentLevel].length > 0 || skill.targetProperties[currentLevel].length > 0;
 
-    const getAttributeLabel = (t: TFunction, name: string, value: number) =>
+    const getAttributeLabel = (name: string, value: number) =>
         t(`skills.attributes.${name}`) + ': ' + toPercentLabel(value);
 
-    const getEffectLabel = (t: TFunction, effect: SkillEffect, skipName?: boolean) =>
+    const getEffectLabel = (effect: SkillEffect, skipName?: boolean) =>
         (skipName ? '' : t(skillEffectToLabel(effect)) + ': ') +
         (effect.value != 0 ? toPercentLabel(effect.value) : t('skills.notApplicable')) +
         (effect.chance > 0 ? ', ' + t('skills.chance', { chance: toPercentLabel(effect.chance) }) : '') +
         (effect.duration > 0 ? ', ' + t('skills.duration', { count: effect.duration }) : '');
 
-    const getPropertyLabel = (t: TFunction, property: SkillProperty, skipName?: boolean) =>
+    const getPropertyLabel = (property: SkillProperty, skipName?: boolean) =>
         (skipName ? '' : t(skillPropertyToLabel(property)) + ': ') +
         toPercentLabel(property.value) +
         (property.duration > 0 ? ', ' + t('skills.duration', { count: property.duration }) : '');
