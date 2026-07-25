@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using ErrantTowerServer.Common;
+using ErrantTowerServer.Domains.Battles;
 using ErrantTowerServer.Domains.Equipments;
 using ErrantTowerServer.Domains.Expeditions;
 using ErrantTowerServer.Domains.Progresses;
@@ -141,6 +142,9 @@ builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 
 builder.Services.AddSingleton<IEquipmentRepository, EquipmentRepository>();
 builder.Services.AddScoped<IEquipmentService, EquipmentService>();
+
+builder.Services.AddSingleton<IBattleRepository, BattleRepository>();
+builder.Services.AddScoped<IBattleService, BattleService>();
 
 builder.Services.AddSingleton<IExpeditionSessionManager, ExpeditionSessionManager>();
 builder.Services.AddScoped<IExpeditionService, ExpeditionService>();

@@ -5,7 +5,7 @@ namespace ErrantTowerServer.Domains.Equipments;
 
 public interface IEquipmentRepository
 {
-    Task CreateOne(EquipmentEntity entity);
+    Task CreateOne(EquipmentEntity equipment);
     Task<EquipmentEntity> FindByUserId(string userId);
     Task<EquipmentEntity> UpdateOne(EquipmentEntity equipment);
 }
