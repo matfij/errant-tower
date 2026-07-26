@@ -31,7 +31,8 @@ reviews:
         - Validators must separate async DB checks from sync business rules
         - Data is not exchanged between services, everything is managed by the Orchestrator
         - Promote Locality of Behavior, simple abstractions and uni-directional data flow
-        - All Repositories and Services must be registered as scoped in Program.cs, Controllers are mapped automatically by the application
+        - All Repositories and Services must be registered in Program.cs, Repositories are singletons, Services are scoped
+        - Controllers are mapped automatically by the application
         - Mongo client is registered as singleton for efficient resource sharing and thread safety
         - ResendClient is registered as transient using IHttpClientFactory. HTTP connection pooling is handled by the underlying HttpMessageHandler pool.
         - Repositories expose persistence operations only and must not contain business logic.

@@ -1,4 +1,5 @@
 using ErrantTowerServer.Domains.Items;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace ErrantTowerServer.Domains.Equipments;
@@ -6,6 +7,7 @@ namespace ErrantTowerServer.Domains.Equipments;
 public class EquipmentEntity
 {
     [BsonId]
+    [BsonRepresentation(BsonType.String)]
     public required string Id { get; set; }
     public required string UserId { get; set; }
 
