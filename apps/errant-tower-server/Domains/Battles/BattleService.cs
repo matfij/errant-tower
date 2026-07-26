@@ -15,8 +15,13 @@ public class BattleService(IBattleRepository battleRepository) : IBattleService
 {
     public async Task<BattleEntity> Start(string userId, string username, BattleStatistics userStatistics, Enemy enemy)
     {
+        var battle = await battleRepository.FindByUserId(userId);
+        if (battle is not null && !battle.IsFinished)
+        {
+            throw new ApiException("errors.battleAlreadyStarted");
+        }
 
-        var battle = new BattleEntity()
+        battle = new BattleEntity()
         {
             Id = Utils.GenerateGuid(),
             UserId = userId,
