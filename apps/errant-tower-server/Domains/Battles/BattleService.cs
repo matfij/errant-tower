@@ -16,6 +16,7 @@ public class BattleService(IBattleRepository battleRepository) : IBattleService
     public async Task<BattleEntity> Start(string userId, string username, BattleStatistics userStatistics, Enemy enemy)
     {
         var battle = await battleRepository.FindByUserId(userId);
+        var updateExisting = battle is not null;
         if (battle is not null && !battle.IsFinished)
         {
             throw new ApiException("errors.battleAlreadyStarted");
@@ -41,7 +42,14 @@ public class BattleService(IBattleRepository battleRepository) : IBattleService
             }
         };
 
-        await battleRepository.CreateOne(battle);
+        if (updateExisting)
+        {
+            _ = await battleRepository.UpdateOne(battle);
+        }
+        else
+        {
+            await battleRepository.CreateOne(battle);
+        }
 
         return battle;
     }
