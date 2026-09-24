@@ -20,21 +20,21 @@ export const ExpeditionPanel = (props: ExpeditionPanelProps) => {
         <div className={styles.panelRowWrapper}>
         <div className={styles.panelItem}>
             <p>{t("expedition.initiative")}</p>
-            <AppProgress value={props.initiative} max={props.maxInitiative} tone="primary" />
+            <AppProgress value={props.initiative} max={props.maxInitiative} label={t("expedition.initiative")} tone="primary" />
         </div>
         <div className={styles.panelItem}>
             <p>{t("expedition.health")}</p>
-            <AppProgress value={props.health} max={props.maxHealth} tone="red" />
+            <AppProgress value={props.health} max={props.maxHealth} label={t("expedition.health")} tone="red" />
         </div>
         </div>
         <div className={styles.panelRowWrapper}>
         <div className={styles.panelItem}>
+            <AppProgress value={props.energy} max={props.maxEnergy} label={t("expedition.energy")} tone="accent" />
             <p>{t("expedition.energy")}</p>
-            <AppProgress value={props.energy} max={props.maxEnergy} tone="accent" />
         </div>
         <div className={styles.panelItem}>
+            <AppProgress value={props.mana} max={props.maxMana} label={t("expedition.mana")} tone="secondary" />
             <p>{t("expedition.mana")}</p>
-            <AppProgress value={props.mana} max={props.maxMana} tone="secondary" />
         </div>
         </div>
     </div>);

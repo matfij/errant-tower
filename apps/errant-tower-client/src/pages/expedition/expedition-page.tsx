@@ -38,6 +38,7 @@ export const ExpeditionPage = () => {
     useEffect(() => {
         if (expedition.data && !hasInitializedRef.current) {
             setPosition({ x: expedition.data.x, y: expedition.data.y });
+            setInitiative(expedition.data.initiative)
             setHealth(expedition.data.health);
             setMana(expedition.data.mana);
             setEnergy(expedition.data.energy);
@@ -114,7 +115,7 @@ export const ExpeditionPage = () => {
                         energy={energy}
                         maxEnergy={expedition.data.maxEnergy}
                         mana={mana}
-                        maxMana={expedition.data.mana} />}
+                        maxMana={expedition.data.maxMana} />}
         </section>
     );
 };
