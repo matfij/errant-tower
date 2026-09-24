@@ -15,6 +15,10 @@ export interface MoveRequest {
 export interface MoveResponse {
     x: number;
     y: number;
+    initiative: number;
+    battleId?: string;
+    silver?: number;
+    // summary
 }
 
 export class ExpeditionHub {

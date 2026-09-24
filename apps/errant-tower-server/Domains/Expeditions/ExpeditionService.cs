@@ -47,7 +47,8 @@ public class ExpeditionService(
             return new MoveResult
             {
                 X = progress.X,
-                Y = progress.Y
+                Y = progress.Y,
+                Initiative = progress.Initiative
             };
         }
 
@@ -57,7 +58,8 @@ public class ExpeditionService(
                 return new MoveResult
                 {
                     X = progress.X,
-                    Y = progress.Y
+                    Y = progress.Y,
+                    Initiative = progress.Initiative
                 };
             case FloorTileType.Route:
                 progress.X = newX;
@@ -86,7 +88,8 @@ public class ExpeditionService(
         return new MoveResult
         {
             X = newX,
-            Y = newY
+            Y = newY,
+            Initiative = progress.Initiative
         };
     }
 
@@ -126,6 +129,7 @@ public class ExpeditionService(
         {
             X = 0,
             Y = 0,
+            Initiative = 0,
             Summary = new ExpeditionSummary()
             {
                 IsSuccess = isSuccess,
