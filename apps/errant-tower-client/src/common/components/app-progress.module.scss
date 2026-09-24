@@ -1,0 +1,64 @@
+@use '../styles/variables.scss' as *;
+
+.wrapper {
+    width: 100%;
+    min-width: 0;
+}
+
+.track {
+    position: relative;
+    width: 100%;
+    height: 1rem;
+    overflow: hidden;
+    background: rgba($color-dark-400, 0.8);
+    border: 1px solid rgba($color-light-100, 0.15);
+    border-radius: $radius-sm;
+    box-shadow: inset 0 0 0 1px rgba($color-dark-100, 0.9);
+}
+
+.fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba($color-light-100, 0.08);
+}
+
+.primary {
+    background: linear-gradient(90deg, $color-primary-500 0%, $color-primary-600 100%);
+}
+
+.secondary {
+    background: linear-gradient(90deg, $color-secondary-400 0%, $color-secondary-500 100%);
+}
+
+.accent {
+    background: linear-gradient(90deg, $color-accent-300 0%, $color-accent-400 100%);
+}
+
+.red {
+    background: linear-gradient(90deg, $color-red-400 0%, $color-red-500 100%);
+}
+
+.green {
+    background: linear-gradient(90deg, $color-green-400 0%, $color-green-500 100%);
+}
+
+.values {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    color: $color-light-100;
+    font-size: 10px;
+    font-weight: 700;
+    text-shadow: 1px 1px 3px $color-dark-400;
+    transition: opacity 0.15s ease;
+    pointer-events: none;
+}
+
+.wrapper:hover .values,
+.wrapper:focus-within .values {
+    opacity: 1;
+}

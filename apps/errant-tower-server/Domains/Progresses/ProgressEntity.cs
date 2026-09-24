@@ -19,6 +19,7 @@ public class ProgressEntity
     public bool IsInExpedition { get; set; } = false;
     public FloorGuid CurrentFloor { get; set; } = 0;
     public int Initiative { get; set; } = 0;
+    public int MaxInitiative { get; set; } = 0;
     public int Adrenaline { get; set; } = 0;
     public string? BattleId { get; set; }
     public int GainedSilver { get; set; } = 0;

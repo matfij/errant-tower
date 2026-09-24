@@ -10,6 +10,7 @@ import type { FloorTile } from './floorTile';
 export interface GetExpeditionResponse {
   floorGuid: FloorGuid;
   floorImageUrl: string;
+  maxInitiative: number;
   initiative: number;
   maxHealth: number;
   health: number;

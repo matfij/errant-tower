@@ -4,6 +4,7 @@ import { wrapQuery } from '../../api/api-proxy';
 import type { GetExpeditionResponse } from '../../api/generated/definitions';
 import { useGetExpedition } from '../../api/generated/hooks';
 import { ExpeditionHub, MoveDirection, type MoveResponse } from './expedition-hub';
+import { ExpeditionPanel } from './expedition-panel';
 
 export const ExpeditionPage = () => {
     const expedition = wrapQuery<GetExpeditionResponse>(useGetExpedition)();
@@ -11,6 +12,10 @@ export const ExpeditionPage = () => {
     const hasInitializedRef = useRef(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [viewport, setViewport] = useState({ width: 0, height: 0 });
+    const [initiative, setInitiative] = useState(0);
+    const [health, setHealth] = useState(0);
+    const [mana, setMana] = useState(0);
+    const [energy, setEnergy] = useState(0);
 
     const cameraX = position.x - viewport.width / 2;
     const cameraY = position.y - viewport.height / 2;
@@ -22,6 +27,7 @@ export const ExpeditionPage = () => {
                 x: response.x,
                 y: response.y,
             });
+            setInitiative(response.initiative);
         };
         ExpeditionHub.onPlayerMoved(updatePosition);
         return () => {
@@ -32,6 +38,9 @@ export const ExpeditionPage = () => {
     useEffect(() => {
         if (expedition.data && !hasInitializedRef.current) {
             setPosition({ x: expedition.data.x, y: expedition.data.y });
+            setHealth(expedition.data.health);
+            setMana(expedition.data.mana);
+            setEnergy(expedition.data.energy);
             hasInitializedRef.current = true;
         }
     }, [expedition.data]);
@@ -94,9 +103,18 @@ export const ExpeditionPage = () => {
                     style={{
                         transform: `translate(${-cameraX}px, ${-cameraY}px)`,
                     }}
-                />
+                    />
                 <div className={styles.playerItem} />
             </div>
+                    {expedition.data && <ExpeditionPanel 
+                        initiative={initiative} 
+                        maxInitiative={expedition.data.maxInitiative} 
+                        health={health} 
+                        maxHealth={expedition.data.maxHealth}
+                        energy={energy}
+                        maxEnergy={expedition.data.maxEnergy}
+                        mana={mana}
+                        maxMana={expedition.data.mana} />}
         </section>
     );
 };

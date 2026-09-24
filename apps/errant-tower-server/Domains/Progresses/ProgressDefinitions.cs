@@ -19,6 +19,7 @@ public record Expedition
 {
     public required FloorGuid FloorGuid { get; set; }
     public required string FloorImageUrl { get; set; }
+    public required int MaxInitiative { get; set; }
     public required int Initiative { get; set; }
     public required double MaxHealth { get; set; }
     public required double Health { get; set; }

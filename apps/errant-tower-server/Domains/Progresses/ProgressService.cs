@@ -96,6 +96,7 @@ public class ProgressService(
 
         progress.CurrentFloor = floor.Guid;
         progress.IsInExpedition = true;
+        progress.MaxInitiative = BASE_INITIATIVE;
         progress.Initiative = BASE_INITIATIVE;
         progress.Adrenaline = BASE_ADRENALINE;
         progress.BattleId = null;
@@ -143,6 +144,7 @@ public class ProgressService(
         {
             FloorGuid = progress.CurrentFloor,
             FloorImageUrl = floor.ImageUrl,
+            MaxInitiative = progress.MaxInitiative,
             Initiative = progress.Initiative,
             MaxHealth = progress.MaxHealth,
             Health = progress.Health,

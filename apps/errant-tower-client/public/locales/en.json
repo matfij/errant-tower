@@ -31,6 +31,12 @@
             "dungeonDescription": "The Tower's lowest reaches are a maze of damp corridors, ruined chambers, and forgotten cellars overrun by vermin and feral beasts. Though lacking the horrors of deeper floors, these halls remain dangerous to the unprepared, where every shadow may conceal another predator, and every expedition is a battle against attrition as much as the creatures that inhabit it."
         }
     },
+    "expedition": {
+        "initiative": "Initiative",
+        "health": "Health",
+        "mana": "Mana",
+        "energy": "Energy"
+    },
     "skills": {
         "path": "Path",
         "level": "Level {{level}}",
@@ -46,7 +52,7 @@
         "duration_other": "{{count}} turns",
         "notApplicable": "n/a",
         "appliesToUser": "Applies to user",
-        "appliesToTarget": "Apples to enemy",
+        "appliesToTarget": "Applies to enemy",
         "requirements": "Requirements",
         "requiredSkillPoints": "Skill points: {{skillPoints}}",
         "requiredPathLevel": "{{path}} level: {{level}}",

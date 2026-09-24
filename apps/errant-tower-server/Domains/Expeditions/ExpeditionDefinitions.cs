@@ -14,6 +14,7 @@ public record MoveResult
 {
     public required int X { get; init; }
     public required int Y { get; init; }
+    public required int Initiative { get; init; }
     public string? BattleId { get; init; }
     public int? Silver { get; init; }
     public List<BagItemData>? Loots { get; init; }
