@@ -4,9 +4,9 @@
  * ErrantTowerServer
  * OpenAPI spec version: 1.0
  */
-import type { SkillTreePaths } from './skillTreePaths';
+import type { SkillTreePaths } from "./skillTreePaths";
 
 export interface ResetSkillsResponse {
-  skillPoints: number;
-  paths: SkillTreePaths;
+    skillPoints: number;
+    paths: SkillTreePaths;
 }

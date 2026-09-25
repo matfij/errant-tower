@@ -1,10 +1,12 @@
-import styles from './expedition-page.module.scss';
-import { useEffect, useRef, useState } from 'react';
-import { wrapQuery } from '../../api/api-proxy';
-import type { GetExpeditionResponse } from '../../api/generated/definitions';
-import { useGetExpedition } from '../../api/generated/hooks';
-import { ExpeditionHub, MoveDirection, type MoveResponse } from './expedition-hub';
-import { ExpeditionPanel } from './expedition-panel';
+import { useEffect, useRef, useState } from "react";
+
+import { wrapQuery } from "../../api/api-proxy";
+import type { GetExpeditionResponse } from "../../api/generated/definitions";
+import { useGetExpedition } from "../../api/generated/hooks";
+import { ExpeditionHub, MoveDirection, type MoveResponse } from "./expedition-hub";
+import { ExpeditionPanel } from "./expedition-panel";
+
+import styles from "./expedition-page.module.scss";
 
 export const ExpeditionPage = () => {
     const expedition = wrapQuery<GetExpeditionResponse>(useGetExpedition)();
@@ -21,7 +23,7 @@ export const ExpeditionPage = () => {
     const cameraY = position.y - viewport.height / 2;
 
     useEffect(() => {
-        ExpeditionHub.connect().catch(console.error);
+        ExpeditionHub.connect();
         const updatePosition = (response: MoveResponse) => {
             setPosition({
                 x: response.x,
@@ -38,7 +40,7 @@ export const ExpeditionPage = () => {
     useEffect(() => {
         if (expedition.data && !hasInitializedRef.current) {
             setPosition({ x: expedition.data.x, y: expedition.data.y });
-            setInitiative(expedition.data.initiative)
+            setInitiative(expedition.data.initiative);
             setHealth(expedition.data.health);
             setMana(expedition.data.mana);
             setEnergy(expedition.data.energy);
@@ -56,42 +58,42 @@ export const ExpeditionPage = () => {
             }
         };
         updateViewport();
-        window.addEventListener('resize', updateViewport);
+        window.addEventListener("resize", updateViewport);
         return () => {
-            window.removeEventListener('resize', updateViewport);
+            window.removeEventListener("resize", updateViewport);
         };
     }, []);
 
     useEffect(() => {
         const onKeyDown = (event: KeyboardEvent) => {
-            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+            if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)) {
                 event.preventDefault();
             }
 
             switch (event.key) {
-                case 'ArrowUp':
-                case 'w':
+                case "ArrowUp":
+                case "w":
                     ExpeditionHub.move(MoveDirection.Up);
                     break;
-                case 'ArrowDown':
-                case 's':
+                case "ArrowDown":
+                case "s":
                     ExpeditionHub.move(MoveDirection.Down);
                     break;
-                case 'ArrowLeft':
-                case 'a':
+                case "ArrowLeft":
+                case "a":
                     ExpeditionHub.move(MoveDirection.Left);
                     break;
-                case 'ArrowRight':
-                case 'd':
+                case "ArrowRight":
+                case "d":
                     ExpeditionHub.move(MoveDirection.Right);
                     break;
             }
         };
 
-        window.addEventListener('keydown', onKeyDown);
+        window.addEventListener("keydown", onKeyDown);
 
         return () => {
-            window.removeEventListener('keydown', onKeyDown);
+            window.removeEventListener("keydown", onKeyDown);
         };
     }, []);
 
@@ -104,18 +106,21 @@ export const ExpeditionPage = () => {
                     style={{
                         transform: `translate(${-cameraX}px, ${-cameraY}px)`,
                     }}
-                    />
+                />
                 <div className={styles.playerItem} />
             </div>
-                    {expedition.data && <ExpeditionPanel 
-                        initiative={initiative} 
-                        maxInitiative={expedition.data.maxInitiative} 
-                        health={health} 
-                        maxHealth={expedition.data.maxHealth}
-                        energy={energy}
-                        maxEnergy={expedition.data.maxEnergy}
-                        mana={mana}
-                        maxMana={expedition.data.maxMana} />}
+            {expedition.data && (
+                <ExpeditionPanel
+                    initiative={initiative}
+                    maxInitiative={expedition.data.maxInitiative}
+                    health={health}
+                    maxHealth={expedition.data.maxHealth}
+                    energy={energy}
+                    maxEnergy={expedition.data.maxEnergy}
+                    mana={mana}
+                    maxMana={expedition.data.maxMana}
+                />
+            )}
         </section>
     );
 };

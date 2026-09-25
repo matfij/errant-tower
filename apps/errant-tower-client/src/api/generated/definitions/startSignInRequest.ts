@@ -6,6 +6,6 @@
  */
 
 export interface StartSignInRequest {
-  /** @minLength 1 */
-  email: string;
+    /** @minLength 1 */
+    email: string;
 }

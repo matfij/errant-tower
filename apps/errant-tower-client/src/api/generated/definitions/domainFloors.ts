@@ -4,11 +4,11 @@
  * ErrantTowerServer
  * OpenAPI spec version: 1.0
  */
-import type { FloorDomain } from './floorDomain';
-import type { FloorTeaser } from './floorTeaser';
+import type { FloorDomain } from "./floorDomain";
+import type { FloorTeaser } from "./floorTeaser";
 
 export interface DomainFloors {
-  isUnlocked: boolean;
-  domain: FloorDomain;
-  floors: FloorTeaser[];
+    isUnlocked: boolean;
+    domain: FloorDomain;
+    floors: FloorTeaser[];
 }

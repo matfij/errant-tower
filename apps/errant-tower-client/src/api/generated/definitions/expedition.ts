@@ -4,20 +4,20 @@
  * ErrantTowerServer
  * OpenAPI spec version: 1.0
  */
-import type { FloorGuid } from './floorGuid';
-import type { FloorTile } from './floorTile';
+import type { FloorGuid } from "./floorGuid";
+import type { FloorTile } from "./floorTile";
 
 export interface Expedition {
-  floorGuid?: FloorGuid;
-  floorImageUrl: string;
-  initiative?: number;
-  maxHealth?: number;
-  health?: number;
-  maxMana?: number;
-  mana?: number;
-  maxEnergy?: number;
-  energy?: number;
-  x?: number;
-  y?: number;
-  floorTiles: FloorTile[];
+    floorGuid?: FloorGuid;
+    floorImageUrl: string;
+    initiative?: number;
+    maxHealth?: number;
+    health?: number;
+    maxMana?: number;
+    mana?: number;
+    maxEnergy?: number;
+    energy?: number;
+    x?: number;
+    y?: number;
+    floorTiles: FloorTile[];
 }

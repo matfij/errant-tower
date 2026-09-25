@@ -1,5 +1,6 @@
-import { HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
-import { appConfig } from '../../common/config';
+import { HubConnectionBuilder, HubConnectionState } from "@microsoft/signalr";
+
+import { appConfig } from "../../common/config";
 
 export enum MoveDirection {
     Up = 1,
@@ -35,16 +36,16 @@ export class ExpeditionHub {
 
     static async move(direction: MoveDirection) {
         if (this.connection.state === HubConnectionState.Connected) {
-            await this.connection.invoke('Move', { direction });
+            await this.connection.invoke("Move", { direction });
         }
     }
 
     static onPlayerMoved(handler: (event: MoveResponse) => void) {
-        this.connection.on('moved', handler);
+        this.connection.on("moved", handler);
     }
 
     static offPlayerMoved(handler: (event: MoveResponse) => void) {
-        this.connection.off('moved', handler);
+        this.connection.off("moved", handler);
     }
 
     static async disconnect() {

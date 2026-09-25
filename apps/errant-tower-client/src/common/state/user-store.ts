@@ -1,6 +1,7 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import type { User } from '../definitions';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+
+import type { User } from "../definitions";
 
 interface UserStore {
     user?: User;
@@ -21,7 +22,7 @@ export const useUserStore = create<UserStore>()(
             },
         }),
         {
-            name: 'errant-tower-user-store',
+            name: "errant-tower-user-store",
             partialize: (state) => ({ user: state.user }),
             merge: (persistedState, currentState) => ({
                 ...currentState,

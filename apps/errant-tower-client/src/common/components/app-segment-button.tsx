@@ -1,5 +1,6 @@
-import styles from './app-segment-button.module.scss';
-import type { Key } from 'react';
+import type { Key } from "react";
+
+import styles from "./app-segment-button.module.scss";
 
 interface AppSegmentButtonProps<T> {
     options: { label: string; value: T; isDisabled?: boolean }[];
@@ -18,9 +19,10 @@ export const AppSegmentButton = <T extends Key>(props: AppSegmentButtonProps<T>)
                     disabled={option.isDisabled}
                     className={`
                         ${styles.segmentItem} ${
-                            option.value === props.value ? styles.segmentItemActive : ''
+                            option.value === props.value ? styles.segmentItemActive : ""
                         }`}
-                    onClick={() => props.onChange(option.value)}>
+                    onClick={() => props.onChange(option.value)}
+                >
                     {option.label}
                 </button>
             ))}

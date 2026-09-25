@@ -1,13 +1,15 @@
-import styles from './explore-page.module.scss';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import type { DomainFloors } from '../../api/generated/definitions';
-import { wrapMutation } from '../../api/api-proxy';
-import { useStartExpedition } from '../../api/generated/hooks';
-import { arabicToRoman } from '../../common/utils';
-import { AppSegmentButton } from '../../common/components/app-segment-button';
-import { useNavigate } from 'react-router';
-import { routes } from '../../common/config';
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
+
+import { wrapMutation } from "../../api/api-proxy";
+import type { DomainFloors } from "../../api/generated/definitions";
+import { useStartExpedition } from "../../api/generated/hooks";
+import { AppSegmentButton } from "../../common/components/app-segment-button";
+import { routes } from "../../common/config";
+import { arabicToRoman } from "../../common/utils";
+
+import styles from "./explore-page.module.scss";
 
 interface DomainItemProps {
     domain: DomainFloors;
@@ -31,14 +33,16 @@ export const DomainItem = (props: DomainItemProps) => {
 
     return (
         <div key={props.domain.domain} className={styles.domainItem}>
-            <p className={styles.domainTitle}>{t(`explore.domains.${props.domain.domain.toLowerCase()}`)}</p>
+            <p className={styles.domainTitle}>
+                {t(`explore.domains.${props.domain.domain.toLowerCase()}`)}
+            </p>
             <hr className={styles.titleDivider} />
             <p className={styles.domainDescription}>
                 {t(`explore.domains.${props.domain.domain.toLowerCase()}Description`)}
             </p>
             <div className={styles.actionsWrapper}>
                 <div className={styles.levelWrapper}>
-                    <p>{t('explore.expeditionLevel')}</p>
+                    <p>{t("explore.expeditionLevel")}</p>
                     <AppSegmentButton
                         value={selectedFloorGuid}
                         onChange={(guid) => setSelectedFloorGuid(guid)}
@@ -52,12 +56,15 @@ export const DomainItem = (props: DomainItemProps) => {
                 <button
                     disabled={startExpedition.isLoading}
                     onClick={onStartExpedition}
-                    className={styles.startButton}>
-                    {t('explore.start')}
+                    className={styles.startButton}
+                >
+                    {t("explore.start")}
                 </button>
             </div>
             {startExpedition.errors?.map((error) => (
-                <p key={error.key} className={styles.startError}>{t(error.key)}</p>
+                <p key={error.key} className={styles.startError}>
+                    {t(error.key)}
+                </p>
             ))}
         </div>
     );

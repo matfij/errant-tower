@@ -1,9 +1,10 @@
-import styles from './app-icon.module.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-const iconAssets = import.meta.glob<string>('./icons/*.svg', { query: '?raw', import: 'default' });
+import styles from "./app-icon.module.scss";
 
-export type IconName = 'character' | 'crafting' | 'explore' | 'skills';
+const iconAssets = import.meta.glob<string>("./icons/*.svg", { query: "?raw", import: "default" });
+
+export type IconName = "character" | "crafting" | "explore" | "skills";
 
 export interface AppIconProps {
     name: IconName;

@@ -1,5 +1,6 @@
-import { Navigate, Outlet } from 'react-router';
-import { useUserStore } from '../state/user-store';
+import { Navigate, Outlet } from "react-router";
+
+import { useUserStore } from "../state/user-store";
 
 interface ProtectedRouteProps {
     redirectTo: string;

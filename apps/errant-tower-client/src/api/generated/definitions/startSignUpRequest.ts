@@ -6,11 +6,11 @@
  */
 
 export interface StartSignUpRequest {
-  /** @minLength 1 */
-  email: string;
-  /**
-   * @minLength 4
-   * @maxLength 16
-   */
-  username: string;
+    /** @minLength 1 */
+    email: string;
+    /**
+     * @minLength 4
+     * @maxLength 16
+     */
+    username: string;
 }

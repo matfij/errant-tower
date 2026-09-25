@@ -6,10 +6,10 @@
  */
 
 export interface GetCurrentUserResponse {
-  /** @minLength 1 */
-  id: string;
-  /** @minLength 1 */
-  username: string;
-  /** @minLength 1 */
-  email: string;
+    /** @minLength 1 */
+    id: string;
+    /** @minLength 1 */
+    username: string;
+    /** @minLength 1 */
+    email: string;
 }

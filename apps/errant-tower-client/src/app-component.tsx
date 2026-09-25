@@ -1,16 +1,17 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ProtectedRoute } from './common/components/protected-route';
-import { AuthPage } from './pages/auth/auth-page';
-import { SignInPage } from './pages/auth/sign-in-page';
-import { SignUpPage } from './pages/auth/sign-up-page';
-import { routes } from './common/config';
-import { CharacterPage } from './pages/character/character-page';
-import { SkillsPage } from './pages/skills/skills-page';
-import { CraftingPage } from './pages/crafting/crafting-page';
-import { ExplorePage } from './pages/explore/explore-page';
-import { AppPage } from './common/components/app-page';
-import { ExpeditionPage } from './pages/expedition/expedition-page';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router";
+
+import { AppPage } from "./common/components/app-page";
+import { ProtectedRoute } from "./common/components/protected-route";
+import { routes } from "./common/config";
+import { AuthPage } from "./pages/auth/auth-page";
+import { SignInPage } from "./pages/auth/sign-in-page";
+import { SignUpPage } from "./pages/auth/sign-up-page";
+import { CharacterPage } from "./pages/character/character-page";
+import { CraftingPage } from "./pages/crafting/crafting-page";
+import { ExpeditionPage } from "./pages/expedition/expedition-page";
+import { ExplorePage } from "./pages/explore/explore-page";
+import { SkillsPage } from "./pages/skills/skills-page";
 
 const queryClient = new QueryClient({
     defaultOptions: {

@@ -1,11 +1,16 @@
-import styles from './skills-page.module.scss';
-import { memo, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import type { UserSkill } from '../../api/generated/definitions';
-import { AppTooltip } from '../../common/components/app-tooltip';
-import { getSkillColor, SKILL_FILLS, SKILL_MAX_LEVEL, useSkillLabels } from './skill-helpers';
+import { memo, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
-const iconAssets = import.meta.glob<string>('./icons/*/*.svg', { query: '?raw', import: 'default' });
+import type { UserSkill } from "../../api/generated/definitions";
+import { AppTooltip } from "../../common/components/app-tooltip";
+import { getSkillColor, SKILL_FILLS, SKILL_MAX_LEVEL, useSkillLabels } from "./skill-helpers";
+
+import styles from "./skills-page.module.scss";
+
+const iconAssets = import.meta.glob<string>("./icons/*/*.svg", {
+    query: "?raw",
+    import: "default",
+});
 
 export interface SkillItemProps {
     skill: UserSkill;
@@ -21,7 +26,7 @@ export const SkillItem = (props: SkillItemProps) => {
     const loadSvg = iconAssets[path];
 
     useEffect(() => {
-        if (typeof loadSvg !== 'function') {
+        if (typeof loadSvg !== "function") {
             return;
         }
 
@@ -50,17 +55,20 @@ export const SkillItem = (props: SkillItemProps) => {
                 <span
                     role="img"
                     className={styles.skillIcon}
-                    dangerouslySetInnerHTML={{ __html: svg ?? '' }}
+                    dangerouslySetInnerHTML={{ __html: svg ?? "" }}
                     style={{
-                        width: '4rem',
-                        height: '4rem',
+                        width: "4rem",
+                        height: "4rem",
                         color: SKILL_FILLS[props.skill.path][props.skill.tier],
                     }}
                 />
             </AppTooltip>
             {props.showLevel && (
                 <p className={styles.skillProgress}>
-                    {t('skills.levelProgress', { level: props.skill.level, maxLevel: SKILL_MAX_LEVEL })}
+                    {t("skills.levelProgress", {
+                        level: props.skill.level,
+                        maxLevel: SKILL_MAX_LEVEL,
+                    })}
                 </p>
             )}
         </div>
@@ -82,7 +90,10 @@ const SkillTooltipContent = memo(({ skill }: { skill: UserSkill }) => {
 
     return (
         <div>
-            <p className={styles.tooltipTitle} style={{ color: getSkillColor(skill.path, skill.tier) }}>
+            <p
+                className={styles.tooltipTitle}
+                style={{ color: getSkillColor(skill.path, skill.tier) }}
+            >
                 {skill.name}
             </p>
             <p className={styles.tooltipSubtitle}>{skillMeta}</p>
@@ -101,7 +112,7 @@ const SkillTooltipContent = memo(({ skill }: { skill: UserSkill }) => {
             {hasSelfSection && (
                 <>
                     <hr className={styles.tooltipSeparator} />
-                    <p className={styles.tooltipSubtitle}>{t('skills.appliesToUser')}</p>
+                    <p className={styles.tooltipSubtitle}>{t("skills.appliesToUser")}</p>
                 </>
             )}
             {skill.selfEffects[currentLevel].length > 0 &&
@@ -120,7 +131,7 @@ const SkillTooltipContent = memo(({ skill }: { skill: UserSkill }) => {
             {hasTargetSection && (
                 <>
                     <hr className={styles.tooltipSeparator} />
-                    <p className={styles.tooltipSubtitle}>{t('skills.appliesToTarget')}</p>
+                    <p className={styles.tooltipSubtitle}>{t("skills.appliesToTarget")}</p>
                 </>
             )}
             {skill.targetEffects[currentLevel].length > 0 &&

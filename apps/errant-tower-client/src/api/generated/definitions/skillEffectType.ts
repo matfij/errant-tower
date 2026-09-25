@@ -5,23 +5,22 @@
  * OpenAPI spec version: 1.0
  */
 
-export type SkillEffectType = typeof SkillEffectType[keyof typeof SkillEffectType];
-
+export type SkillEffectType = (typeof SkillEffectType)[keyof typeof SkillEffectType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SkillEffectType = {
-  Initiative: 'Initiative',
-  PhysicalAttack: 'PhysicalAttack',
-  MagicalAttack: 'MagicalAttack',
-  PhysicalDefense: 'PhysicalDefense',
-  MagicalDefense: 'MagicalDefense',
-  HealthPoints: 'HealthPoints',
-  ManaPoints: 'ManaPoints',
-  EnergyPoints: 'EnergyPoints',
-  Stun: 'Stun',
-  Freeze: 'Freeze',
-  Paralyze: 'Paralyze',
-  Bleeding: 'Bleeding',
-  Poison: 'Poison',
-  Barrier: 'Barrier',
+    Initiative: "Initiative",
+    PhysicalAttack: "PhysicalAttack",
+    MagicalAttack: "MagicalAttack",
+    PhysicalDefense: "PhysicalDefense",
+    MagicalDefense: "MagicalDefense",
+    HealthPoints: "HealthPoints",
+    ManaPoints: "ManaPoints",
+    EnergyPoints: "EnergyPoints",
+    Stun: "Stun",
+    Freeze: "Freeze",
+    Paralyze: "Paralyze",
+    Bleeding: "Bleeding",
+    Poison: "Poison",
+    Barrier: "Barrier",
 } as const;

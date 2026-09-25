@@ -4,10 +4,10 @@
  * ErrantTowerServer
  * OpenAPI spec version: 1.0
  */
-import type { FloorTileType } from './floorTileType';
+import type { FloorTileType } from "./floorTileType";
 
 export interface FloorTile {
-  x: number;
-  y: number;
-  type: FloorTileType;
+    x: number;
+    y: number;
+    type: FloorTileType;
 }

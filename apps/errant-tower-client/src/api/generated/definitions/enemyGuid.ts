@@ -5,19 +5,18 @@
  * OpenAPI spec version: 1.0
  */
 
-export type EnemyGuid = typeof EnemyGuid[keyof typeof EnemyGuid];
-
+export type EnemyGuid = (typeof EnemyGuid)[keyof typeof EnemyGuid];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EnemyGuid = {
-  Ratter: 'Ratter',
-  Chembr: 'Chembr',
-  Kerramid: 'Kerramid',
-  Glowpede: 'Glowpede',
-  Scrapper: 'Scrapper',
-  Boarus: 'Boarus',
-  Pigon: 'Pigon',
-  Morus: 'Morus',
-  Wisker: 'Wisker',
-  Regewur: 'Regewur',
+    Ratter: "Ratter",
+    Chembr: "Chembr",
+    Kerramid: "Kerramid",
+    Glowpede: "Glowpede",
+    Scrapper: "Scrapper",
+    Boarus: "Boarus",
+    Pigon: "Pigon",
+    Morus: "Morus",
+    Wisker: "Wisker",
+    Regewur: "Regewur",
 } as const;

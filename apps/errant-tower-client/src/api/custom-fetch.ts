@@ -1,5 +1,5 @@
-import { appConfig } from '../common/config';
-import type { ApiError, ApiErrorResponse } from './api-error';
+import { appConfig } from "../common/config";
+import type { ApiError, ApiErrorResponse } from "./api-error";
 
 interface FetchConfig {
     url: string;
@@ -24,9 +24,9 @@ export const customFetch = async <T>(config: FetchConfig, options?: RequestInit)
                       {} as Record<string, string>,
                   ),
               ).toString()
-            : '';
+            : "";
 
-        const queryString = serializedParams ? `?${serializedParams}` : '';
+        const queryString = serializedParams ? `?${serializedParams}` : "";
 
         const response = await fetch(appConfig.baseUrl + config.url + queryString, {
             ...options,
@@ -34,18 +34,20 @@ export const customFetch = async <T>(config: FetchConfig, options?: RequestInit)
             body: config.data === undefined ? undefined : JSON.stringify(config.data),
             headers: {
                 ...config.headers,
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             },
-            credentials: 'include',
+            credentials: "include",
             signal: config.signal,
         });
 
         if (!response.ok) {
             let errors: ApiError[];
             try {
-                errors = ((await response.json()) as ApiErrorResponse).errors ?? [{ key: 'errors.unknown' }];
+                errors = ((await response.json()) as ApiErrorResponse).errors ?? [
+                    { key: "errors.unknown" },
+                ];
             } catch {
-                errors = [{ key: 'errors.unknown' }];
+                errors = [{ key: "errors.unknown" }];
             }
             throw errors;
         }
@@ -61,6 +63,6 @@ export const customFetch = async <T>(config: FetchConfig, options?: RequestInit)
         if (Array.isArray(error)) {
             throw error;
         }
-        throw [{ key: 'errors.unknown' }];
+        throw [{ key: "errors.unknown" }];
     }
 };

@@ -4,11 +4,11 @@
  * ErrantTowerServer
  * OpenAPI spec version: 1.0
  */
-import type { SkillEffectType } from './skillEffectType';
+import type { SkillEffectType } from "./skillEffectType";
 
 export interface SkillEffect {
-  type: SkillEffectType;
-  value: number;
-  chance: number;
-  duration: number;
+    type: SkillEffectType;
+    value: number;
+    chance: number;
+    duration: number;
 }

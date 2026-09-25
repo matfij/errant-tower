@@ -5,16 +5,15 @@
  * OpenAPI spec version: 1.0
  */
 
-export type FloorTileType = typeof FloorTileType[keyof typeof FloorTileType];
-
+export type FloorTileType = (typeof FloorTileType)[keyof typeof FloorTileType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FloorTileType = {
-  Start: 'Start',
-  Route: 'Route',
-  Wall: 'Wall',
-  Battle: 'Battle',
-  Treasure: 'Treasure',
-  NPC: 'NPC',
-  Finish: 'Finish',
+    Start: "Start",
+    Route: "Route",
+    Wall: "Wall",
+    Battle: "Battle",
+    Treasure: "Treasure",
+    NPC: "NPC",
+    Finish: "Finish",
 } as const;

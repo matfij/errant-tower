@@ -4,8 +4,8 @@
  * ErrantTowerServer
  * OpenAPI spec version: 1.0
  */
-import type { DomainFloors } from './domainFloors';
+import type { DomainFloors } from "./domainFloors";
 
 export interface GetFloorsResponse {
-  domainFloors: DomainFloors[];
+    domainFloors: DomainFloors[];
 }

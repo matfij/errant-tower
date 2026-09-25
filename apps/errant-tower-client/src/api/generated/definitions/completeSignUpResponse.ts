@@ -6,8 +6,8 @@
  */
 
 export interface CompleteSignUpResponse {
-  /** @minLength 1 */
-  userId: string;
-  /** @minLength 1 */
-  username: string;
+    /** @minLength 1 */
+    userId: string;
+    /** @minLength 1 */
+    username: string;
 }

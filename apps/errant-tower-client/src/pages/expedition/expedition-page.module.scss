@@ -1,5 +1,5 @@
-@use '../../common/styles/mixins.scss' as *;
-@use '../../common/styles/variables.scss' as *;
+@use "../../common/styles/mixins.scss" as *;
+@use "../../common/styles/variables.scss" as *;
 
 :root {
     overflow: hidden;
@@ -14,7 +14,7 @@
     overflow: hidden;
 
     &::after {
-        content: '';
+        content: "";
         position: absolute;
         inset: 0;
         z-index: 100;
