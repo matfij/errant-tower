@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
 import { wrapMutation, wrapQuery } from "../../api/api-proxy";
@@ -73,7 +73,7 @@ export const SkillsPage = () => {
 
     const canReset = !learnSkill.isLoading && !resetSkills.isLoading;
 
-    const updateSkillTree = useCallback((skillTree: GetSkillTreeResponse) => {
+    const updateSkillTree = (skillTree: GetSkillTreeResponse) => {
         const newPaths = PATH_KEYS.reduce((all, key) => {
             all[key] = {
                 name: `skills.paths.${key}`,
@@ -100,25 +100,25 @@ export const SkillsPage = () => {
                 : undefined;
             setActiveSkill(nextActiveSkill);
         }
-    }, [activeSkill]);
+    };
 
     useEffect(() => {
         if (getSkillTree.isSuccess && getSkillTree.data) {
             updateSkillTree(getSkillTree.data);
         }
-    }, [getSkillTree.isSuccess, getSkillTree.data, updateSkillTree]);
+    }, [getSkillTree.isSuccess, getSkillTree.data]);
 
     useEffect(() => {
         if (learnSkill.isSuccess && learnSkill.data) {
             updateSkillTree(learnSkill.data);
         }
-    }, [learnSkill.isSuccess, learnSkill.data, updateSkillTree]);
+    }, [learnSkill.isSuccess, learnSkill.data]);
 
     useEffect(() => {
         if (resetSkills.isSuccess && resetSkills.data) {
             updateSkillTree(resetSkills.data);
         }
-    }, [resetSkills.isSuccess, resetSkills.data, updateSkillTree]);
+    }, [resetSkills.isSuccess, resetSkills.data]);
 
     const onSetActiveSkill = (skill: UserSkill) => {
         if (!learnSkill.isLoading && !resetSkills.isLoading) {
