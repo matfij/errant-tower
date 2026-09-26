@@ -1,4 +1,6 @@
 using ErrantTowerServer.Common;
+using ErrantTowerServer.Domains.Battles;
+using ErrantTowerServer.Domains.Enemies;
 using ErrantTowerServer.Domains.Equipments;
 using ErrantTowerServer.Domains.Floors;
 using ErrantTowerServer.Domains.Progresses;
@@ -15,7 +17,8 @@ public class ExpeditionService(
     IExpeditionSessionManager expeditionSessionManager,
     IProgressService progressService,
     IEquipmentService equipmentService,
-    IStatisticsService statisticsService) : IExpeditionService
+    IStatisticsService statisticsService,
+    IBattleService battleService) : IExpeditionService
 {
     private const int MOVE_SPEED = 10;
 
@@ -29,6 +32,16 @@ public class ExpeditionService(
         if (progress.Initiative <= 0)
         {
             return await Finish(false, false, progress);
+        }
+        if (progress.BattleId is not null)
+        {
+            return new MoveResult
+            {
+                X = progress.X,
+                Y = progress.Y,
+                Initiative = progress.Initiative,
+                BattleId = progress.BattleId
+            };
         }
 
         switch (direction)
@@ -65,7 +78,13 @@ public class ExpeditionService(
                 progress.X = newX;
                 progress.Y = newY;
                 progress.Initiative--;
-                // check random battle
+
+                var battleId = await CheckBattle(progress);
+                if (battleId is not null)
+                {
+                    progress.BattleId = battleId;
+                }
+
                 break;
             case FloorTileType.Battle:
                 progress.X = newX;
@@ -89,8 +108,24 @@ public class ExpeditionService(
         {
             X = newX,
             Y = newY,
-            Initiative = progress.Initiative
+            Initiative = progress.Initiative,
+            BattleId = progress.BattleId
         };
+    }
+
+    private async Task<string?> CheckBattle(ProgressEntity progress)
+    {
+        var floor = FloorRegistry.GetFloor(progress.CurrentFloor);
+        if (Utils.CheckChance(floor.BattleChance))
+        {
+            return null;
+        }
+
+        var statistics = await statisticsService.GetUserBattleStatistics(progress.UserId);
+        var enemy = EnemyRegistry.GetEnemy(floor.GetEnemy());
+        var battle = await battleService.Start(progress.UserId, progress.Username, statistics, enemy);
+
+        return battle.Id;
     }
 
     private async Task<MoveResult> Finish(bool isSuccess, bool hasFinished, ProgressEntity progress)

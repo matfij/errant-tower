@@ -8,7 +8,7 @@ namespace ErrantTowerServer.Domains.Progresses;
 
 public interface IProgressService
 {
-    public Task CreateInitial(string userId);
+    public Task CreateInitial(string userId, string username);
     public Task<DomainFloors[]> GetFloors(string userId);
     public Task StartExpedition(string userId, FloorGuid floorGuid, BattleStatistics battleStatistics);
     public Task<Expedition> GetExpedition(string userId);
@@ -23,12 +23,13 @@ public class ProgressService(
     private const int BASE_INITIATIVE = 100;
     private const int BASE_ADRENALINE = 0;
 
-    public async Task CreateInitial(string userId)
+    public async Task CreateInitial(string userId, string username)
     {
         var newProgress = new ProgressEntity
         {
             Id = Utils.GenerateGuid(),
             UserId = userId,
+            Username = username,
         };
         await progressRepository.CreateOne(newProgress);
     }

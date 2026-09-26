@@ -11,6 +11,7 @@ public record struct Floor
     public required string ImageUrl { get; init; }
     public required string TilesUrl { get; init; }
     public required FloorEnemy[] Enemies { get; init; }
+    public required double BattleChance { get; init; }
     public required double SpecialEnemyChance { get; init; }
     public required FloorEnemy[] SpecialEnemies { get; init; }
     public required double TreasureChance { get; init; }
@@ -20,6 +21,23 @@ public record struct Floor
     public required int StartX { get; init; }
     public required int StartY { get; init; }
     public required FloorTile[] Tiles { get; init; }
+
+    public EnemyGuid GetEnemy()
+    {
+        var limit = 1000;
+
+        for (var i = 0; i < limit; i++)
+        {
+            var enemy = Enemies.FirstOrDefault(enemy => Utils.CheckChance(enemy.Chance));
+
+            if (enemy != default)
+            {
+                return enemy.Guid;
+            }
+        }
+
+        throw new ApiException("errors.enemyNotFound");
+    }
 }
 
 public enum FloorDomain

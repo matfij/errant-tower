@@ -27,7 +27,7 @@ public class AuthOrchestrator(
     public async Task<CompleteSignUpResponse> CompleteSignUp(CompleteSignUpRequest request)
     {
         var user = await userService.CompleteSignUp(request.Email, request.ActionCode);
-        await progressService.CreateInitial(user.Id);
+        await progressService.CreateInitial(user.Id, user.Username);
         await statisticsService.CreateInitial(user.Id);
         await equipmentService.CreateInitial(user.Id);
         return new CompleteSignUpResponse

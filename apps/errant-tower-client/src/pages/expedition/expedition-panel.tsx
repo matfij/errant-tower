@@ -37,27 +37,27 @@ export const ExpeditionPanel = (props: ExpeditionPanelProps) => {
                         max={props.maxHealth}
                         label={t("expedition.health")}
                         tone="red"
-                    />
+                        />
                 </div>
             </div>
             <div className={styles.panelRowWrapper}>
                 <div className={styles.panelItem}>
+                    <p>{t("expedition.energy")}</p>
                     <AppProgress
                         value={props.energy}
                         max={props.maxEnergy}
                         label={t("expedition.energy")}
                         tone="accent"
                     />
-                    <p>{t("expedition.energy")}</p>
                 </div>
                 <div className={styles.panelItem}>
+                    <p>{t("expedition.mana")}</p>
                     <AppProgress
                         value={props.mana}
                         max={props.maxMana}
                         label={t("expedition.mana")}
                         tone="secondary"
                     />
-                    <p>{t("expedition.mana")}</p>
                 </div>
             </div>
         </div>
