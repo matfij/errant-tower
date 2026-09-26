@@ -4,9 +4,9 @@
  * ErrantTowerServer
  * OpenAPI spec version: 1.0
  */
-import type { SkillPath } from './skillPath';
+import type { SkillPath } from "./skillPath";
 
 export interface SkillRequirement {
-  path: SkillPath;
-  points: number;
+    path: SkillPath;
+    points: number;
 }

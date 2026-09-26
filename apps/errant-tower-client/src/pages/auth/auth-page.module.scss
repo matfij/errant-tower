@@ -1,5 +1,5 @@
-@use '../../common/styles/mixins.scss' as *;
-@use '../../common/styles/variables.scss' as *;
+@use "../../common/styles/mixins.scss" as *;
+@use "../../common/styles/variables.scss" as *;
 
 .authWrapper {
     min-height: 90vh;
@@ -147,7 +147,7 @@
     background-color: rgba($color-dark-200, 0.8);
     color: $color-light-400;
 
-    &[type='number'] {
+    &[type="number"] {
         appearance: textfield;
 
         &::-webkit-outer-spin-button,

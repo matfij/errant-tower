@@ -3,12 +3,12 @@ export const appConfig = {
 } as const;
 
 export const routes = {
-    root: '/',
-    signIn: '/sign-in',
-    signUp: '/sign-up',
-    character: '/character',
-    skills: '/skills',
-    crafting: '/crafting',
-    explore: '/explore',
-    expedition: '/expedition',
+    root: "/",
+    signIn: "/sign-in",
+    signUp: "/sign-up",
+    character: "/character",
+    skills: "/skills",
+    crafting: "/crafting",
+    explore: "/explore",
+    expedition: "/expedition",
 } as const;

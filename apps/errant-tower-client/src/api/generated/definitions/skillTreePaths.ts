@@ -4,17 +4,17 @@
  * ErrantTowerServer
  * OpenAPI spec version: 1.0
  */
-import type { UserSkill } from './userSkill';
+import type { UserSkill } from "./userSkill";
 
 export interface SkillTreePaths {
-  blade: UserSkill[];
-  tenacity: UserSkill[];
-  hammer: UserSkill[];
-  bellicosity: UserSkill[];
-  lance: UserSkill[];
-  vivacity: UserSkill[];
-  bow: UserSkill[];
-  perspicacity: UserSkill[];
-  staff: UserSkill[];
-  sagacity: UserSkill[];
+    blade: UserSkill[];
+    tenacity: UserSkill[];
+    hammer: UserSkill[];
+    bellicosity: UserSkill[];
+    lance: UserSkill[];
+    vivacity: UserSkill[];
+    bow: UserSkill[];
+    perspicacity: UserSkill[];
+    staff: UserSkill[];
+    sagacity: UserSkill[];
 }

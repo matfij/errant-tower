@@ -5,28 +5,27 @@
  * OpenAPI spec version: 1.0
  */
 
-export type SkillGuid = typeof SkillGuid[keyof typeof SkillGuid];
-
+export type SkillGuid = (typeof SkillGuid)[keyof typeof SkillGuid];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SkillGuid = {
-  Scratch: 'Scratch',
-  Bite: 'Bite',
-  TailWhip: 'TailWhip',
-  Tackle: 'Tackle',
-  Cut: 'Cut',
-  Peck: 'Peck',
-  Slash: 'Slash',
-  SwiftStrike: 'SwiftStrike',
-  TwinEdge: 'TwinEdge',
-  CrusherBlow: 'CrusherBlow',
-  FlashStrike: 'FlashStrike',
-  TriEdge: 'TriEdge',
-  BloodthirstyBlade: 'BloodthirstyBlade',
-  GreatVigor: 'GreatVigor',
-  Armorer: 'Armorer',
-  Resistance: 'Resistance',
-  Energizer: 'Energizer',
-  Deflect: 'Deflect',
-  HeartsResolve: 'HeartsResolve',
+    Scratch: "Scratch",
+    Bite: "Bite",
+    TailWhip: "TailWhip",
+    Tackle: "Tackle",
+    Cut: "Cut",
+    Peck: "Peck",
+    Slash: "Slash",
+    SwiftStrike: "SwiftStrike",
+    TwinEdge: "TwinEdge",
+    CrusherBlow: "CrusherBlow",
+    FlashStrike: "FlashStrike",
+    TriEdge: "TriEdge",
+    BloodthirstyBlade: "BloodthirstyBlade",
+    GreatVigor: "GreatVigor",
+    Armorer: "Armorer",
+    Resistance: "Resistance",
+    Energizer: "Energizer",
+    Deflect: "Deflect",
+    HeartsResolve: "HeartsResolve",
 } as const;

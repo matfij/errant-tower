@@ -4,10 +4,10 @@
  * ErrantTowerServer
  * OpenAPI spec version: 1.0
  */
-import type { SkillPropertyType } from './skillPropertyType';
+import type { SkillPropertyType } from "./skillPropertyType";
 
 export interface SkillProperty {
-  type: SkillPropertyType;
-  value: number;
-  duration: number;
+    type: SkillPropertyType;
+    value: number;
+    duration: number;
 }

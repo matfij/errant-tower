@@ -1,12 +1,14 @@
-import { useEffect, useState, type ChangeEvent } from 'react';
-import { Link, useNavigate } from 'react-router';
-import { useTranslation } from 'react-i18next';
-import { wrapMutation } from '../../api/api-proxy';
-import { useCompleteSignUp, useStartSignUp } from '../../api/generated/hooks';
-import { useUserStore } from '../../common/state/user-store';
-import { routes } from '../../common/config';
-import { validateAuthCode, validateEmail, validateUsername } from './auth-utils';
-import styles from './auth-page.module.scss';
+import { useEffect, useState, type ChangeEvent } from "react";
+import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router";
+
+import { wrapMutation } from "../../api/api-proxy";
+import { useCompleteSignUp, useStartSignUp } from "../../api/generated/hooks";
+import { routes } from "../../common/config";
+import { useUserStore } from "../../common/state/user-store";
+import { validateAuthCode, validateEmail, validateUsername } from "./auth-utils";
+
+import styles from "./auth-page.module.scss";
 
 export const SignUpPage = () => {
     const { t } = useTranslation();
@@ -14,12 +16,12 @@ export const SignUpPage = () => {
     const startSignUp = wrapMutation(useStartSignUp)();
     const completeSignUp = wrapMutation(useCompleteSignUp)();
     const signIn = useUserStore((state) => state.actions.signIn);
-    const [email, setEmail] = useState('');
-    const [emailError, setEmailError] = useState('');
-    const [username, setUsername] = useState('');
-    const [usernameError, setUsernameError] = useState('');
-    const [actionCode, setActionCode] = useState('');
-    const [actionCodeError, setActionCodeError] = useState('');
+    const [email, setEmail] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [username, setUsername] = useState("");
+    const [usernameError, setUsernameError] = useState("");
+    const [actionCode, setActionCode] = useState("");
+    const [actionCodeError, setActionCodeError] = useState("");
 
     const signUpDisable = startSignUp.isLoading || completeSignUp.isLoading;
     const signUpErrors = [...(startSignUp.errors ?? []), ...(completeSignUp.errors ?? [])];
@@ -32,18 +34,18 @@ export const SignUpPage = () => {
     }, [signIn, navigate, completeSignUp.isSuccess, completeSignUp.data]);
 
     const onEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setEmailError('');
+        setEmailError("");
         setEmail(event.target.value);
     };
 
     const onUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setUsernameError('');
+        setUsernameError("");
         setUsername(event.target.value);
     };
 
     const onActionCodeChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setActionCodeError('');
-        setActionCode(event.target.value.replace(/\D/g, ''));
+        setActionCodeError("");
+        setActionCode(event.target.value.replace(/\D/g, ""));
     };
 
     const onStartSignUp = () => {
@@ -52,17 +54,17 @@ export const SignUpPage = () => {
         }
 
         if (!validateEmail(email)) {
-            setEmailError('errors.emailInvalid');
+            setEmailError("errors.emailInvalid");
             return;
         } else {
-            setEmailError('');
+            setEmailError("");
         }
 
         if (!validateUsername(username)) {
-            setUsernameError('errors.usernameInvalid');
+            setUsernameError("errors.usernameInvalid");
             return;
         } else {
-            setUsernameError('');
+            setUsernameError("");
         }
 
         startSignUp.call({ email, username });
@@ -74,17 +76,17 @@ export const SignUpPage = () => {
         }
 
         if (!validateEmail(email)) {
-            setEmailError('errors.emailInvalid');
+            setEmailError("errors.emailInvalid");
             return;
         } else {
-            setEmailError('');
+            setEmailError("");
         }
 
         if (!validateAuthCode(actionCode)) {
-            setActionCodeError('errors.actionCodeInvalid');
+            setActionCodeError("errors.actionCodeInvalid");
             return;
         } else {
-            setActionCodeError('');
+            setActionCodeError("");
         }
 
         completeSignUp.call({ email, actionCode });
@@ -96,11 +98,11 @@ export const SignUpPage = () => {
                 <img src="./images/brand/title.png" className={styles.titleImageSmall} />
             </Link>
             <div className={styles.formWrapper}>
-                <p className={styles.formTitle}>{t('auth.signUpTitle')}</p>
+                <p className={styles.formTitle}>{t("auth.signUpTitle")}</p>
                 <hr className={styles.titleDivider} />
 
                 <label htmlFor="email" className={styles.formLabel}>
-                    {t('auth.email')}
+                    {t("auth.email")}
                 </label>
                 <input
                     id="email"
@@ -112,7 +114,7 @@ export const SignUpPage = () => {
                 {emailError && <p className={styles.formError}>{t(emailError)}</p>}
 
                 <label htmlFor="username" className={styles.formLabel}>
-                    {t('auth.username')}
+                    {t("auth.username")}
                 </label>
                 <input
                     id="username"
@@ -126,7 +128,7 @@ export const SignUpPage = () => {
                 {startSignUp.isSuccess && (
                     <>
                         <label htmlFor="actionCode" className={styles.formLabel}>
-                            {t('auth.actionCode')}
+                            {t("auth.actionCode")}
                         </label>
                         <input
                             id="actionCode"
@@ -136,7 +138,9 @@ export const SignUpPage = () => {
                             value={actionCode}
                             onChange={onActionCodeChange}
                         />
-                        {actionCodeError && <p className={styles.formError}>{t(actionCodeError)}</p>}
+                        {actionCodeError && (
+                            <p className={styles.formError}>{t(actionCodeError)}</p>
+                        )}
                     </>
                 )}
 
@@ -149,15 +153,16 @@ export const SignUpPage = () => {
                 <button
                     className={styles.signInFormButton}
                     disabled={signUpDisable}
-                    onClick={startSignUp.isSuccess ? onCompleteSignUp : onStartSignUp}>
-                    {t('auth.signUp')}
+                    onClick={startSignUp.isSuccess ? onCompleteSignUp : onStartSignUp}
+                >
+                    {t("auth.signUp")}
                 </button>
 
                 <hr className={styles.infoDivider} />
                 <p className={styles.formInfoWrapper}>
-                    <span>{t('auth.alreadySignedUp')}</span>
+                    <span>{t("auth.alreadySignedUp")}</span>
                     <Link className={styles.formInfoLink} to={routes.signIn}>
-                        {t('auth.signInNow')}
+                        {t("auth.signInNow")}
                     </Link>
                 </p>
             </div>

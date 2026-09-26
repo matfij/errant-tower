@@ -5,22 +5,21 @@
  * OpenAPI spec version: 1.0
  */
 
-export type SkillType = typeof SkillType[keyof typeof SkillType];
-
+export type SkillType = (typeof SkillType)[keyof typeof SkillType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SkillType = {
-  None: 'None',
-  Slash: 'Slash',
-  Pierce: 'Pierce',
-  Blunt: 'Blunt',
-  Fire: 'Fire',
-  Water: 'Water',
-  Earth: 'Earth',
-  Wind: 'Wind',
-  Electric: 'Electric',
-  Light: 'Light',
-  Dark: 'Dark',
-  Heal: 'Heal',
-  Buff: 'Buff',
+    None: "None",
+    Slash: "Slash",
+    Pierce: "Pierce",
+    Blunt: "Blunt",
+    Fire: "Fire",
+    Water: "Water",
+    Earth: "Earth",
+    Wind: "Wind",
+    Electric: "Electric",
+    Light: "Light",
+    Dark: "Dark",
+    Heal: "Heal",
+    Buff: "Buff",
 } as const;

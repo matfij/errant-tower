@@ -1,5 +1,6 @@
-import type { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
-import type { ApiError } from './api-error';
+import type { UseMutationResult, UseQueryResult } from "@tanstack/react-query";
+
+import type { ApiError } from "./api-error";
 
 const mutationCache = new WeakMap<() => unknown, () => unknown>();
 
@@ -44,7 +45,9 @@ export function wrapMutation(
             isSuccess: mutation.isSuccess,
             errors: mutation.error || undefined,
             call: (args?: unknown, options?: { onSuccess?: (data: unknown) => void }) => {
-                const mutateOptions = options?.onSuccess ? { onSuccess: options.onSuccess } : undefined;
+                const mutateOptions = options?.onSuccess
+                    ? { onSuccess: options.onSuccess }
+                    : undefined;
 
                 if (args === undefined) {
                     mutation.mutate(undefined, mutateOptions);

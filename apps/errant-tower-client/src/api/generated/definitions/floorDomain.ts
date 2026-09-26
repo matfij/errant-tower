@@ -5,11 +5,10 @@
  * OpenAPI spec version: 1.0
  */
 
-export type FloorDomain = typeof FloorDomain[keyof typeof FloorDomain];
-
+export type FloorDomain = (typeof FloorDomain)[keyof typeof FloorDomain];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FloorDomain = {
-  Dungeon: 'Dungeon',
-  Forest: 'Forest',
+    Dungeon: "Dungeon",
+    Forest: "Forest",
 } as const;

@@ -1,37 +1,43 @@
-import styles from './skills-page.module.scss';
-import { useEffect, useState } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
-import { wrapMutation, wrapQuery } from '../../api/api-proxy';
-import { SkillPath, type GetSkillTreeResponse, type UserSkill } from '../../api/generated/definitions';
-import { useGetSkillTree, useLearnSkill, useResetSkills } from '../../api/generated/hooks';
-import { SkillItem } from './skill-item';
-import { SkillSummary } from './skill-summary';
+import { useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
+
+import { wrapMutation, wrapQuery } from "../../api/api-proxy";
+import {
+    SkillPath,
+    type GetSkillTreeResponse,
+    type UserSkill,
+} from "../../api/generated/definitions";
+import { useGetSkillTree, useLearnSkill, useResetSkills } from "../../api/generated/hooks";
+import { SkillItem } from "./skill-item";
+import { SkillSummary } from "./skill-summary";
+
+import styles from "./skills-page.module.scss";
 
 const PATH_KEYS = [
-    'blade',
-    'tenacity',
-    'hammer',
-    'bellicosity',
-    'lance',
-    'vivacity',
-    'bow',
-    'perspicacity',
-    'staff',
-    'sagacity',
+    "blade",
+    "tenacity",
+    "hammer",
+    "bellicosity",
+    "lance",
+    "vivacity",
+    "bow",
+    "perspicacity",
+    "staff",
+    "sagacity",
 ] as const;
 
 const PATH_TO_PATH_KEY: Record<SkillPath, PathKey | undefined> = {
     [SkillPath.None]: undefined,
-    [SkillPath.Blade]: 'blade',
-    [SkillPath.Tenacity]: 'tenacity',
-    [SkillPath.Hammer]: 'hammer',
-    [SkillPath.Bellicosity]: 'bellicosity',
-    [SkillPath.Lance]: 'lance',
-    [SkillPath.Vivacity]: 'vivacity',
-    [SkillPath.Bow]: 'bow',
-    [SkillPath.Perspicacity]: 'perspicacity',
-    [SkillPath.Staff]: 'staff',
-    [SkillPath.Sagacity]: 'sagacity',
+    [SkillPath.Blade]: "blade",
+    [SkillPath.Tenacity]: "tenacity",
+    [SkillPath.Hammer]: "hammer",
+    [SkillPath.Bellicosity]: "bellicosity",
+    [SkillPath.Lance]: "lance",
+    [SkillPath.Vivacity]: "vivacity",
+    [SkillPath.Bow]: "bow",
+    [SkillPath.Perspicacity]: "perspicacity",
+    [SkillPath.Staff]: "staff",
+    [SkillPath.Sagacity]: "sagacity",
 } as const;
 
 type PathKey = (typeof PATH_KEYS)[number];
@@ -71,10 +77,13 @@ export const SkillsPage = () => {
         const newPaths = PATH_KEYS.reduce((all, key) => {
             all[key] = {
                 name: `skills.paths.${key}`,
-                skillTiers: skillTree.paths[key].reduce<Record<number, UserSkill[]>>((tiers, skill) => {
-                    (tiers[skill.tier] ??= []).push(skill);
-                    return tiers;
-                }, {}),
+                skillTiers: skillTree.paths[key].reduce<Record<number, UserSkill[]>>(
+                    (tiers, skill) => {
+                        (tiers[skill.tier] ??= []).push(skill);
+                        return tiers;
+                    },
+                    {},
+                ),
                 level: skillTree.paths[key].reduce((level, skill) => level + skill.level, 0),
             };
             return all;
@@ -137,14 +146,19 @@ export const SkillsPage = () => {
                         <div key={path.name} className={styles.pathWrapper}>
                             <div>
                                 <p className={styles.pathTitle}>
-                                    {t(path.name)} {t('skills.path')}
+                                    {t(path.name)} {t("skills.path")}
                                 </p>
-                                <p className={styles.pathLevel}>{t('skills.level', { level: path.level })}</p>
+                                <p className={styles.pathLevel}>
+                                    {t("skills.level", { level: path.level })}
+                                </p>
                             </div>
                             {Object.entries(path.skillTiers).map(([tier, skills]) => (
                                 <div key={tier} className={styles.tierWrapper}>
                                     {skills.map((skill) => (
-                                        <div key={skill.guid} onClick={() => onSetActiveSkill(skill)}>
+                                        <div
+                                            key={skill.guid}
+                                            onClick={() => onSetActiveSkill(skill)}
+                                        >
                                             <SkillItem showLevel={true} skill={skill} />
                                         </div>
                                     ))}
@@ -154,13 +168,19 @@ export const SkillsPage = () => {
                     ))}
             </div>
             <div className={styles.summaryWrapper}>
-                {activeSkill && <SkillSummary skill={activeSkill} canLearn={!!canLearn} onLearn={onLearn} />}
+                {activeSkill && (
+                    <SkillSummary skill={activeSkill} canLearn={!!canLearn} onLearn={onLearn} />
+                )}
                 <div className={styles.actionsWrapper}>
                     <p>
-                        <Trans i18nKey="skills.skillPoints" values={{ skillPoints }} components={[<b />]} />
+                        <Trans
+                            i18nKey="skills.skillPoints"
+                            values={{ skillPoints }}
+                            components={[<b  key="b"/>]}
+                        />
                     </p>
                     <button className={styles.resetButton} disabled={!canReset} onClick={onReset}>
-                        {t('skills.resetAll')}
+                        {t("skills.resetAll")}
                     </button>
                 </div>
             </div>

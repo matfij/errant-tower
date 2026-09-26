@@ -6,11 +6,11 @@
  */
 
 export interface CompleteSignUpRequest {
-  /** @minLength 1 */
-  email: string;
-  /**
-   * @minLength 6
-   * @maxLength 6
-   */
-  actionCode: string;
+    /** @minLength 1 */
+    email: string;
+    /**
+     * @minLength 6
+     * @maxLength 6
+     */
+    actionCode: string;
 }

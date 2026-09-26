@@ -1,7 +1,9 @@
-import styles from './auth-page.module.scss';
-import { useNavigate } from 'react-router';
-import { useTranslation } from 'react-i18next';
-import { routes } from '../../common/config';
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
+
+import { routes } from "../../common/config";
+
+import styles from "./auth-page.module.scss";
 
 export const AuthPage = () => {
     const { t } = useTranslation();
@@ -11,13 +13,19 @@ export const AuthPage = () => {
         <section className={styles.authWrapper}>
             <div className={styles.teaserWrapper}>
                 <img src="./images/brand/title.png" className={styles.titleImage} />
-                <p className={styles.teaserLabel}>{t('root.description')}</p>
+                <p className={styles.teaserLabel}>{t("root.description")}</p>
                 <div className={styles.actionsWrapper}>
-                    <button onClick={() => navigate(routes.signIn)} className={styles.teaserSignInButton}>
-                        {t('auth.signIn')}
+                    <button
+                        onClick={() => navigate(routes.signIn)}
+                        className={styles.teaserSignInButton}
+                    >
+                        {t("auth.signIn")}
                     </button>
-                    <button onClick={() => navigate(routes.signUp)} className={styles.teaserSignUpButton}>
-                        {t('auth.signUp')}
+                    <button
+                        onClick={() => navigate(routes.signUp)}
+                        className={styles.teaserSignUpButton}
+                    >
+                        {t("auth.signUp")}
                     </button>
                 </div>
             </div>

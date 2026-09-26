@@ -1,1167 +1,1074 @@
 {
-  "openapi": "3.0.4",
-  "info": {
-    "title": "ErrantTowerServer",
-    "version": "1.0"
-  },
-  "paths": {
-    "/auth/sign-up-start": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "operationId": "startSignUp",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/StartSignUpRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/StartSignUpRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/StartSignUpRequest"
-              }
+    "openapi": "3.0.4",
+    "info": {
+        "title": "ErrantTowerServer",
+        "version": "1.0"
+    },
+    "paths": {
+        "/auth/sign-up-start": {
+            "post": {
+                "tags": ["Auth"],
+                "operationId": "startSignUp",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartSignUpRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartSignUpRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartSignUpRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
             }
-          }
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
+        "/auth/sign-up-complete": {
+            "post": {
+                "tags": ["Auth"],
+                "operationId": "completeSignUp",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompleteSignUpRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompleteSignUpRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompleteSignUpRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompleteSignUpResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompleteSignUpResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompleteSignUpResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/sign-in-start": {
+            "post": {
+                "tags": ["Auth"],
+                "operationId": "startSignIn",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartSignInRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartSignInRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartSignInRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/auth/sign-in-complete": {
+            "post": {
+                "tags": ["Auth"],
+                "operationId": "completeSignIn",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompleteSignInRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompleteSignInRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompleteSignInRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompleteSignInResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompleteSignInResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompleteSignInResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/progresses/get-floors": {
+            "get": {
+                "tags": ["Progress"],
+                "operationId": "getFloors",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetFloorsResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetFloorsResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetFloorsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/progresses/start-expedition": {
+            "post": {
+                "tags": ["Progress"],
+                "operationId": "startExpedition",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartExpeditionRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartExpeditionRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StartExpeditionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/progresses/get-expedition": {
+            "get": {
+                "tags": ["Progress"],
+                "operationId": "getExpedition",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetExpeditionResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetExpeditionResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetExpeditionResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/statistics/get-skill-tree": {
+            "get": {
+                "tags": ["Statistics"],
+                "operationId": "getSkillTree",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetSkillTreeResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetSkillTreeResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetSkillTreeResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/statistics/learn-skill": {
+            "post": {
+                "tags": ["Statistics"],
+                "operationId": "learnSkill",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LearnSkillRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LearnSkillRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LearnSkillRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LearnSkillResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LearnSkillResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LearnSkillResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/statistics/reset-skills": {
+            "post": {
+                "tags": ["Statistics"],
+                "operationId": "resetSkills",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResetSkillsResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResetSkillsResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResetSkillsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-      }
     },
-    "/auth/sign-up-complete": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "operationId": "completeSignUp",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompleteSignUpRequest"
-              }
+    "components": {
+        "schemas": {
+            "CompleteSignInRequest": {
+                "required": ["actionCode", "email"],
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "minLength": 1,
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "actionCode": {
+                        "maxLength": 6,
+                        "minLength": 6,
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
             },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompleteSignUpRequest"
-              }
+            "CompleteSignInResponse": {
+                "required": ["userId", "username"],
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "username": {
+                        "minLength": 1,
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
             },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompleteSignUpRequest"
-              }
+            "CompleteSignUpRequest": {
+                "required": ["actionCode", "email"],
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "minLength": 1,
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "actionCode": {
+                        "maxLength": 6,
+                        "minLength": 6,
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "CompleteSignUpResponse": {
+                "required": ["userId", "username"],
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "username": {
+                        "minLength": 1,
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "DomainFloors": {
+                "required": ["domain", "floors", "isUnlocked"],
+                "type": "object",
+                "properties": {
+                    "isUnlocked": {
+                        "type": "boolean"
+                    },
+                    "domain": {
+                        "$ref": "#/components/schemas/FloorDomain"
+                    },
+                    "floors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FloorTeaser"
+                        }
+                    }
+                },
+                "additionalProperties": false
+            },
+            "FloorDomain": {
+                "enum": ["Dungeon", "Forest"],
+                "type": "string"
+            },
+            "FloorGuid": {
+                "enum": ["Floor1", "Floor2", "Floor3", "Floor4", "Floor5", "Floor6"],
+                "type": "string"
+            },
+            "FloorTeaser": {
+                "required": ["guid", "isUnlocked"],
+                "type": "object",
+                "properties": {
+                    "isUnlocked": {
+                        "type": "boolean"
+                    },
+                    "guid": {
+                        "$ref": "#/components/schemas/FloorGuid"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "FloorTile": {
+                "required": ["type", "x", "y"],
+                "type": "object",
+                "properties": {
+                    "x": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "y": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/FloorTileType"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "FloorTileType": {
+                "enum": ["Start", "Route", "Wall", "Battle", "Treasure", "NPC", "Finish"],
+                "type": "string"
+            },
+            "GetExpeditionResponse": {
+                "required": [
+                    "energy",
+                    "floorGuid",
+                    "floorImageUrl",
+                    "floorTiles",
+                    "health",
+                    "initiative",
+                    "mana",
+                    "maxEnergy",
+                    "maxHealth",
+                    "maxInitiative",
+                    "maxMana",
+                    "x",
+                    "y"
+                ],
+                "type": "object",
+                "properties": {
+                    "floorGuid": {
+                        "$ref": "#/components/schemas/FloorGuid"
+                    },
+                    "floorImageUrl": {
+                        "type": "string"
+                    },
+                    "maxInitiative": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "initiative": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "maxHealth": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "health": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "maxMana": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "mana": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "maxEnergy": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "energy": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "x": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "y": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "floorTiles": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FloorTile"
+                        }
+                    }
+                },
+                "additionalProperties": false
+            },
+            "GetFloorsResponse": {
+                "required": ["domainFloors"],
+                "type": "object",
+                "properties": {
+                    "domainFloors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DomainFloors"
+                        }
+                    }
+                },
+                "additionalProperties": false
+            },
+            "GetSkillTreeResponse": {
+                "required": ["paths", "skillPoints"],
+                "type": "object",
+                "properties": {
+                    "skillPoints": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "paths": {
+                        "$ref": "#/components/schemas/SkillTreePaths"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "LearnSkillRequest": {
+                "required": ["skillGuid"],
+                "type": "object",
+                "properties": {
+                    "skillGuid": {
+                        "$ref": "#/components/schemas/SkillGuid"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "LearnSkillResponse": {
+                "required": ["paths", "skillPoints"],
+                "type": "object",
+                "properties": {
+                    "skillPoints": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "paths": {
+                        "$ref": "#/components/schemas/SkillTreePaths"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "ResetSkillsResponse": {
+                "required": ["paths", "skillPoints"],
+                "type": "object",
+                "properties": {
+                    "skillPoints": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "paths": {
+                        "$ref": "#/components/schemas/SkillTreePaths"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "SkillEffect": {
+                "required": ["chance", "duration", "type", "value"],
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "$ref": "#/components/schemas/SkillEffectType"
+                    },
+                    "value": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "chance": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "duration": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "SkillEffectType": {
+                "enum": [
+                    "Initiative",
+                    "PhysicalAttack",
+                    "MagicalAttack",
+                    "PhysicalDefense",
+                    "MagicalDefense",
+                    "HealthPoints",
+                    "ManaPoints",
+                    "EnergyPoints",
+                    "Stun",
+                    "Freeze",
+                    "Paralyze",
+                    "Bleeding",
+                    "Poison",
+                    "Barrier"
+                ],
+                "type": "string"
+            },
+            "SkillGuid": {
+                "enum": [
+                    "Scratch",
+                    "Bite",
+                    "TailWhip",
+                    "Tackle",
+                    "Cut",
+                    "Peck",
+                    "Slash",
+                    "SwiftStrike",
+                    "TwinEdge",
+                    "CrusherBlow",
+                    "FlashStrike",
+                    "TriEdge",
+                    "BloodthirstyBlade",
+                    "GreatVigor",
+                    "Armorer",
+                    "Resistance",
+                    "Energizer",
+                    "Deflect",
+                    "HeartsResolve"
+                ],
+                "type": "string"
+            },
+            "SkillPath": {
+                "enum": [
+                    "None",
+                    "Blade",
+                    "Tenacity",
+                    "Hammer",
+                    "Bellicosity",
+                    "Lance",
+                    "Vivacity",
+                    "Bow",
+                    "Perspicacity",
+                    "Staff",
+                    "Sagacity"
+                ],
+                "type": "string"
+            },
+            "SkillProperty": {
+                "required": ["duration", "type", "value"],
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "$ref": "#/components/schemas/SkillPropertyType"
+                    },
+                    "value": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "duration": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "SkillPropertyType": {
+                "enum": [
+                    "Initiative",
+                    "PhysicalAttack",
+                    "MagicalAttack",
+                    "PhysicalDefense",
+                    "MagicalDefense",
+                    "HealthPoints",
+                    "ManaPoints",
+                    "EnergyPoints",
+                    "CriticalChance",
+                    "PhysicalCriticalPower",
+                    "MagicalCriticalPower",
+                    "PunctureChance",
+                    "DodgeChance",
+                    "ParryChance",
+                    "BlockChance",
+                    "BlockPower",
+                    "CounterChance",
+                    "HealthRegen",
+                    "ManaRegen",
+                    "PhysicalDeflect",
+                    "MagicalDeflect"
+                ],
+                "type": "string"
+            },
+            "SkillRequirement": {
+                "required": ["path", "points"],
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "$ref": "#/components/schemas/SkillPath"
+                    },
+                    "points": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "SkillTreePaths": {
+                "required": [
+                    "bellicosity",
+                    "blade",
+                    "bow",
+                    "hammer",
+                    "lance",
+                    "perspicacity",
+                    "sagacity",
+                    "staff",
+                    "tenacity",
+                    "vivacity"
+                ],
+                "type": "object",
+                "properties": {
+                    "blade": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "tenacity": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "hammer": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "bellicosity": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "lance": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "vivacity": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "bow": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "perspicacity": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "staff": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    },
+                    "sagacity": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserSkill"
+                        }
+                    }
+                },
+                "additionalProperties": false
+            },
+            "SkillType": {
+                "enum": [
+                    "None",
+                    "Slash",
+                    "Pierce",
+                    "Blunt",
+                    "Fire",
+                    "Water",
+                    "Earth",
+                    "Wind",
+                    "Electric",
+                    "Light",
+                    "Dark",
+                    "Heal",
+                    "Buff"
+                ],
+                "type": "string"
+            },
+            "StartExpeditionRequest": {
+                "required": ["floorGuid"],
+                "type": "object",
+                "properties": {
+                    "floorGuid": {
+                        "$ref": "#/components/schemas/FloorGuid"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "StartSignInRequest": {
+                "required": ["email"],
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "minLength": 1,
+                        "type": "string",
+                        "format": "email"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "StartSignUpRequest": {
+                "required": ["email", "username"],
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "minLength": 1,
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "username": {
+                        "maxLength": 16,
+                        "minLength": 4,
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "UserSkill": {
+                "required": [
+                    "energyCost",
+                    "guid",
+                    "hitCount",
+                    "imageUrl",
+                    "isPassive",
+                    "level",
+                    "magicalAttackFactor",
+                    "magicalDefenseFactor",
+                    "manaCost",
+                    "name",
+                    "path",
+                    "physicalAttackFactor",
+                    "physicalDefenseFactor",
+                    "requirements",
+                    "selfEffects",
+                    "selfProperties",
+                    "targetEffects",
+                    "targetProperties",
+                    "targetSelf",
+                    "tier",
+                    "types"
+                ],
+                "type": "object",
+                "properties": {
+                    "guid": {
+                        "$ref": "#/components/schemas/SkillGuid"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "imageUrl": {
+                        "type": "string"
+                    },
+                    "path": {
+                        "$ref": "#/components/schemas/SkillPath"
+                    },
+                    "tier": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "types": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SkillType"
+                        }
+                    },
+                    "physicalAttackFactor": {
+                        "type": "array",
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    },
+                    "magicalAttackFactor": {
+                        "type": "array",
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    },
+                    "physicalDefenseFactor": {
+                        "type": "array",
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    },
+                    "magicalDefenseFactor": {
+                        "type": "array",
+                        "items": {
+                            "type": "number",
+                            "format": "double"
+                        }
+                    },
+                    "isPassive": {
+                        "type": "boolean"
+                    },
+                    "targetSelf": {
+                        "type": "boolean"
+                    },
+                    "hitCount": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    "energyCost": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    "manaCost": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    "targetEffects": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/SkillEffect"
+                            }
+                        }
+                    },
+                    "selfEffects": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/SkillEffect"
+                            }
+                        }
+                    },
+                    "targetProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/SkillProperty"
+                            }
+                        }
+                    },
+                    "selfProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/SkillProperty"
+                            }
+                        }
+                    },
+                    "requirements": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SkillRequirement"
+                        }
+                    },
+                    "level": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
             }
-          }
         },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompleteSignUpResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompleteSignUpResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompleteSignUpResponse"
-                }
-              }
+        "securitySchemes": {
+            "cookieAuth": {
+                "type": "apiKey",
+                "description": "Cookie-based authentication",
+                "name": "errant_tower_auth",
+                "in": "cookie"
             }
-          }
         }
-      }
     },
-    "/auth/sign-in-start": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "operationId": "startSignIn",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/StartSignInRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/StartSignInRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/StartSignInRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
+    "security": [
+        {
+            "cookieAuth": []
         }
-      }
-    },
-    "/auth/sign-in-complete": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "operationId": "completeSignIn",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompleteSignInRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompleteSignInRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompleteSignInRequest"
-              }
-            }
-          }
+    ],
+    "tags": [
+        {
+            "name": "Auth"
         },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompleteSignInResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompleteSignInResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompleteSignInResponse"
-                }
-              }
-            }
-          }
+        {
+            "name": "Progress"
+        },
+        {
+            "name": "Statistics"
         }
-      }
-    },
-    "/progresses/get-floors": {
-      "get": {
-        "tags": [
-          "Progress"
-        ],
-        "operationId": "getFloors",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetFloorsResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetFloorsResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetFloorsResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/progresses/start-expedition": {
-      "post": {
-        "tags": [
-          "Progress"
-        ],
-        "operationId": "startExpedition",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/StartExpeditionRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/StartExpeditionRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/StartExpeditionRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/progresses/get-expedition": {
-      "get": {
-        "tags": [
-          "Progress"
-        ],
-        "operationId": "getExpedition",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetExpeditionResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetExpeditionResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetExpeditionResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/statistics/get-skill-tree": {
-      "get": {
-        "tags": [
-          "Statistics"
-        ],
-        "operationId": "getSkillTree",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetSkillTreeResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetSkillTreeResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetSkillTreeResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/statistics/learn-skill": {
-      "post": {
-        "tags": [
-          "Statistics"
-        ],
-        "operationId": "learnSkill",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LearnSkillRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LearnSkillRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/LearnSkillRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/LearnSkillResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LearnSkillResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LearnSkillResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/statistics/reset-skills": {
-      "post": {
-        "tags": [
-          "Statistics"
-        ],
-        "operationId": "resetSkills",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResetSkillsResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResetSkillsResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResetSkillsResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "CompleteSignInRequest": {
-        "required": [
-          "actionCode",
-          "email"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "minLength": 1,
-            "type": "string",
-            "format": "email"
-          },
-          "actionCode": {
-            "maxLength": 6,
-            "minLength": 6,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "CompleteSignInResponse": {
-        "required": [
-          "userId",
-          "username"
-        ],
-        "type": "object",
-        "properties": {
-          "userId": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "username": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "CompleteSignUpRequest": {
-        "required": [
-          "actionCode",
-          "email"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "minLength": 1,
-            "type": "string",
-            "format": "email"
-          },
-          "actionCode": {
-            "maxLength": 6,
-            "minLength": 6,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "CompleteSignUpResponse": {
-        "required": [
-          "userId",
-          "username"
-        ],
-        "type": "object",
-        "properties": {
-          "userId": {
-            "minLength": 1,
-            "type": "string"
-          },
-          "username": {
-            "minLength": 1,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "DomainFloors": {
-        "required": [
-          "domain",
-          "floors",
-          "isUnlocked"
-        ],
-        "type": "object",
-        "properties": {
-          "isUnlocked": {
-            "type": "boolean"
-          },
-          "domain": {
-            "$ref": "#/components/schemas/FloorDomain"
-          },
-          "floors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FloorTeaser"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
-      "FloorDomain": {
-        "enum": [
-          "Dungeon",
-          "Forest"
-        ],
-        "type": "string"
-      },
-      "FloorGuid": {
-        "enum": [
-          "Floor1",
-          "Floor2",
-          "Floor3",
-          "Floor4",
-          "Floor5",
-          "Floor6"
-        ],
-        "type": "string"
-      },
-      "FloorTeaser": {
-        "required": [
-          "guid",
-          "isUnlocked"
-        ],
-        "type": "object",
-        "properties": {
-          "isUnlocked": {
-            "type": "boolean"
-          },
-          "guid": {
-            "$ref": "#/components/schemas/FloorGuid"
-          }
-        },
-        "additionalProperties": false
-      },
-      "FloorTile": {
-        "required": [
-          "type",
-          "x",
-          "y"
-        ],
-        "type": "object",
-        "properties": {
-          "x": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "y": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "type": {
-            "$ref": "#/components/schemas/FloorTileType"
-          }
-        },
-        "additionalProperties": false
-      },
-      "FloorTileType": {
-        "enum": [
-          "Start",
-          "Route",
-          "Wall",
-          "Battle",
-          "Treasure",
-          "NPC",
-          "Finish"
-        ],
-        "type": "string"
-      },
-      "GetExpeditionResponse": {
-        "required": [
-          "energy",
-          "floorGuid",
-          "floorImageUrl",
-          "floorTiles",
-          "health",
-          "initiative",
-          "mana",
-          "maxEnergy",
-          "maxHealth",
-          "maxInitiative",
-          "maxMana",
-          "x",
-          "y"
-        ],
-        "type": "object",
-        "properties": {
-          "floorGuid": {
-            "$ref": "#/components/schemas/FloorGuid"
-          },
-          "floorImageUrl": {
-            "type": "string"
-          },
-          "maxInitiative": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "initiative": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "maxHealth": {
-            "type": "number",
-            "format": "double"
-          },
-          "health": {
-            "type": "number",
-            "format": "double"
-          },
-          "maxMana": {
-            "type": "number",
-            "format": "double"
-          },
-          "mana": {
-            "type": "number",
-            "format": "double"
-          },
-          "maxEnergy": {
-            "type": "number",
-            "format": "double"
-          },
-          "energy": {
-            "type": "number",
-            "format": "double"
-          },
-          "x": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "y": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "floorTiles": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FloorTile"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
-      "GetFloorsResponse": {
-        "required": [
-          "domainFloors"
-        ],
-        "type": "object",
-        "properties": {
-          "domainFloors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DomainFloors"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
-      "GetSkillTreeResponse": {
-        "required": [
-          "paths",
-          "skillPoints"
-        ],
-        "type": "object",
-        "properties": {
-          "skillPoints": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "paths": {
-            "$ref": "#/components/schemas/SkillTreePaths"
-          }
-        },
-        "additionalProperties": false
-      },
-      "LearnSkillRequest": {
-        "required": [
-          "skillGuid"
-        ],
-        "type": "object",
-        "properties": {
-          "skillGuid": {
-            "$ref": "#/components/schemas/SkillGuid"
-          }
-        },
-        "additionalProperties": false
-      },
-      "LearnSkillResponse": {
-        "required": [
-          "paths",
-          "skillPoints"
-        ],
-        "type": "object",
-        "properties": {
-          "skillPoints": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "paths": {
-            "$ref": "#/components/schemas/SkillTreePaths"
-          }
-        },
-        "additionalProperties": false
-      },
-      "ResetSkillsResponse": {
-        "required": [
-          "paths",
-          "skillPoints"
-        ],
-        "type": "object",
-        "properties": {
-          "skillPoints": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "paths": {
-            "$ref": "#/components/schemas/SkillTreePaths"
-          }
-        },
-        "additionalProperties": false
-      },
-      "SkillEffect": {
-        "required": [
-          "chance",
-          "duration",
-          "type",
-          "value"
-        ],
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/SkillEffectType"
-          },
-          "value": {
-            "type": "number",
-            "format": "double"
-          },
-          "chance": {
-            "type": "number",
-            "format": "double"
-          },
-          "duration": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "SkillEffectType": {
-        "enum": [
-          "Initiative",
-          "PhysicalAttack",
-          "MagicalAttack",
-          "PhysicalDefense",
-          "MagicalDefense",
-          "HealthPoints",
-          "ManaPoints",
-          "EnergyPoints",
-          "Stun",
-          "Freeze",
-          "Paralyze",
-          "Bleeding",
-          "Poison",
-          "Barrier"
-        ],
-        "type": "string"
-      },
-      "SkillGuid": {
-        "enum": [
-          "Scratch",
-          "Bite",
-          "TailWhip",
-          "Tackle",
-          "Cut",
-          "Peck",
-          "Slash",
-          "SwiftStrike",
-          "TwinEdge",
-          "CrusherBlow",
-          "FlashStrike",
-          "TriEdge",
-          "BloodthirstyBlade",
-          "GreatVigor",
-          "Armorer",
-          "Resistance",
-          "Energizer",
-          "Deflect",
-          "HeartsResolve"
-        ],
-        "type": "string"
-      },
-      "SkillPath": {
-        "enum": [
-          "None",
-          "Blade",
-          "Tenacity",
-          "Hammer",
-          "Bellicosity",
-          "Lance",
-          "Vivacity",
-          "Bow",
-          "Perspicacity",
-          "Staff",
-          "Sagacity"
-        ],
-        "type": "string"
-      },
-      "SkillProperty": {
-        "required": [
-          "duration",
-          "type",
-          "value"
-        ],
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/SkillPropertyType"
-          },
-          "value": {
-            "type": "number",
-            "format": "double"
-          },
-          "duration": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "SkillPropertyType": {
-        "enum": [
-          "Initiative",
-          "PhysicalAttack",
-          "MagicalAttack",
-          "PhysicalDefense",
-          "MagicalDefense",
-          "HealthPoints",
-          "ManaPoints",
-          "EnergyPoints",
-          "CriticalChance",
-          "PhysicalCriticalPower",
-          "MagicalCriticalPower",
-          "PunctureChance",
-          "DodgeChance",
-          "ParryChance",
-          "BlockChance",
-          "BlockPower",
-          "CounterChance",
-          "HealthRegen",
-          "ManaRegen",
-          "PhysicalDeflect",
-          "MagicalDeflect"
-        ],
-        "type": "string"
-      },
-      "SkillRequirement": {
-        "required": [
-          "path",
-          "points"
-        ],
-        "type": "object",
-        "properties": {
-          "path": {
-            "$ref": "#/components/schemas/SkillPath"
-          },
-          "points": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "SkillTreePaths": {
-        "required": [
-          "bellicosity",
-          "blade",
-          "bow",
-          "hammer",
-          "lance",
-          "perspicacity",
-          "sagacity",
-          "staff",
-          "tenacity",
-          "vivacity"
-        ],
-        "type": "object",
-        "properties": {
-          "blade": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserSkill"
-            }
-          },
-          "tenacity": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserSkill"
-            }
-          },
-          "hammer": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserSkill"
-            }
-          },
-          "bellicosity": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserSkill"
-            }
-          },
-          "lance": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserSkill"
-            }
-          },
-          "vivacity": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserSkill"
-            }
-          },
-          "bow": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserSkill"
-            }
-          },
-          "perspicacity": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserSkill"
-            }
-          },
-          "staff": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserSkill"
-            }
-          },
-          "sagacity": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserSkill"
-            }
-          }
-        },
-        "additionalProperties": false
-      },
-      "SkillType": {
-        "enum": [
-          "None",
-          "Slash",
-          "Pierce",
-          "Blunt",
-          "Fire",
-          "Water",
-          "Earth",
-          "Wind",
-          "Electric",
-          "Light",
-          "Dark",
-          "Heal",
-          "Buff"
-        ],
-        "type": "string"
-      },
-      "StartExpeditionRequest": {
-        "required": [
-          "floorGuid"
-        ],
-        "type": "object",
-        "properties": {
-          "floorGuid": {
-            "$ref": "#/components/schemas/FloorGuid"
-          }
-        },
-        "additionalProperties": false
-      },
-      "StartSignInRequest": {
-        "required": [
-          "email"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "minLength": 1,
-            "type": "string",
-            "format": "email"
-          }
-        },
-        "additionalProperties": false
-      },
-      "StartSignUpRequest": {
-        "required": [
-          "email",
-          "username"
-        ],
-        "type": "object",
-        "properties": {
-          "email": {
-            "minLength": 1,
-            "type": "string",
-            "format": "email"
-          },
-          "username": {
-            "maxLength": 16,
-            "minLength": 4,
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "UserSkill": {
-        "required": [
-          "energyCost",
-          "guid",
-          "hitCount",
-          "imageUrl",
-          "isPassive",
-          "level",
-          "magicalAttackFactor",
-          "magicalDefenseFactor",
-          "manaCost",
-          "name",
-          "path",
-          "physicalAttackFactor",
-          "physicalDefenseFactor",
-          "requirements",
-          "selfEffects",
-          "selfProperties",
-          "targetEffects",
-          "targetProperties",
-          "targetSelf",
-          "tier",
-          "types"
-        ],
-        "type": "object",
-        "properties": {
-          "guid": {
-            "$ref": "#/components/schemas/SkillGuid"
-          },
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "imageUrl": {
-            "type": "string"
-          },
-          "path": {
-            "$ref": "#/components/schemas/SkillPath"
-          },
-          "tier": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "types": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SkillType"
-            }
-          },
-          "physicalAttackFactor": {
-            "type": "array",
-            "items": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          "magicalAttackFactor": {
-            "type": "array",
-            "items": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          "physicalDefenseFactor": {
-            "type": "array",
-            "items": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          "magicalDefenseFactor": {
-            "type": "array",
-            "items": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          "isPassive": {
-            "type": "boolean"
-          },
-          "targetSelf": {
-            "type": "boolean"
-          },
-          "hitCount": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          "energyCost": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          "manaCost": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          "targetEffects": {
-            "type": "array",
-            "items": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/SkillEffect"
-              }
-            }
-          },
-          "selfEffects": {
-            "type": "array",
-            "items": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/SkillEffect"
-              }
-            }
-          },
-          "targetProperties": {
-            "type": "array",
-            "items": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/SkillProperty"
-              }
-            }
-          },
-          "selfProperties": {
-            "type": "array",
-            "items": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/SkillProperty"
-              }
-            }
-          },
-          "requirements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SkillRequirement"
-            }
-          },
-          "level": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      }
-    },
-    "securitySchemes": {
-      "cookieAuth": {
-        "type": "apiKey",
-        "description": "Cookie-based authentication",
-        "name": "errant_tower_auth",
-        "in": "cookie"
-      }
-    }
-  },
-  "security": [
-    {
-      "cookieAuth": [ ]
-    }
-  ],
-  "tags": [
-    {
-      "name": "Auth"
-    },
-    {
-      "name": "Progress"
-    },
-    {
-      "name": "Statistics"
-    }
-  ]
+    ]
 }

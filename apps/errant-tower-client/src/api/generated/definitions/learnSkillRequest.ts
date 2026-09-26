@@ -4,8 +4,8 @@
  * ErrantTowerServer
  * OpenAPI spec version: 1.0
  */
-import type { SkillGuid } from './skillGuid';
+import type { SkillGuid } from "./skillGuid";
 
 export interface LearnSkillRequest {
-  skillGuid: SkillGuid;
+    skillGuid: SkillGuid;
 }

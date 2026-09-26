@@ -5,26 +5,25 @@
  * OpenAPI spec version: 1.0
  */
 
-export type ItemGuid = typeof ItemGuid[keyof typeof ItemGuid];
-
+export type ItemGuid = (typeof ItemGuid)[keyof typeof ItemGuid];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ItemGuid = {
-  WoodenSword: 'WoodenSword',
-  WoodenPike: 'WoodenPike',
-  WoodenHammer: 'WoodenHammer',
-  WoodenBow: 'WoodenBow',
-  WoodenStaff: 'WoodenStaff',
-  LeatherBandana: 'LeatherBandana',
-  LeatherArmor: 'LeatherArmor',
-  LeatherBoots: 'LeatherBoots',
-  CopperRing: 'CopperRing',
-  CopperBar: 'CopperBar',
-  LeadBar: 'LeadBar',
-  Emerald: 'Emerald',
-  ShinyEmerald: 'ShinyEmerald',
-  SmallClaw: 'SmallClaw',
-  ShinyClaw: 'ShinyClaw',
-  WornHide: 'WornHide',
-  ShinyHide: 'ShinyHide',
+    WoodenSword: "WoodenSword",
+    WoodenPike: "WoodenPike",
+    WoodenHammer: "WoodenHammer",
+    WoodenBow: "WoodenBow",
+    WoodenStaff: "WoodenStaff",
+    LeatherBandana: "LeatherBandana",
+    LeatherArmor: "LeatherArmor",
+    LeatherBoots: "LeatherBoots",
+    CopperRing: "CopperRing",
+    CopperBar: "CopperBar",
+    LeadBar: "LeadBar",
+    Emerald: "Emerald",
+    ShinyEmerald: "ShinyEmerald",
+    SmallClaw: "SmallClaw",
+    ShinyClaw: "ShinyClaw",
+    WornHide: "WornHide",
+    ShinyHide: "ShinyHide",
 } as const;

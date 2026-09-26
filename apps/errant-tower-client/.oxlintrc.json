@@ -1,0 +1,23 @@
+{
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    "plugins": ["typescript", "oxc", "react"],
+    "rules": {
+        "no-debugger": "error",
+        "no-console": "warn",
+        "eqeqeq": "error",
+        "curly": "error",
+        "typescript/no-explicit-any": "warn",
+        "typescript/no-unused-vars": [
+            "warn",
+            {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_"
+            }
+        ],
+        "react/rules-of-hooks": "error",
+        "react/set-state-in-effect": "allow",
+        "react/exhaustive-deps": "allow",
+        "react/only-export-components": ["warn", { "allowConstantExport": true }]
+    },
+    "ignorePatterns": ["src/api/generated/*"]
+}

@@ -1,5 +1,6 @@
-import styles from './app-tooltip.module.scss';
-import { useState, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react';
+import { useState, type MouseEvent as ReactMouseEvent, type ReactNode } from "react";
+
+import styles from "./app-tooltip.module.scss";
 
 interface TooltipPosition {
     x: number;
@@ -43,7 +44,10 @@ export const AppTooltip = (props: AppTooltipProps) => {
                 {props.children}
             </div>
             {showTooltip && (
-                <div className={styles.tooltipContent} style={{ left: position?.x, top: position?.y }}>
+                <div
+                    className={styles.tooltipContent}
+                    style={{ left: position?.x, top: position?.y }}
+                >
                     {props.content}
                 </div>
             )}

@@ -5,30 +5,29 @@
  * OpenAPI spec version: 1.0
  */
 
-export type SkillPropertyType = typeof SkillPropertyType[keyof typeof SkillPropertyType];
-
+export type SkillPropertyType = (typeof SkillPropertyType)[keyof typeof SkillPropertyType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SkillPropertyType = {
-  Initiative: 'Initiative',
-  PhysicalAttack: 'PhysicalAttack',
-  MagicalAttack: 'MagicalAttack',
-  PhysicalDefense: 'PhysicalDefense',
-  MagicalDefense: 'MagicalDefense',
-  HealthPoints: 'HealthPoints',
-  ManaPoints: 'ManaPoints',
-  EnergyPoints: 'EnergyPoints',
-  CriticalChance: 'CriticalChance',
-  PhysicalCriticalPower: 'PhysicalCriticalPower',
-  MagicalCriticalPower: 'MagicalCriticalPower',
-  PunctureChance: 'PunctureChance',
-  DodgeChance: 'DodgeChance',
-  ParryChance: 'ParryChance',
-  BlockChance: 'BlockChance',
-  BlockPower: 'BlockPower',
-  CounterChance: 'CounterChance',
-  HealthRegen: 'HealthRegen',
-  ManaRegen: 'ManaRegen',
-  PhysicalDeflect: 'PhysicalDeflect',
-  MagicalDeflect: 'MagicalDeflect',
+    Initiative: "Initiative",
+    PhysicalAttack: "PhysicalAttack",
+    MagicalAttack: "MagicalAttack",
+    PhysicalDefense: "PhysicalDefense",
+    MagicalDefense: "MagicalDefense",
+    HealthPoints: "HealthPoints",
+    ManaPoints: "ManaPoints",
+    EnergyPoints: "EnergyPoints",
+    CriticalChance: "CriticalChance",
+    PhysicalCriticalPower: "PhysicalCriticalPower",
+    MagicalCriticalPower: "MagicalCriticalPower",
+    PunctureChance: "PunctureChance",
+    DodgeChance: "DodgeChance",
+    ParryChance: "ParryChance",
+    BlockChance: "BlockChance",
+    BlockPower: "BlockPower",
+    CounterChance: "CounterChance",
+    HealthRegen: "HealthRegen",
+    ManaRegen: "ManaRegen",
+    PhysicalDeflect: "PhysicalDeflect",
+    MagicalDeflect: "MagicalDeflect",
 } as const;

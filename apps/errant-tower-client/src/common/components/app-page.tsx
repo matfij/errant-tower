@@ -1,6 +1,8 @@
-import styles from './app-page.module.scss';
-import { AppNavbar } from '../../common/components/app-navbar';
-import { Outlet } from 'react-router';
+import { Outlet } from "react-router";
+
+import { AppNavbar } from "../../common/components/app-navbar";
+
+import styles from "./app-page.module.scss";
 
 export const AppPage = () => {
     return (

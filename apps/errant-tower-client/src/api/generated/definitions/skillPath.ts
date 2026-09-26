@@ -5,20 +5,19 @@
  * OpenAPI spec version: 1.0
  */
 
-export type SkillPath = typeof SkillPath[keyof typeof SkillPath];
-
+export type SkillPath = (typeof SkillPath)[keyof typeof SkillPath];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SkillPath = {
-  None: 'None',
-  Blade: 'Blade',
-  Tenacity: 'Tenacity',
-  Hammer: 'Hammer',
-  Bellicosity: 'Bellicosity',
-  Lance: 'Lance',
-  Vivacity: 'Vivacity',
-  Bow: 'Bow',
-  Perspicacity: 'Perspicacity',
-  Staff: 'Staff',
-  Sagacity: 'Sagacity',
+    None: "None",
+    Blade: "Blade",
+    Tenacity: "Tenacity",
+    Hammer: "Hammer",
+    Bellicosity: "Bellicosity",
+    Lance: "Lance",
+    Vivacity: "Vivacity",
+    Bow: "Bow",
+    Perspicacity: "Perspicacity",
+    Staff: "Staff",
+    Sagacity: "Sagacity",
 } as const;
