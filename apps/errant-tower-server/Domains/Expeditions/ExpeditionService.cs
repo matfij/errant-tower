@@ -29,10 +29,6 @@ public class ExpeditionService(
         var newX = progress.X;
         var newY = progress.Y;
 
-        if (progress.Initiative <= 0)
-        {
-            return await Finish(false, false, progress);
-        }
         if (progress.BattleId is not null)
         {
             return new MoveResult
@@ -42,6 +38,10 @@ public class ExpeditionService(
                 Initiative = progress.Initiative,
                 BattleId = progress.BattleId
             };
+        }
+        if (progress.Initiative <= 0)
+        {
+            return await Finish(false, false, progress);
         }
 
         switch (direction)
@@ -118,14 +118,14 @@ public class ExpeditionService(
         var floor = FloorRegistry.GetFloor(progress.CurrentFloor);
         if (Utils.CheckChance(floor.BattleChance))
         {
-            return null;
+            var statistics = await statisticsService.GetUserBattleStatistics(progress.UserId);
+            var enemy = EnemyRegistry.GetEnemy(
+                Utils.GetWeightedRandomItem<FloorEnemy, EnemyGuid>(floor.Enemies));
+            var battle = await battleService.Start(progress.UserId, progress.Username, statistics, enemy);
+
+            return battle.Id;
         }
-
-        var statistics = await statisticsService.GetUserBattleStatistics(progress.UserId);
-        var enemy = EnemyRegistry.GetEnemy(floor.GetEnemy());
-        var battle = await battleService.Start(progress.UserId, progress.Username, statistics, enemy);
-
-        return battle.Id;
+        return null;
     }
 
     private async Task<MoveResult> Finish(bool isSuccess, bool hasFinished, ProgressEntity progress)

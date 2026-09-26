@@ -21,23 +21,6 @@ public record struct Floor
     public required int StartX { get; init; }
     public required int StartY { get; init; }
     public required FloorTile[] Tiles { get; init; }
-
-    public EnemyGuid GetEnemy()
-    {
-        var limit = 1000;
-
-        for (var i = 0; i < limit; i++)
-        {
-            var enemy = Enemies.FirstOrDefault(enemy => Utils.CheckChance(enemy.Chance));
-
-            if (enemy != default)
-            {
-                return enemy.Guid;
-            }
-        }
-
-        throw new ApiException("errors.enemyNotFound");
-    }
 }
 
 public enum FloorDomain
