@@ -11,6 +11,7 @@ public record struct Floor
     public required string ImageUrl { get; init; }
     public required string TilesUrl { get; init; }
     public required FloorEnemy[] Enemies { get; init; }
+    public required double BattleChance { get; init; }
     public required double SpecialEnemyChance { get; init; }
     public required FloorEnemy[] SpecialEnemies { get; init; }
     public required double TreasureChance { get; init; }

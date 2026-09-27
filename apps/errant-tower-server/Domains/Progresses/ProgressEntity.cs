@@ -11,6 +11,7 @@ public class ProgressEntity
     [BsonId]
     public required string Id { get; set; }
     public required string UserId { get; set; }
+    public required string Username { get; set; }
 
     public FloorGuid UnlockedFloor { get; set; } = FloorGuid.Floor1;
     public FloorDomain UnlockedDomain { get; set; } = FloorDomain.Dungeon;

@@ -17,6 +17,7 @@ public static class DungeonFloors
         StartY = 460,
         TreasureChance = 0.45,
         SpecialEnemyChance = 0.45,
+        BattleChance = 0.05,
         Enemies =
         [
             new FloorEnemy { Guid = EnemyGuid.Ratter, Chance = 0.2 },
@@ -47,6 +48,7 @@ public static class DungeonFloors
         StartY = 0,
         TreasureChance = 0.5,
         SpecialEnemyChance = 0.5,
+        BattleChance = 0.06,
         Enemies =
         [
             new FloorEnemy { Guid = EnemyGuid.Pigon, Chance = 0.2 },
@@ -80,6 +82,7 @@ public static class DungeonFloors
         TreasureSilverMax = 25,
         TreasureChance = 0.55,
         SpecialEnemyChance = 0.55,
+        BattleChance = 0.065,
         Enemies =
         [
             new FloorEnemy { Guid = EnemyGuid.Pigon, Chance = 0.2 },
