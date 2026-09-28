@@ -11,4 +11,5 @@ export const routes = {
     crafting: "/crafting",
     explore: "/explore",
     expedition: "/expedition",
+    battle: "/battle",
 } as const;

@@ -8,6 +8,7 @@ namespace ErrantTowerServer.Domains.Battles;
 public interface IBattleService
 {
     public Task<BattleEntity> Start(string userId, string username, BattleStatistics userStatistics, Enemy enemy);
+    public Task<BattleEntity> Get(string userId);
     public Task<BattleEntity> Act(string userId, SkillGuid skillGuid);
 }
 
@@ -51,6 +52,16 @@ public class BattleService(IBattleRepository battleRepository) : IBattleService
             await battleRepository.CreateOne(battle);
         }
 
+        return battle;
+    }
+
+    public async Task<BattleEntity> Get(string userId)
+    {
+        var battle = await battleRepository.FindByUserId(userId);
+        if (battle is null || battle.IsFinished)
+        {
+            throw new ApiException("errors.notInBattle");
+        }
         return battle;
     }
 

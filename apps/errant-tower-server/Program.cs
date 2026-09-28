@@ -153,6 +153,7 @@ builder.Services.AddScoped<IExpeditionService, ExpeditionService>();
 builder.Services.AddScoped<IAuthOrchestrator, AuthOrchestrator>();
 builder.Services.AddScoped<IProgressOrchestrator, ProgressOrchestrator>();
 builder.Services.AddScoped<IStatisticsOrchestrator, StatisticsOrchestrator>();
+builder.Services.AddScoped<IBattleOrchestrator, BattleOrchestrator>();
 
 var app = builder.Build();
 

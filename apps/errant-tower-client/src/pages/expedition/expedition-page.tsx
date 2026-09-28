@@ -7,8 +7,11 @@ import { ExpeditionHub, MoveDirection, type MoveResponse } from "./expedition-hu
 import { ExpeditionPanel } from "./expedition-panel";
 
 import styles from "./expedition-page.module.scss";
+import { useNavigate } from "react-router";
+import { routes } from "../../common/config";
 
 export const ExpeditionPage = () => {
+    const navigate = useNavigate()
     const expedition = wrapQuery<GetExpeditionResponse>(useGetExpedition)();
     const wrapperRef = useRef<HTMLDivElement>(null);
     const hasInitializedRef = useRef(false);
@@ -25,6 +28,10 @@ export const ExpeditionPage = () => {
     useEffect(() => {
         ExpeditionHub.connect();
         const updatePosition = (response: MoveResponse) => {
+            if (response.battleId) {
+                navigate(routes.battle);
+                return;
+            }
             setPosition({
                 x: response.x,
                 y: response.y,
@@ -39,6 +46,10 @@ export const ExpeditionPage = () => {
 
     useEffect(() => {
         if (expedition.data && !hasInitializedRef.current) {
+            if (expedition.data.battleId) {
+                navigate(routes.battle);
+                return;
+            }
             setPosition({ x: expedition.data.x, y: expedition.data.y });
             setInitiative(expedition.data.initiative);
             setHealth(expedition.data.health);

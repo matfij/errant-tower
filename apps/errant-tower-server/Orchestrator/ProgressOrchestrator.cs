@@ -38,6 +38,7 @@ public class ProgressOrchestrator(
         {
             FloorGuid = progress.FloorGuid,
             FloorImageUrl = progress.FloorImageUrl,
+            BattleId = progress.BattleId,
             MaxInitiative = progress.MaxInitiative,
             Initiative = progress.Initiative,
             FloorTiles = progress.FloorTiles,

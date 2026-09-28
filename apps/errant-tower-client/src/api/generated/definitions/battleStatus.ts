@@ -6,9 +6,8 @@
  */
 import type { SkillEffectType } from './skillEffectType';
 
-export interface SkillEffect {
+export interface BattleStatus {
   type: SkillEffectType;
   value: number;
-  chance: number;
   duration: number;
 }

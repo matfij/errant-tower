@@ -159,6 +159,34 @@
                 }
             }
         },
+        "/battles": {
+            "get": {
+                "tags": ["Battle"],
+                "operationId": "getBattle",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetBattleResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetBattleResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetBattleResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/progresses/get-floors": {
             "get": {
                 "tags": ["Progress"],
@@ -351,6 +379,161 @@
     },
     "components": {
         "schemas": {
+            "BattleCharacter": {
+                "required": ["name", "statistics", "statuses"],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "statistics": {
+                        "$ref": "#/components/schemas/BattleStatistics"
+                    },
+                    "statuses": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/BattleStatus"
+                        }
+                    }
+                },
+                "additionalProperties": false
+            },
+            "BattleStatistics": {
+                "required": [
+                    "blockChance",
+                    "blockPower",
+                    "counterChance",
+                    "criticalChance",
+                    "dodgeChance",
+                    "energyPoints",
+                    "energyRegen",
+                    "healthPoints",
+                    "healthRegen",
+                    "magicalAbsorption",
+                    "magicalAttack",
+                    "magicalCriticalPower",
+                    "magicalDefense",
+                    "manaPoints",
+                    "manaRegen",
+                    "parryChance",
+                    "physicalAbsorption",
+                    "physicalAttack",
+                    "physicalCriticalPower",
+                    "physicalDefense",
+                    "punctureChance",
+                    "speed"
+                ],
+                "type": "object",
+                "properties": {
+                    "speed": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "healthPoints": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "manaPoints": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "energyPoints": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "physicalAttack": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "magicalAttack": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "physicalDefense": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "magicalDefense": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "physicalAbsorption": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "magicalAbsorption": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "criticalChance": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "physicalCriticalPower": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "magicalCriticalPower": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "punctureChance": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "dodgeChance": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "parryChance": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "blockChance": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "blockPower": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "counterChance": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "healthRegen": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "manaRegen": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "energyRegen": {
+                        "type": "number",
+                        "format": "double"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "BattleStatus": {
+                "required": ["duration", "type", "value"],
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "$ref": "#/components/schemas/SkillEffectType"
+                    },
+                    "value": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "duration": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            },
             "CompleteSignInRequest": {
                 "required": ["actionCode", "email"],
                 "type": "object",
@@ -477,6 +660,29 @@
                 "enum": ["Start", "Route", "Wall", "Battle", "Treasure", "NPC", "Finish"],
                 "type": "string"
             },
+            "GetBattleResponse": {
+                "required": ["enemy", "id", "isFinished", "turnNumber", "user"],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "isFinished": {
+                        "type": "boolean"
+                    },
+                    "turnNumber": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/BattleCharacter"
+                    },
+                    "enemy": {
+                        "$ref": "#/components/schemas/BattleCharacter"
+                    }
+                },
+                "additionalProperties": false
+            },
             "GetExpeditionResponse": {
                 "required": [
                     "energy",
@@ -500,6 +706,10 @@
                     },
                     "floorImageUrl": {
                         "type": "string"
+                    },
+                    "battleId": {
+                        "type": "string",
+                        "nullable": true
                     },
                     "maxInitiative": {
                         "type": "integer",
@@ -1063,6 +1273,9 @@
     "tags": [
         {
             "name": "Auth"
+        },
+        {
+            "name": "Battle"
         },
         {
             "name": "Progress"
