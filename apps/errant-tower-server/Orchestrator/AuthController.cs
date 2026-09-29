@@ -8,14 +8,14 @@ namespace ErrantTowerServer.Orchestrator;
 
 [ApiController]
 [Route("auth")]
-public class AuthController(IAuthOrchestrator authService) : ControllerBase
+public class AuthController(IAuthOrchestrator authOrchestrator) : ControllerBase
 {
     [HttpPost("sign-up-start")]
     [EndpointName("startSignUp")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> StartSignUp([FromBody] StartSignUpRequest request)
     {
-        await authService.StartSignUp(request);
+        await authOrchestrator.StartSignUp(request);
         return Ok();
     }
 
@@ -24,7 +24,7 @@ public class AuthController(IAuthOrchestrator authService) : ControllerBase
     [ProducesResponseType(typeof(CompleteSignUpResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> CompleteSignUp([FromBody] CompleteSignUpRequest request)
     {
-        var result = await authService.CompleteSignUp(request);
+        var result = await authOrchestrator.CompleteSignUp(request);
         await SetSession(result.UserId);
         return Ok(result);
     }
@@ -34,7 +34,7 @@ public class AuthController(IAuthOrchestrator authService) : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> StartSignIn([FromBody] StartSignInRequest request)
     {
-        await authService.StartSignIn(request);
+        await authOrchestrator.StartSignIn(request);
         return Ok();
     }
 
@@ -43,7 +43,7 @@ public class AuthController(IAuthOrchestrator authService) : ControllerBase
     [ProducesResponseType(typeof(CompleteSignInResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> CompleteSignIn([FromBody] CompleteSignInRequest request)
     {
-        var result = await authService.CompleteSignIn(request);
+        var result = await authOrchestrator.CompleteSignIn(request);
         await SetSession(result.UserId);
         return Ok(result);
     }

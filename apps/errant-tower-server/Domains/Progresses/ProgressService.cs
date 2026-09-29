@@ -145,6 +145,7 @@ public class ProgressService(
         {
             FloorGuid = progress.CurrentFloor,
             FloorImageUrl = floor.ImageUrl,
+            BattleId = progress.BattleId,
             MaxInitiative = progress.MaxInitiative,
             Initiative = progress.Initiative,
             MaxHealth = progress.MaxHealth,

@@ -4,835 +4,805 @@
  * ErrantTowerServer
  * OpenAPI spec version: 1.0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/react-query';
 import type {
-    DataTag,
-    DefinedInitialDataOptions,
-    DefinedUseQueryResult,
-    MutationFunction,
-    QueryClient,
-    QueryFunction,
-    QueryKey,
-    UndefinedInitialDataOptions,
-    UseMutationOptions,
-    UseMutationResult,
-    UseQueryOptions,
-    UseQueryResult,
-} from "@tanstack/react-query";
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
+  MutationFunction,
+  QueryClient,
+  QueryFunction,
+  QueryKey,
+  UndefinedInitialDataOptions,
+  UseMutationOptions,
+  UseMutationResult,
+  UseQueryOptions,
+  UseQueryResult
+} from '@tanstack/react-query';
 
-import { customFetch } from "../custom-fetch";
 import type {
-    CompleteSignInRequest,
-    CompleteSignInResponse,
-    CompleteSignUpRequest,
-    CompleteSignUpResponse,
-    GetExpeditionResponse,
-    GetFloorsResponse,
-    GetSkillTreeResponse,
-    LearnSkillRequest,
-    LearnSkillResponse,
-    ResetSkillsResponse,
-    StartExpeditionRequest,
-    StartSignInRequest,
-    StartSignUpRequest,
-} from "./definitions";
+  CompleteSignInRequest,
+  CompleteSignInResponse,
+  CompleteSignUpRequest,
+  CompleteSignUpResponse,
+  GetBattleResponse,
+  GetExpeditionResponse,
+  GetFloorsResponse,
+  GetSkillTreeResponse,
+  LearnSkillRequest,
+  LearnSkillResponse,
+  ResetSkillsResponse,
+  StartExpeditionRequest,
+  StartSignInRequest,
+  StartSignUpRequest
+} from './definitions';
+
+import { customFetch } from '../custom-fetch';
+
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
+
+
 export const startSignUp = (
     startSignUpRequest: StartSignUpRequest,
-    options?: SecondParameter<typeof customFetch>,
-    signal?: AbortSignal,
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
 ) => {
-    return customFetch<void>(
-        {
-            url: `/auth/sign-up-start`,
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            data: startSignUpRequest,
-            signal,
-        },
-        options,
-    );
-};
+      
+      
+      return customFetch<void>(
+      {url: `/auth/sign-up-start`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: startSignUpRequest, signal
+    },
+      options);
+    }
+  
 
-export const getStartSignUpMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
+
+export const getStartSignUpMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startSignUp>>, TError,{data: StartSignUpRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof startSignUp>>, TError,{data: StartSignUpRequest}, TContext> => {
+
+const mutationKey = ['startSignUp'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof startSignUp>>, {data: StartSignUpRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  startSignUp(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type StartSignUpMutationResult = NonNullable<Awaited<ReturnType<typeof startSignUp>>>
+    export type StartSignUpMutationBody = StartSignUpRequest
+    export type StartSignUpMutationError = unknown
+
+    export const useStartSignUp = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startSignUp>>, TError,{data: StartSignUpRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof startSignUp>>,
         TError,
-        { data: StartSignUpRequest },
+        {data: StartSignUpRequest},
         TContext
-    >;
-    request?: SecondParameter<typeof customFetch>;
-}): UseMutationOptions<
-    Awaited<ReturnType<typeof startSignUp>>,
-    TError,
-    { data: StartSignUpRequest },
-    TContext
-> => {
-    const mutationKey = ["startSignUp"];
-    const { mutation: mutationOptions, request: requestOptions } = options
-        ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-            ? options
-            : { ...options, mutation: { ...options.mutation, mutationKey } }
-        : { mutation: { mutationKey }, request: undefined };
+      > => {
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof startSignUp>>,
-        { data: StartSignUpRequest }
-    > = (props) => {
-        const { data } = props ?? {};
+      const mutationOptions = getStartSignUpMutationOptions(options);
 
-        return startSignUp(data, requestOptions);
-    };
-
-    return { mutationFn, ...mutationOptions };
-};
-
-export type StartSignUpMutationResult = NonNullable<Awaited<ReturnType<typeof startSignUp>>>;
-export type StartSignUpMutationBody = StartSignUpRequest;
-export type StartSignUpMutationError = unknown;
-
-export const useStartSignUp = <TError = unknown, TContext = unknown>(
-    options?: {
-        mutation?: UseMutationOptions<
-            Awaited<ReturnType<typeof startSignUp>>,
-            TError,
-            { data: StartSignUpRequest },
-            TContext
-        >;
-        request?: SecondParameter<typeof customFetch>;
-    },
-    queryClient?: QueryClient,
-): UseMutationResult<
-    Awaited<ReturnType<typeof startSignUp>>,
-    TError,
-    { data: StartSignUpRequest },
-    TContext
-> => {
-    const mutationOptions = getStartSignUpMutationOptions(options);
-
-    return useMutation(mutationOptions, queryClient);
-};
-
+      return useMutation(mutationOptions, queryClient);
+    }
+    
 export const completeSignUp = (
     completeSignUpRequest: CompleteSignUpRequest,
-    options?: SecondParameter<typeof customFetch>,
-    signal?: AbortSignal,
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
 ) => {
-    return customFetch<CompleteSignUpResponse>(
-        {
-            url: `/auth/sign-up-complete`,
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            data: completeSignUpRequest,
-            signal,
-        },
-        options,
-    );
-};
+      
+      
+      return customFetch<CompleteSignUpResponse>(
+      {url: `/auth/sign-up-complete`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: completeSignUpRequest, signal
+    },
+      options);
+    }
+  
 
-export const getCompleteSignUpMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
+
+export const getCompleteSignUpMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof completeSignUp>>, TError,{data: CompleteSignUpRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof completeSignUp>>, TError,{data: CompleteSignUpRequest}, TContext> => {
+
+const mutationKey = ['completeSignUp'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof completeSignUp>>, {data: CompleteSignUpRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  completeSignUp(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CompleteSignUpMutationResult = NonNullable<Awaited<ReturnType<typeof completeSignUp>>>
+    export type CompleteSignUpMutationBody = CompleteSignUpRequest
+    export type CompleteSignUpMutationError = unknown
+
+    export const useCompleteSignUp = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof completeSignUp>>, TError,{data: CompleteSignUpRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof completeSignUp>>,
         TError,
-        { data: CompleteSignUpRequest },
+        {data: CompleteSignUpRequest},
         TContext
-    >;
-    request?: SecondParameter<typeof customFetch>;
-}): UseMutationOptions<
-    Awaited<ReturnType<typeof completeSignUp>>,
-    TError,
-    { data: CompleteSignUpRequest },
-    TContext
-> => {
-    const mutationKey = ["completeSignUp"];
-    const { mutation: mutationOptions, request: requestOptions } = options
-        ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-            ? options
-            : { ...options, mutation: { ...options.mutation, mutationKey } }
-        : { mutation: { mutationKey }, request: undefined };
+      > => {
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof completeSignUp>>,
-        { data: CompleteSignUpRequest }
-    > = (props) => {
-        const { data } = props ?? {};
+      const mutationOptions = getCompleteSignUpMutationOptions(options);
 
-        return completeSignUp(data, requestOptions);
-    };
-
-    return { mutationFn, ...mutationOptions };
-};
-
-export type CompleteSignUpMutationResult = NonNullable<Awaited<ReturnType<typeof completeSignUp>>>;
-export type CompleteSignUpMutationBody = CompleteSignUpRequest;
-export type CompleteSignUpMutationError = unknown;
-
-export const useCompleteSignUp = <TError = unknown, TContext = unknown>(
-    options?: {
-        mutation?: UseMutationOptions<
-            Awaited<ReturnType<typeof completeSignUp>>,
-            TError,
-            { data: CompleteSignUpRequest },
-            TContext
-        >;
-        request?: SecondParameter<typeof customFetch>;
-    },
-    queryClient?: QueryClient,
-): UseMutationResult<
-    Awaited<ReturnType<typeof completeSignUp>>,
-    TError,
-    { data: CompleteSignUpRequest },
-    TContext
-> => {
-    const mutationOptions = getCompleteSignUpMutationOptions(options);
-
-    return useMutation(mutationOptions, queryClient);
-};
-
+      return useMutation(mutationOptions, queryClient);
+    }
+    
 export const startSignIn = (
     startSignInRequest: StartSignInRequest,
-    options?: SecondParameter<typeof customFetch>,
-    signal?: AbortSignal,
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
 ) => {
-    return customFetch<void>(
-        {
-            url: `/auth/sign-in-start`,
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            data: startSignInRequest,
-            signal,
-        },
-        options,
-    );
-};
+      
+      
+      return customFetch<void>(
+      {url: `/auth/sign-in-start`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: startSignInRequest, signal
+    },
+      options);
+    }
+  
 
-export const getStartSignInMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
+
+export const getStartSignInMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startSignIn>>, TError,{data: StartSignInRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof startSignIn>>, TError,{data: StartSignInRequest}, TContext> => {
+
+const mutationKey = ['startSignIn'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof startSignIn>>, {data: StartSignInRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  startSignIn(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type StartSignInMutationResult = NonNullable<Awaited<ReturnType<typeof startSignIn>>>
+    export type StartSignInMutationBody = StartSignInRequest
+    export type StartSignInMutationError = unknown
+
+    export const useStartSignIn = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startSignIn>>, TError,{data: StartSignInRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof startSignIn>>,
         TError,
-        { data: StartSignInRequest },
+        {data: StartSignInRequest},
         TContext
-    >;
-    request?: SecondParameter<typeof customFetch>;
-}): UseMutationOptions<
-    Awaited<ReturnType<typeof startSignIn>>,
-    TError,
-    { data: StartSignInRequest },
-    TContext
-> => {
-    const mutationKey = ["startSignIn"];
-    const { mutation: mutationOptions, request: requestOptions } = options
-        ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-            ? options
-            : { ...options, mutation: { ...options.mutation, mutationKey } }
-        : { mutation: { mutationKey }, request: undefined };
+      > => {
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof startSignIn>>,
-        { data: StartSignInRequest }
-    > = (props) => {
-        const { data } = props ?? {};
+      const mutationOptions = getStartSignInMutationOptions(options);
 
-        return startSignIn(data, requestOptions);
-    };
-
-    return { mutationFn, ...mutationOptions };
-};
-
-export type StartSignInMutationResult = NonNullable<Awaited<ReturnType<typeof startSignIn>>>;
-export type StartSignInMutationBody = StartSignInRequest;
-export type StartSignInMutationError = unknown;
-
-export const useStartSignIn = <TError = unknown, TContext = unknown>(
-    options?: {
-        mutation?: UseMutationOptions<
-            Awaited<ReturnType<typeof startSignIn>>,
-            TError,
-            { data: StartSignInRequest },
-            TContext
-        >;
-        request?: SecondParameter<typeof customFetch>;
-    },
-    queryClient?: QueryClient,
-): UseMutationResult<
-    Awaited<ReturnType<typeof startSignIn>>,
-    TError,
-    { data: StartSignInRequest },
-    TContext
-> => {
-    const mutationOptions = getStartSignInMutationOptions(options);
-
-    return useMutation(mutationOptions, queryClient);
-};
-
+      return useMutation(mutationOptions, queryClient);
+    }
+    
 export const completeSignIn = (
     completeSignInRequest: CompleteSignInRequest,
-    options?: SecondParameter<typeof customFetch>,
-    signal?: AbortSignal,
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
 ) => {
-    return customFetch<CompleteSignInResponse>(
-        {
-            url: `/auth/sign-in-complete`,
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            data: completeSignInRequest,
-            signal,
-        },
-        options,
-    );
-};
+      
+      
+      return customFetch<CompleteSignInResponse>(
+      {url: `/auth/sign-in-complete`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: completeSignInRequest, signal
+    },
+      options);
+    }
+  
 
-export const getCompleteSignInMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
+
+export const getCompleteSignInMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof completeSignIn>>, TError,{data: CompleteSignInRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof completeSignIn>>, TError,{data: CompleteSignInRequest}, TContext> => {
+
+const mutationKey = ['completeSignIn'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof completeSignIn>>, {data: CompleteSignInRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  completeSignIn(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CompleteSignInMutationResult = NonNullable<Awaited<ReturnType<typeof completeSignIn>>>
+    export type CompleteSignInMutationBody = CompleteSignInRequest
+    export type CompleteSignInMutationError = unknown
+
+    export const useCompleteSignIn = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof completeSignIn>>, TError,{data: CompleteSignInRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof completeSignIn>>,
         TError,
-        { data: CompleteSignInRequest },
+        {data: CompleteSignInRequest},
         TContext
-    >;
-    request?: SecondParameter<typeof customFetch>;
-}): UseMutationOptions<
-    Awaited<ReturnType<typeof completeSignIn>>,
-    TError,
-    { data: CompleteSignInRequest },
-    TContext
-> => {
-    const mutationKey = ["completeSignIn"];
-    const { mutation: mutationOptions, request: requestOptions } = options
-        ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-            ? options
-            : { ...options, mutation: { ...options.mutation, mutationKey } }
-        : { mutation: { mutationKey }, request: undefined };
+      > => {
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof completeSignIn>>,
-        { data: CompleteSignInRequest }
-    > = (props) => {
-        const { data } = props ?? {};
+      const mutationOptions = getCompleteSignInMutationOptions(options);
 
-        return completeSignIn(data, requestOptions);
-    };
-
-    return { mutationFn, ...mutationOptions };
-};
-
-export type CompleteSignInMutationResult = NonNullable<Awaited<ReturnType<typeof completeSignIn>>>;
-export type CompleteSignInMutationBody = CompleteSignInRequest;
-export type CompleteSignInMutationError = unknown;
-
-export const useCompleteSignIn = <TError = unknown, TContext = unknown>(
-    options?: {
-        mutation?: UseMutationOptions<
-            Awaited<ReturnType<typeof completeSignIn>>,
-            TError,
-            { data: CompleteSignInRequest },
-            TContext
-        >;
-        request?: SecondParameter<typeof customFetch>;
+      return useMutation(mutationOptions, queryClient);
+    }
+    
+export const getBattle = (
+    
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetBattleResponse>(
+      {url: `/battles`, method: 'GET', signal
     },
-    queryClient?: QueryClient,
-): UseMutationResult<
-    Awaited<ReturnType<typeof completeSignIn>>,
-    TError,
-    { data: CompleteSignInRequest },
-    TContext
-> => {
-    const mutationOptions = getCompleteSignInMutationOptions(options);
+      options);
+    }
+  
 
-    return useMutation(mutationOptions, queryClient);
-};
 
-export const getFloors = (options?: SecondParameter<typeof customFetch>, signal?: AbortSignal) => {
-    return customFetch<GetFloorsResponse>(
-        { url: `/progresses/get-floors`, method: "GET", signal },
-        options,
-    );
-};
+
+export const getGetBattleQueryKey = () => {
+    return [
+    `/battles`
+    ] as const;
+    }
+
+    
+export const getGetBattleQueryOptions = <TData = Awaited<ReturnType<typeof getBattle>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBattle>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetBattleQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBattle>>> = ({ signal }) => getBattle(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getBattle>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetBattleQueryResult = NonNullable<Awaited<ReturnType<typeof getBattle>>>
+export type GetBattleQueryError = unknown
+
+
+export function useGetBattle<TData = Awaited<ReturnType<typeof getBattle>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBattle>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getBattle>>,
+          TError,
+          Awaited<ReturnType<typeof getBattle>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetBattle<TData = Awaited<ReturnType<typeof getBattle>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBattle>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getBattle>>,
+          TError,
+          Awaited<ReturnType<typeof getBattle>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetBattle<TData = Awaited<ReturnType<typeof getBattle>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBattle>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetBattle<TData = Awaited<ReturnType<typeof getBattle>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBattle>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetBattleQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+
+export const getFloors = (
+    
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetFloorsResponse>(
+      {url: `/progresses/get-floors`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+
 
 export const getGetFloorsQueryKey = () => {
-    return [`/progresses/get-floors`] as const;
-};
+    return [
+    `/progresses/get-floors`
+    ] as const;
+    }
 
-export const getGetFloorsQueryOptions = <
-    TData = Awaited<ReturnType<typeof getFloors>>,
-    TError = unknown,
->(options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFloors>>, TError, TData>>;
-    request?: SecondParameter<typeof customFetch>;
-}) => {
-    const { query: queryOptions, request: requestOptions } = options ?? {};
+    
+export const getGetFloorsQueryOptions = <TData = Awaited<ReturnType<typeof getFloors>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFloors>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
 
-    const queryKey = queryOptions?.queryKey ?? getGetFloorsQueryKey();
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFloors>>> = ({ signal }) =>
-        getFloors(requestOptions, signal);
+  const queryKey =  queryOptions?.queryKey ?? getGetFloorsQueryKey();
 
-    return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-        Awaited<ReturnType<typeof getFloors>>,
-        TError,
-        TData
-    > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
+  
 
-export type GetFloorsQueryResult = NonNullable<Awaited<ReturnType<typeof getFloors>>>;
-export type GetFloorsQueryError = unknown;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFloors>>> = ({ signal }) => getFloors(requestOptions, signal);
 
-export function useGetFloors<TData = Awaited<ReturnType<typeof getFloors>>, TError = unknown>(
-    options: {
-        query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFloors>>, TError, TData>> &
-            Pick<
-                DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof getFloors>>,
-                    TError,
-                    Awaited<ReturnType<typeof getFloors>>
-                >,
-                "initialData"
-            >;
-        request?: SecondParameter<typeof customFetch>;
-    },
-    queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetFloors<TData = Awaited<ReturnType<typeof getFloors>>, TError = unknown>(
-    options?: {
-        query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFloors>>, TError, TData>> &
-            Pick<
-                UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof getFloors>>,
-                    TError,
-                    Awaited<ReturnType<typeof getFloors>>
-                >,
-                "initialData"
-            >;
-        request?: SecondParameter<typeof customFetch>;
-    },
-    queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetFloors<TData = Awaited<ReturnType<typeof getFloors>>, TError = unknown>(
-    options?: {
-        query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFloors>>, TError, TData>>;
-        request?: SecondParameter<typeof customFetch>;
-    },
-    queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+      
 
-export function useGetFloors<TData = Awaited<ReturnType<typeof getFloors>>, TError = unknown>(
-    options?: {
-        query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getFloors>>, TError, TData>>;
-        request?: SecondParameter<typeof customFetch>;
-    },
-    queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-    const queryOptions = getGetFloorsQueryOptions(options);
+      
 
-    const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-        queryKey: DataTag<QueryKey, TData, TError>;
-    };
-
-    query.queryKey = queryOptions.queryKey;
-
-    return query;
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFloors>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
+
+export type GetFloorsQueryResult = NonNullable<Awaited<ReturnType<typeof getFloors>>>
+export type GetFloorsQueryError = unknown
+
+
+export function useGetFloors<TData = Awaited<ReturnType<typeof getFloors>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFloors>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFloors>>,
+          TError,
+          Awaited<ReturnType<typeof getFloors>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFloors<TData = Awaited<ReturnType<typeof getFloors>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFloors>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFloors>>,
+          TError,
+          Awaited<ReturnType<typeof getFloors>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFloors<TData = Awaited<ReturnType<typeof getFloors>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFloors>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetFloors<TData = Awaited<ReturnType<typeof getFloors>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFloors>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetFloorsQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
 
 export const startExpedition = (
     startExpeditionRequest: StartExpeditionRequest,
-    options?: SecondParameter<typeof customFetch>,
-    signal?: AbortSignal,
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
 ) => {
-    return customFetch<void>(
-        {
-            url: `/progresses/start-expedition`,
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            data: startExpeditionRequest,
-            signal,
-        },
-        options,
-    );
-};
+      
+      
+      return customFetch<void>(
+      {url: `/progresses/start-expedition`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: startExpeditionRequest, signal
+    },
+      options);
+    }
+  
 
-export const getStartExpeditionMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
+
+export const getStartExpeditionMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startExpedition>>, TError,{data: StartExpeditionRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof startExpedition>>, TError,{data: StartExpeditionRequest}, TContext> => {
+
+const mutationKey = ['startExpedition'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof startExpedition>>, {data: StartExpeditionRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  startExpedition(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type StartExpeditionMutationResult = NonNullable<Awaited<ReturnType<typeof startExpedition>>>
+    export type StartExpeditionMutationBody = StartExpeditionRequest
+    export type StartExpeditionMutationError = unknown
+
+    export const useStartExpedition = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startExpedition>>, TError,{data: StartExpeditionRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof startExpedition>>,
         TError,
-        { data: StartExpeditionRequest },
+        {data: StartExpeditionRequest},
         TContext
-    >;
-    request?: SecondParameter<typeof customFetch>;
-}): UseMutationOptions<
-    Awaited<ReturnType<typeof startExpedition>>,
-    TError,
-    { data: StartExpeditionRequest },
-    TContext
-> => {
-    const mutationKey = ["startExpedition"];
-    const { mutation: mutationOptions, request: requestOptions } = options
-        ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-            ? options
-            : { ...options, mutation: { ...options.mutation, mutationKey } }
-        : { mutation: { mutationKey }, request: undefined };
+      > => {
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof startExpedition>>,
-        { data: StartExpeditionRequest }
-    > = (props) => {
-        const { data } = props ?? {};
+      const mutationOptions = getStartExpeditionMutationOptions(options);
 
-        return startExpedition(data, requestOptions);
-    };
-
-    return { mutationFn, ...mutationOptions };
-};
-
-export type StartExpeditionMutationResult = NonNullable<
-    Awaited<ReturnType<typeof startExpedition>>
->;
-export type StartExpeditionMutationBody = StartExpeditionRequest;
-export type StartExpeditionMutationError = unknown;
-
-export const useStartExpedition = <TError = unknown, TContext = unknown>(
-    options?: {
-        mutation?: UseMutationOptions<
-            Awaited<ReturnType<typeof startExpedition>>,
-            TError,
-            { data: StartExpeditionRequest },
-            TContext
-        >;
-        request?: SecondParameter<typeof customFetch>;
-    },
-    queryClient?: QueryClient,
-): UseMutationResult<
-    Awaited<ReturnType<typeof startExpedition>>,
-    TError,
-    { data: StartExpeditionRequest },
-    TContext
-> => {
-    const mutationOptions = getStartExpeditionMutationOptions(options);
-
-    return useMutation(mutationOptions, queryClient);
-};
-
+      return useMutation(mutationOptions, queryClient);
+    }
+    
 export const getExpedition = (
-    options?: SecondParameter<typeof customFetch>,
-    signal?: AbortSignal,
+    
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
 ) => {
-    return customFetch<GetExpeditionResponse>(
-        { url: `/progresses/get-expedition`, method: "GET", signal },
-        options,
-    );
-};
+      
+      
+      return customFetch<GetExpeditionResponse>(
+      {url: `/progresses/get-expedition`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+
 
 export const getGetExpeditionQueryKey = () => {
-    return [`/progresses/get-expedition`] as const;
-};
+    return [
+    `/progresses/get-expedition`
+    ] as const;
+    }
 
-export const getGetExpeditionQueryOptions = <
-    TData = Awaited<ReturnType<typeof getExpedition>>,
-    TError = unknown,
->(options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpedition>>, TError, TData>>;
-    request?: SecondParameter<typeof customFetch>;
-}) => {
-    const { query: queryOptions, request: requestOptions } = options ?? {};
+    
+export const getGetExpeditionQueryOptions = <TData = Awaited<ReturnType<typeof getExpedition>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpedition>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
 
-    const queryKey = queryOptions?.queryKey ?? getGetExpeditionQueryKey();
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getExpedition>>> = ({ signal }) =>
-        getExpedition(requestOptions, signal);
+  const queryKey =  queryOptions?.queryKey ?? getGetExpeditionQueryKey();
 
-    return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-        Awaited<ReturnType<typeof getExpedition>>,
-        TError,
-        TData
-    > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
+  
 
-export type GetExpeditionQueryResult = NonNullable<Awaited<ReturnType<typeof getExpedition>>>;
-export type GetExpeditionQueryError = unknown;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getExpedition>>> = ({ signal }) => getExpedition(requestOptions, signal);
 
-export function useGetExpedition<
-    TData = Awaited<ReturnType<typeof getExpedition>>,
-    TError = unknown,
->(
-    options: {
-        query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpedition>>, TError, TData>> &
-            Pick<
-                DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof getExpedition>>,
-                    TError,
-                    Awaited<ReturnType<typeof getExpedition>>
-                >,
-                "initialData"
-            >;
-        request?: SecondParameter<typeof customFetch>;
-    },
-    queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetExpedition<
-    TData = Awaited<ReturnType<typeof getExpedition>>,
-    TError = unknown,
->(
-    options?: {
-        query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpedition>>, TError, TData>> &
-            Pick<
-                UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof getExpedition>>,
-                    TError,
-                    Awaited<ReturnType<typeof getExpedition>>
-                >,
-                "initialData"
-            >;
-        request?: SecondParameter<typeof customFetch>;
-    },
-    queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetExpedition<
-    TData = Awaited<ReturnType<typeof getExpedition>>,
-    TError = unknown,
->(
-    options?: {
-        query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpedition>>, TError, TData>>;
-        request?: SecondParameter<typeof customFetch>;
-    },
-    queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+      
 
-export function useGetExpedition<
-    TData = Awaited<ReturnType<typeof getExpedition>>,
-    TError = unknown,
->(
-    options?: {
-        query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpedition>>, TError, TData>>;
-        request?: SecondParameter<typeof customFetch>;
-    },
-    queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-    const queryOptions = getGetExpeditionQueryOptions(options);
+      
 
-    const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-        queryKey: DataTag<QueryKey, TData, TError>;
-    };
-
-    query.queryKey = queryOptions.queryKey;
-
-    return query;
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getExpedition>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
+
+export type GetExpeditionQueryResult = NonNullable<Awaited<ReturnType<typeof getExpedition>>>
+export type GetExpeditionQueryError = unknown
+
+
+export function useGetExpedition<TData = Awaited<ReturnType<typeof getExpedition>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpedition>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getExpedition>>,
+          TError,
+          Awaited<ReturnType<typeof getExpedition>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetExpedition<TData = Awaited<ReturnType<typeof getExpedition>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpedition>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getExpedition>>,
+          TError,
+          Awaited<ReturnType<typeof getExpedition>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetExpedition<TData = Awaited<ReturnType<typeof getExpedition>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpedition>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetExpedition<TData = Awaited<ReturnType<typeof getExpedition>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpedition>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetExpeditionQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
 
 export const getSkillTree = (
-    options?: SecondParameter<typeof customFetch>,
-    signal?: AbortSignal,
+    
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
 ) => {
-    return customFetch<GetSkillTreeResponse>(
-        { url: `/statistics/get-skill-tree`, method: "GET", signal },
-        options,
-    );
-};
+      
+      
+      return customFetch<GetSkillTreeResponse>(
+      {url: `/statistics/get-skill-tree`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+
 
 export const getGetSkillTreeQueryKey = () => {
-    return [`/statistics/get-skill-tree`] as const;
-};
+    return [
+    `/statistics/get-skill-tree`
+    ] as const;
+    }
 
-export const getGetSkillTreeQueryOptions = <
-    TData = Awaited<ReturnType<typeof getSkillTree>>,
-    TError = unknown,
->(options?: {
-    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSkillTree>>, TError, TData>>;
-    request?: SecondParameter<typeof customFetch>;
-}) => {
-    const { query: queryOptions, request: requestOptions } = options ?? {};
+    
+export const getGetSkillTreeQueryOptions = <TData = Awaited<ReturnType<typeof getSkillTree>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSkillTree>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
 
-    const queryKey = queryOptions?.queryKey ?? getGetSkillTreeQueryKey();
+const {query: queryOptions, request: requestOptions} = options ?? {};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSkillTree>>> = ({ signal }) =>
-        getSkillTree(requestOptions, signal);
+  const queryKey =  queryOptions?.queryKey ?? getGetSkillTreeQueryKey();
 
-    return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-        Awaited<ReturnType<typeof getSkillTree>>,
-        TError,
-        TData
-    > & { queryKey: DataTag<QueryKey, TData, TError> };
-};
+  
 
-export type GetSkillTreeQueryResult = NonNullable<Awaited<ReturnType<typeof getSkillTree>>>;
-export type GetSkillTreeQueryError = unknown;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSkillTree>>> = ({ signal }) => getSkillTree(requestOptions, signal);
 
-export function useGetSkillTree<TData = Awaited<ReturnType<typeof getSkillTree>>, TError = unknown>(
-    options: {
-        query: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSkillTree>>, TError, TData>> &
-            Pick<
-                DefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof getSkillTree>>,
-                    TError,
-                    Awaited<ReturnType<typeof getSkillTree>>
-                >,
-                "initialData"
-            >;
-        request?: SecondParameter<typeof customFetch>;
-    },
-    queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetSkillTree<TData = Awaited<ReturnType<typeof getSkillTree>>, TError = unknown>(
-    options?: {
-        query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSkillTree>>, TError, TData>> &
-            Pick<
-                UndefinedInitialDataOptions<
-                    Awaited<ReturnType<typeof getSkillTree>>,
-                    TError,
-                    Awaited<ReturnType<typeof getSkillTree>>
-                >,
-                "initialData"
-            >;
-        request?: SecondParameter<typeof customFetch>;
-    },
-    queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetSkillTree<TData = Awaited<ReturnType<typeof getSkillTree>>, TError = unknown>(
-    options?: {
-        query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSkillTree>>, TError, TData>>;
-        request?: SecondParameter<typeof customFetch>;
-    },
-    queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+      
 
-export function useGetSkillTree<TData = Awaited<ReturnType<typeof getSkillTree>>, TError = unknown>(
-    options?: {
-        query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getSkillTree>>, TError, TData>>;
-        request?: SecondParameter<typeof customFetch>;
-    },
-    queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-    const queryOptions = getGetSkillTreeQueryOptions(options);
+      
 
-    const query = useQuery(queryOptions, queryClient) as UseQueryResult<TData, TError> & {
-        queryKey: DataTag<QueryKey, TData, TError>;
-    };
-
-    query.queryKey = queryOptions.queryKey;
-
-    return query;
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSkillTree>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
+
+export type GetSkillTreeQueryResult = NonNullable<Awaited<ReturnType<typeof getSkillTree>>>
+export type GetSkillTreeQueryError = unknown
+
+
+export function useGetSkillTree<TData = Awaited<ReturnType<typeof getSkillTree>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSkillTree>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSkillTree>>,
+          TError,
+          Awaited<ReturnType<typeof getSkillTree>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSkillTree<TData = Awaited<ReturnType<typeof getSkillTree>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSkillTree>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getSkillTree>>,
+          TError,
+          Awaited<ReturnType<typeof getSkillTree>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetSkillTree<TData = Awaited<ReturnType<typeof getSkillTree>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSkillTree>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetSkillTree<TData = Awaited<ReturnType<typeof getSkillTree>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSkillTree>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetSkillTreeQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
 
 export const learnSkill = (
     learnSkillRequest: LearnSkillRequest,
-    options?: SecondParameter<typeof customFetch>,
-    signal?: AbortSignal,
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
 ) => {
-    return customFetch<LearnSkillResponse>(
-        {
-            url: `/statistics/learn-skill`,
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            data: learnSkillRequest,
-            signal,
-        },
-        options,
-    );
-};
+      
+      
+      return customFetch<LearnSkillResponse>(
+      {url: `/statistics/learn-skill`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: learnSkillRequest, signal
+    },
+      options);
+    }
+  
 
-export const getLearnSkillMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
+
+export const getLearnSkillMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof learnSkill>>, TError,{data: LearnSkillRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof learnSkill>>, TError,{data: LearnSkillRequest}, TContext> => {
+
+const mutationKey = ['learnSkill'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof learnSkill>>, {data: LearnSkillRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  learnSkill(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type LearnSkillMutationResult = NonNullable<Awaited<ReturnType<typeof learnSkill>>>
+    export type LearnSkillMutationBody = LearnSkillRequest
+    export type LearnSkillMutationError = unknown
+
+    export const useLearnSkill = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof learnSkill>>, TError,{data: LearnSkillRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof learnSkill>>,
         TError,
-        { data: LearnSkillRequest },
+        {data: LearnSkillRequest},
         TContext
-    >;
-    request?: SecondParameter<typeof customFetch>;
-}): UseMutationOptions<
-    Awaited<ReturnType<typeof learnSkill>>,
-    TError,
-    { data: LearnSkillRequest },
-    TContext
-> => {
-    const mutationKey = ["learnSkill"];
-    const { mutation: mutationOptions, request: requestOptions } = options
-        ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-            ? options
-            : { ...options, mutation: { ...options.mutation, mutationKey } }
-        : { mutation: { mutationKey }, request: undefined };
+      > => {
 
-    const mutationFn: MutationFunction<
-        Awaited<ReturnType<typeof learnSkill>>,
-        { data: LearnSkillRequest }
-    > = (props) => {
-        const { data } = props ?? {};
+      const mutationOptions = getLearnSkillMutationOptions(options);
 
-        return learnSkill(data, requestOptions);
-    };
-
-    return { mutationFn, ...mutationOptions };
-};
-
-export type LearnSkillMutationResult = NonNullable<Awaited<ReturnType<typeof learnSkill>>>;
-export type LearnSkillMutationBody = LearnSkillRequest;
-export type LearnSkillMutationError = unknown;
-
-export const useLearnSkill = <TError = unknown, TContext = unknown>(
-    options?: {
-        mutation?: UseMutationOptions<
-            Awaited<ReturnType<typeof learnSkill>>,
-            TError,
-            { data: LearnSkillRequest },
-            TContext
-        >;
-        request?: SecondParameter<typeof customFetch>;
-    },
-    queryClient?: QueryClient,
-): UseMutationResult<
-    Awaited<ReturnType<typeof learnSkill>>,
-    TError,
-    { data: LearnSkillRequest },
-    TContext
-> => {
-    const mutationOptions = getLearnSkillMutationOptions(options);
-
-    return useMutation(mutationOptions, queryClient);
-};
-
+      return useMutation(mutationOptions, queryClient);
+    }
+    
 export const resetSkills = (
-    options?: SecondParameter<typeof customFetch>,
-    signal?: AbortSignal,
+    
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
 ) => {
-    return customFetch<ResetSkillsResponse>(
-        { url: `/statistics/reset-skills`, method: "POST", signal },
-        options,
-    );
-};
-
-export const getResetSkillsMutationOptions = <TError = unknown, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<Awaited<ReturnType<typeof resetSkills>>, TError, void, TContext>;
-    request?: SecondParameter<typeof customFetch>;
-}): UseMutationOptions<Awaited<ReturnType<typeof resetSkills>>, TError, void, TContext> => {
-    const mutationKey = ["resetSkills"];
-    const { mutation: mutationOptions, request: requestOptions } = options
-        ? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
-            ? options
-            : { ...options, mutation: { ...options.mutation, mutationKey } }
-        : { mutation: { mutationKey }, request: undefined };
-
-    const mutationFn: MutationFunction<Awaited<ReturnType<typeof resetSkills>>, void> = () => {
-        return resetSkills(requestOptions);
-    };
-
-    return { mutationFn, ...mutationOptions };
-};
-
-export type ResetSkillsMutationResult = NonNullable<Awaited<ReturnType<typeof resetSkills>>>;
-
-export type ResetSkillsMutationError = unknown;
-
-export const useResetSkills = <TError = unknown, TContext = unknown>(
-    options?: {
-        mutation?: UseMutationOptions<
-            Awaited<ReturnType<typeof resetSkills>>,
-            TError,
-            void,
-            TContext
-        >;
-        request?: SecondParameter<typeof customFetch>;
+      
+      
+      return customFetch<ResetSkillsResponse>(
+      {url: `/statistics/reset-skills`, method: 'POST', signal
     },
-    queryClient?: QueryClient,
-): UseMutationResult<Awaited<ReturnType<typeof resetSkills>>, TError, void, TContext> => {
-    const mutationOptions = getResetSkillsMutationOptions(options);
+      options);
+    }
+  
 
-    return useMutation(mutationOptions, queryClient);
-};
+
+export const getResetSkillsMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetSkills>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof resetSkills>>, TError,void, TContext> => {
+
+const mutationKey = ['resetSkills'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof resetSkills>>, void> = () => {
+          
+
+          return  resetSkills(requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ResetSkillsMutationResult = NonNullable<Awaited<ReturnType<typeof resetSkills>>>
+    
+    export type ResetSkillsMutationError = unknown
+
+    export const useResetSkills = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetSkills>>, TError,void, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof resetSkills>>,
+        TError,
+        void,
+        TContext
+      > => {
+
+      const mutationOptions = getResetSkillsMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    

@@ -12,6 +12,7 @@ import { CraftingPage } from "./pages/crafting/crafting-page";
 import { ExpeditionPage } from "./pages/expedition/expedition-page";
 import { ExplorePage } from "./pages/explore/explore-page";
 import { SkillsPage } from "./pages/skills/skills-page";
+import { BattlePage } from "./pages/battle/battle-page";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -39,6 +40,7 @@ export const AppComponent = () => {
                             <Route path={routes.explore} element={<ExplorePage />} />
                         </Route>
                         <Route path={routes.expedition} element={<ExpeditionPage />} />
+                        <Route path={routes.battle} element={<BattlePage />} />
                     </Route>
                     <Route path="*" element={<Navigate to={routes.root} replace />} />
                 </Routes>

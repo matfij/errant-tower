@@ -40,3 +40,7 @@ export * from "./startExpeditionRequest";
 export * from "./startSignInRequest";
 export * from "./startSignUpRequest";
 export * from "./userSkill";
+export * from './battleCharacter';
+export * from './battleStatistics';
+export * from './battleStatus';
+export * from './getBattleResponse';
