@@ -14,11 +14,11 @@ export const BattlePage = () => {
             <h1>In battle</h1>
             User
             <div>{getBattle.data.user.name}</div>
-            <div>{String(getBattle.data.user.statistics)}</div>
+            <pre>{JSON.stringify(getBattle.data.user.statistics, null, "\n")}</pre>
 
             Enemy
             <div>{getBattle.data.enemy.name}</div>
-            <div>{String(getBattle.data.enemy.statistics)}</div>
+            <pre>{JSON.stringify(getBattle.data.enemy.statistics, null, "\n")}</pre>
         </div>
     );
 };

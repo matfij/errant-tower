@@ -14,7 +14,7 @@ public class BattleController(IBattleOrchestrator battleOrchestrator) : Controll
     public async Task<IActionResult> GetBattle()
     {
         var userId = User.GetUserId();
-        var battle = battleOrchestrator.GetBattle(userId);
+        var battle = await battleOrchestrator.GetBattle(userId);
         return Ok(battle);
     }
 }

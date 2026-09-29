@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 
 import { wrapQuery } from "../../api/api-proxy";
 import type { GetExpeditionResponse } from "../../api/generated/definitions";
 import { useGetExpedition } from "../../api/generated/hooks";
+import { routes } from "../../common/config";
 import { ExpeditionHub, MoveDirection, type MoveResponse } from "./expedition-hub";
 import { ExpeditionPanel } from "./expedition-panel";
 
 import styles from "./expedition-page.module.scss";
-import { useNavigate } from "react-router";
-import { routes } from "../../common/config";
 
 export const ExpeditionPage = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const expedition = wrapQuery<GetExpeditionResponse>(useGetExpedition)();
     const wrapperRef = useRef<HTMLDivElement>(null);
     const hasInitializedRef = useRef(false);
