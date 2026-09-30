@@ -380,11 +380,21 @@
     "components": {
         "schemas": {
             "BattleCharacter": {
-                "required": ["name", "statistics", "statuses"],
+                "required": ["imageUrl", "name", "race", "statistics", "statuses"],
                 "type": "object",
                 "properties": {
                     "name": {
                         "type": "string"
+                    },
+                    "imageUrl": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "race": {
+                        "$ref": "#/components/schemas/EnemyRace"
                     },
                     "statistics": {
                         "$ref": "#/components/schemas/BattleStatistics"
@@ -415,6 +425,9 @@
                     "magicalDefense",
                     "manaPoints",
                     "manaRegen",
+                    "maxEnergyPoints",
+                    "maxHealthPoints",
+                    "maxManaPoints",
                     "parryChance",
                     "physicalAbsorption",
                     "physicalAttack",
@@ -429,11 +442,23 @@
                         "type": "number",
                         "format": "double"
                     },
+                    "maxHealthPoints": {
+                        "type": "number",
+                        "format": "double"
+                    },
                     "healthPoints": {
                         "type": "number",
                         "format": "double"
                     },
+                    "maxManaPoints": {
+                        "type": "number",
+                        "format": "double"
+                    },
                     "manaPoints": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "maxEnergyPoints": {
                         "type": "number",
                         "format": "double"
                     },
@@ -616,6 +641,22 @@
                     }
                 },
                 "additionalProperties": false
+            },
+            "EnemyRace": {
+                "enum": [
+                    "Vermin",
+                    "Feline",
+                    "Beast",
+                    "Reptile",
+                    "Human",
+                    "Undead",
+                    "Insect",
+                    "Avian",
+                    "Mechanical",
+                    "Spirit",
+                    "Dragon"
+                ],
+                "type": "string"
             },
             "FloorDomain": {
                 "enum": ["Dungeon", "Forest"],

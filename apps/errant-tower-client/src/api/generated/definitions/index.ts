@@ -43,4 +43,5 @@ export * from "./userSkill";
 export * from './battleCharacter';
 export * from './battleStatistics';
 export * from './battleStatus';
+export * from './enemyRace';
 export * from './getBattleResponse';

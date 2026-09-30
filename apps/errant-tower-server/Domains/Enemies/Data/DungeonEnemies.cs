@@ -15,6 +15,7 @@ public static class DungeonEnemies
         Statistics = new BattleStatistics()
         {
             Speed = 1.5,
+            MaxHealthPoints = 20,
             HealthPoints = 20,
             PhysicalAttack = 5,
             MagicalAttack = 0,
@@ -38,6 +39,7 @@ public static class DungeonEnemies
         Statistics = new BattleStatistics()
         {
             Speed = 1.3,
+            MaxHealthPoints = 40,
             HealthPoints = 40,
             PhysicalAttack = 6,
             MagicalAttack = 0,
@@ -60,6 +62,7 @@ public static class DungeonEnemies
         Statistics = new BattleStatistics()
         {
             Speed = 1,
+            MaxHealthPoints = 120,
             HealthPoints = 120,
             PhysicalAttack = 4,
             MagicalAttack = 0,
@@ -83,6 +86,7 @@ public static class DungeonEnemies
         Statistics = new BattleStatistics()
         {
             Speed = 1,
+            MaxHealthPoints = 190,
             HealthPoints = 190,
             PhysicalAttack = 15,
             MagicalAttack = 0,
@@ -110,6 +114,7 @@ public static class DungeonEnemies
         Statistics = new BattleStatistics()
         {
             Speed = 1.6,
+            MaxHealthPoints = 160,
             HealthPoints = 160,
             PhysicalAttack = 9,
             MagicalAttack = 0,
@@ -139,6 +144,7 @@ public static class DungeonEnemies
         Statistics = new BattleStatistics()
         {
             Speed = 1,
+            MaxHealthPoints = 140,
             HealthPoints = 140,
             PhysicalAttack = 4,
             MagicalAttack = 0,
@@ -164,6 +170,7 @@ public static class DungeonEnemies
         Statistics = new BattleStatistics()
         {
             Speed = 1.9,
+            MaxHealthPoints = 50,
             HealthPoints = 50,
             PhysicalAttack = 7,
             MagicalAttack = 0,
@@ -187,6 +194,7 @@ public static class DungeonEnemies
         Statistics = new BattleStatistics()
         {
             Speed = 1,
+            MaxHealthPoints = 220,
             HealthPoints = 220,
             PhysicalAttack = 20,
             MagicalAttack = 10,
@@ -215,6 +223,7 @@ public static class DungeonEnemies
         Statistics = new BattleStatistics()
         {
             Speed = 1.6,
+            MaxHealthPoints = 90,
             HealthPoints = 90,
             PhysicalAttack = 9,
             MagicalAttack = 0,
@@ -237,6 +246,7 @@ public static class DungeonEnemies
         Statistics = new BattleStatistics()
         {
             Speed = 1,
+            MaxHealthPoints = 180,
             HealthPoints = 180,
             PhysicalAttack = 8,
             MagicalAttack = 0,

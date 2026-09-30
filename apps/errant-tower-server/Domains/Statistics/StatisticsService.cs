@@ -24,8 +24,11 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
             BattleStatistics = new BattleStatistics
             {
                 Speed = 0,
+                MaxHealthPoints = 100,
                 HealthPoints = 100,
+                MaxManaPoints = 50,
                 ManaPoints = 50,
+                MaxEnergyPoints = 50,
                 EnergyPoints = 50,
                 PhysicalAttack = 10,
                 MagicalAttack = 5,

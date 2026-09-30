@@ -7,8 +7,11 @@ public struct BattleStatistics
     public BattleStatistics() { }
 
     public double Speed { get; set; } = 0;
+    public double MaxHealthPoints { get; set; } = 0;
     public double HealthPoints { get; set; } = 0;
+    public double MaxManaPoints { get; set; } = 0;
     public double ManaPoints { get; set; } = 0;
+    public double MaxEnergyPoints { get; set; } = 0;
     public double EnergyPoints { get; set; } = 0;
     public double PhysicalAttack { get; set; } = 0;
     public double MagicalAttack { get; set; } = 0;
