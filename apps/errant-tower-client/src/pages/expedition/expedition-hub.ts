@@ -40,11 +40,11 @@ export class ExpeditionHub {
         }
     }
 
-    static onPlayerMoved(handler: (event: MoveResponse) => void) {
+    static onUserMoved(handler: (event: MoveResponse) => void) {
         this.connection.on("moved", handler);
     }
 
-    static offPlayerMoved(handler: (event: MoveResponse) => void) {
+    static offUserMoved(handler: (event: MoveResponse) => void) {
         this.connection.off("moved", handler);
     }
 

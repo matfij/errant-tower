@@ -33,11 +33,16 @@ public class BattleService(IBattleRepository battleRepository) : IBattleService
             {
                 Name = username,
                 Statistics = userStatistics,
+                ImageUrl = "saber.png",
+                Race = EnemyRace.Human,
                 Statuses = []
             },
             Enemy = new BattleCharacter()
             {
                 Name = enemy.Name,
+                ImageUrl = enemy.ImageUrl,
+                Title = enemy.Title,
+                Race = enemy.Race,
                 Statistics = enemy.Statistics,
                 Statuses = []
             }

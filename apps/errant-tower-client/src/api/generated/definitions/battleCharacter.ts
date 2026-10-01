@@ -4,11 +4,16 @@
  * ErrantTowerServer
  * OpenAPI spec version: 1.0
  */
+import type { EnemyRace } from './enemyRace';
 import type { BattleStatistics } from './battleStatistics';
 import type { BattleStatus } from './battleStatus';
 
 export interface BattleCharacter {
   name: string;
+  imageUrl: string;
+  /** @nullable */
+  title?: string | null;
+  race: EnemyRace;
   statistics: BattleStatistics;
   statuses: BattleStatus[];
 }

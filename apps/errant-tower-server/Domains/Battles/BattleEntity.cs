@@ -1,3 +1,4 @@
+using ErrantTowerServer.Domains.Enemies;
 using ErrantTowerServer.Domains.Skills;
 using ErrantTowerServer.Domains.Statistics;
 using MongoDB.Bson;
@@ -21,6 +22,9 @@ public class BattleEntity
 public record BattleCharacter
 {
     public required string Name { get; set; }
+    public required string ImageUrl { get; set; }
+    public string? Title { get; set; }
+    public EnemyRace Race { get; set; }
     public required BattleStatistics Statistics { get; set; }
     public required List<BattleStatus> Statuses { get; set; }
 }

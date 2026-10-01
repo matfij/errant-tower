@@ -7,8 +7,11 @@
 
 export interface BattleStatistics {
   speed: number;
+  maxHealthPoints: number;
   healthPoints: number;
+  maxManaPoints: number;
   manaPoints: number;
+  maxEnergyPoints: number;
   energyPoints: number;
   physicalAttack: number;
   magicalAttack: number;

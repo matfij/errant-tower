@@ -38,9 +38,9 @@ export const ExpeditionPage = () => {
             });
             setInitiative(response.initiative);
         };
-        ExpeditionHub.onPlayerMoved(updatePosition);
+        ExpeditionHub.onUserMoved(updatePosition);
         return () => {
-            ExpeditionHub.offPlayerMoved(updatePosition);
+            ExpeditionHub.offUserMoved(updatePosition);
         };
     }, []);
 
@@ -118,7 +118,7 @@ export const ExpeditionPage = () => {
                         transform: `translate(${-cameraX}px, ${-cameraY}px)`,
                     }}
                 />
-                <div className={styles.playerItem} />
+                <div className={styles.userIcon} />
             </div>
             {expedition.data && (
                 <ExpeditionPanel
