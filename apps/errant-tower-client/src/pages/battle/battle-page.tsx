@@ -37,7 +37,7 @@ export const BattlePage = () => {
         <div className={styles.mainWrapper}>
             {user && (
                 <div className={styles.characterWrapper}>
-                    <img src={`images/avatars/${user.imageUrl}`} />
+                    <img src={`images/avatars/${user.imageUrl}`} alt={user.name}/>
                     <p className={styles.characterName}>{user.name}</p>
                     <br />
                     <AppProgress
@@ -52,8 +52,8 @@ export const BattlePage = () => {
                     />
                     <AppProgress
                         tone="accent"
-                        value={user.statistics.manaPoints}
-                        max={user.statistics.maxManaPoints}
+                        value={user.statistics.energyPoints}
+                        max={user.statistics.maxEnergyPoints}
                     />
                 </div>
             )}
@@ -68,7 +68,7 @@ export const BattlePage = () => {
 
             {enemy && (
                 <div className={styles.characterWrapper}>
-                    <img src={`images/enemies/${enemy.imageUrl}`} />
+                    <img src={`images/enemies/${enemy.imageUrl}`} alt={enemy.name} />
                     <p className={styles.characterName}>{enemy.name}</p>
                     <p className={styles.characterRace}>{enemy.race}</p>
                     <AppProgress
