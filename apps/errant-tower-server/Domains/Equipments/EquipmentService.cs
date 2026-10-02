@@ -7,6 +7,8 @@ public interface IEquipmentService
 {
     public Task CreateInitial(string userId);
     public Task AwardItems(string userId, int silver, IList<BagItem> newItems);
+    public Task<BattleEquipment> GetUserEquipment(string userId);
+    public Task<IList<Item>> GetUserEquipmentList(string userId);
 }
 
 public class EquipmentService(IEquipmentRepository equipmentRepository) : IEquipmentService
@@ -55,5 +57,38 @@ public class EquipmentService(IEquipmentRepository equipmentRepository) : IEquip
         }
 
         _ = await equipmentRepository.UpdateOne(equipment);
+    }
+
+    public async Task<BattleEquipment> GetUserEquipment(string userId)
+    {
+        var equipment = await equipmentRepository.FindByUserId(userId)
+            ?? throw new ApiException("errors.equipmentNotFound");
+
+        return new BattleEquipment
+        {
+            Headgear = equipment.Headgear is not null ? ItemRegistry.GetItem(equipment.Headgear.Value) : null,
+            Armor = equipment.Armor is not null ? ItemRegistry.GetItem(equipment.Armor.Value) : null,
+            Footwear = equipment.Footwear is not null ? ItemRegistry.GetItem(equipment.Footwear.Value) : null,
+            Charm = equipment.Charm is not null ? ItemRegistry.GetItem(equipment.Charm.Value) : null,
+            RightHand = equipment.RightHand is not null ? ItemRegistry.GetItem(equipment.RightHand.Value) : null,
+            LeftHand = equipment.LeftHand is not null ? ItemRegistry.GetItem(equipment.LeftHand.Value) : null,
+        };
+    }
+
+    public async Task<IList<Item>> GetUserEquipmentList(string userId)
+    {
+        var equipment = await GetUserEquipment(userId);
+
+        return new[]
+        {
+            equipment.Headgear,
+            equipment.Armor,
+            equipment.Footwear,
+            equipment.Charm,
+            equipment.LeftHand,
+            equipment.RightHand
+        }
+            .OfType<Item>()
+            .ToList();
     }
 }

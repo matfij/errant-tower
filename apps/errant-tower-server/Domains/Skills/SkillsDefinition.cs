@@ -113,9 +113,16 @@ public enum SkillEffectType
 
 public readonly record struct SkillProperty
 {
+    public SkillPropertyEffect Effect { get; init; }
     public required SkillPropertyType Type { get; init; }
     public double Value { get; init; }
     public int Duration { get; init; }
+}
+
+public enum SkillPropertyEffect
+{
+    Additive = 0,
+    Multiplicative = 1,
 }
 
 public enum SkillPropertyType
