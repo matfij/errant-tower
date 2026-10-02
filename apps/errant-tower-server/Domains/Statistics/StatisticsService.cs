@@ -13,6 +13,8 @@ public interface IStatisticsService
 
 public class StatisticsService(IStatisticsRepository statisticsRepository) : IStatisticsService
 {
+    private static readonly int STAT_PRECISION = 3;
+
     public async Task CreateInitial(string userId)
     {
         var newStatistics = new StatisticsEntity
@@ -368,5 +370,5 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
             ?? throw new ApiException("errors.statisticsNotFound");
     }
 
-    private static double Round(double value) => Math.Round(value, MidpointRounding.AwayFromZero);
+    private static double Round(double value) => Math.Round(value, STAT_PRECISION);
 }

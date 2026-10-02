@@ -24,7 +24,7 @@ reviews:
       instructions: |
         Project is in rapid development phase, API contract changes, DB Schema changes and temporary stubs are expected.
 
-    - path: "apps/errant-tower-server/**/*.cs"
+    - path: "apps/errant-tower-server/**/**.cs"
       instructions: |
         This is .NET 10.0 Controller-based API code following Domain-Driven Design patterns.
 

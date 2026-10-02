@@ -47,7 +47,10 @@ public class SkillsService(IStatisticsRepository statisticsRepository) : ISkills
         {
             throw new ApiException("errors.insufficientSkillPoints");
         }
-
+        if (targetSkillData.Path == SkillPath.None)
+        {
+            throw new ApiException("errors.cantLearnThisSkill");
+        }
         if (targetSkill is not null)
         {
             if (targetSkill.Level >= 10)
@@ -72,8 +75,7 @@ public class SkillsService(IStatisticsRepository statisticsRepository) : ISkills
                 }
             }
 
-            var newSkill = new LearnedSkill() { Guid = skillGuid, Level = 1 };
-            statistics.LearnedSkills.Add(newSkill);
+            statistics.LearnedSkills.Add(new() { Guid = skillGuid, Level = 1 });
         }
 
         statistics.SkillPoints--;
