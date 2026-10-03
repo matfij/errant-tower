@@ -118,7 +118,8 @@ public class ExpeditionService(
         var floor = FloorRegistry.GetFloor(progress.CurrentFloor);
         if (Utils.CheckChance(floor.BattleChance))
         {
-            var statistics = await statisticsService.GetUserBattleStatistics(progress.UserId);
+            var equipment = await equipmentService.GetUserEquipmentList(progress.UserId);
+            var statistics = await statisticsService.GetUserBattleStatistics(progress.UserId, equipment);
             var enemy = EnemyRegistry.GetEnemy(
                 Utils.GetWeightedRandomItem<FloorEnemy, EnemyGuid>(floor.Enemies));
             var battle = await battleService.Start(progress.UserId, progress.Username, statistics, enemy);

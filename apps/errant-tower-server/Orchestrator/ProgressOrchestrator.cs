@@ -1,3 +1,4 @@
+using ErrantTowerServer.Domains.Equipments;
 using ErrantTowerServer.Domains.Progresses;
 using ErrantTowerServer.Domains.Statistics;
 
@@ -12,7 +13,8 @@ public interface IProgressOrchestrator
 
 public class ProgressOrchestrator(
     IProgressService progressService,
-    IStatisticsService statisticsService
+    IStatisticsService statisticsService,
+    IEquipmentService equipmentService
     ) : IProgressOrchestrator
 {
     public async Task<GetFloorsResponse> GetFloors(string userId)
@@ -26,7 +28,8 @@ public class ProgressOrchestrator(
 
     public async Task StartExpedition(string userId, StartExpeditionRequest request)
     {
-        var battleStatistics = await statisticsService.GetUserBattleStatistics(userId);
+        var equipment = await equipmentService.GetUserEquipmentList(userId);
+        var battleStatistics = await statisticsService.GetUserBattleStatistics(userId, equipment);
         await progressService.StartExpedition(userId, request.FloorGuid, battleStatistics);
     }
 

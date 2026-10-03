@@ -15,7 +15,7 @@ public class DungeonItems
         Statistics = new BattleStatistics
         {
             PhysicalAttack = 7,
-            Speed = 1,
+            Speed = 0.1,
         },
         Requirements = new ItemRequirements
         {
@@ -56,7 +56,7 @@ public class DungeonItems
         {
             PhysicalAttack = 5,
             PunctureChance = 0.1,
-            Speed = 1,
+            Speed = 0.2,
         },
         Requirements = new ItemRequirements
         {
@@ -156,7 +156,7 @@ public class DungeonItems
             HealthPoints = 5,
             PhysicalDefense = 3,
             MagicalDefense = 1,
-            Speed = 1,
+            Speed = 0.1,
         },
         Requirements = new ItemRequirements
         {

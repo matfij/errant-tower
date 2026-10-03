@@ -139,6 +139,7 @@ builder.Services.AddScoped<IProgressService, ProgressService>();
 
 builder.Services.AddSingleton<IStatisticsRepository, StatisticsRepository>();
 builder.Services.AddScoped<IStatisticsService, StatisticsService>();
+builder.Services.AddScoped<ISkillsService, SkillsService>();
 
 builder.Services.AddSingleton<IEquipmentRepository, EquipmentRepository>();
 builder.Services.AddScoped<IEquipmentService, EquipmentService>();

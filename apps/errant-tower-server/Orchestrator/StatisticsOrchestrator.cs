@@ -9,11 +9,11 @@ public interface IStatisticsOrchestrator
     public Task<ResetSkillsResponse> ResetSkills(string userId);
 }
 
-public class StatisticsOrchestrator(IStatisticsService statisticsService) : IStatisticsOrchestrator
+public class StatisticsOrchestrator(ISkillsService skillsService) : IStatisticsOrchestrator
 {
     public async Task<GetSkillTreeResponse> GetSkillTree(string userId)
     {
-        var skillTree = await statisticsService.GetSkillTree(userId);
+        var skillTree = await skillsService.GetSkillTree(userId);
         return new GetSkillTreeResponse()
         {
             SkillPoints = skillTree.SkillPoints,
@@ -23,7 +23,7 @@ public class StatisticsOrchestrator(IStatisticsService statisticsService) : ISta
 
     public async Task<LearnSkillResponse> LearnSkill(string userId, LearnSkillRequest request)
     {
-        var skillTree = await statisticsService.LearnSkill(userId, request.SkillGuid);
+        var skillTree = await skillsService.LearnSkill(userId, request.SkillGuid);
         return new LearnSkillResponse()
         {
             SkillPoints = skillTree.SkillPoints,
@@ -33,7 +33,7 @@ public class StatisticsOrchestrator(IStatisticsService statisticsService) : ISta
 
     public async Task<ResetSkillsResponse> ResetSkills(string userId)
     {
-        var skillTree = await statisticsService.ResetSkills(userId);
+        var skillTree = await skillsService.ResetSkills(userId);
         return new ResetSkillsResponse()
         {
             SkillPoints = skillTree.SkillPoints,
