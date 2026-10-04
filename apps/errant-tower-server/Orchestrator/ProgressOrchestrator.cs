@@ -28,7 +28,7 @@ public class ProgressOrchestrator(
 
     public async Task StartExpedition(string userId, StartExpeditionRequest request)
     {
-        var equipment = await equipmentService.GetUserEquipmentList(userId);
+        var equipment = await equipmentService.GetEquipmentList(userId);
         var battleStatistics = await statisticsService.GetUserBattleStatistics(userId, equipment);
         await progressService.StartExpedition(userId, request.FloorGuid, battleStatistics);
     }

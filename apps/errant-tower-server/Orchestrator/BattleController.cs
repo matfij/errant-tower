@@ -8,7 +8,7 @@ namespace ErrantTowerServer.Orchestrator;
 [Route("battles")]
 public class BattleController(IBattleOrchestrator battleOrchestrator) : ControllerBase
 {
-    [HttpGet]
+    [HttpGet("get-battle")]
     [EndpointName("getBattle")]
     [ProducesResponseType(typeof(GetBattleResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetBattle()
