@@ -7,8 +7,9 @@ namespace ErrantTowerServer.Domains.Statistics;
 public interface IStatisticsService
 {
     public Task CreateInitial(string userId);
-    public Task<BattleStatistics> GetUserBattleStatistics(string userId, IList<Item> equipment);
     public Task AwardPoints(string userId, int attributePoints, int skillPoints);
+    public Task<UserAttributes> GetUserAttributes(string userId);
+    public Task<BattleStatistics> GetUserBattleStatistics(string userId, IList<Item> equipment);
 }
 
 public class StatisticsService(IStatisticsRepository statisticsRepository) : IStatisticsService
@@ -23,6 +24,29 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
             UserId = userId,
         };
         await statisticsRepository.CreateOne(newStatistics);
+    }
+
+
+    public async Task AwardPoints(string userId, int attributePoints, int skillPoints)
+    {
+        var statistics = await GetStatistics(userId);
+
+        statistics.AttributePoints += attributePoints;
+        statistics.SkillPoints += skillPoints;
+
+        _ = await statisticsRepository.UpdateOne(statistics);
+    }
+
+    public async Task<UserAttributes> GetUserAttributes(string userId)
+    {
+        var statistics = await GetStatistics(userId);
+        return new UserAttributes
+        {
+            Strength = statistics.Strength,
+            Dexterity = statistics.Dexterity,
+            Constitution = statistics.Constitution,
+            Spirit = statistics.Spirit,
+        };
     }
 
     public async Task<BattleStatistics> GetUserBattleStatistics(string userId, IList<Item> equipment)
@@ -172,16 +196,6 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
         }
 
         return statisticsWithEquipment;
-    }
-
-    public async Task AwardPoints(string userId, int attributePoints, int skillPoints)
-    {
-        var statistics = await GetStatistics(userId);
-
-        statistics.AttributePoints += attributePoints;
-        statistics.SkillPoints += skillPoints;
-
-        _ = await statisticsRepository.UpdateOne(statistics);
     }
 
     private static IEnumerable<SkillProperty> GetPassiveSkillProperties(IEnumerable<LearnedSkill> learnedSkills)
