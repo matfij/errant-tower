@@ -8,8 +8,9 @@ public interface IEquipmentService
 {
     public Task CreateInitial(string userId);
     public Task AwardItems(string userId, int silver, IList<BagItem> newItems);
-    public Task<BattleEquipment> GetUserEquipment(string userId);
-    public Task<IList<Item>> GetUserEquipmentList(string userId);
+    public Task<BattleEquipment> GetEquipment(string userId);
+    public Task<IList<Item>> GetEquipmentList(string userId);
+    public Task<IList<BagItemData>> GetBag(string userId);
     public Task<BattleEquipment> EquipItem(string userId, ItemToEquip itemToEquip, UserAttributes userAttributes);
     public Task<BattleEquipment> UnequipItem(string userId, ItemSlot itemSlot);
 }
@@ -41,7 +42,7 @@ public class EquipmentService(IEquipmentRepository equipmentRepository) : IEquip
 
     public async Task AwardItems(string userId, int silver, IList<BagItem> newItems)
     {
-        var equipment = await GetEquipment(userId);
+        var equipment = await GetUserEquipment(userId);
 
         equipment.Silver += silver;
 
@@ -61,15 +62,15 @@ public class EquipmentService(IEquipmentRepository equipmentRepository) : IEquip
         _ = await equipmentRepository.UpdateOne(equipment);
     }
 
-    public async Task<BattleEquipment> GetUserEquipment(string userId)
+    public async Task<BattleEquipment> GetEquipment(string userId)
     {
-        var equipment = await GetEquipment(userId);
+        var equipment = await GetUserEquipment(userId);
         return MapBattleEquipment(equipment);
     }
 
-    public async Task<IList<Item>> GetUserEquipmentList(string userId)
+    public async Task<IList<Item>> GetEquipmentList(string userId)
     {
-        var equipment = await GetUserEquipment(userId);
+        var equipment = await GetEquipment(userId);
 
         return new[]
         {
@@ -84,12 +85,24 @@ public class EquipmentService(IEquipmentRepository equipmentRepository) : IEquip
             .ToList();
     }
 
+    public async Task<IList<BagItemData>> GetBag(string userId)
+    {
+        var equipment = await GetUserEquipment(userId);
+        return equipment.Bag
+            .Select(item => new BagItemData
+            {
+                Item = ItemRegistry.GetItem(item.ItemGuid),
+                Quantity = item.Quantity
+            })
+            .ToList();
+    }
+
     public async Task<BattleEquipment> EquipItem(
         string userId,
         ItemToEquip itemToEquip,
         UserAttributes userAttributes)
     {
-        var equipment = await GetEquipment(userId);
+        var equipment = await GetUserEquipment(userId);
 
         if (equipment.Bag.FirstOrDefault(item => item.ItemGuid == itemToEquip.ItemGuid) is null)
         {
@@ -156,7 +169,7 @@ public class EquipmentService(IEquipmentRepository equipmentRepository) : IEquip
 
     public async Task<BattleEquipment> UnequipItem(string userId, ItemSlot itemSlot)
     {
-        var equipment = await GetEquipment(userId);
+        var equipment = await GetUserEquipment(userId);
 
         ItemGuid? unequippedItem = null;
 
@@ -204,7 +217,7 @@ public class EquipmentService(IEquipmentRepository equipmentRepository) : IEquip
     }
 
 
-    private async Task<EquipmentEntity> GetEquipment(string userId)
+    private async Task<EquipmentEntity> GetUserEquipment(string userId)
     {
         return await equipmentRepository.FindByUserId(userId)
             ?? throw new ApiException("errors.equipmentNotFound");

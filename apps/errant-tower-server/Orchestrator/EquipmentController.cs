@@ -18,6 +18,16 @@ public class EquipmentController(IEquipmentOrchestrator equipmentOrchestrator) :
         return Ok(equipment);
     }
 
+    [HttpGet]
+    [EndpointName("getBag")]
+    [ProducesResponseType(typeof(GetBagResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetBag()
+    {
+        var userId = User.GetUserId();
+        var bag = await equipmentOrchestrator.GetBag(userId);
+        return Ok(bag);
+    }
+
     [HttpPost]
     [EndpointName("equipItem")]
     [ProducesResponseType(typeof(EquipItemResponse), StatusCodes.Status200OK)]

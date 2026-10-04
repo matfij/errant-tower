@@ -6,6 +6,7 @@ namespace ErrantTowerServer.Orchestrator;
 public interface IEquipmentOrchestrator
 {
     public Task<GetEquipmentResponse> GetEquipment(string userId);
+    public Task<GetBagResponse> GetBag(string userId);
     public Task<EquipItemResponse> EquipItem(string userId, EquipItemRequest request);
     public Task<UnequipItemResponse> UnequipItem(string userId, UnequipItemRequest request);
 }
@@ -17,7 +18,7 @@ public class EquipmentOrchestrator(
 {
     public async Task<GetEquipmentResponse> GetEquipment(string userId)
     {
-        var equipment = await equipmentService.GetUserEquipment(userId);
+        var equipment = await equipmentService.GetEquipment(userId);
         return new GetEquipmentResponse
         {
             Headgear = equipment.Headgear,
@@ -41,6 +42,15 @@ public class EquipmentOrchestrator(
             Footwear = equipment.Footwear,
             RightHand = equipment.RightHand,
             LeftHand = equipment.LeftHand,
+        };
+    }
+
+    public async Task<GetBagResponse> GetBag(string userId)
+    {
+        var bag = await equipmentService.GetBag(userId);
+        return new GetBagResponse
+        {
+            Items = bag
         };
     }
 

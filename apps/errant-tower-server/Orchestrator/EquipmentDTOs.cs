@@ -4,6 +4,11 @@ namespace ErrantTowerServer.Orchestrator;
 
 public record GetEquipmentResponse : BattleEquipment { }
 
+public record GetBagResponse
+{
+    public IList<BagItemData> Items { get; init; } = [];
+}
+
 public record EquipItemRequest : ItemToEquip { }
 
 public record EquipItemResponse : BattleEquipment { }
