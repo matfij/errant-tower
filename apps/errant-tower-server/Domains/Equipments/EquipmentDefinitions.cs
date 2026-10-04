@@ -14,8 +14,8 @@ public record BattleEquipment
 
 public record ItemToEquip
 {
-    public ItemGuid ItemGuid { get; set; }
-    public ItemSlot Slot { get; set; }
+    public required ItemGuid ItemGuid { get; set; }
+    public required ItemSlot Slot { get; set; }
 }
 
 public enum ItemSlot

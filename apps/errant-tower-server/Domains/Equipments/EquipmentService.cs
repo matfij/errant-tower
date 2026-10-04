@@ -120,6 +120,22 @@ public class EquipmentService(IEquipmentRepository equipmentRepository) : IEquip
             throw new ApiException("errors.insufficientAttributes");
         }
 
+        var isSlotCompatible = item.Type switch
+        {
+            ItemType.Helmet => itemToEquip.Slot == ItemSlot.Headgear,
+            ItemType.Armor => itemToEquip.Slot == ItemSlot.Armor,
+            ItemType.Charm => itemToEquip.Slot == ItemSlot.Charm,
+            ItemType.Boots => itemToEquip.Slot == ItemSlot.Footwear,
+            ItemType.Sword or ItemType.Staff or ItemType.Lance or ItemType.Bow
+                or ItemType.Hammer or ItemType.Shield or ItemType.Dagger =>
+                    itemToEquip.Slot is ItemSlot.RightHand or ItemSlot.LeftHand,
+            _ => false
+        };
+        if (!isSlotCompatible)
+        {
+            throw new ApiException("errors.incorrectEquipmentSlot");
+        }
+
         ItemGuid? previouslyEquippedItem = itemToEquip.Slot switch
         {
             ItemSlot.Headgear => equipment.Headgear,

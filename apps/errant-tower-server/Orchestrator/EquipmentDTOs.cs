@@ -6,7 +6,7 @@ public record GetEquipmentResponse : BattleEquipment { }
 
 public record GetBagResponse
 {
-    public IList<BagItemData> Items { get; init; } = [];
+    public required IList<BagItemData> Items { get; init; } = [];
 }
 
 public record EquipItemRequest : ItemToEquip { }
@@ -15,7 +15,7 @@ public record EquipItemResponse : BattleEquipment { }
 
 public record UnequipItemRequest
 {
-    public ItemSlot ItemSlot { get; init; }
+    public required ItemSlot ItemSlot { get; init; }
 }
 
 public record UnequipItemResponse : BattleEquipment { }

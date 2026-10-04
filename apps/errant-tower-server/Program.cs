@@ -153,6 +153,7 @@ builder.Services.AddScoped<IExpeditionService, ExpeditionService>();
 // Orchestrator services
 builder.Services.AddScoped<IAuthOrchestrator, AuthOrchestrator>();
 builder.Services.AddScoped<IProgressOrchestrator, ProgressOrchestrator>();
+builder.Services.AddScoped<IEquipmentOrchestrator, EquipmentOrchestrator>();
 builder.Services.AddScoped<IStatisticsOrchestrator, StatisticsOrchestrator>();
 builder.Services.AddScoped<IBattleOrchestrator, BattleOrchestrator>();
 

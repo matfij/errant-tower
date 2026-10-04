@@ -8,7 +8,7 @@ namespace ErrantTowerServer.Orchestrator;
 [Route("equipment")]
 public class EquipmentController(IEquipmentOrchestrator equipmentOrchestrator) : ControllerBase
 {
-    [HttpGet]
+    [HttpGet("get-equipment")]
     [EndpointName("getEquipment")]
     [ProducesResponseType(typeof(GetEquipmentResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetEquipment()
@@ -18,7 +18,7 @@ public class EquipmentController(IEquipmentOrchestrator equipmentOrchestrator) :
         return Ok(equipment);
     }
 
-    [HttpGet]
+    [HttpGet("get-bag")]
     [EndpointName("getBag")]
     [ProducesResponseType(typeof(GetBagResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetBag()
@@ -28,7 +28,7 @@ public class EquipmentController(IEquipmentOrchestrator equipmentOrchestrator) :
         return Ok(bag);
     }
 
-    [HttpPost]
+    [HttpPost("equip-item")]
     [EndpointName("equipItem")]
     [ProducesResponseType(typeof(EquipItemResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> EquipItem([FromBody] EquipItemRequest request)
@@ -38,7 +38,7 @@ public class EquipmentController(IEquipmentOrchestrator equipmentOrchestrator) :
         return Ok(equipment);
     }
 
-    [HttpPost]
+    [HttpPost("unequip-item")]
     [EndpointName("unequipItem")]
     [ProducesResponseType(typeof(UnequipItemResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> UnequipItem([FromBody] UnequipItemRequest request)
