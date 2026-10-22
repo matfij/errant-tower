@@ -1,11 +1,9 @@
-import { useState, type MouseEvent as ReactMouseEvent, type ReactNode } from "react";
+import { useRef, useState, type MouseEvent as ReactMouseEvent, type ReactNode } from "react";
 
 import styles from "./app-tooltip.module.scss";
 
-interface TooltipPosition {
-    x: number;
-    y: number;
-}
+const OFFSET_X = 16;
+const OFFSET_Y = 20;
 
 interface AppTooltipProps {
     content: ReactNode;
@@ -13,44 +11,56 @@ interface AppTooltipProps {
     isHidden?: boolean;
 }
 
-export const AppTooltip = (props: AppTooltipProps) => {
-    const [position, setPosition] = useState<TooltipPosition>();
-    const [showTooltip, setShowTooltip] = useState(false);
+export const AppTooltip = ({ content, children, isHidden }: AppTooltipProps) => {
+    const [visible, setVisible] = useState(false);
+    const tooltipRef = useRef<HTMLDivElement>(null);
+    const placement = useRef({ flipX: false, flipY: false });
 
-    const onMouseMove = (event: ReactMouseEvent<HTMLDivElement>) => {
-        if (!showTooltip) {
+    const place = (event: ReactMouseEvent<HTMLDivElement>) => {
+        const tooltipElement = tooltipRef.current;
+        if (!tooltipElement) {
             return;
         }
-        const offsetX = event.clientX > window.innerWidth / 2 ? -280 : 20;
-        const offsetY = event.clientY > window.innerHeight / 2 ? -60 : 30;
-        setPosition({ x: event.pageX + offsetX, y: event.pageY + offsetY });
+
+        const { flipX, flipY } = placement.current;
+        const tx = flipX ? `calc(-100% - ${OFFSET_X}px)` : `${OFFSET_X}px`;
+        const ty = flipY ? `calc(-100% - ${OFFSET_Y}px)` : `${OFFSET_Y}px`;
+
+        tooltipElement.style.transform = `translate(${event.clientX}px, ${event.clientY}px) translate(${tx}, ${ty})`;
     };
 
-    const onMouseEnter = () => {
-        if (!props.isHidden) {
-            setShowTooltip(true);
-        } else {
-            setShowTooltip(false);
+    const onMouseEnter = (event: ReactMouseEvent<HTMLDivElement>) => {
+        if (isHidden) {
+            return;
         }
+
+        placement.current = {
+            flipX: event.clientX > window.innerWidth / 2,
+            flipY: event.clientY > window.innerHeight / 2,
+        };
+
+        place(event);
+        setVisible(true);
     };
 
-    const onMouseLeave = () => {
-        setShowTooltip(false);
+    const onMouseMove = (event: ReactMouseEvent<HTMLDivElement>) => {
+        if (!isHidden) {
+            place(event);
+        }
     };
 
     return (
         <div>
-            <div onMouseMove={onMouseMove} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-                {props.children}
+            <div onMouseEnter={onMouseEnter} onMouseMove={onMouseMove} onMouseLeave={() => setVisible(false)}>
+                {children}
             </div>
-            {showTooltip && (
-                <div
-                    className={styles.tooltipContent}
-                    style={{ left: position?.x, top: position?.y }}
-                >
-                    {props.content}
-                </div>
-            )}
+            <div
+                ref={tooltipRef}
+                className={`${styles.tooltipContent} ${visible ? styles.visible : ""}`}
+                aria-hidden={!visible}
+            >
+                {content}
+            </div>
         </div>
     );
 };

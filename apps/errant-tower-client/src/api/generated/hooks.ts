@@ -28,7 +28,11 @@ import type {
   CompleteSignInResponse,
   CompleteSignUpRequest,
   CompleteSignUpResponse,
+  EquipItemRequest,
+  EquipItemResponse,
+  GetBagResponse,
   GetBattleResponse,
+  GetEquipmentResponse,
   GetExpeditionResponse,
   GetFloorsResponse,
   GetSkillTreeResponse,
@@ -37,7 +41,9 @@ import type {
   ResetSkillsResponse,
   StartExpeditionRequest,
   StartSignInRequest,
-  StartSignUpRequest
+  StartSignUpRequest,
+  UnequipItemRequest,
+  UnequipItemResponse
 } from './definitions';
 
 import { customFetch } from '../custom-fetch';
@@ -290,7 +296,7 @@ export const getBattle = (
       
       
       return customFetch<GetBattleResponse>(
-      {url: `/battles`, method: 'GET', signal
+      {url: `/battles/get-battle`, method: 'GET', signal
     },
       options);
     }
@@ -300,7 +306,7 @@ export const getBattle = (
 
 export const getGetBattleQueryKey = () => {
     return [
-    `/battles`
+    `/battles/get-battle`
     ] as const;
     }
 
@@ -370,6 +376,298 @@ export function useGetBattle<TData = Awaited<ReturnType<typeof getBattle>>, TErr
 
 
 
+export const getEquipment = (
+    
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetEquipmentResponse>(
+      {url: `/equipment/get-equipment`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+
+
+export const getGetEquipmentQueryKey = () => {
+    return [
+    `/equipment/get-equipment`
+    ] as const;
+    }
+
+    
+export const getGetEquipmentQueryOptions = <TData = Awaited<ReturnType<typeof getEquipment>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEquipment>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetEquipmentQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEquipment>>> = ({ signal }) => getEquipment(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEquipment>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetEquipmentQueryResult = NonNullable<Awaited<ReturnType<typeof getEquipment>>>
+export type GetEquipmentQueryError = unknown
+
+
+export function useGetEquipment<TData = Awaited<ReturnType<typeof getEquipment>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEquipment>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEquipment>>,
+          TError,
+          Awaited<ReturnType<typeof getEquipment>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEquipment<TData = Awaited<ReturnType<typeof getEquipment>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEquipment>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEquipment>>,
+          TError,
+          Awaited<ReturnType<typeof getEquipment>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEquipment<TData = Awaited<ReturnType<typeof getEquipment>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEquipment>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetEquipment<TData = Awaited<ReturnType<typeof getEquipment>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEquipment>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetEquipmentQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+
+export const getBag = (
+    
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetBagResponse>(
+      {url: `/equipment/get-bag`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+
+
+export const getGetBagQueryKey = () => {
+    return [
+    `/equipment/get-bag`
+    ] as const;
+    }
+
+    
+export const getGetBagQueryOptions = <TData = Awaited<ReturnType<typeof getBag>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBag>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetBagQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBag>>> = ({ signal }) => getBag(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getBag>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetBagQueryResult = NonNullable<Awaited<ReturnType<typeof getBag>>>
+export type GetBagQueryError = unknown
+
+
+export function useGetBag<TData = Awaited<ReturnType<typeof getBag>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBag>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getBag>>,
+          TError,
+          Awaited<ReturnType<typeof getBag>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetBag<TData = Awaited<ReturnType<typeof getBag>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBag>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getBag>>,
+          TError,
+          Awaited<ReturnType<typeof getBag>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetBag<TData = Awaited<ReturnType<typeof getBag>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBag>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetBag<TData = Awaited<ReturnType<typeof getBag>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBag>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetBagQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+
+export const equipItem = (
+    equipItemRequest: EquipItemRequest,
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<EquipItemResponse>(
+      {url: `/equipment/equip-item`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: equipItemRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getEquipItemMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof equipItem>>, TError,{data: EquipItemRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof equipItem>>, TError,{data: EquipItemRequest}, TContext> => {
+
+const mutationKey = ['equipItem'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof equipItem>>, {data: EquipItemRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  equipItem(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EquipItemMutationResult = NonNullable<Awaited<ReturnType<typeof equipItem>>>
+    export type EquipItemMutationBody = EquipItemRequest
+    export type EquipItemMutationError = unknown
+
+    export const useEquipItem = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof equipItem>>, TError,{data: EquipItemRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof equipItem>>,
+        TError,
+        {data: EquipItemRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getEquipItemMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    
+export const unequipItem = (
+    unequipItemRequest: UnequipItemRequest,
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<UnequipItemResponse>(
+      {url: `/equipment/unequip-item`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: unequipItemRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getUnequipItemMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof unequipItem>>, TError,{data: UnequipItemRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof unequipItem>>, TError,{data: UnequipItemRequest}, TContext> => {
+
+const mutationKey = ['unequipItem'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof unequipItem>>, {data: UnequipItemRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  unequipItem(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UnequipItemMutationResult = NonNullable<Awaited<ReturnType<typeof unequipItem>>>
+    export type UnequipItemMutationBody = UnequipItemRequest
+    export type UnequipItemMutationError = unknown
+
+    export const useUnequipItem = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof unequipItem>>, TError,{data: UnequipItemRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof unequipItem>>,
+        TError,
+        {data: UnequipItemRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getUnequipItemMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    
 export const getFloors = (
     
  options?: SecondParameter<typeof customFetch>,signal?: AbortSignal

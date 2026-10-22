@@ -37,6 +37,9 @@
         "mana": "Mana",
         "energy": "Energy"
     },
+    "equipment": {
+        "takeOff": "Take off"
+    },
     "skills": {
         "path": "Path",
         "level": "Level {{level}}",
