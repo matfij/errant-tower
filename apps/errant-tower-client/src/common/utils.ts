@@ -36,3 +36,5 @@ export const toLowerFirst = (value: string) => {
 };
 
 export const toPercentLabel = (value: number) => `${Math.round(100 * value)}%`;
+
+export const hasValue = (value: unknown) => value !== undefined && value !== null;

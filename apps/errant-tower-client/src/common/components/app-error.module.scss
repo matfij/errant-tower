@@ -1,0 +1,15 @@
+@use "../../common/styles/mixins.scss" as *;
+@use "../../common/styles/variables.scss" as *;
+
+.errorsWrapper {
+    padding: $spacing-4;
+    display: flex;
+    flex-direction: row;
+    gap: $spacing-2;
+}
+
+.errorItem {
+    font-size: 12px;
+    font-weight: bold;
+    color: $color-red-500;
+}
