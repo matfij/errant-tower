@@ -66,4 +66,12 @@ export const colors = {
         800: "#1c5f36",
         900: "#194a2a",
     },
+    rarity: {
+        ordinary: "#a1a1aa",
+        enhanced: "#22c55e",
+        arcade: "#3b82f6",
+        heroic: "#a855f7",
+        artifact: "#f97316",
+        divine: "#facc15",
+    },
 } as const;

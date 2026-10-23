@@ -23,10 +23,36 @@ export const AppTooltip = ({ content, children, isHidden }: AppTooltipProps) => 
         }
 
         const { flipX, flipY } = placement.current;
-        const tx = flipX ? `calc(-100% - ${OFFSET_X}px)` : `${OFFSET_X}px`;
-        const ty = flipY ? `calc(-100% - ${OFFSET_Y}px)` : `${OFFSET_Y}px`;
 
-        tooltipElement.style.transform = `translate(${event.clientX}px, ${event.clientY}px) translate(${tx}, ${ty})`;
+        const viewportWidth = document.documentElement.clientWidth;
+        const viewportHeight = document.documentElement.clientHeight;
+        const tooltipWidth = tooltipElement.offsetWidth;
+        const tooltipHeight = tooltipElement.offsetHeight;
+        const cursorX = event.clientX;
+        const cursorY = event.clientY;
+
+        const minX = OFFSET_X;
+        const minY = OFFSET_Y;
+        const maxX = viewportWidth - tooltipWidth - OFFSET_X;
+        const maxY = viewportHeight - tooltipHeight - OFFSET_Y;
+
+        const preferredX = flipX ? cursorX - tooltipWidth - OFFSET_X : cursorX + OFFSET_X;
+        const preferredY = flipY ? cursorY - tooltipHeight - OFFSET_Y : cursorY + OFFSET_Y;
+
+        const shouldFlipX = flipX
+            ? preferredX < minX && cursorX + OFFSET_X + tooltipWidth <= viewportWidth - OFFSET_X
+            : preferredX > maxX && cursorX - tooltipWidth - OFFSET_X >= minX;
+        const shouldFlipY = flipY
+            ? preferredY < minY && cursorY + OFFSET_Y + tooltipHeight <= viewportHeight - OFFSET_Y
+            : preferredY > maxY && cursorY - tooltipHeight - OFFSET_Y >= minY;
+
+        const x = shouldFlipX ? (flipX ? cursorX + OFFSET_X : cursorX - tooltipWidth - OFFSET_X) : preferredX;
+        const y = shouldFlipY ? (flipY ? cursorY + OFFSET_Y : cursorY - tooltipHeight - OFFSET_Y) : preferredY;
+
+        const clampedX = Math.max(minX, Math.min(x, maxX));
+        const clampedY = Math.max(minY, Math.min(y, maxY));
+
+        tooltipElement.style.transform = `translate(${clampedX}px, ${clampedY}px)`;
     };
 
     const onMouseEnter = (event: ReactMouseEvent<HTMLDivElement>) => {

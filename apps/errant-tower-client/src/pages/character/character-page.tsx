@@ -1,14 +1,23 @@
-import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
 import { wrapMutation, wrapQuery } from "../../api/api-proxy";
 import {
+    type Item,
     ItemSlot,
     ItemType,
     type BagItemData,
     type GetBagResponse,
     type GetEquipmentResponse,
 } from "../../api/generated/definitions";
-import { useEquipItem, useGetBag, useGetEquipment, useUnequipItem } from "../../api/generated/hooks";
+import {
+    getGetBagQueryKey,
+    getGetEquipmentQueryKey,
+    useEquipItem,
+    useGetBag,
+    useGetEquipment,
+    useUnequipItem,
+} from "../../api/generated/hooks";
 import { AppError } from "../../common/components/app-error";
 import { AppItem } from "../../common/components/app-item";
 import { handItemTypes } from "./character-utils";
@@ -17,71 +26,48 @@ import { EquipOptionsDialog } from "./equip-options-dialog";
 import styles from "./character-page.module.scss";
 
 export const CharacterPage = () => {
+    const queryClient = useQueryClient();
     const equipItem = wrapMutation(useEquipItem)();
     const unequipItem = wrapMutation(useUnequipItem)();
     const getEquipment = wrapQuery<GetEquipmentResponse>(useGetEquipment)();
     const getBag = wrapQuery<GetBagResponse>(useGetBag)();
-    const [equipment, setEquipment] = useState<GetEquipmentResponse>();
-    const [bag, setBag] = useState<BagItemData[]>([]);
     const [showEquipOptions, setShowEquipOptions] = useState(false);
     const [equipOptions, setEquipOptions] = useState<BagItemData[]>([]);
     const [itemSlot, setItemSlot] = useState<ItemSlot>();
-    const [isSlotEquipped, setIsSlotEquipped] = useState(false);
+    const [itemInSlot, setItemInSlot] = useState<Item>();
 
-    useEffect(() => {
-        if (getBag.isSuccess && getBag.data) {
-            setBag(getBag.data.items);
-        }
-    }, [getBag.isSuccess]);
+    const equipment = getEquipment.data;
+    const bag: BagItemData[] = getBag.data?.items ?? [];
 
-    useEffect(() => {
-        if (getEquipment.isSuccess && getEquipment.data) {
-            setEquipment(getEquipment.data);
-        }
-    }, [getEquipment.isSuccess]);
-
-    useEffect(() => {
-        if (equipItem.isSuccess || equipItem.data) {
-            setEquipment(equipItem.data);
-        } else if (unequipItem.isSuccess && unequipItem.data) {
-            setEquipment(unequipItem.data);
-        }
-    }, [equipItem.isSuccess, unequipItem.isSuccess]);
+    const onEquipmentChanged = (data: GetEquipmentResponse) => {
+        queryClient.setQueryData(getGetEquipmentQueryKey(), data);
+        void queryClient.invalidateQueries({ queryKey: getGetBagQueryKey() });
+    };
 
     const updateEquipOptions = (types: ItemType[], hand?: "left" | "right") => {
-        if (!bag.length) {
-            return;
-        }
-
-        let isEquipped = false;
         if (types.includes(ItemType.Helmet)) {
-            isEquipped = equipment?.headgear !== undefined;
+            setItemInSlot(equipment?.headgear);
             setItemSlot(ItemSlot.Headgear);
         } else if (types.includes(ItemType.Armor)) {
-            isEquipped = equipment?.armor !== undefined;
+            setItemInSlot(equipment?.armor);
             setItemSlot(ItemSlot.Armor);
         } else if (types.includes(ItemType.Boots)) {
-            isEquipped = equipment?.footwear !== undefined;
+            setItemInSlot(equipment?.footwear);
             setItemSlot(ItemSlot.Footwear);
         } else if (types.includes(ItemType.Charm)) {
-            isEquipped = equipment?.charm !== undefined;
+            setItemInSlot(equipment?.charm);
             setItemSlot(ItemSlot.Charm);
         } else if (types.some((type) => handItemTypes.includes(type))) {
-            isEquipped =
-                (equipment?.leftHand !== undefined && hand === "left") ||
-                (equipment?.rightHand !== undefined && hand === "right");
+            setItemInSlot(hand === "left" ? equipment?.leftHand : equipment?.rightHand);
             setItemSlot(hand === "left" ? ItemSlot.LeftHand : ItemSlot.RightHand);
-        } else {
-            setItemSlot(undefined);
         }
 
         setShowEquipOptions(true);
         setEquipOptions(bag.filter((item) => types.includes(item.item.type)));
-        setIsSlotEquipped(isEquipped);
     };
 
     if (getEquipment.errors && getEquipment.errors.length > 0) {
-        return <AppError errors={getEquipment.errors} />;
+        return <AppError errors={[...getEquipment.errors, ...(getBag.errors ?? [])]} />;
     }
 
     return (
@@ -133,16 +119,19 @@ export const CharacterPage = () => {
             {showEquipOptions && (
                 <EquipOptionsDialog
                     items={equipOptions}
-                    isEquipped={isSlotEquipped}
+                    equippedItem={itemInSlot}
                     onClose={() => setShowEquipOptions(false)}
                     onEquip={(guid) => {
                         if (itemSlot) {
-                            equipItem.call({ itemGuid: guid, slot: itemSlot });
+                            equipItem.call(
+                                { itemGuid: guid, slot: itemSlot },
+                                { onSuccess: onEquipmentChanged },
+                            );
                         }
                     }}
                     onTakeOff={() => {
-                        if (isSlotEquipped && itemSlot) {
-                            unequipItem.call({ itemSlot: itemSlot });
+                        if (itemInSlot && itemSlot) {
+                            unequipItem.call({ itemSlot }, { onSuccess: onEquipmentChanged });
                         }
                     }}
                 />

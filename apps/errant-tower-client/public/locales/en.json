@@ -38,6 +38,7 @@
         "energy": "Energy"
     },
     "equipment": {
+        "equipped": "Equipped",
         "takeOff": "Take off"
     },
     "skills": {
