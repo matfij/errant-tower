@@ -7,5 +7,5 @@
 import type { ItemSlot } from './itemSlot';
 
 export interface UnequipItemRequest {
-  itemSlot: ItemSlot;
+  slot: ItemSlot;
 }

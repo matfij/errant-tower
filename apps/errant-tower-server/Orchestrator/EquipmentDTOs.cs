@@ -15,7 +15,7 @@ public record EquipItemResponse : BattleEquipment { }
 
 public record UnequipItemRequest
 {
-    public required ItemSlot ItemSlot { get; init; }
+    public required ItemSlot Slot { get; init; }
 }
 
 public record UnequipItemResponse : BattleEquipment { }

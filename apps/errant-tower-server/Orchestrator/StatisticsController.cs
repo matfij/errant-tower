@@ -8,6 +8,26 @@ namespace ErrantTowerServer.Orchestrator;
 [Route("statistics")]
 public class StatisticsController(IStatisticsOrchestrator statisticsOrchestrator) : ControllerBase
 {
+    [HttpGet("get-attributes")]
+    [EndpointName("getAttributes")]
+    [ProducesResponseType(typeof(GetAttributesResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAttributes()
+    {
+        var userId = User.GetUserId();
+        var result = await statisticsOrchestrator.GetAttributes(userId);
+        return Ok(result);
+    }
+
+    [HttpGet("get-battle-statistics")]
+    [EndpointName("getBattleStatistics")]
+    [ProducesResponseType(typeof(GetBattleStatisticsResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetBattleStatistics()
+    {
+        var userId = User.GetUserId();
+        var result = await statisticsOrchestrator.GetBattleStatistics(userId);
+        return Ok(result);
+    }
+
     [HttpGet("get-skill-tree")]
     [EndpointName("getSkillTree")]
     [ProducesResponseType(typeof(GetSkillTreeResponse), StatusCodes.Status200OK)]
