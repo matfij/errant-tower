@@ -56,7 +56,7 @@ public class EquipmentOrchestrator(
 
     public async Task<UnequipItemResponse> UnequipItem(string userId, UnequipItemRequest request)
     {
-        var equipment = await equipmentService.UnequipItem(userId, request.ItemSlot);
+        var equipment = await equipmentService.UnequipItem(userId, request.Slot);
         return new UnequipItemResponse
         {
             Headgear = equipment.Headgear,

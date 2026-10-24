@@ -8,6 +8,6 @@ import type { ItemGuid } from './itemGuid';
 import type { ItemSlot } from './itemSlot';
 
 export interface EquipItemRequest {
-  itemGuid: ItemGuid;
+  guid: ItemGuid;
   slot: ItemSlot;
 }

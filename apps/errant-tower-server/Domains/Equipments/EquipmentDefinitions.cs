@@ -14,7 +14,7 @@ public record BattleEquipment
 
 public record ItemToEquip
 {
-    public required ItemGuid ItemGuid { get; set; }
+    public required ItemGuid Guid { get; set; }
     public required ItemSlot Slot { get; set; }
 }
 

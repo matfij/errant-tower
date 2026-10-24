@@ -14,9 +14,9 @@ export const AppError = (props: AppErrorProps) => {
     return (
         <section className={styles.errorsWrapper}>
             {props.errors.map((error) => (
-                <div key={error.key} className={styles.errorItem}>
+                <p key={error.key} className={styles.errorItem}>
                     {error.field ? t(error.key, { field: error.field }) : t(error.key)}
-                </div>
+                </p>
             ))}
         </section>
     );

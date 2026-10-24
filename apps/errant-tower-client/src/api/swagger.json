@@ -823,10 +823,10 @@
                 "type": "string"
             },
             "EquipItemRequest": {
-                "required": ["itemGuid", "slot"],
+                "required": ["guid", "slot"],
                 "type": "object",
                 "properties": {
-                    "itemGuid": {
+                    "guid": {
                         "$ref": "#/components/schemas/ItemGuid"
                     },
                     "slot": {
@@ -1499,10 +1499,10 @@
                 "additionalProperties": false
             },
             "UnequipItemRequest": {
-                "required": ["itemSlot"],
+                "required": ["slot"],
                 "type": "object",
                 "properties": {
-                    "itemSlot": {
+                    "slot": {
                         "$ref": "#/components/schemas/ItemSlot"
                     }
                 },
