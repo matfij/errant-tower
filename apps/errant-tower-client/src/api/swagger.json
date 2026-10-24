@@ -423,6 +423,62 @@
                 }
             }
         },
+        "/statistics/get-attributes": {
+            "get": {
+                "tags": ["Statistics"],
+                "operationId": "getAttributes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetAttributesResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetAttributesResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetAttributesResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/statistics/get-battle-statistics": {
+            "get": {
+                "tags": ["Statistics"],
+                "operationId": "getBattleStatistics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetBattleStatisticsResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetBattleStatisticsResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetBattleStatisticsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/statistics/get-skill-tree": {
             "get": {
                 "tags": ["Statistics"],
@@ -902,6 +958,33 @@
                 "enum": ["Start", "Route", "Wall", "Battle", "Treasure", "NPC", "Finish"],
                 "type": "string"
             },
+            "GetAttributesResponse": {
+                "required": ["attributePoints", "constitution", "dexterity", "spirit", "strength"],
+                "type": "object",
+                "properties": {
+                    "strength": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "dexterity": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "constitution": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "spirit": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "attributePoints": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            },
             "GetBagResponse": {
                 "required": ["items"],
                 "type": "object",
@@ -934,6 +1017,139 @@
                     },
                     "enemy": {
                         "$ref": "#/components/schemas/BattleCharacter"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "GetBattleStatisticsResponse": {
+                "required": [
+                    "blockChance",
+                    "blockPower",
+                    "counterChance",
+                    "criticalChance",
+                    "dodgeChance",
+                    "energyPoints",
+                    "energyRegen",
+                    "healthPoints",
+                    "healthRegen",
+                    "magicalAbsorption",
+                    "magicalAttack",
+                    "magicalCriticalPower",
+                    "magicalDefense",
+                    "manaPoints",
+                    "manaRegen",
+                    "maxEnergyPoints",
+                    "maxHealthPoints",
+                    "maxManaPoints",
+                    "parryChance",
+                    "physicalAbsorption",
+                    "physicalAttack",
+                    "physicalCriticalPower",
+                    "physicalDefense",
+                    "punctureChance",
+                    "speed"
+                ],
+                "type": "object",
+                "properties": {
+                    "speed": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "maxHealthPoints": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "healthPoints": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "maxManaPoints": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "manaPoints": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "maxEnergyPoints": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "energyPoints": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "physicalAttack": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "magicalAttack": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "physicalDefense": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "magicalDefense": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "physicalAbsorption": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "magicalAbsorption": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "criticalChance": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "physicalCriticalPower": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "magicalCriticalPower": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "punctureChance": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "dodgeChance": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "parryChance": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "blockChance": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "blockPower": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "counterChance": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "healthRegen": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "manaRegen": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "energyRegen": {
+                        "type": "number",
+                        "format": "double"
                     }
                 },
                 "additionalProperties": false

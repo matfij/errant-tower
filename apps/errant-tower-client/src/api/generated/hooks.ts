@@ -30,8 +30,10 @@ import type {
   CompleteSignUpResponse,
   EquipItemRequest,
   EquipItemResponse,
+  GetAttributesResponse,
   GetBagResponse,
   GetBattleResponse,
+  GetBattleStatisticsResponse,
   GetEquipmentResponse,
   GetExpeditionResponse,
   GetFloorsResponse,
@@ -889,6 +891,180 @@ export function useGetExpedition<TData = Awaited<ReturnType<typeof getExpedition
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetExpeditionQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+
+export const getAttributes = (
+    
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetAttributesResponse>(
+      {url: `/statistics/get-attributes`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+
+
+export const getGetAttributesQueryKey = () => {
+    return [
+    `/statistics/get-attributes`
+    ] as const;
+    }
+
+    
+export const getGetAttributesQueryOptions = <TData = Awaited<ReturnType<typeof getAttributes>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttributes>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAttributesQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAttributes>>> = ({ signal }) => getAttributes(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAttributes>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetAttributesQueryResult = NonNullable<Awaited<ReturnType<typeof getAttributes>>>
+export type GetAttributesQueryError = unknown
+
+
+export function useGetAttributes<TData = Awaited<ReturnType<typeof getAttributes>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttributes>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAttributes>>,
+          TError,
+          Awaited<ReturnType<typeof getAttributes>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAttributes<TData = Awaited<ReturnType<typeof getAttributes>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttributes>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAttributes>>,
+          TError,
+          Awaited<ReturnType<typeof getAttributes>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAttributes<TData = Awaited<ReturnType<typeof getAttributes>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttributes>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetAttributes<TData = Awaited<ReturnType<typeof getAttributes>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttributes>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetAttributesQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+
+export const getBattleStatistics = (
+    
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<GetBattleStatisticsResponse>(
+      {url: `/statistics/get-battle-statistics`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+
+
+export const getGetBattleStatisticsQueryKey = () => {
+    return [
+    `/statistics/get-battle-statistics`
+    ] as const;
+    }
+
+    
+export const getGetBattleStatisticsQueryOptions = <TData = Awaited<ReturnType<typeof getBattleStatistics>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBattleStatistics>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetBattleStatisticsQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBattleStatistics>>> = ({ signal }) => getBattleStatistics(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getBattleStatistics>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetBattleStatisticsQueryResult = NonNullable<Awaited<ReturnType<typeof getBattleStatistics>>>
+export type GetBattleStatisticsQueryError = unknown
+
+
+export function useGetBattleStatistics<TData = Awaited<ReturnType<typeof getBattleStatistics>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBattleStatistics>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getBattleStatistics>>,
+          TError,
+          Awaited<ReturnType<typeof getBattleStatistics>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetBattleStatistics<TData = Awaited<ReturnType<typeof getBattleStatistics>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBattleStatistics>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getBattleStatistics>>,
+          TError,
+          Awaited<ReturnType<typeof getBattleStatistics>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetBattleStatistics<TData = Awaited<ReturnType<typeof getBattleStatistics>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBattleStatistics>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetBattleStatistics<TData = Awaited<ReturnType<typeof getBattleStatistics>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBattleStatistics>>, TError, TData>>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient 
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetBattleStatisticsQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
