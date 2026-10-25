@@ -7,6 +7,7 @@ namespace ErrantTowerServer.Domains.Statistics;
 public interface IStatisticsService
 {
     public Task CreateInitial(string userId);
+    public Task<StatisticsEntity> GetStatistics(string userId);
     public Task AwardPoints(string userId, int attributePoints, int skillPoints);
     public Task<UserAttributes> GetUserAttributes(string userId);
     public Task<BattleStatistics> GetUserBattleStatistics(string userId, IList<Item> equipment);
@@ -26,6 +27,11 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
         await statisticsRepository.CreateOne(newStatistics);
     }
 
+    public async Task<StatisticsEntity> GetStatistics(string userId)
+    {
+        return await statisticsRepository.FindOneByUserId(userId)
+            ?? throw new ApiException("errors.statisticsNotFound");
+    }
 
     public async Task AwardPoints(string userId, int attributePoints, int skillPoints)
     {
@@ -60,7 +66,7 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
             {
                 continue;
             }
-            var stats = item.Statistics.Value;
+            var stats = item.Statistics;
             equipmentStatistics.Speed += stats.Speed;
             equipmentStatistics.MaxHealthPoints += stats.MaxHealthPoints;
             equipmentStatistics.HealthPoints += stats.HealthPoints;
@@ -376,12 +382,6 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
             _ =>
                 throw new ApiException("errors.dev.invalidSkillProperty", property.ToString())
         };
-    }
-
-    private async Task<StatisticsEntity> GetStatistics(string userId)
-    {
-        return await statisticsRepository.FindOneByUserId(userId)
-            ?? throw new ApiException("errors.statisticsNotFound");
     }
 
     private static double Round(double value) => Math.Round(value, STAT_PRECISION);

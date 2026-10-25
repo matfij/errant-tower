@@ -104,12 +104,12 @@ public class EquipmentService(IEquipmentRepository equipmentRepository) : IEquip
     {
         var equipment = await GetUserEquipment(userId);
 
-        if (equipment.Bag.FirstOrDefault(item => item.ItemGuid == itemToEquip.ItemGuid) is null)
+        if (equipment.Bag.FirstOrDefault(item => item.ItemGuid == itemToEquip.Guid) is null)
         {
             throw new ApiException("errors.itemNotOwned");
         }
 
-        var item = ItemRegistry.GetItem(itemToEquip.ItemGuid);
+        var item = ItemRegistry.GetItem(itemToEquip.Guid);
 
         if (item.Requirements is not null &&
             (item.Requirements.Value.Strength > userAttributes.Strength

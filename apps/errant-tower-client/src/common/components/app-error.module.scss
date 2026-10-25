@@ -4,12 +4,12 @@
 .errorsWrapper {
     padding: $spacing-4;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: $spacing-2;
 }
 
 .errorItem {
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 600;
     color: $color-red-500;
 }

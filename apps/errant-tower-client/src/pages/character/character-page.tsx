@@ -124,14 +124,14 @@ export const CharacterPage = () => {
                     onEquip={(guid) => {
                         if (itemSlot) {
                             equipItem.call(
-                                { itemGuid: guid, slot: itemSlot },
+                                { guid: guid, slot: itemSlot },
                                 { onSuccess: onEquipmentChanged },
                             );
                         }
                     }}
                     onTakeOff={() => {
                         if (itemInSlot && itemSlot) {
-                            unequipItem.call({ itemSlot }, { onSuccess: onEquipmentChanged });
+                            unequipItem.call({ slot: itemSlot }, { onSuccess: onEquipmentChanged });
                         }
                     }}
                 />

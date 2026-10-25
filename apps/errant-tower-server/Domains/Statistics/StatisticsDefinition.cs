@@ -2,10 +2,8 @@ using ErrantTowerServer.Domains.Skills;
 
 namespace ErrantTowerServer.Domains.Statistics;
 
-public struct BattleStatistics
+public record BattleStatistics
 {
-    public BattleStatistics() { }
-
     public double Speed { get; set; } = 0;
     public double MaxHealthPoints { get; set; } = 0;
     public double HealthPoints { get; set; } = 0;
