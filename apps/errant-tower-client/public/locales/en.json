@@ -41,6 +41,17 @@
         "equipped": "Equipped",
         "takeOff": "Take off"
     },
+    "attributes": {
+        "strength": "Strength: <0>{{strength}}</0>",
+        "strengthTip": "Strength contributes to health and physical abilities.",
+        "dexterity": "Dexterity: <0>{{dexterity}}</0>",
+        "dexterityTip": "Dexterity contributes to speed and physical abilities.",
+        "constitution": "Constitution: <0>{{constitution}}</0>",
+        "constitutionTip": "Constitution contributes to health and defense.",
+        "spirit": "Spirit: <0>{{spirit}}</0>",
+        "spiritTip": "Spirit contributes to mana and magical abilities.",
+        "points": "<0>{{points}}</0> Attribute points"
+    },
     "skills": {
         "path": "Path",
         "level": "Level {{level}}",

@@ -8,6 +8,7 @@ public interface IStatisticsService
 {
     public Task CreateInitial(string userId);
     public Task<StatisticsEntity> GetStatistics(string userId);
+    public Task<StatisticsEntity> ExtendAttribute(string userId, UserAttribute attribute);
     public Task AwardPoints(string userId, int attributePoints, int skillPoints);
     public Task<UserAttributes> GetUserAttributes(string userId);
     public Task<BattleStatistics> GetUserBattleStatistics(string userId, IList<Item> equipment);
@@ -31,6 +32,37 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
     {
         return await statisticsRepository.FindOneByUserId(userId)
             ?? throw new ApiException("errors.statisticsNotFound");
+    }
+
+    public async Task<StatisticsEntity> ExtendAttribute(string userId, UserAttribute attribute)
+    {
+        var statistics = await GetStatistics(userId);
+
+        if (statistics.AttributePoints < 1)
+        {
+            throw new ApiException("error.notEnoughAttributePoints");
+        }
+
+        switch (attribute)
+        {
+            case UserAttribute.Strength:
+                statistics.Strength += 1;
+                break;
+            case UserAttribute.Dexterity:
+                statistics.Dexterity += 1;
+                break;
+            case UserAttribute.Constitution:
+                statistics.Constitution += 1;
+                break;
+            case UserAttribute.Spirit:
+                statistics.Spirit += 1;
+                break;
+        }
+        statistics.AttributePoints -= 1;
+
+        await statisticsRepository.UpdateOne(statistics);
+
+        return statistics;
     }
 
     public async Task AwardPoints(string userId, int attributePoints, int skillPoints)

@@ -30,6 +30,8 @@ import type {
   CompleteSignUpResponse,
   EquipItemRequest,
   EquipItemResponse,
+  ExtendAttributeRequest,
+  ExtendAttributeResponse,
   GetAttributesResponse,
   GetBagResponse,
   GetBattleResponse,
@@ -1077,6 +1079,65 @@ export function useGetBattleStatistics<TData = Awaited<ReturnType<typeof getBatt
 
 
 
+export const extendAttribute = (
+    extendAttributeRequest: ExtendAttributeRequest,
+ options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
+) => {
+      
+      
+      return customFetch<ExtendAttributeResponse>(
+      {url: `/statistics/extend-attribute`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: extendAttributeRequest, signal
+    },
+      options);
+    }
+  
+
+
+export const getExtendAttributeMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof extendAttribute>>, TError,{data: ExtendAttributeRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof extendAttribute>>, TError,{data: ExtendAttributeRequest}, TContext> => {
+
+const mutationKey = ['extendAttribute'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof extendAttribute>>, {data: ExtendAttributeRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  extendAttribute(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ExtendAttributeMutationResult = NonNullable<Awaited<ReturnType<typeof extendAttribute>>>
+    export type ExtendAttributeMutationBody = ExtendAttributeRequest
+    export type ExtendAttributeMutationError = unknown
+
+    export const useExtendAttribute = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof extendAttribute>>, TError,{data: ExtendAttributeRequest}, TContext>, request?: SecondParameter<typeof customFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof extendAttribute>>,
+        TError,
+        {data: ExtendAttributeRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getExtendAttributeMutationOptions(options);
+
+      return useMutation(mutationOptions, queryClient);
+    }
+    
 export const getSkillTree = (
     
  options?: SecondParameter<typeof customFetch>,signal?: AbortSignal
