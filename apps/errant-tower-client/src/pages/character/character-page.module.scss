@@ -83,3 +83,18 @@
         }
     }
 }
+
+.attributeLabel {
+    display: flex;
+    gap: $spacing-2;
+    line-height: 16px;
+}
+
+.attributeTooltip {
+    hr {
+        @include primaryDividerLeft;
+
+        width: 80%;
+        margin: $spacing-2 0;
+    }
+}

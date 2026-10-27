@@ -5,7 +5,9 @@ import { wrapMutation, wrapQuery } from "../../api/api-proxy";
 import { UserAttribute, type GetAttributesResponse } from "../../api/generated/definitions";
 import { useExtendAttribute, useGetAttributes } from "../../api/generated/hooks";
 import { AppError } from "../../common/components/app-error";
+import { AppIcon } from "../../common/components/app-icon";
 import { AppTooltip } from "../../common/components/app-tooltip";
+import { colors } from "../../common/theme";
 
 import styles from "./character-page.module.scss";
 
@@ -13,13 +15,20 @@ interface AttributesComponentProps {
     onAttributesChanged: () => void;
 }
 
+const attributeItems = [
+    { name: "strength", sign: "leo", attribute: UserAttribute.Strength },
+    { name: "dexterity", sign: "gemini", attribute: UserAttribute.Dexterity },
+    { name: "constitution", sign: "taurus", attribute: UserAttribute.Constitution },
+    { name: "spirit", sign: "pisces", attribute: UserAttribute.Spirit },
+] as const;
+
 export const AttributesComponent = (props: AttributesComponentProps) => {
     const { t } = useTranslation();
     const extendAttribute = wrapMutation(useExtendAttribute)();
     const getAttributes = wrapQuery<GetAttributesResponse>(useGetAttributes)();
     const [attributes, setAttributes] = useState<GetAttributesResponse>();
 
-    const canExtend = attributes?.attributePoints && attributes.attributePoints > 0;
+    const canExtend = (attributes?.attributePoints ?? 0) > 0;
 
     useEffect(() => {
         if (getAttributes.isSuccess && getAttributes.data) {
@@ -40,79 +49,43 @@ export const AttributesComponent = (props: AttributesComponentProps) => {
 
     return (
         <section className={styles.attributesWrapper}>
-            <div className={styles.attributeItem}>
-                <AppTooltip content={<p>{t("attributes.strengthTip")}</p>}>
-                    <Trans
-                        i18nKey="attributes.strength"
-                        values={{ strength: attributes?.strength }}
-                        components={[<b key="b" />]}
-                    />
-                </AppTooltip>
-                {canExtend && (
-                    <button
-                        type="button"
-                        disabled={extendAttribute.isLoading}
-                        onClick={() => extendAttribute.call({ attribute: UserAttribute.Strength })}
+            {attributeItems.map((attribute) => (
+                <div key={attribute.attribute} className={styles.attributeItem}>
+                    <AppTooltip
+                        content={
+                            <div className={styles.attributeTooltip}>
+                                <b style={{ color: colors.attribute[attribute.name] }}>
+                                    {t(`attributes.${attribute.sign}`)}
+                                </b>
+                                <hr />
+                                <p>{t(`attributes.${attribute.name}Tip`)}</p>
+                            </div>
+                        }
                     >
-                        +
-                    </button>
-                )}
-            </div>
-            <div className={styles.attributeItem}>
-                <AppTooltip content={<p>{t("attributes.dexterityTip")}</p>}>
-                    <Trans
-                        i18nKey="attributes.dexterity"
-                        values={{ dexterity: attributes?.dexterity }}
-                        components={[<b key="b" />]}
-                    />
-                </AppTooltip>
-                {canExtend && (
-                    <button
-                        type="button"
-                        disabled={extendAttribute.isLoading}
-                        onClick={() => extendAttribute.call({ attribute: UserAttribute.Dexterity })}
-                    >
-                        +
-                    </button>
-                )}
-            </div>
-            <div className={styles.attributeItem}>
-                <AppTooltip content={<p>{t("attributes.constitutionTip")}</p>}>
-                    <Trans
-                        i18nKey="attributes.constitution"
-                        values={{ constitution: attributes?.constitution }}
-                        components={[<b key="b" />]}
-                        parent="span"
-                    />
-                </AppTooltip>
-                {canExtend && (
-                    <button
-                        type="button"
-                        disabled={extendAttribute.isLoading}
-                        onClick={() => extendAttribute.call({ attribute: UserAttribute.Constitution })}
-                    >
-                        +
-                    </button>
-                )}
-            </div>
-            <div className={styles.attributeItem}>
-                <AppTooltip content={<p>{t("attributes.spiritTip")}</p>}>
-                    <Trans
-                        i18nKey="attributes.spirit"
-                        values={{ spirit: attributes?.spirit }}
-                        components={[<b key="b" />]}
-                    />
-                </AppTooltip>
-                {canExtend && (
-                    <button
-                        type="button"
-                        disabled={extendAttribute.isLoading}
-                        onClick={() => extendAttribute.call({ attribute: UserAttribute.Spirit })}
-                    >
-                        +
-                    </button>
-                )}
-            </div>
+                        <div className={styles.attributeLabel}>
+                            <AppIcon
+                                name={attribute.name}
+                                size={16}
+                                color={colors.attribute[attribute.name]}
+                            />
+                            <Trans
+                                i18nKey={`attributes.${attribute.name}`}
+                                values={{ [attribute.name]: attributes?.[attribute.name] }}
+                                components={[<b key="b" />]}
+                            />
+                        </div>
+                    </AppTooltip>
+                    {canExtend && (
+                        <button
+                            type="button"
+                            disabled={extendAttribute.isLoading}
+                            onClick={() => extendAttribute.call({ attribute: attribute.attribute })}
+                        >
+                            +
+                        </button>
+                    )}
+                </div>
+            ))}
             <hr />
             <div>
                 <Trans

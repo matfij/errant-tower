@@ -43,13 +43,17 @@
     },
     "attributes": {
         "strength": "Strength: <0>{{strength}}</0>",
-        "strengthTip": "Strength contributes to health and physical abilities.",
+        "leo": "Strength - Leo",
+        "strengthTip": "Leo represents explosive, radiant energy, physical dominance, and a leader's courage.",
         "dexterity": "Dexterity: <0>{{dexterity}}</0>",
-        "dexterityTip": "Dexterity contributes to speed and physical abilities.",
+        "gemini": "Dexterity - Gemini",
+        "dexterityTip": "Gemini excels at rapid movement, multitasking, precise control, and sleight of hand.",
         "constitution": "Constitution: <0>{{constitution}}</0>",
-        "constitutionTip": "Constitution contributes to health and defense.",
+        "taurus": "Constitution - Taurus",
+        "constitutionTip": "Taurus features an unshakeable presence, primal vitality, and the enduring resilience of the earth itself.",
         "spirit": "Spirit: <0>{{spirit}}</0>",
-        "spiritTip": "Spirit contributes to mana and magical abilities.",
+        "pisces": "Spirit - Pisces",
+        "spiritTip": "Pisces acts as a pure spiritual battery with psychic empathy and divine arcane potential.",
         "points": "<0>{{points}}</0> Attribute points"
     },
     "skills": {
