@@ -1,15 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 
 import styles from "./app-icon.module.scss";
 
 const iconAssets = import.meta.glob<string>("./icons/*.svg", { query: "?raw", import: "default" });
 
-export type IconName = "character" | "crafting" | "explore" | "skills";
+export type IconName =
+    | "character"
+    | "crafting"
+    | "explore"
+    | "skills"
+    | "strength"
+    | "dexterity"
+    | "constitution"
+    | "spirit";
 
 export interface AppIconProps {
     name: IconName;
     size: number;
     color?: string;
+    style?: CSSProperties;
 }
 
 export const AppIcon = (props: AppIconProps) => {
@@ -44,10 +53,12 @@ export const AppIcon = (props: AppIconProps) => {
                     role="img"
                     dangerouslySetInnerHTML={{ __html: svg }}
                     className={styles.iconItem}
+                    data-icon-name={props.name}
                     style={{
                         width: props.size,
                         height: props.size,
                         color: props.color,
+                        ...props.style,
                     }}
                 />
             )}

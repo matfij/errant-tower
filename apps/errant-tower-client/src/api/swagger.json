@@ -479,6 +479,53 @@
                 }
             }
         },
+        "/statistics/extend-attribute": {
+            "post": {
+                "tags": ["Statistics"],
+                "operationId": "extendAttribute",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ExtendAttributeRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ExtendAttributeRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ExtendAttributeRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExtendAttributeResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExtendAttributeResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExtendAttributeResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/statistics/get-skill-tree": {
             "get": {
                 "tags": ["Statistics"],
@@ -911,6 +958,43 @@
                     },
                     "leftHand": {
                         "$ref": "#/components/schemas/Item"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "ExtendAttributeRequest": {
+                "required": ["attribute"],
+                "type": "object",
+                "properties": {
+                    "attribute": {
+                        "$ref": "#/components/schemas/UserAttribute"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "ExtendAttributeResponse": {
+                "required": ["attributePoints", "constitution", "dexterity", "spirit", "strength"],
+                "type": "object",
+                "properties": {
+                    "strength": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "dexterity": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "constitution": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "spirit": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "attributePoints": {
+                        "type": "integer",
+                        "format": "int32"
                     }
                 },
                 "additionalProperties": false
@@ -1747,6 +1831,10 @@
                     }
                 },
                 "additionalProperties": false
+            },
+            "UserAttribute": {
+                "enum": ["Strength", "Dexterity", "Constitution", "Spirit"],
+                "type": "string"
             },
             "UserSkill": {
                 "required": [

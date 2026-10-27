@@ -1,11 +1,27 @@
 @use "../../common/styles/mixins.scss" as *;
 @use "../../common/styles/variables.scss" as *;
 
+.characterPage {
+    display: flex;
+    align-items: center;
+}
+
+.equipmentColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-4;
+}
+
 .equipmentWrapper {
+    padding: $spacing-2;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: $spacing-2;
+    border-radius: $radius-md;
+    background: rgba($color-dark-400, 0.6);
+    border: 1px solid rgba($color-light-100, 0.2);
 }
 
 .equipmentRow {
@@ -24,5 +40,61 @@
         cursor: pointer;
         background: rgba($color-dark-400, 0.7);
         border: 1px solid rgba($color-light-100, 0.3);
+    }
+}
+
+.attributesWrapper {
+    width: 100%;
+    padding: $spacing-4;
+    border-radius: $radius-md;
+    background: rgba($color-dark-400, 0.6);
+    border: 1px solid rgba($color-light-100, 0.2);
+
+    hr {
+        @include primaryDividerLeft;
+
+        width: 80%;
+        margin: $spacing-2 0;
+    }
+}
+
+.attributeItem {
+    display: flex;
+    gap: $spacing-2;
+    align-items: center;
+    justify-content: space-between;
+
+    button {
+        height: 20px;
+        font-size: 20px;
+        border: none;
+        background: none;
+        color: $color-primary-300;
+
+        &:hover {
+            cursor: pointer;
+            color: $color-primary-400;
+        }
+
+        &:disabled {
+            cursor: default !important;
+            opacity: 0.7;
+            filter: grayscale(0.5);
+        }
+    }
+}
+
+.attributeLabel {
+    display: flex;
+    gap: $spacing-2;
+    line-height: 16px;
+}
+
+.attributeTooltip {
+    hr {
+        @include primaryDividerLeft;
+
+        width: 80%;
+        margin: $spacing-2 0;
     }
 }

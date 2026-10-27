@@ -41,6 +41,21 @@
         "equipped": "Equipped",
         "takeOff": "Take off"
     },
+    "attributes": {
+        "strength": "Strength: <0>{{strength}}</0>",
+        "leo": "Strength - Leo",
+        "strengthTip": "Leo represents explosive, radiant energy, physical dominance, and a leader's courage.",
+        "dexterity": "Dexterity: <0>{{dexterity}}</0>",
+        "gemini": "Dexterity - Gemini",
+        "dexterityTip": "Gemini excels at rapid movement, multitasking, precise control, and sleight of hand.",
+        "constitution": "Constitution: <0>{{constitution}}</0>",
+        "taurus": "Constitution - Taurus",
+        "constitutionTip": "Taurus features an unshakeable presence, primal vitality, and the enduring resilience of the earth itself.",
+        "spirit": "Spirit: <0>{{spirit}}</0>",
+        "pisces": "Spirit - Pisces",
+        "spiritTip": "Pisces acts as a pure spiritual battery with psychic empathy and divine arcane potential.",
+        "points": "<0>{{points}}</0> Attribute points"
+    },
     "skills": {
         "path": "Path",
         "level": "Level {{level}}",

@@ -5,4 +5,13 @@
         width: auto !important;
         height: auto !important;
     }
+
+    &[data-icon-name="strength"],
+    &[data-icon-name="dexterity"],
+    &[data-icon-name="constitution"],
+    &[data-icon-name="spirit"] {
+        path {
+            fill: currentColor;
+        }
+    }
 }

@@ -15,6 +15,13 @@ public record GetAttributesResponse
 
 public record GetBattleStatisticsResponse : BattleStatistics;
 
+public record ExtendAttributeResponse : GetAttributesResponse;
+
+public record ExtendAttributeRequest
+{
+    public required UserAttribute attribute { get; init; }
+}
+
 public record GetSkillTreeResponse : SkillTree { }
 public record LearnSkillResponse : SkillTree { }
 public record ResetSkillsResponse : SkillTree { }

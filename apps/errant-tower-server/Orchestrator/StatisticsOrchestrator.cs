@@ -7,6 +7,7 @@ public interface IStatisticsOrchestrator
 {
     public Task<GetAttributesResponse> GetAttributes(string userId);
     public Task<GetBattleStatisticsResponse> GetBattleStatistics(string userId);
+    public Task<ExtendAttributeResponse> ExtendAttribute(string userId, ExtendAttributeRequest request);
     public Task<GetSkillTreeResponse> GetSkillTree(string userId);
     public Task<LearnSkillResponse> LearnSkill(string userId, LearnSkillRequest request);
     public Task<ResetSkillsResponse> ResetSkills(string userId);
@@ -62,6 +63,19 @@ public class StatisticsOrchestrator(
             HealthRegen = battleStatistic.HealthRegen,
             ManaRegen = battleStatistic.ManaRegen,
             EnergyRegen = battleStatistic.EnergyRegen,
+        };
+    }
+
+    public async Task<ExtendAttributeResponse> ExtendAttribute(string userId, ExtendAttributeRequest request)
+    {
+        var statistics = await statisticsService.ExtendAttribute(userId, request.attribute);
+        return new ExtendAttributeResponse()
+        {
+            Strength = statistics.Strength,
+            Dexterity = statistics.Dexterity,
+            Constitution = statistics.Constitution,
+            Spirit = statistics.Spirit,
+            AttributePoints = statistics.AttributePoints,
         };
     }
 

@@ -28,6 +28,16 @@ public class StatisticsController(IStatisticsOrchestrator statisticsOrchestrator
         return Ok(result);
     }
 
+    [HttpPost("extend-attribute")]
+    [EndpointName("extendAttribute")]
+    [ProducesResponseType(typeof(ExtendAttributeResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> LearnSkill([FromBody] ExtendAttributeRequest request)
+    {
+        var userId = User.GetUserId();
+        var result = await statisticsOrchestrator.ExtendAttribute(userId, request);
+        return Ok(result);
+    }
+
     [HttpGet("get-skill-tree")]
     [EndpointName("getSkillTree")]
     [ProducesResponseType(typeof(GetSkillTreeResponse), StatusCodes.Status200OK)]

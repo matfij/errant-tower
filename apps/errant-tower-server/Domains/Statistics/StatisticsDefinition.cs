@@ -95,3 +95,11 @@ public record UserAttributes
     public int Constitution { get; set; }
     public int Spirit { get; set; }
 }
+
+public enum UserAttribute
+{
+    Strength = 1,
+    Dexterity = 2,
+    Constitution = 3,
+    Spirit = 4,
+}
