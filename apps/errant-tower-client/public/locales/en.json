@@ -7,7 +7,11 @@
         "character": "Character",
         "skills": "Skills",
         "explore": "Explore",
-        "crafting": "Crafting"
+        "crafting": "Crafting",
+        "empty": "-"
+    },
+    "units": {
+        "percent": "%"
     },
     "auth": {
         "signIn": "Sign in",
@@ -55,6 +59,33 @@
         "pisces": "Spirit - Pisces",
         "spiritTip": "Pisces acts as a pure spiritual battery with psychic empathy and divine arcane potential.",
         "points": "<0>{{points}}</0> Attribute points"
+    },
+    "statistics": {
+        "speed": "Speed: <0>{{speed}}</0>",
+        "maxHealthPoints": "Max health points: <0>{{maxHealthPoints}}</0>",
+        "healthPoints": "Health points: <0>{{healthPoints}}</0>",
+        "maxManaPoints": "Max mana points: <0>{{maxManaPoints}}</0>",
+        "manaPoints": "Mana points: <0>{{manaPoints}}</0>",
+        "maxEnergyPoints": "Max energy points: <0>{{maxEnergyPoints}}</0>",
+        "energyPoints": "Energy points: <0>{{energyPoints}}</0>",
+        "physicalAttack": "Physical attack: <0>{{physicalAttack}}</0>",
+        "magicalAttack": "Magical attack: <0>{{magicalAttack}}</0>",
+        "physicalDefense": "Physical defense: <0>{{physicalDefense}}</0>",
+        "magicalDefense": "Magical defense: <0>{{magicalDefense}}</0>",
+        "physicalAbsorption": "Physical absorption: <0>{{physicalAbsorption}}</0>",
+        "magicalAbsorption": "Magical absorption: <0>{{magicalAbsorption}}</0>",
+        "criticalChance": "Critical chance: <0>{{criticalChance}}</0>",
+        "physicalCriticalPower": "Physical critical power: <0>{{physicalCriticalPower}}</0>",
+        "magicalCriticalPower": "Magical critical power: <0>{{magicalCriticalPower}}</0>",
+        "punctureChance": "Puncture chance: <0>{{punctureChance}}</0>",
+        "dodgeChance": "Dodge chance: <0>{{dodgeChance}}</0>",
+        "parryChance": "Parry chance: <0>{{parryChance}}</0>",
+        "blockChance": "Block chance: <0>{{blockChance}}</0>",
+        "blockPower": "Block power: <0>{{blockPower}}</0>",
+        "counterChance": "Counter chance: <0>{{counterChance}}</0>",
+        "healthRegen": "Health regen: <0>{{healthRegen}}</0>",
+        "manaRegen": "Mana regen: <0>{{manaRegen}}</0>",
+        "energyRegen": "Energy regen: <0>{{energyRegen}}</0>"
     },
     "skills": {
         "path": "Path",

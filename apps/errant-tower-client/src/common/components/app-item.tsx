@@ -6,7 +6,7 @@ interface AppItemProps {
 
 export const AppItem = (props: AppItemProps) => {
     return (
-        <div>
+        <div style={{ width: "100%" }}>
             <img src={`/images/items/${props.item.imageUrl}`} alt={props.item.name} />
         </div>
     );

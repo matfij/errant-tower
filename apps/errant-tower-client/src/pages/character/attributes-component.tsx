@@ -9,7 +9,7 @@ import { AppIcon } from "../../common/components/app-icon";
 import { AppTooltip } from "../../common/components/app-tooltip";
 import { colors } from "../../common/theme";
 
-import styles from "./character-page.module.scss";
+import styles from "./character-statistics.module.scss";
 
 interface AttributesComponentProps {
     onAttributesChanged: () => void;

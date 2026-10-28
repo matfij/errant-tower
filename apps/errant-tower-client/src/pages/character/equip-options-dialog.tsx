@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { BagItemData, Item, ItemGuid } from "../../api/generated/definitions";
 import { AppItem } from "../../common/components/app-item";
 
-import styles from "./equip-options-dialog.module.scss";
+import styles from "./character-equipment.module.scss";
 
 interface EquipOptionsDialogProps {
     items: BagItemData[];
