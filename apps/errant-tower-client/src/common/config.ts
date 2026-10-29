@@ -1,5 +1,6 @@
 export const appConfig = {
     baseUrl: import.meta.env.VITE_API_URL,
+    statPrecision: 2,
 } as const;
 
 export const routes = {

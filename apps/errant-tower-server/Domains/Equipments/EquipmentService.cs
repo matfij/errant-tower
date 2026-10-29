@@ -35,6 +35,26 @@ public class EquipmentService(IEquipmentRepository equipmentRepository) : IEquip
                     ItemGuid = ItemGuid.LeatherArmor,
                     Quantity = 1,
                 },
+                new BagItem()
+                {
+                    ItemGuid = ItemGuid.LeatherArmor,
+                    Quantity = 1,
+                },
+                new BagItem()
+                {
+                    ItemGuid = ItemGuid.LeatherBoots,
+                    Quantity = 1,
+                },
+                new BagItem()
+                {
+                    ItemGuid = ItemGuid.WoodenBow,
+                    Quantity = 1,
+                },
+                new BagItem()
+                {
+                    ItemGuid = ItemGuid.WoodenStaff,
+                    Quantity = 1,
+                },
             ]
         };
         await equipmentRepository.CreateOne(newEquipment);

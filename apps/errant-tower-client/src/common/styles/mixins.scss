@@ -90,3 +90,16 @@
         transparent
     );
 }
+
+@mixin secondaryDivider {
+    border: none;
+    height: 1px;
+    width: 100%;
+
+    background: linear-gradient(
+        to right,
+        rgba($color-light-200, 0.4),
+        rgba($color-light-200, 0.6),
+        rgba($color-light-200, 0.4)
+    );
+}

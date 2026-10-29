@@ -23,7 +23,7 @@ import { AppItem } from "../../common/components/app-item";
 import { handItemTypes } from "./character-utils";
 import { EquipOptionsDialog } from "./equip-options-dialog";
 
-import styles from "./character-page.module.scss";
+import styles from "./equipment-component.module.scss";
 
 interface EquipmentComponentProps {
     onEquipmentChanged: () => void;
@@ -76,8 +76,8 @@ export const EquipmentComponent = (props: EquipmentComponentProps) => {
     }
 
     return (
-        <section>
-            <div className={styles.equipmentWrapper}>
+        <>
+            <section className={styles.equipmentWrapper}>
                 <div className={styles.equipmentRow}>
                     <div
                         className={styles.equipmentItem}
@@ -120,7 +120,7 @@ export const EquipmentComponent = (props: EquipmentComponentProps) => {
                         {equipment?.footwear && <AppItem item={equipment.footwear} />}
                     </div>
                 </div>
-            </div>
+            </section>
             {showEquipOptions && (
                 <EquipOptionsDialog
                     items={equipOptions}
@@ -138,6 +138,6 @@ export const EquipmentComponent = (props: EquipmentComponentProps) => {
                     }}
                 />
             )}
-        </section>
+        </>
     );
 };
