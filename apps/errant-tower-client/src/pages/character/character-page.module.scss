@@ -1,0 +1,16 @@
+@use "../../common/styles/variables.scss" as *;
+
+.characterPage {
+    width: 90%;
+    max-width: 50rem;
+    display: flex;
+    align-items: center;
+    gap: $spacing-4;
+}
+
+.pageColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-4;
+}

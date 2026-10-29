@@ -8,6 +8,7 @@
         "skills": "Skills",
         "explore": "Explore",
         "crafting": "Crafting",
+        "close": "Close",
         "empty": "-"
     },
     "units": {
@@ -43,7 +44,8 @@
     },
     "equipment": {
         "equipped": "Equipped",
-        "takeOff": "Take off"
+        "takeOff": "Take off",
+        "available": "Available"
     },
     "attributes": {
         "strength": "Strength: <0>{{strength}}</0>",

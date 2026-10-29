@@ -2,9 +2,10 @@ import { Fragment } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
 import type { GetBattleStatisticsResponse } from "../../api/generated/definitions";
+import { appConfig } from "../../common/config";
 import { hasValue } from "../../common/utils";
 
-import styles from "./character-statistics.module.scss";
+import styles from "./statistics-component.module.scss";
 
 interface StatisticsComponentProps {
     statistics?: GetBattleStatisticsResponse;
@@ -22,12 +23,13 @@ const statisticGroups = [
 
 export const StatisticsComponent = (props: StatisticsComponentProps) => {
     const { t } = useTranslation();
+
     const format = (name: string, value?: number) => {
         if (!hasValue(value)) {
             return t("common.empty");
         }
         if (name.includes("Power") || name.includes("Chance")) {
-            return 100 * value + t("units.percent");
+            return Number((100 * value).toFixed(appConfig.statPrecision)) + t("units.percent");
         } else {
             return value;
         }

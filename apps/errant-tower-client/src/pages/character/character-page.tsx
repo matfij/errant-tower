@@ -7,14 +7,14 @@ import { AttributesComponent } from "./attributes-component";
 import { EquipmentComponent } from "./equipment-component";
 import { StatisticsComponent } from "./statistics-component";
 
-import styles from "./character-statistics.module.scss";
+import styles from "./character-page.module.scss";
 
 export const CharacterPage = () => {
     const queryClient = useQueryClient();
     const getStatistics = wrapQuery<GetBattleStatisticsResponse>(useGetBattleStatistics)();
 
     const recalculateStatistics = () => {
-        queryClient.invalidateQueries({ queryKey: [getGetBattleStatisticsQueryKey()] });
+        queryClient.invalidateQueries({ queryKey: getGetBattleStatisticsQueryKey() });
     };
 
     return (

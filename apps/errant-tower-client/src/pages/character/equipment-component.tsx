@@ -23,7 +23,7 @@ import { AppItem } from "../../common/components/app-item";
 import { handItemTypes } from "./character-utils";
 import { EquipOptionsDialog } from "./equip-options-dialog";
 
-import styles from "./character-equipment.module.scss";
+import styles from "./equipment-component.module.scss";
 
 interface EquipmentComponentProps {
     onEquipmentChanged: () => void;
