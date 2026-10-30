@@ -18,6 +18,7 @@ public class ExpeditionService(
     IProgressService progressService,
     IEquipmentService equipmentService,
     IStatisticsService statisticsService,
+    ISkillsService skillsService,
     IBattleService battleService) : IExpeditionService
 {
     private const int MOVE_SPEED = 10;
@@ -120,9 +121,10 @@ public class ExpeditionService(
         {
             var equipment = await equipmentService.GetEquipmentList(progress.UserId);
             var statistics = await statisticsService.GetUserBattleStatistics(progress.UserId, equipment);
+            var skills = await skillsService.GetActiveSkills(progress.UserId);
             var enemy = EnemyRegistry.GetEnemy(
                 Utils.GetWeightedRandomItem<FloorEnemy, EnemyGuid>(floor.Enemies));
-            var battle = await battleService.Start(progress.UserId, progress.Username, statistics, enemy);
+            var battle = await battleService.Start(progress.UserId, progress.Username, statistics, skills, enemy);
 
             return battle.Id;
         }

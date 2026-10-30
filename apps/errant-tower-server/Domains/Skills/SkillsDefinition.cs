@@ -155,3 +155,27 @@ public readonly record struct SkillRequirement
     public required SkillPath Path { get; init; }
     public required int Points { get; init; }
 }
+
+public record BattleSkill
+{
+    public required SkillGuid Guid { get; init; }
+    public required string Name { get; init; }
+    public string? Description { get; init; }
+    public string ImageUrl { get; init; } = String.Empty;
+    public SkillPath Path { get; init; }
+    public required SkillType[] Types { get; init; }
+    public double PhysicalAttackFactor { get; init; }
+    public double MagicalAttackFactor { get; init; }
+    public double PhysicalDefenseFactor { get; init; }
+    public double MagicalDefenseFactor { get; init; }
+    public bool IsPassive { get; init; } = false;
+    public bool TargetSelf { get; init; } = false;
+    public int HitCount { get; init; }
+    public int EnergyCost { get; init; }
+    public int ManaCost { get; init; }
+    public SkillEffect[] TargetEffects { get; init; } = [];
+    public SkillEffect[] SelfEffects { get; init; } = [];
+    public SkillProperty[] TargetProperties { get; init; } = [];
+    public SkillProperty[] SelfProperties { get; init; } = [];
+    public SkillRequirement[] Requirements { get; init; } = [];
+}

@@ -1,3 +1,4 @@
-*:has(> .itemWrapper) {
+.itemWrapper {
     overflow: hidden;
+    border-radius: inherit;
 }

@@ -19,6 +19,7 @@ public class BattleOrchestrator(IBattleService battleService) : IBattleOrchestra
             Enemy = battle.Enemy,
             IsFinished = battle.IsFinished,
             TurnNumber = battle.TurnNumber,
+            Skills = battle.Skills,
         };
     }
 }

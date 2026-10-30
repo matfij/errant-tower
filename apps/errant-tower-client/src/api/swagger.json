@@ -675,6 +675,119 @@
                 },
                 "additionalProperties": false
             },
+            "BattleSkill": {
+                "required": [
+                    "energyCost",
+                    "guid",
+                    "hitCount",
+                    "imageUrl",
+                    "isPassive",
+                    "magicalAttackFactor",
+                    "magicalDefenseFactor",
+                    "manaCost",
+                    "name",
+                    "path",
+                    "physicalAttackFactor",
+                    "physicalDefenseFactor",
+                    "requirements",
+                    "selfEffects",
+                    "selfProperties",
+                    "targetEffects",
+                    "targetProperties",
+                    "targetSelf",
+                    "types"
+                ],
+                "type": "object",
+                "properties": {
+                    "guid": {
+                        "$ref": "#/components/schemas/SkillGuid"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "imageUrl": {
+                        "type": "string"
+                    },
+                    "path": {
+                        "$ref": "#/components/schemas/SkillPath"
+                    },
+                    "types": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SkillType"
+                        }
+                    },
+                    "physicalAttackFactor": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "magicalAttackFactor": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "physicalDefenseFactor": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "magicalDefenseFactor": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "isPassive": {
+                        "type": "boolean"
+                    },
+                    "targetSelf": {
+                        "type": "boolean"
+                    },
+                    "hitCount": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "energyCost": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "manaCost": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "targetEffects": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SkillEffect"
+                        }
+                    },
+                    "selfEffects": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SkillEffect"
+                        }
+                    },
+                    "targetProperties": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SkillProperty"
+                        }
+                    },
+                    "selfProperties": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SkillProperty"
+                        }
+                    },
+                    "requirements": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SkillRequirement"
+                        }
+                    }
+                },
+                "additionalProperties": false
+            },
             "BattleStatistics": {
                 "required": [
                     "blockChance",
@@ -1083,7 +1196,7 @@
                 "additionalProperties": false
             },
             "GetBattleResponse": {
-                "required": ["enemy", "id", "isFinished", "turnNumber", "user"],
+                "required": ["enemy", "id", "isFinished", "skills", "turnNumber", "user"],
                 "type": "object",
                 "properties": {
                     "id": {
@@ -1101,6 +1214,12 @@
                     },
                     "enemy": {
                         "$ref": "#/components/schemas/BattleCharacter"
+                    },
+                    "skills": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/BattleSkill"
+                        }
                     }
                 },
                 "additionalProperties": false

@@ -5,6 +5,7 @@
  * OpenAPI spec version: 1.0
  */
 import type { BattleCharacter } from './battleCharacter';
+import type { BattleSkill } from './battleSkill';
 
 export interface GetBattleResponse {
   id: string;
@@ -12,4 +13,5 @@ export interface GetBattleResponse {
   turnNumber: number;
   user: BattleCharacter;
   enemy: BattleCharacter;
+  skills: BattleSkill[];
 }
