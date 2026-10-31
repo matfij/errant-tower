@@ -1,0 +1,25 @@
+{
+    "name": "errant-tower",
+    "version": "0.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "pnpm -r --if-present build",
+        "format": "oxfmt .",
+        "lint": "oxlint .",
+        "start": "pnpm --filter @errant/client start"
+    },
+    "devDependencies": {
+        "oxfmt": "^0.70.0",
+        "oxlint": "^1.85.0",
+        "typescript": "^7.0.2"
+    },
+    "devEngines": {
+        "packageManager": {
+            "name": "pnpm",
+            "version": "11.17.0",
+            "onFail": "download"
+        }
+    },
+    "packageManager": "pnpm@11.17.0"
+}

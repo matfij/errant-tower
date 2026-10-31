@@ -19,5 +19,5 @@
         "react/exhaustive-deps": "allow",
         "react/only-export-components": ["warn", { "allowConstantExport": true }]
     },
-    "ignorePatterns": ["src/api/generated/*"]
+    "ignorePatterns": ["apps/client/src/api/generated", "apps/errant-tower-server", "apps/map-editor", "dist"]
 }

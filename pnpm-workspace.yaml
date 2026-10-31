@@ -1,3 +1,7 @@
+packages:
+    - "apps/*"
+    - "!apps/map-editor"
+    - "packages/*"
 allowBuilds:
     "@parcel/watcher": true
     "@scarf/scarf": true

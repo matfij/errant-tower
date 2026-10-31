@@ -79,7 +79,7 @@ reviews:
         - Verify proper null handling with nullable reference types
         - Access authenticated user IDs through a ClaimsPrincipal extension method (GetUserId) instead of directly querying claims.
 
-    - path: "apps/errant-tower-client/src/**/*.{ts,tsx}"
+    - path: "apps/client/src/**/*.{ts,tsx}"
       instructions: |
         This is a React web application with TypeScript strict mode.
 

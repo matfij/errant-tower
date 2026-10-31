@@ -1,5 +1,5 @@
 {
-    "name": "errant-tower-client",
+    "name": "@errant/client",
     "version": "0.0.0",
     "private": true,
     "type": "module",
@@ -28,10 +28,7 @@
         "@types/react-dom": "^19.3.0",
         "@vitejs/plugin-react": "^6.1.1",
         "orval": "^7.21.0",
-        "oxfmt": "^0.70.0",
-        "oxlint": "^1.85.0",
         "sass": "^1.105.0",
-        "typescript": "^7.0.2",
         "vite": "^8.3.1"
     },
     "engines": {
