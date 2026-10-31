@@ -100,11 +100,8 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
             }
             var stats = item.Statistics;
             equipmentStatistics.Speed += stats.Speed;
-            equipmentStatistics.MaxHealthPoints += stats.MaxHealthPoints;
             equipmentStatistics.HealthPoints += stats.HealthPoints;
-            equipmentStatistics.MaxManaPoints += stats.MaxManaPoints;
             equipmentStatistics.ManaPoints += stats.ManaPoints;
-            equipmentStatistics.MaxEnergyPoints += stats.MaxEnergyPoints;
             equipmentStatistics.EnergyPoints += stats.EnergyPoints;
             equipmentStatistics.PhysicalAttack += stats.PhysicalAttack;
             equipmentStatistics.MagicalAttack += stats.MagicalAttack;
@@ -132,31 +129,15 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
                 0.05 * statistics.Dexterity
                 + equipmentStatistics.Speed),
 
-            MaxHealthPoints = Round(
-                1.5 * statistics.Strength
-                + 0.5 * statistics.Constitution
-                + equipmentStatistics.MaxHealthPoints),
-
             HealthPoints = Round(
                 1.5 * statistics.Strength
                 + 0.5 * statistics.Constitution
                 + equipmentStatistics.HealthPoints),
 
-            MaxManaPoints = Round(
-                0.5 * statistics.Spirit
-                + 0.1 * statistics.Constitution
-                + equipmentStatistics.MaxManaPoints),
-
             ManaPoints = Round(
                 0.5 * statistics.Spirit
                 + 0.1 * statistics.Constitution
                 + equipmentStatistics.ManaPoints),
-
-            MaxEnergyPoints = Round(
-                0.2 * statistics.Strength
-                + 0.2 * statistics.Dexterity
-                + 0.1 * statistics.Constitution
-                + equipmentStatistics.MaxEnergyPoints),
 
             EnergyPoints = Round(
                 0.2 * statistics.Strength
@@ -233,6 +214,10 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
             ApplySkillProperty(statisticsWithEquipment, property);
         }
 
+        statisticsWithEquipment.MaxHealthPoints = statisticsWithEquipment.HealthPoints;
+        statisticsWithEquipment.MaxManaPoints = statisticsWithEquipment.ManaPoints;
+        statisticsWithEquipment.MaxEnergyPoints = statisticsWithEquipment.EnergyPoints;
+
         return statisticsWithEquipment;
     }
 
@@ -289,30 +274,18 @@ public class StatisticsService(IStatisticsRepository statisticsRepository) : ISt
                 break;
 
             case SkillPropertyType.HealthPoints:
-                statistics.MaxHealthPoints = ApplyProperty(
-                    statistics.MaxHealthPoints,
-                    property);
-
                 statistics.HealthPoints = ApplyProperty(
                     statistics.HealthPoints,
                     property);
                 break;
 
             case SkillPropertyType.ManaPoints:
-                statistics.MaxManaPoints = ApplyProperty(
-                    statistics.MaxManaPoints,
-                    property);
-
                 statistics.ManaPoints = ApplyProperty(
                     statistics.ManaPoints,
                     property);
                 break;
 
             case SkillPropertyType.EnergyPoints:
-                statistics.MaxEnergyPoints = ApplyProperty(
-                    statistics.MaxEnergyPoints,
-                    property);
-
                 statistics.EnergyPoints = ApplyProperty(
                     statistics.EnergyPoints,
                     property);

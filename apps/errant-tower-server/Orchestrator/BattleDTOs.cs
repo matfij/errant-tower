@@ -1,4 +1,5 @@
 using ErrantTowerServer.Domains.Battles;
+using ErrantTowerServer.Domains.Skills;
 
 namespace ErrantTowerServer.Orchestrator;
 
@@ -9,4 +10,5 @@ public record GetBattleResponse
     public required int TurnNumber { get; init; }
     public required BattleCharacter User { get; init; }
     public required BattleCharacter Enemy { get; init; }
+    public required IList<BattleSkill> Skills { get; init; }
 }

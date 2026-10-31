@@ -30,14 +30,14 @@ export const BattlePage = () => {
     }, [getBattle.data]);
 
     if (getBattle.isLoading || !getBattle.data) {
-        return <div>Loading...</div>;
+        return <></>;
     }
 
     return (
         <div className={styles.mainWrapper}>
             {user && (
                 <div className={styles.characterWrapper}>
-                    <img src={`images/avatars/${user.imageUrl}`} alt={user.name}/>
+                    <img src={`images/avatars/${user.imageUrl}`} alt={user.name} />
                     <p className={styles.characterName}>{user.name}</p>
                     <br />
                     <AppProgress
@@ -78,6 +78,10 @@ export const BattlePage = () => {
                     />
                 </div>
             )}
+
+            {getBattle.data.skills.map((skill) => (
+                <p key={skill.guid}>{skill.name}</p>
+            ))}
         </div>
     );
 };

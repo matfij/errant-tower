@@ -7,14 +7,24 @@ namespace ErrantTowerServer.Domains.Battles;
 
 public interface IBattleService
 {
-    public Task<BattleEntity> Start(string userId, string username, BattleStatistics userStatistics, Enemy enemy);
+    public Task<BattleEntity> Start(
+        string userId,
+        string username,
+        BattleStatistics userStatistics,
+        IList<BattleSkill> skills,
+        Enemy enemy);
     public Task<BattleEntity> Get(string userId);
     public Task<BattleEntity> Act(string userId, SkillGuid skillGuid);
 }
 
 public class BattleService(IBattleRepository battleRepository) : IBattleService
 {
-    public async Task<BattleEntity> Start(string userId, string username, BattleStatistics userStatistics, Enemy enemy)
+    public async Task<BattleEntity> Start(
+        string userId,
+        string username,
+        BattleStatistics userStatistics,
+        IList<BattleSkill> skills,
+        Enemy enemy)
     {
         var battle = await battleRepository.FindByUserId(userId);
         var updateExisting = battle is not null;
@@ -45,7 +55,8 @@ public class BattleService(IBattleRepository battleRepository) : IBattleService
                 Race = enemy.Race,
                 Statistics = enemy.Statistics,
                 Statuses = []
-            }
+            },
+            Skills = skills.ToList(),
         };
 
         if (updateExisting)

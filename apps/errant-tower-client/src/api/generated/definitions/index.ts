@@ -42,6 +42,7 @@ export * from "./startSignUpRequest";
 export * from "./userSkill";
 export * from './bagItemData';
 export * from './battleCharacter';
+export * from './battleSkill';
 export * from './battleStatistics';
 export * from './battleStatus';
 export * from './enemyRace';

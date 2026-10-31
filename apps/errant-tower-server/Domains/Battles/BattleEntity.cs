@@ -17,6 +17,7 @@ public class BattleEntity
     public required int TurnNumber { get; set; }
     public required BattleCharacter User { get; set; }
     public required BattleCharacter Enemy { get; set; }
+    public required List<BattleSkill> Skills { get; set; }
 }
 
 public record BattleCharacter

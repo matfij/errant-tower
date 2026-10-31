@@ -6,6 +6,7 @@ namespace ErrantTowerServer.Domains.Statistics;
 public interface ISkillsService
 {
     public Task<SkillTree> GetSkillTree(string userId);
+    public Task<IList<BattleSkill>> GetActiveSkills(string userId);
     public Task<SkillTree> LearnSkill(string userId, SkillGuid skill);
     public Task<SkillTree> ResetSkills(string userId);
 }
@@ -35,6 +36,39 @@ public class SkillsService(IStatisticsRepository statisticsRepository) : ISkills
                 Sagacity = [.. skillsByPath[SkillPath.Sagacity]],
             }
         };
+    }
+
+    public async Task<IList<BattleSkill>> GetActiveSkills(string userId)
+    {
+        var statistics = await GetStatistics(userId);
+
+        return statistics.LearnedSkills
+            .Select(skill => (Skill: skill, Data: SkillRegistry.GetSkill(skill.Guid)))
+            .Where(skill => !skill.Data.IsPassive)
+            .Select(skill => new BattleSkill
+            {
+                Guid = skill.Skill.Guid,
+                Name = skill.Data.Name,
+                Description = skill.Data.Description,
+                ImageUrl = skill.Data.ImageUrl,
+                Path = skill.Data.Path,
+                Types = skill.Data.Types,
+                PhysicalAttackFactor = skill.Data.PhysicalAttackFactor[skill.Skill.Level - 1],
+                MagicalAttackFactor = skill.Data.MagicalAttackFactor[skill.Skill.Level - 1],
+                PhysicalDefenseFactor = skill.Data.PhysicalDefenseFactor[skill.Skill.Level - 1],
+                MagicalDefenseFactor = skill.Data.MagicalDefenseFactor[skill.Skill.Level - 1],
+                IsPassive = skill.Data.IsPassive,
+                TargetSelf = skill.Data.TargetSelf,
+                HitCount = skill.Data.HitCount[skill.Skill.Level - 1],
+                EnergyCost = skill.Data.EnergyCost[skill.Skill.Level - 1],
+                ManaCost = skill.Data.ManaCost[skill.Skill.Level - 1],
+                TargetEffects = skill.Data.TargetEffects[skill.Skill.Level - 1],
+                SelfEffects = skill.Data.SelfEffects[skill.Skill.Level - 1],
+                TargetProperties = skill.Data.TargetProperties[skill.Skill.Level - 1],
+                SelfProperties = skill.Data.SelfProperties[skill.Skill.Level - 1],
+                Requirements = skill.Data.Requirements
+            })
+            .ToList();
     }
 
     public async Task<SkillTree> LearnSkill(string userId, SkillGuid skillGuid)
