@@ -1,0 +1,16 @@
+export const appConfig = {
+    baseUrl: import.meta.env.VITE_API_URL ?? "http://localhost:4000",
+    statPrecision: 2,
+} as const;
+
+export const routes = {
+    root: "/",
+    signIn: "/sign-in",
+    signUp: "/sign-up",
+    character: "/character",
+    skills: "/skills",
+    crafting: "/crafting",
+    explore: "/explore",
+    expedition: "/expedition",
+    battle: "/battle",
+} as const;

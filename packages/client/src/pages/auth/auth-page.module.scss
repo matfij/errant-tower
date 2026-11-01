@@ -1,0 +1,215 @@
+@use "../../common/styles/mixins.scss" as *;
+@use "../../common/styles/variables.scss" as *;
+
+.authWrapper {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    position: relative;
+}
+
+.teaserWrapper {
+    width: 90%;
+    max-width: 40rem;
+    padding: $spacing-4;
+    padding-bottom: $spacing-8;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2;
+    border-radius: $spacing-4;
+    background: rgba($color-dark-400, 0.4);
+}
+
+@media (max-width: $mobile-threshold) {
+    .authWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow-y: auto;
+        position: relative;
+    }
+
+    .teaserWrapper {
+        margin: 0;
+        margin-top: $spacing-32;
+    }
+
+    .knightImage {
+        display: none;
+    }
+}
+
+.titleImage {
+    width: 36rem;
+}
+
+.titleImageSmall {
+    width: 16rem;
+}
+
+.teaserLabel {
+    color: $color-primary-100;
+}
+
+.actionsWrapper {
+    display: flex;
+    margin-top: $spacing-2;
+    gap: $spacing-2;
+}
+
+.teaserSignInButton {
+    @include primaryButton;
+}
+
+.teaserSignUpButton {
+    @include secondaryButton;
+}
+
+.knightImage {
+    width: 90%;
+    max-width: 20rem;
+    align-self: flex-end;
+    mask-image: radial-gradient(ellipse 60% 80% at center, black 25%, transparent 60%);
+    -moz-mask-image: radial-gradient(ellipse 60% 80% at center, black 25%, transparent 60%);
+
+    img {
+        opacity: 0.9;
+        width: 90%;
+        animation: colorRotate 12s;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+    }
+
+    @keyframes colorRotate {
+        from {
+            filter: hue-rotate(0deg);
+        }
+        to {
+            filter: hue-rotate(360deg);
+        }
+    }
+}
+
+.signInWrapper {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-4;
+    gap: $spacing-4;
+    overflow-y: auto;
+    position: relative;
+}
+
+.formWrapper {
+    width: 90%;
+    max-width: 30rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $spacing-4;
+    gap: $spacing-2;
+    border-radius: $spacing-2;
+    border: 1px solid rgba($color-primary-200, 0.2);
+    background: rgba($color-dark-400, 0.4);
+    overflow-y: auto;
+}
+
+.formTitle {
+    font-size: 25px;
+    line-height: 32px;
+    color: $color-primary-300;
+    letter-spacing: 1px;
+}
+
+.titleDivider {
+    @include primaryDivider;
+}
+
+.formLabel {
+    width: 90%;
+    font-size: 12px;
+    color: $color-light-400;
+    margin-top: $spacing-2;
+    padding-left: $spacing-px;
+}
+
+.formInput {
+    width: 90%;
+    padding: $spacing-2;
+    border: 1px solid rgba($color-light-400, 0.2);
+    border-radius: $spacing-1;
+    background-color: rgba($color-dark-200, 0.8);
+    color: $color-light-400;
+
+    &[type="number"] {
+        appearance: textfield;
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    }
+
+    &:focus {
+        border: 1px solid rgba($color-primary-200, 0.4);
+    }
+}
+
+.formSuccess {
+    font-size: 14px;
+    margin-top: $spacing-1;
+    color: $color-green-300;
+}
+
+.formError {
+    width: 90%;
+    margin-top: -$spacing-1;
+    font-size: 12px;
+    color: $color-red-500;
+    padding-left: $spacing-px;
+}
+
+.formApiError {
+    margin-top: $spacing-2;
+    margin-bottom: -$spacing-2;
+    font-size: 12px;
+    color: $color-red-500;
+    padding-left: $spacing-px;
+}
+
+.signInFormButton {
+    @include primaryButton;
+
+    width: 90%;
+    margin-top: $spacing-4;
+}
+
+.infoDivider {
+    @include primaryDivider;
+
+    margin-top: $spacing-2;
+}
+
+.formInfoWrapper {
+    display: flex;
+    gap: $spacing-1;
+    font-size: 12px;
+}
+
+.formInfoLink {
+    text-decoration: underline;
+    color: $color-primary-500;
+    transition: 0.4s all ease-in-out;
+
+    &:hover {
+        cursor: pointer;
+        color: $color-primary-100;
+    }
+}

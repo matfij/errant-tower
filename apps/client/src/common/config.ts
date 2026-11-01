@@ -1,5 +1,5 @@
 export const appConfig = {
-    baseUrl: import.meta.env.VITE_API_URL,
+    baseUrl: import.meta.env.VITE_API_URL ?? "https://localhost:7135",
     statPrecision: 2,
 } as const;
 

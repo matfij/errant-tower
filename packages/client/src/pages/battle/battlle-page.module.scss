@@ -1,0 +1,30 @@
+@use "../../common/styles/mixins.scss" as *;
+@use "../../common/styles/variables.scss" as *;
+
+.mainWrapper {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.characterWrapper {
+    width: 16rem;
+    text-align: center;
+}
+
+.characterRace {
+    font-size: 12px;
+}
+
+.logsWrapper {
+    margin: $spacing-2 auto;
+    padding: $spacing-2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-2;
+    background: rgba($color-dark-400, 0.6);
+    border-radius: $radius-md;
+    border: 1px solid rgba($color-light-100, 0.2);
+}
