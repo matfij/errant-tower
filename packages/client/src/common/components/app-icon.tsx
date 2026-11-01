@@ -1,0 +1,67 @@
+import { useEffect, useState, type CSSProperties } from "react";
+
+import styles from "./app-icon.module.scss";
+
+const iconAssets = import.meta.glob<string>("./icons/*.svg", { query: "?raw", import: "default" });
+
+export type IconName =
+    | "character"
+    | "crafting"
+    | "explore"
+    | "skills"
+    | "strength"
+    | "dexterity"
+    | "constitution"
+    | "spirit";
+
+export interface AppIconProps {
+    name: IconName;
+    size: number;
+    color?: string;
+    style?: CSSProperties;
+}
+
+export const AppIcon = (props: AppIconProps) => {
+    const [svg, setSvg] = useState<string>();
+    const path = `./icons/${props.name}.svg`;
+    const loadSvg = iconAssets[path];
+
+    useEffect(() => {
+        let cancelled = false;
+
+        loadSvg()
+            .then((raw) => {
+                if (!cancelled) {
+                    setSvg(raw);
+                }
+            })
+            .catch(() => {
+                if (!cancelled) {
+                    setSvg(undefined);
+                }
+            });
+
+        return () => {
+            cancelled = true;
+        };
+    }, [loadSvg]);
+
+    return (
+        <>
+            {svg && (
+                <span
+                    role="img"
+                    dangerouslySetInnerHTML={{ __html: svg }}
+                    className={styles.iconItem}
+                    data-icon-name={props.name}
+                    style={{
+                        width: props.size,
+                        height: props.size,
+                        color: props.color,
+                        ...props.style,
+                    }}
+                />
+            )}
+        </>
+    );
+};

@@ -7,7 +7,9 @@
         "build": "pnpm -r --if-present build",
         "format": "oxfmt .",
         "lint": "oxlint .",
-        "start": "pnpm --filter @errant/client start"
+        "start": "pnpm --filter @errant/client start",
+        "start:map-editor": "pnpm --filter @errant/map-editor start",
+        "start:ts-client": "pnpm --filter @errant/client-ts start"
     },
     "devDependencies": {
         "oxfmt": "^0.70.0",

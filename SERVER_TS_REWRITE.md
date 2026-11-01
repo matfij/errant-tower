@@ -1,213 +1,116 @@
-# Errant Tower Server: C# → TypeScript Migration Plan
+# Errant Tower server: TypeScript migration
 
-**Goal**: Migrate the C# ASP.NET Core backend to TypeScript while aligning tooling with the frontend and the `space-scheme` project. Keep MongoDB with a loose coupling (easy future move to Postgres). Data loss is acceptable (prototype).
+Move the C# ASP.NET server to TypeScript. Keep MongoDB, the current HTTP behavior, and the current gameplay. This is a low-traffic hobby project, so each step is the smallest change that makes one flow work.
 
-## Current State
+Workspace setup is already on `main` (PR #129): pnpm, root oxlint / oxfmt / TypeScript, and `packages/shared`. The side-by-side test keeps two stacks:
 
-### errant-tower
-- `apps/errant-tower-client` — React 19 + Vite + Zustand + React Query + SignalR + Orval (OpenAPI-generated client). Already uses oxlint, oxfmt, TypeScript 7.
-- `apps/errant-tower-server` — ASP.NET Core (.NET 10) + MongoDB.Driver + cookie auth + Swagger + SignalR (expeditions) + Resend.
-  - Structure: Domains (Users, Battles, Equipments, Expeditions, Floors, Items, Progresses, Skills, Statistics) + Orchestrator (controllers + DTOs) + Common.
-- `apps/map-editor`
+- `apps/client` (`@errant/client`, Vite port 5173) calls the C# server at `https://localhost:7135`.
+- `packages/client` (`@errant/client-ts`, Vite port 5174) calls the TypeScript server at `http://localhost:4000`.
+- The TypeScript server package is `packages/server`. It does not listen yet.
+- The C# server stays at `apps/errant-tower-server`.
+- The map editor is `packages/map-editor` (`@errant/map-editor`, Vite port 5175). It is a workspace member and uses the shared tsconfig, oxlint, and oxfmt.
 
-### space-scheme (tooling reference)
-- Clean pnpm workspace (`apps/*` + `packages/*`)
-- Root: `package.json` (oxlint/oxfmt/typescript + packageManager pin), `tsconfig.base.json`, `.oxlintrc.json`, `.oxfmtrc.json`
-- `packages/shared` exporting entities, DTOs, config, utils (consumed by client + server via `workspace:*`)
-- Server: Fastify + tsx
-- Consistent scripts and strict TypeScript
+Do not merge `server/ts-rewrite-phase-0`. That branch commits IDE output, build output, and `appsettings.Development.json`.
 
-## Target Architecture
+Progress lives in [docs/ts-rewrite-progress.md](docs/ts-rewrite-progress.md).
 
-```
-errant-tower/
-├── package.json                  # root scripts + packageManager
-├── pnpm-workspace.yaml
-├── tsconfig.base.json
-├── .oxlintrc.json
-├── .oxfmtrc.json
-├── packages/
-│   └── shared/                   # @errant/shared
-│       ├── src/
-│       │   ├── entities.ts
-│       │   ├── combat.ts
-│       │   ├── dtos.ts
-│       │   ├── repository.ts
-│       │   └── index.ts
-│       └── package.json
-└── apps/
-    ├── client/                   # existing errant-tower-client (moved)
-    └── server/                   # new Fastify TS server
-```
+## Keep
 
-### Key Decisions
+- The pnpm workspace and shared tooling already on `main`.
+- Fastify and tsx in `packages/server`, listening on port 4000.
+- The existing MongoDB database and the official `mongodb` driver. Database calls stay in small server-only modules.
+- Shared API contracts and pure combat functions in `packages/shared`, added when a feature needs them.
+- Clear names when a file is touched: permanent progression, combat stats, and current resources.
+- The 18 HTTP routes. JSON stays camelCase. Enums stay strings on the wire. Errors stay `{ errors: [{ key, field? }] }`.
+- Cookie name `errant_tower_auth`.
+- Resend for the existing action-code emails.
 
-| Concern              | Recommendation                              | Rationale |
-|----------------------|---------------------------------------------|-----------|
-| Monorepo             | Full pnpm workspace (match space-scheme)    | Type sharing + tooling alignment |
-| Shared types         | `@errant/shared` (entities + derived types) | Single source of truth, no codegen |
-| Backend framework    | Fastify + tsx                               | Matches space-scheme, lightweight |
-| MongoDB coupling     | Official `mongodb` driver + repository interfaces | Easy to swap for Postgres later |
-| Validation           | Zod (optional, co-located with types)       | Runtime + type safety |
-| Auth                 | `@fastify/cookie` + signed cookies          | Direct port of current cookie auth |
-| Real-time            | `@fastify/websocket`                        | Replace SignalR hub |
-| Email                | Resend Node SDK                             | Drop-in |
-| API client           | Drop Orval; import from `@errant/shared`    | Eliminate OpenAPI codegen cycle |
-| Tooling              | Same oxlint / oxfmt / tsconfig / pnpm as space-scheme | Consistency |
+## Out of scope
 
-## TypeScript Advantages to Leverage
+These wait until a concrete need shows up:
 
-### Flexible typing (avoid literal property mapping)
+- Postgres, a repository interface, or any promise that MongoDB queries can be reused as SQL.
+- A generic `Repository<T>`. `Partial<T>` is not a query language.
+- Porting every entity and DTO before a route needs it.
+- Deriving public responses or writable requests with `Omit`, `Partial`, or `Pick` from the stored document.
+- Renaming the statistics model, or freezing combat stats for an expedition.
+- Battle resource write-back. `BattleService` still has `TODO(#93)`. The port keeps that gap.
+- Deleting the C# server, Orval, or SignalR before the replacement flow works.
+- tRPC, ts-rest, and oRPC.
 
-Entities are the source of truth. Derive everything else with utility types:
+## Contracts
 
-```ts
-export interface Character {
-  id: string;
-  userId: string;
-  attributePoints: number;
-  skillPoints: number;
-  strength: number;
-  dexterity: number;
-  constitution: number;
-  spirit: number;
-  learnedSkills: LearnedSkill[];
-}
+A public response and a writable request each list the fields they allow. A TypeScript type does not remove extra JSON fields and does not validate input.
 
-export type CreateCharacter = Omit<Character, "id">;
-export type UpdateCharacter = Partial<Pick<Character, "username" | "isConfirmed">>;
-export type CharacterPublic = Omit<Character, "actionCodeHash" | "actionCodeExpiresAt">;
-```
+Validate every HTTP and WebSocket body at the trust boundary. Zod is fine. A hand-written check is fine. Skipping validation is not.
 
-Compositional object types (intersections, spreads of type aliases) replace the current C# style of separate classes + manual mapping in orchestrators.
+Persistence types and database helpers stay in `packages/server`. `packages/shared` holds only types and pure functions that a ported route already uses from both sides.
 
-### Flexible repository querying by any field
+The old examples were wrong. `username` and `isConfirmed` belong to the user document, not to a character built from attributes and skills. Omitting fields that are not on the source type does not define a public contract.
 
-```ts
-export interface Repository<T extends { id: string }> {
-  findById(id: string): Promise<T | null>;
-  findOne(filter: Partial<T>): Promise<T | null>;          // any subset of fields
-  findMany(filter: Partial<T>, options?: FindOptions): Promise<T[]>;
-  create(data: Omit<T, "id">): Promise<T>;
-  update(id: string, data: Partial<T>): Promise<T | null>;
-  delete(id: string): Promise<boolean>;
-}
-```
+## Authentication
 
-Mongo implementation passes the `Partial<T>` (or richer filter) straight through. No per-entity query methods required for the common case. Later Postgres implementation keeps the same interface.
+Match the current cookie, then close the gaps in the auth slice.
 
-## Statistics & Expedition Simplification
+The C# cookie in `Program.cs` is:
 
-### Current pain points
-- Naming overload: `StatisticsEntity` (permanent attributes + skills) vs `BattleStatistics` (computed combat snapshot) vs resource fields copied into `ProgressEntity`.
-- Scattered responsibility: calculation in `StatisticsService`, snapshot in `ProgressService.StartExpedition`, re-computation on every random battle in `ExpeditionService.CheckBattle`.
-- Live resources stored in two places (`ProgressEntity` + `BattleEntity`) with unclear write-back (battle sync is still a TODO).
-- Skills mixed into the Statistics domain.
-- Lots of manual property-by-property mapping and large switch statements.
+- Name `errant_tower_auth`.
+- HttpOnly, `Secure` always, `SameSite=None` (the client and the API are different sites).
+- Persistent, with a 7-day sliding expiry.
+- Payload is the user id.
+- Set on `POST /auth/sign-up-complete` and `POST /auth/sign-in-complete`.
 
-### Proposed streamlined model
+There is no logout route and no server-side session. A copied cookie stays valid until it expires. There is no CSRF token.
 
-**Clearer names (in `@errant/shared`)**:
+Action codes stay as they are: 15-minute expiry, 3 attempts, hash stored on the user.
 
-```ts
-/** Permanent character progression (persisted) */
-export interface Character { /* attributes, points, learnedSkills */ }
+Session invalidation: store one session id on the user. The signed cookie carries the user id and that session id. Each authenticated request checks it. `POST /auth/sign-out` clears the cookie and rotates the id, which signs out every browser for that user.
 
-/** Derived combat snapshot (computed, not persisted as-is) */
-export interface CombatStats {
-  speed: number;
-  maxHealth: number;
-  health: number;          // current
-  maxMana: number;
-  mana: number;
-  maxEnergy: number;
-  energy: number;
-  physicalAttack: number;
-  // ... remaining combat fields
-}
+CSRF, given `SameSite=None`: mutating routes accept `application/json` only and require the header `X-Errant-Request: 1`, so the browser preflights and the CORS allowlist applies. The WebSocket upgrade uses the same cookie and the same origin allowlist. No antiforgery package.
 
-/** Live mutable resources during an expedition */
-export type ResourcePools = Pick<CombatStats, "health" | "mana" | "energy">;
-export type ResourceMaxes = Pick<CombatStats, "maxHealth" | "maxMana" | "maxEnergy">;
-```
+## Realtime
 
-**Single computation + snapshot at expedition start**:
-- Compute `CombatStats` **once** when the expedition starts (attributes + current equipment + passive skills).
-- Store maxes + current resources on the expedition/progress document.
-- Do **not** recompute full stats on every random battle; just clone the current live resources into the battle.
+Replace SignalR with the messages the hub already has. One module, `expedition-hub`. No general socket layer.
 
-**Battle uses a live clone, then writes back in one place**:
-- On battle start: clone current live resources into `BattleEntity`.
-- On battle end: write remaining resources back to the expedition state in a single update.
+| Direction | Message | Body |
+| --- | --- | --- |
+| Client to server | `move` | `{ direction }` using Up=1, Down=2, Left=3, Right=4 |
+| Server to client | `moved` | `{ x, y, initiative, battleId? }` |
+| Server to client | `error` | `{ key }` |
 
-**TypeScript helpers that remove boilerplate**:
+The socket requires the same session cookie. A missing or dead session closes the connection.
 
-```ts
-export function applyModifiers(stats: CombatStats, modifiers: SkillProperty[]): CombatStats { /* ... */ }
-export function updateResources(stats: CombatStats, updates: Partial<ResourcePools>): CombatStats {
-  return { ...stats, ...updates };
-}
-```
+On disconnect, persist the in-memory expedition and drop it, as `ExpeditionHub.OnDisconnectedAsync` does today.
 
-### Resulting organization
+On reconnect, the server does not replay state. The client loads `GET` expedition again. The page already does that on mount. The port also does it after reconnect. The current SignalR client reconnects and does not refetch.
 
-| Concern                        | Where it lives                  | Notes |
-|--------------------------------|---------------------------------|-------|
-| Permanent attributes + skills  | `Character` document            | Renamed from `StatisticsEntity` |
-| Combat calculation             | Pure function `computeCombatStats` | Called once at expedition start |
-| Live resources during expedition | Fields on Progress / session  | Single source of truth |
-| Battle                         | Holds a clone of `CombatStats`  | Writes remaining resources back on finish |
-| Skill tree logic               | Thin service next to Character  | No longer mixed into “statistics” |
+## Combat behavior to preserve
 
-## Migration Phases
+At expedition start, copy health, mana, and energy maxes and currents from the computed battle stats onto the progress document.
 
-**Phase 0 – Prep**
-1. Create root `package.json`, `pnpm-workspace.yaml`, `tsconfig.base.json`, `.oxlintrc.json`, `.oxfmtrc.json` (adapted from space-scheme).
-2. Move `apps/errant-tower-client` → `apps/client` and wire into the workspace.
-3. Create empty `packages/shared` and `apps/server`.
+On each random battle, recompute battle stats from the live character, current equipment, and active skills. Attack and the other combat fields are not stored on the expedition.
 
-**Phase 1 – Shared Types**
-1. Port domain entities, DTOs, and enums into `packages/shared`.
-2. Add derived types (`Create*`, `Update*`, `Public*`, `CombatStats`, `ResourcePools`, generic `Repository<T>`).
-3. Optional: co-located Zod schemas.
+Equipment and skill changes during an expedition affect the next battle. That is what `ExpeditionService.CheckBattle` does today.
 
-**Phase 2 – Server Skeleton**
-1. Fastify app with cookie auth, CORS, WebSocket plugin, error handling.
-2. Mongo client singleton + index creation on startup.
-3. Generic repository base + Mongo implementations.
+A later change may freeze a full combat snapshot. That needs an explicit gameplay rule, and it is a separate step after the loop is ported.
 
-**Phase 3 – Domain-by-Domain Port**
-Order (bottom-up):
-1. Users (auth + email via Resend)
-2. Character / Attributes / Skills (replaces Statistics domain)
-3. Equipments / Items
-4. Progress / Expeditions (with simplified combat snapshot)
-5. Battles
-6. Floors / Enemies (mostly static data)
+Battle completion does not write resources back to progress (`TODO(#93)`).
 
-**Phase 4 – Client Switchover**
-1. Remove Orval and generated client.
-2. Import types from `@errant/shared`.
-3. Replace generated hooks with thin React Query wrappers.
-4. Update SignalR client to the new WebSocket protocol.
+## Database access
 
-**Phase 5 – Cleanup**
-- Delete the entire C# `apps/errant-tower-server`.
-- Align remaining scripts, engines, and CI.
-- Recreate Mongo indexes and any seed data.
-- Smoke-test auth, expeditions, and a full play loop.
+One small module per domain that is being ported, with the operations that route needs (`findUserByEmail`, `updateProgress`, and so on). Name the fields in the filter. Extract a shared helper only after the same code appears twice.
 
-## Database Abstraction (future Postgres)
+## Sequence
 
-Keep the exact same `Repository<T>` interface and `Partial<T>` query style. Only the implementation class changes (Drizzle or Prisma will accept similar filters).
+1. Workspace. Done on `main`.
+2. Auth slice. Fastify on port 4000, MongoDB, the cookie session, the four auth routes, boundary validation, and the sign-in and sign-up pages in `packages/client`. That client talks only to the TypeScript server. `apps/client` stays on the C# server.
+3. One expedition and battle loop with the behavior above, including the three socket messages. The expedition and battle pages in `packages/client` call the TypeScript server for that loop.
+4. Focused checks for auth (expiry, logout, rejected cookie), combat math against the C# results, and resource write-back as it works today, including the missing battle sync.
+5. Combat model simplification, only after a gameplay rule is written down.
+6. Remove the C# server, `apps/client`, Orval, and SignalR after the replacement flows work. `packages/client` is then the only client.
 
-## Tooling Alignment Checklist
-- [ ] Root `packageManager` + `devEngines` matching space-scheme
-- [ ] Same oxlint + oxfmt configs
-- [ ] `tsconfig.base.json` extended by all packages
-- [ ] Workspace protocol dependencies (`workspace:*`)
-- [ ] Consistent scripts: `lint`, `format`, `start`, `build`
+Shared contracts are added inside steps 2 and 3, beside the route that uses them.
 
----
+## Next step
 
-This plan keeps the migration small, type-safe, and aligned with the existing frontend/space-scheme stack while leaving a clean escape hatch to Postgres and simplifying the most tangled domain (statistics + expeditions).
+Implement the auth slice. Do not start the expedition port in that same change.
