@@ -9,7 +9,9 @@
         "lint": "oxlint .",
         "start": "pnpm --filter @errant/client start",
         "start:map-editor": "pnpm --filter @errant/map-editor start",
-        "start:ts-client": "pnpm --filter @errant/client-ts start"
+        "start:server": "pnpm --filter @errant/server start",
+        "start:ts-client": "pnpm --filter @errant/client-ts start",
+        "test": "pnpm -r --if-present test"
     },
     "devDependencies": {
         "oxfmt": "^0.70.0",

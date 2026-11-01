@@ -28,13 +28,17 @@ export const customFetch = async <T>(config: FetchConfig, options?: RequestInit)
 
         const queryString = serializedParams ? `?${serializedParams}` : "";
 
+        const method = config.method.toUpperCase();
+        const isMutation = method !== "GET" && method !== "HEAD" && method !== "OPTIONS";
+
         const response = await fetch(appConfig.baseUrl + config.url + queryString, {
             ...options,
-            method: config.method,
+            method,
             body: config.data === undefined ? undefined : JSON.stringify(config.data),
             headers: {
                 ...config.headers,
-                "Content-Type": "application/json",
+                ...(config.data !== undefined ? { "Content-Type": "application/json" } : {}),
+                ...(isMutation ? { "X-Errant-Request": "1" } : {}),
             },
             credentials: "include",
             signal: config.signal,
@@ -43,9 +47,7 @@ export const customFetch = async <T>(config: FetchConfig, options?: RequestInit)
         if (!response.ok) {
             let errors: ApiError[];
             try {
-                errors = ((await response.json()) as ApiErrorResponse).errors ?? [
-                    { key: "errors.unknown" },
-                ];
+                errors = ((await response.json()) as ApiErrorResponse).errors ?? [{ key: "errors.unknown" }];
             } catch {
                 errors = [{ key: "errors.unknown" }];
             }
