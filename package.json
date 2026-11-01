@@ -8,6 +8,7 @@
         "format": "oxfmt .",
         "lint": "oxlint .",
         "start": "pnpm --filter @errant/client start",
+        "start:map-editor": "pnpm --filter @errant/map-editor start",
         "start:ts-client": "pnpm --filter @errant/client-ts start"
     },
     "devDependencies": {

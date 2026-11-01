@@ -5,7 +5,7 @@ Living checklist for [SERVER_TS_REWRITE.md](../SERVER_TS_REWRITE.md). Update the
 ## Where things stand
 
 - Branch: `main`, through PR #129 (`chore: prepare the TypeScript pnpm workspace`).
-- Side-by-side test: `apps/client` (`@errant/client`, port 5173) calls the C# server at `https://localhost:7135`. `packages/client` (`@errant/client-ts`, port 5174) calls the TypeScript server at `http://localhost:4000`. `packages/server` is the moved empty server (`src/index.ts` is `export {}`). `packages/shared` is still empty. The C# server stays at `apps/errant-tower-server`. The map editor stays at `apps/map-editor`, outside the workspace.
+- Side-by-side test: `apps/client` (`@errant/client`, port 5173) calls the C# server at `https://localhost:7135`. `packages/client` (`@errant/client-ts`, port 5174) calls the TypeScript server at `http://localhost:4000`. `packages/server` is the moved empty server (`src/index.ts` is `export {}`). `packages/shared` is still empty. The C# server stays at `apps/errant-tower-server`. The map editor is `packages/map-editor` (`@errant/map-editor`, Vite port 5175) and is a workspace member.
 - `server/ts-rewrite-phase-0` is not the next base. It duplicates the folder move and commits `.vs`, `obj`, and `appsettings.Development.json`. Leave it.
 
 ## Decided
@@ -24,7 +24,7 @@ Combat freeze is decided for the port: do not freeze. Recompute battle stats on 
 - [x] `apps/client` in the workspace.
 - [x] Empty `packages/server` (moved from `apps/server`) and `packages/shared`.
 - [x] `packages/client` is a copy of the client, pointed at port 4000. `apps/client` stays pointed at the C# server.
-- [x] Map editor stays outside the workspace.
+- [x] Map editor is `packages/map-editor`, on the shared tsconfig, oxlint, and oxfmt.
 - [ ] Do not revive `server/ts-rewrite-phase-0`.
 
 ### 2. Auth slice (next)

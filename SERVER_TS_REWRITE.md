@@ -8,6 +8,7 @@ Workspace setup is already on `main` (PR #129): pnpm, root oxlint / oxfmt / Type
 - `packages/client` (`@errant/client-ts`, Vite port 5174) calls the TypeScript server at `http://localhost:4000`.
 - The TypeScript server package is `packages/server`. It does not listen yet.
 - The C# server stays at `apps/errant-tower-server`.
+- The map editor is `packages/map-editor` (`@errant/map-editor`, Vite port 5175). It is a workspace member and uses the shared tsconfig, oxlint, and oxfmt.
 
 Do not merge `server/ts-rewrite-phase-0`. That branch commits IDE output, build output, and `appsettings.Development.json`.
 
