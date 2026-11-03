@@ -1,7 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-import { wrapMutation, wrapQuery } from "../../api/api-proxy";
+import { wrapMutation, wrapQuery } from "../../api-old/api-proxy";
 import {
     ItemSlot,
     ItemType,
@@ -9,7 +9,7 @@ import {
     type GetBagResponse,
     type GetEquipmentResponse,
     type Item,
-} from "../../api/generated/definitions";
+} from "../../api-old/generated/definitions";
 import {
     getGetBagQueryKey,
     getGetEquipmentQueryKey,
@@ -17,7 +17,7 @@ import {
     useGetBag,
     useGetEquipment,
     useUnequipItem,
-} from "../../api/generated/hooks";
+} from "../../api-old/generated/hooks";
 import { AppError } from "../../common/components/app-error";
 import { AppItem } from "../../common/components/app-item";
 import { handItemTypes } from "./character-utils";

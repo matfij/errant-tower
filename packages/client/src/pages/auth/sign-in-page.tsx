@@ -2,8 +2,8 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
 
-import { wrapMutation } from "../../api/api-proxy";
-import { useCompleteSignIn, useStartSignIn } from "../../api/generated/hooks";
+import { completeSignInRequest, startSignInRequest } from "../../api/auth-api";
+import { useApiRequest } from "../../api/api-utils";
 import { routes } from "../../common/config";
 import { useUserStore } from "../../common/state/user-store";
 import { validateAuthCode, validateEmail } from "./auth-utils";
@@ -13,8 +13,8 @@ import styles from "./auth-page.module.scss";
 export const SignInPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const startSignIn = wrapMutation(useStartSignIn)();
-    const completeSignIn = wrapMutation(useCompleteSignIn)();
+    const startSignIn = useApiRequest(startSignInRequest);
+    const completeSignIn = useApiRequest(completeSignInRequest);
     const signIn = useUserStore((state) => state.actions.signIn);
     const [email, setEmail] = useState("");
     const [emailError, setEmailError] = useState("");
@@ -112,14 +112,12 @@ export const SignInPage = () => {
                             value={actionCode}
                             onChange={onActionCodeChange}
                         />
-                        {actionCodeError && (
-                            <p className={styles.formError}>{t(actionCodeError)}</p>
-                        )}
+                        {actionCodeError && <p className={styles.formError}>{t(actionCodeError)}</p>}
                     </>
                 )}
 
-                {signInErrors.map((error) => (
-                    <p key={error.key} className={styles.formApiError}>
+                {signInErrors.map((error, index) => (
+                    <p key={`${error.key}-${error.field ?? index}`} className={styles.formApiError}>
                         {t(error.key)}
                     </p>
                 ))}

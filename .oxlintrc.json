@@ -17,11 +17,22 @@
         "react/rules-of-hooks": "error",
         "react/set-state-in-effect": "allow",
         "react/exhaustive-deps": "allow",
-        "react/only-export-components": ["warn", { "allowConstantExport": true }]
+        "react/only-export-components": ["warn", { "allowConstantExport": true }],
+        "func-style": ["error", "expression", { "allowArrowFunctions": true }],
+        "prefer-arrow-callback": "error"
     },
+    "overrides": [
+        {
+            "files": ["apps/**"],
+            "rules": {
+                "func-style": "off",
+                "prefer-arrow-callback": "off"
+            }
+        }
+    ],
     "ignorePatterns": [
         "apps/client/src/api/generated",
-        "packages/client/src/api/generated",
+        "packages/client/src/api-old/generated",
         "apps/errant-tower-server",
         "dist"
     ]

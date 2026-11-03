@@ -1,6 +1,6 @@
 import type { UseMutationResult, UseQueryResult } from "@tanstack/react-query";
 
-import type { ApiError } from "./api-error";
+import type { ApiError } from "../api/api-error";
 
 const mutationCache = new WeakMap<() => unknown, () => unknown>();
 
@@ -20,14 +20,18 @@ type WrappedMutationVoid<TData> = {
     call: (args?: void, options?: { onSuccess?: (data: TData) => void }) => void;
 };
 
+// Overload signatures have to be function declarations.
+// oxlint-disable-next-line func-style
 export function wrapMutation<TData>(
     mutationHook: () => UseMutationResult<TData, ApiError[], void>,
 ): () => WrappedMutationVoid<TData>;
 
+// oxlint-disable-next-line func-style
 export function wrapMutation<TData, TArguments>(
     mutationHook: () => UseMutationResult<TData, ApiError[], { data: TArguments }>,
 ): () => WrappedMutation<TData, TArguments>;
 
+// oxlint-disable-next-line func-style
 export function wrapMutation(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mutationHook: () => UseMutationResult<unknown, ApiError[], any>,
@@ -45,9 +49,7 @@ export function wrapMutation(
             isSuccess: mutation.isSuccess,
             errors: mutation.error || undefined,
             call: (args?: unknown, options?: { onSuccess?: (data: unknown) => void }) => {
-                const mutateOptions = options?.onSuccess
-                    ? { onSuccess: options.onSuccess }
-                    : undefined;
+                const mutateOptions = options?.onSuccess ? { onSuccess: options.onSuccess } : undefined;
 
                 if (args === undefined) {
                     mutation.mutate(undefined, mutateOptions);
@@ -72,9 +74,9 @@ type WrappedQuery<TData> = {
     errors?: ApiError[];
 };
 
-export function wrapQuery<TData>(
+export const wrapQuery = <TData>(
     queryHook: () => UseQueryResult<TData, ApiError[]>,
-): () => WrappedQuery<TData> {
+): (() => WrappedQuery<TData>) => {
     if (queryCache.has(queryHook)) {
         return queryCache.get(queryHook) as () => WrappedQuery<TData>;
     }
@@ -92,4 +94,4 @@ export function wrapQuery<TData>(
     queryCache.set(queryHook, wrappedQuery);
 
     return wrappedQuery;
-}
+};

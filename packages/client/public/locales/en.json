@@ -25,7 +25,8 @@
         "notSignedUp": "Not registered yet?",
         "signUpNow": "Join now",
         "alreadySignedUp": "Already have an account?",
-        "signInNow": "Sign in"
+        "signInNow": "Sign in",
+        "signOut": "Sign out"
     },
     "explore": {
         "expeditionLevel": "Expedition level",
@@ -192,6 +193,17 @@
         "actionCodeInvalid": "Enter a valid auth code",
         "actionCodeNotSet": "Start sign in first",
         "actionCodeExpired": "Auth code expired",
-        "actionCodeAttemptsExceeded": "Sign in limit reached, sign in again"
+        "actionCodeAttemptsExceeded": "Sign in limit reached, sign in again",
+        "emailInUse": "Email is already in use",
+        "signUpStarted": "Sign-up already started. Check your email, or wait for the code to expire",
+        "usernameInUse": "Username is already in use",
+        "emailSendFailed": "Could not send the email",
+        "userAlreadyConfirmed": "This account is already confirmed",
+        "userNotConfirmed": "Confirm your account before signing in",
+        "validation": "Check the form and try again",
+        "fatal": "Something went wrong",
+        "notFound": "Not found",
+        "unauthorized": "Sign in again",
+        "forbidden": "Request was rejected"
     }
 }

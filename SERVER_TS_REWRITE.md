@@ -64,7 +64,9 @@ There is no logout route and no server-side session. A copied cookie stays valid
 
 Action codes stay as they are: 15-minute expiry, 3 attempts, hash stored on the user.
 
-Session invalidation: store one session id on the user. The signed cookie carries the user id and that session id. Each authenticated request checks it. `POST /auth/sign-out` clears the cookie and rotates the id, which signs out every browser for that user.
+Session invalidation: store one session id on the user. The signed cookie carries the user id, that session id, and an expiry. Each authenticated request checks both ids and the expiry, then refreshes the expiry and the cookie max-age (7-day sliding window). `POST /auth/sign-out` clears the cookie and rotates the id, which signs out every browser for that user.
+
+`GET /auth/session` returns `{ userId, username }` for a valid cookie and `401` otherwise. The TypeScript client calls it on load. A `401` clears the local user, so protected pages treat a dead cookie as signed out.
 
 CSRF, given `SameSite=None`: mutating routes accept `application/json` only and require the header `X-Errant-Request: 1`, so the browser preflights and the CORS allowlist applies. The WebSocket upgrade uses the same cookie and the same origin allowlist. No antiforgery package.
 
@@ -72,11 +74,11 @@ CSRF, given `SameSite=None`: mutating routes accept `application/json` only and 
 
 Replace SignalR with the messages the hub already has. One module, `expedition-hub`. No general socket layer.
 
-| Direction | Message | Body |
-| --- | --- | --- |
-| Client to server | `move` | `{ direction }` using Up=1, Down=2, Left=3, Right=4 |
-| Server to client | `moved` | `{ x, y, initiative, battleId? }` |
-| Server to client | `error` | `{ key }` |
+| Direction        | Message | Body                                                |
+| ---------------- | ------- | --------------------------------------------------- |
+| Client to server | `move`  | `{ direction }` using Up=1, Down=2, Left=3, Right=4 |
+| Server to client | `moved` | `{ x, y, initiative, battleId? }`                   |
+| Server to client | `error` | `{ key }`                                           |
 
 The socket requires the same session cookie. A missing or dead session closes the connection.
 
@@ -113,4 +115,4 @@ Shared contracts are added inside steps 2 and 3, beside the route that uses them
 
 ## Next step
 
-Implement the auth slice. Do not start the expedition port in that same change.
+Implement one expedition and battle loop. Do not start combat-model simplification in that same change.

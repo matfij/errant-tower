@@ -4,15 +4,16 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import { AppPage } from "./common/components/app-page";
 import { ProtectedRoute } from "./common/components/protected-route";
 import { routes } from "./common/config";
+import { SessionGate } from "./common/session-gate";
 import { AuthPage } from "./pages/auth/auth-page";
 import { SignInPage } from "./pages/auth/sign-in-page";
 import { SignUpPage } from "./pages/auth/sign-up-page";
+import { BattlePage } from "./pages/battle/battle-page";
 import { CharacterPage } from "./pages/character/character-page";
 import { CraftingPage } from "./pages/crafting/crafting-page";
 import { ExpeditionPage } from "./pages/expedition/expedition-page";
 import { ExplorePage } from "./pages/explore/explore-page";
 import { SkillsPage } from "./pages/skills/skills-page";
-import { BattlePage } from "./pages/battle/battle-page";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -28,22 +29,24 @@ export const AppComponent = () => {
     return (
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
-                <Routes>
-                    <Route path={routes.root} element={<AuthPage />} />
-                    <Route path={routes.signIn} element={<SignInPage />} />
-                    <Route path={routes.signUp} element={<SignUpPage />} />
-                    <Route element={<ProtectedRoute redirectTo={routes.root} />}>
-                        <Route element={<AppPage />}>
-                            <Route path={routes.character} element={<CharacterPage />} />
-                            <Route path={routes.skills} element={<SkillsPage />} />
-                            <Route path={routes.crafting} element={<CraftingPage />} />
-                            <Route path={routes.explore} element={<ExplorePage />} />
+                <SessionGate>
+                    <Routes>
+                        <Route path={routes.root} element={<AuthPage />} />
+                        <Route path={routes.signIn} element={<SignInPage />} />
+                        <Route path={routes.signUp} element={<SignUpPage />} />
+                        <Route element={<ProtectedRoute redirectTo={routes.root} />}>
+                            <Route element={<AppPage />}>
+                                <Route path={routes.character} element={<CharacterPage />} />
+                                <Route path={routes.skills} element={<SkillsPage />} />
+                                <Route path={routes.crafting} element={<CraftingPage />} />
+                                <Route path={routes.explore} element={<ExplorePage />} />
+                            </Route>
+                            <Route path={routes.expedition} element={<ExpeditionPage />} />
+                            <Route path={routes.battle} element={<BattlePage />} />
                         </Route>
-                        <Route path={routes.expedition} element={<ExpeditionPage />} />
-                        <Route path={routes.battle} element={<BattlePage />} />
-                    </Route>
-                    <Route path="*" element={<Navigate to={routes.root} replace />} />
-                </Routes>
+                        <Route path="*" element={<Navigate to={routes.root} replace />} />
+                    </Routes>
+                </SessionGate>
             </BrowserRouter>
         </QueryClientProvider>
     );

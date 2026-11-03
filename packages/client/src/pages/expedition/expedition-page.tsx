@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
-import { wrapQuery } from "../../api/api-proxy";
-import type { GetExpeditionResponse } from "../../api/generated/definitions";
-import { useGetExpedition } from "../../api/generated/hooks";
+import { wrapQuery } from "../../api-old/api-proxy";
+import type { GetExpeditionResponse } from "../../api-old/generated/definitions";
+import { useGetExpedition } from "../../api-old/generated/hooks";
 import { routes } from "../../common/config";
 import { ExpeditionHub, MoveDirection, type MoveResponse } from "./expedition-hub";
 import { ExpeditionPanel } from "./expedition-panel";

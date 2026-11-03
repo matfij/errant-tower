@@ -1,12 +1,20 @@
-import { NavLink } from "react-router";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { NavLink, useNavigate } from "react-router";
 
+import { signOutRequest } from "../../api/auth-api";
 import { routes } from "../config";
+import { useUserStore } from "../state/user-store";
 import { colors } from "../theme";
 import { AppIcon, type IconName } from "./app-icon";
 
 import styles from "./app-navbar.module.scss";
 
 export const AppNavbar = () => {
+    const { t } = useTranslation();
+    const navigate = useNavigate();
+    const signOut = useUserStore((state) => state.actions.signOut);
+    const [isSigningOut, setIsSigningOut] = useState(false);
     const navRoutes = [
         { key: "character", route: routes.character, label: "Character" },
         { key: "skills", route: routes.skills, label: "Skills" },
@@ -33,6 +41,27 @@ export const AppNavbar = () => {
                     )}
                 </NavLink>
             ))}
+            <button
+                type="button"
+                className={styles.signOut}
+                disabled={isSigningOut}
+                onClick={() => {
+                    if (isSigningOut) {
+                        return;
+                    }
+                    setIsSigningOut(true);
+                    void signOutRequest()
+                        .then(() => {
+                            signOut();
+                            navigate(routes.root);
+                        })
+                        .catch(() => {
+                            setIsSigningOut(false);
+                        });
+                }}
+            >
+                {t("auth.signOut")}
+            </button>
         </section>
     );
 };

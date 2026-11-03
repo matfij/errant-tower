@@ -1,4 +1,4 @@
-import { ItemType } from "../../api/generated/definitions";
+import { ItemType } from "../../api-old/generated/definitions";
 
 export const handItemTypes: ItemType[] = [
     ItemType.Sword,

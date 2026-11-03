@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-import { wrapQuery } from "../../api/api-proxy";
-import { type BattleCharacter, type GetBattleResponse } from "../../api/generated/definitions";
-import { useGetBattle } from "../../api/generated/hooks";
+import { wrapQuery } from "../../api-old/api-proxy";
+import { type BattleCharacter, type GetBattleResponse } from "../../api-old/generated/definitions";
+import { useGetBattle } from "../../api-old/generated/hooks";
 import { AppProgress } from "../../common/components/app-progress";
 import { routes } from "../../common/config";
 
