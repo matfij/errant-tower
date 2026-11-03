@@ -2,25 +2,24 @@ import cookie from "@fastify/cookie";
 import cors from "@fastify/cors";
 import Fastify, { type FastifyInstance } from "fastify";
 
-import { registerAuthRoutes } from "./auth/routes.ts";
-import { createAuthService } from "./auth/service.ts";
-import type { UserStore } from "./db/user-store.ts";
-import type { EmailSender } from "./email/resend.ts";
-import { errorBody, HttpError } from "./http/errors.ts";
-import { registerMutationGuard } from "./http/guard.ts";
+import type { EmailService } from "./common/email/email-service.ts";
+import { HttpError } from "./common/http/errors.ts";
+import { MutationGuardService } from "./common/http/guard.ts";
+import { LogService } from "./common/log.ts";
+import type { UserRepository } from "./domains/users/user-repository.ts";
+import { UserService } from "./domains/users/user-service.ts";
+import { AuthOrchestrator } from "./orchestrator/auth-orchestrator.ts";
+import { AuthRoutes } from "./orchestrator/auth-routes.ts";
 
 export type BuildAppOptions = {
     logger: boolean | object;
     corsOrigins: string[];
     cookieSecret: string;
-    users: UserStore;
-    emails: EmailSender;
-    now: () => number;
-    newId: () => string;
-    newActionCode: () => string;
+    userRepository: UserRepository;
+    emailService: EmailService;
 };
 
-export async function buildApp(options: BuildAppOptions): Promise<FastifyInstance> {
+export const buildApp = async (options: BuildAppOptions): Promise<FastifyInstance> => {
     const app = Fastify({ logger: options.logger });
 
     app.removeContentTypeParser("application/json");
@@ -30,11 +29,10 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
             done(null, {});
             return;
         }
-
         try {
             done(null, JSON.parse(text) as unknown);
         } catch {
-            done(new HttpError(400, [{ key: "errors.validation" }]), undefined);
+            done(new HttpError("errors.validation"), undefined);
         }
     });
 
@@ -46,33 +44,23 @@ export async function buildApp(options: BuildAppOptions): Promise<FastifyInstanc
         allowedHeaders: ["Content-Type", "X-Errant-Request"],
     });
 
-    registerMutationGuard(app);
+    LogService.bind(app.log);
 
-    const service = createAuthService({
-        users: options.users,
-        emails: options.emails,
-        now: options.now,
-        newId: options.newId,
-        newActionCode: options.newActionCode,
-        log: app.log,
-    });
+    MutationGuardService.register(app);
 
-    registerAuthRoutes(app, {
-        service,
-        users: options.users,
-        cookieSecret: options.cookieSecret,
-        now: options.now,
-        newId: options.newId,
-    });
+    new AuthRoutes(
+        new AuthOrchestrator(new UserService(options.userRepository, options.emailService)),
+        options.userRepository,
+        options.cookieSecret,
+    ).register(app);
 
-    app.setErrorHandler((error, request, reply) => {
+    app.setErrorHandler((error, _request, reply) => {
         if (error instanceof HttpError) {
-            return reply.status(error.status).send(errorBody(error.errors));
+            return reply.status(error.statusCode).send(error.body());
         }
-
-        request.log.error({ err: error }, "Unhandled exception");
-        return reply.status(500).send(errorBody([{ key: "errors.fatal" }]));
+        LogService.error({ err: error }, "Unhandled exception");
+        return reply.status(500).send(new HttpError("errors.fatal", 500).body());
     });
 
     return app;
-}
+};

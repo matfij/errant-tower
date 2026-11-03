@@ -12,7 +12,7 @@ import type { ApiError } from "./api-error";
 
 export const sessionQueryKey = ["auth-session"] as const;
 
-async function readErrors(response: Response): Promise<ApiError[]> {
+const readErrors = async (response: Response): Promise<ApiError[]> => {
     try {
         const body = (await response.json()) as { errors?: ApiErrorItem[] };
         if (body.errors && body.errors.length > 0) {
@@ -22,9 +22,9 @@ async function readErrors(response: Response): Promise<ApiError[]> {
         // The body was not the error shape.
     }
     return [{ key: "errors.unknown" }];
-}
+};
 
-async function postAuth<T>(path: string, body: unknown): Promise<T> {
+const postAuth = async <T>(path: string, body: unknown): Promise<T> => {
     let response: Response;
     try {
         response = await fetch(`${appConfig.baseUrl}${path}`, {
@@ -49,25 +49,25 @@ async function postAuth<T>(path: string, body: unknown): Promise<T> {
         return undefined as T;
     }
     return JSON.parse(text) as T;
-}
+};
 
-export function startSignUpRequest(body: StartSignUpRequest): Promise<void> {
+export const startSignUpRequest = (body: StartSignUpRequest): Promise<void> => {
     return postAuth("/auth/sign-up-start", body);
-}
+};
 
-export function completeSignUpRequest(body: CompleteSignUpRequest): Promise<AuthUserResponse> {
+export const completeSignUpRequest = (body: CompleteSignUpRequest): Promise<AuthUserResponse> => {
     return postAuth("/auth/sign-up-complete", body);
-}
+};
 
-export function startSignInRequest(body: StartSignInRequest): Promise<void> {
+export const startSignInRequest = (body: StartSignInRequest): Promise<void> => {
     return postAuth("/auth/sign-in-start", body);
-}
+};
 
-export function completeSignInRequest(body: CompleteSignInRequest): Promise<AuthUserResponse> {
+export const completeSignInRequest = (body: CompleteSignInRequest): Promise<AuthUserResponse> => {
     return postAuth("/auth/sign-in-complete", body);
-}
+};
 
-export async function signOutRequest(): Promise<void> {
+export const signOutRequest = async (): Promise<void> => {
     let response: Response;
     try {
         response = await fetch(`${appConfig.baseUrl}/auth/sign-out`, {
@@ -87,9 +87,9 @@ export async function signOutRequest(): Promise<void> {
         return;
     }
     throw await readErrors(response);
-}
+};
 
-export async function fetchSession(): Promise<AuthUserResponse | null> {
+export const fetchSession = async (): Promise<AuthUserResponse | null> => {
     let response: Response;
     try {
         response = await fetch(`${appConfig.baseUrl}/auth/session`, {
@@ -107,4 +107,4 @@ export async function fetchSession(): Promise<AuthUserResponse | null> {
         throw await readErrors(response);
     }
     return (await response.json()) as AuthUserResponse;
-}
+};

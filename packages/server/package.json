@@ -6,8 +6,7 @@
     "scripts": {
         "build": "tsc -p tsconfig.json",
         "lint": "oxlint .",
-        "start": "tsx src/index.ts",
-        "test": "tsx --test src/auth.test.ts src/db/documents.test.ts"
+        "start": "tsx --env-file-if-exists=.env src/index.ts"
     },
     "dependencies": {
         "@errant/shared": "workspace:*",

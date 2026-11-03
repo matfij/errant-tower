@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import type { ApiError } from "./api-error";
 
-export function useAuthRequest<TArguments, TResult>(request: (args: TArguments) => Promise<TResult>) {
+export const useAuthRequest = <TArguments, TResult>(request: (args: TArguments) => Promise<TResult>) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [data, setData] = useState<TResult>();
@@ -30,4 +30,4 @@ export function useAuthRequest<TArguments, TResult>(request: (args: TArguments) 
     };
 
     return { isLoading, isSuccess, data, errors, call };
-}
+};

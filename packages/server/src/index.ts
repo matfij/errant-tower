@@ -1,17 +1,9 @@
-import { randomUUID } from "node:crypto";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-
 import { buildApp } from "./app.ts";
-import { generateActionCode } from "./auth/action-code.ts";
-import { loadConfig, loadEnvFile } from "./config.ts";
-import { connectMongo } from "./db/mongo-store.ts";
-import { createResendSender } from "./email/resend.ts";
+import { EmailService } from "./common/email/email-service.ts";
+import { config } from "./config.ts";
+import { MongoConnector } from "./db/mongo-connector.ts";
 
-loadEnvFile(resolve(dirname(fileURLToPath(import.meta.url)), "../.env"));
-
-const config = loadConfig(process.env);
-const mongo = await connectMongo({
+const mongo = await MongoConnector.connect({
     uri: config.mongodbUri,
     database: config.mongodbDatabase,
 });
@@ -20,25 +12,18 @@ const app = await buildApp({
     logger: true,
     corsOrigins: config.corsOrigins,
     cookieSecret: config.cookieSecret,
-    users: mongo.users,
-    emails: createResendSender({
+    userRepository: mongo.userRepository,
+    emailService: new EmailService({
         apiKey: config.resendApiKey,
         fromAddress: config.emailFromAddress,
         fromName: config.emailFromName,
     }),
-    now: () => Date.now(),
-    newId: () => randomUUID(),
-    newActionCode: generateActionCode,
-});
-
-app.addHook("onClose", async () => {
-    await mongo.close();
 });
 
 for (const signal of ["SIGINT", "SIGTERM"] as const) {
     process.on(signal, () => {
-        void app.close();
+        void app.close().finally(() => mongo.close());
     });
 }
 
-await app.listen({ port: config.port, host: "0.0.0.0" });
+await app.listen({ port: config.port, host: config.host });
