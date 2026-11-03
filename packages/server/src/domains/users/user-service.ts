@@ -90,8 +90,14 @@ export class UserService {
 
     async startSignIn(email: string): Promise<void> {
         const user = await this.getConfirmedUser(email);
+        const previous = {
+            actionCodeHash: user.actionCodeHash,
+            actionCodeAttempts: user.actionCodeAttempts,
+            actionCodeExpiresAt: user.actionCodeExpiresAt,
+        };
         const actionCode = UserUtilsService.generateActionCode();
-        user.actionCodeHash = UserUtilsService.hashActionCode(actionCode);
+        const actionCodeHash = UserUtilsService.hashActionCode(actionCode);
+        user.actionCodeHash = actionCodeHash;
         user.actionCodeAttempts = 0;
         user.actionCodeExpiresAt = UtilsService.timeNow() + config.actionCodeTtlMs;
         await this.userRepository.replace(user);
@@ -101,6 +107,7 @@ export class UserService {
             await this.emailService.send(user.email, email.subject, email.html(user.username, actionCode));
         } catch (error) {
             LogService.error({ err: error, email: user.email }, "Failed to send sign-in email");
+            await this.userRepository.replace({ ...user, ...previous });
             throw new HttpError("errors.emailSendFailed");
         }
     }

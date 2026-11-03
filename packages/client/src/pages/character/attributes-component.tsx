@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
-import { wrapMutation, wrapQuery } from "../../api/api-proxy";
-import { UserAttribute, type GetAttributesResponse } from "../../api/generated/definitions";
-import { useExtendAttribute, useGetAttributes } from "../../api/generated/hooks";
+import { wrapMutation, wrapQuery } from "../../api-old/api-proxy";
+import { UserAttribute, type GetAttributesResponse } from "../../api-old/generated/definitions";
+import { useExtendAttribute, useGetAttributes } from "../../api-old/generated/hooks";
 import { AppError } from "../../common/components/app-error";
 import { AppIcon } from "../../common/components/app-icon";
 import { AppTooltip } from "../../common/components/app-tooltip";

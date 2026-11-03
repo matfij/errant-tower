@@ -1,6 +1,6 @@
-import { wrapQuery } from "../../api/api-proxy";
-import type { GetFloorsResponse } from "../../api/generated/definitions";
-import { useGetFloors } from "../../api/generated/hooks";
+import { wrapQuery } from "../../api-old/api-proxy";
+import type { GetFloorsResponse } from "../../api-old/generated/definitions";
+import { useGetFloors } from "../../api-old/generated/hooks";
 import { DomainItem } from "./domain-item";
 
 import styles from "./explore-page.module.scss";

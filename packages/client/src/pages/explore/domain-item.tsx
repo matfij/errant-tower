@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 
-import { wrapMutation } from "../../api/api-proxy";
-import type { DomainFloors } from "../../api/generated/definitions";
-import { useStartExpedition } from "../../api/generated/hooks";
+import { wrapMutation } from "../../api-old/api-proxy";
+import type { DomainFloors } from "../../api-old/generated/definitions";
+import { useStartExpedition } from "../../api-old/generated/hooks";
 import { AppSegmentButton } from "../../common/components/app-segment-button";
 import { routes } from "../../common/config";
 import { arabicToRoman } from "../../common/utils";

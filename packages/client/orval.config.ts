@@ -1,14 +1,14 @@
 export default {
     api: {
-        input: "./src/api/swagger.json",
+        input: "./src/api-old/swagger.json",
         output: {
             mode: "split",
-            target: "./src/api/generated/hooks.ts",
-            schemas: "./src/api/generated/definitions",
+            target: "./src/api-old/generated/hooks.ts",
+            schemas: "./src/api-old/generated/definitions",
             client: "react-query",
             override: {
                 mutator: {
-                    path: "./src/api/custom-fetch.ts",
+                    path: "./src/api-old/custom-fetch.ts",
                     name: "customFetch",
                 },
                 query: {

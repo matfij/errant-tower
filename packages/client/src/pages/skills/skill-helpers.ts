@@ -6,7 +6,7 @@ import {
     type SkillEffect,
     type SkillProperty,
     type UserSkill,
-} from "../../api/generated/definitions";
+} from "../../api-old/generated/definitions";
 import { toLowerFirst, toPercentLabel } from "../../common/utils";
 
 export const SKILL_MAX_LEVEL = 10;

@@ -32,7 +32,7 @@
     ],
     "ignorePatterns": [
         "apps/client/src/api/generated",
-        "packages/client/src/api/generated",
+        "packages/client/src/api-old/generated",
         "apps/errant-tower-server",
         "dist"
     ]

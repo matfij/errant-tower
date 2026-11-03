@@ -54,6 +54,10 @@ export const buildApp = async (options: BuildAppOptions): Promise<FastifyInstanc
         options.cookieSecret,
     ).register(app);
 
+    app.setNotFoundHandler((_request, reply) => {
+        return reply.status(404).send(new HttpError("errors.notFound", 404).body());
+    });
+
     app.setErrorHandler((error, _request, reply) => {
         if (error instanceof HttpError) {
             return reply.status(error.statusCode).send(error.body());

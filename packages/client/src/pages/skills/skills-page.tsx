@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
-import { wrapMutation, wrapQuery } from "../../api/api-proxy";
+import { wrapMutation, wrapQuery } from "../../api-old/api-proxy";
 import {
     SkillPath,
     type GetSkillTreeResponse,
     type UserSkill,
-} from "../../api/generated/definitions";
-import { useGetSkillTree, useLearnSkill, useResetSkills } from "../../api/generated/hooks";
+} from "../../api-old/generated/definitions";
+import { useGetSkillTree, useLearnSkill, useResetSkills } from "../../api-old/generated/hooks";
 import { SkillItem } from "./skill-item";
 import { SkillSummary } from "./skill-summary";
 

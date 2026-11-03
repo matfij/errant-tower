@@ -1,10 +1,9 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState, type ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
 
-import { completeSignInRequest, sessionQueryKey, startSignInRequest } from "../../api/auth-api";
-import { useAuthRequest } from "../../api/use-auth-request";
+import { completeSignInRequest, startSignInRequest } from "../../api/auth-api";
+import { useApiRequest } from "../../api/api-utils";
 import { routes } from "../../common/config";
 import { useUserStore } from "../../common/state/user-store";
 import { validateAuthCode, validateEmail } from "./auth-utils";
@@ -14,9 +13,8 @@ import styles from "./auth-page.module.scss";
 export const SignInPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const queryClient = useQueryClient();
-    const startSignIn = useAuthRequest(startSignInRequest);
-    const completeSignIn = useAuthRequest(completeSignInRequest);
+    const startSignIn = useApiRequest(startSignInRequest);
+    const completeSignIn = useApiRequest(completeSignInRequest);
     const signIn = useUserStore((state) => state.actions.signIn);
     const [email, setEmail] = useState("");
     const [emailError, setEmailError] = useState("");
@@ -28,11 +26,10 @@ export const SignInPage = () => {
 
     useEffect(() => {
         if (completeSignIn.isSuccess && completeSignIn.data) {
-            queryClient.setQueryData(sessionQueryKey, completeSignIn.data);
             signIn({ username: completeSignIn.data.username });
             navigate(routes.character);
         }
-    }, [signIn, navigate, queryClient, completeSignIn.isSuccess, completeSignIn.data]);
+    }, [signIn, navigate, completeSignIn.isSuccess, completeSignIn.data]);
 
     const onEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
         setEmailError("");

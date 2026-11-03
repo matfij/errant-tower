@@ -1,8 +1,8 @@
 import { useQueryClient } from "@tanstack/react-query";
 
-import { wrapQuery } from "../../api/api-proxy";
-import type { GetBattleStatisticsResponse } from "../../api/generated/definitions";
-import { getGetBattleStatisticsQueryKey, useGetBattleStatistics } from "../../api/generated/hooks";
+import { wrapQuery } from "../../api-old/api-proxy";
+import type { GetBattleStatisticsResponse } from "../../api-old/generated/definitions";
+import { getGetBattleStatisticsQueryKey, useGetBattleStatistics } from "../../api-old/generated/hooks";
 import { AttributesComponent } from "./attributes-component";
 import { EquipmentComponent } from "./equipment-component";
 import { StatisticsComponent } from "./statistics-component";

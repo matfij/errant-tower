@@ -1,5 +1,5 @@
 import { appConfig } from "../common/config";
-import type { ApiError, ApiErrorResponse } from "./api-error";
+import type { ApiError, ApiErrorResponse } from "../api/api-error";
 
 interface FetchConfig {
     url: string;

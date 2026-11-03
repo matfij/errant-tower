@@ -1,6 +1,6 @@
 import type { UseMutationResult, UseQueryResult } from "@tanstack/react-query";
 
-import type { ApiError } from "./api-error";
+import type { ApiError } from "../api/api-error";
 
 const mutationCache = new WeakMap<() => unknown, () => unknown>();
 

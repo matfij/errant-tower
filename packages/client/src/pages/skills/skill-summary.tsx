@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-import type { UserSkill } from "../../api/generated/definitions";
+import type { UserSkill } from "../../api-old/generated/definitions";
 import { AppTooltip } from "../../common/components/app-tooltip";
 import { toPercentLabel } from "../../common/utils";
 import { getSkillColor, SKILL_MAX_LEVEL, skillPathToLabel, useSkillLabels } from "./skill-helpers";

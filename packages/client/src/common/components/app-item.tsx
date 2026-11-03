@@ -1,4 +1,4 @@
-import { ItemRarity, type Item } from "../../api/generated/definitions";
+import { ItemRarity, type Item } from "../../api-old/generated/definitions";
 import { colors } from "../theme";
 
 import styles from "./app-item.module.scss";

@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
-import type { GetBattleStatisticsResponse } from "../../api/generated/definitions";
+import type { GetBattleStatisticsResponse } from "../../api-old/generated/definitions";
 import { appConfig } from "../../common/config";
 import { hasValue } from "../../common/utils";
 

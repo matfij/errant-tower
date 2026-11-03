@@ -1,9 +1,8 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router";
 
-import { sessionQueryKey, signOutRequest } from "../../api/auth-api";
+import { signOutRequest } from "../../api/auth-api";
 import { routes } from "../config";
 import { useUserStore } from "../state/user-store";
 import { colors } from "../theme";
@@ -14,7 +13,6 @@ import styles from "./app-navbar.module.scss";
 export const AppNavbar = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const queryClient = useQueryClient();
     const signOut = useUserStore((state) => state.actions.signOut);
     const [isSigningOut, setIsSigningOut] = useState(false);
     const navRoutes = [
@@ -54,7 +52,6 @@ export const AppNavbar = () => {
                     setIsSigningOut(true);
                     void signOutRequest()
                         .then(() => {
-                            queryClient.setQueryData(sessionQueryKey, null);
                             signOut();
                             navigate(routes.root);
                         })
