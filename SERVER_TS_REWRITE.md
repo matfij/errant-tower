@@ -6,13 +6,13 @@ Workspace setup is already on `main` (PR #129): pnpm, root oxlint / oxfmt / Type
 
 - `apps/client` (`@errant/client`, Vite port 5173) calls the C# server at `https://localhost:7135`.
 - `packages/client` (`@errant/client-ts`, Vite port 5174) calls the TypeScript server at `http://localhost:4000`.
-- The TypeScript server package is `packages/server`. It does not listen yet.
+- The TypeScript server package is `packages/server`. It listens on port 4000 and serves auth.
 - The C# server stays at `apps/errant-tower-server`.
 - The map editor is `packages/map-editor` (`@errant/map-editor`, Vite port 5175). It is a workspace member and uses the shared tsconfig, oxlint, and oxfmt.
 
 Do not merge `server/ts-rewrite-phase-0`. That branch commits IDE output, build output, and `appsettings.Development.json`.
 
-Progress lives in [docs/ts-rewrite-progress.md](docs/ts-rewrite-progress.md).
+Progress lives in [docs/ts-rewrite-progress.md](docs/ts-rewrite-progress.md). Review rules live in [TS_REWRITE_RULES.md](TS_REWRITE_RULES.md). Update that file when new feedback lands.
 
 ## Keep
 
@@ -104,15 +104,29 @@ One small module per domain that is being ported, with the operations that route
 
 ## Sequence
 
-1. Workspace. Done on `main`.
-2. Auth slice. Fastify on port 4000, MongoDB, the cookie session, the four auth routes, boundary validation, and the sign-in and sign-up pages in `packages/client`. That client talks only to the TypeScript server. `apps/client` stays on the C# server.
-3. One expedition and battle loop with the behavior above, including the three socket messages. The expedition and battle pages in `packages/client` call the TypeScript server for that loop.
-4. Focused checks for auth (expiry, logout, rejected cookie), combat math against the C# results, and resource write-back as it works today, including the missing battle sync.
-5. Combat model simplification, only after a gameplay rule is written down.
-6. Remove the C# server, `apps/client`, Orval, and SignalR after the replacement flows work. `packages/client` is then the only client.
+Build up from modules that do not need the rest of the game. A slice lands only when every call it makes already exists. Do not add a temporary stub for a domain that comes later.
 
-Shared contracts are added inside steps 2 and 3, beside the route that uses them.
+1. Workspace. Done on `main`.
+2. Auth slice. Done on `main` (PR #132). Fastify on port 4000, MongoDB, the cookie session, the auth routes, boundary validation, and the sign-in and sign-up pages in `packages/client`. That client talks only to the TypeScript server. `apps/client` stays on the C# server. Sign-up does not create progress, statistics, or equipment yet. Each of those domains wires its own `createInitial` when it lands.
+3. Skill catalog. Static skill types, effects, the registry, and the data files. No Mongo and no routes. Nothing else in the server imports this until a later slice.
+4. Combat-stat shape and the item catalog. `BattleStatistics`, attribute types, and the item registry. An item stores a stat block and nothing else. No routes.
+5. Statistics document and attributes. The statistics collection, `createInitial` from sign-up, `get-attributes`, and `extend-attribute`. The attributes section in `packages/client` calls these routes. The battle-stat formula stays out: it reads equipped items and passive skills.
+6. Equipment. Needs the item catalog and the attribute read. `createInitial` from sign-up, `get-equipment`, `get-bag`, `equip-item`, and `unequip-item`. `AwardItems` lands here too. It only writes the equipment document. The equipment section in `packages/client` calls these routes.
+7. Skills and battle statistics. Needs the skill catalog, the statistics document, and the equipment list. `get-skill-tree`, `learn-skill`, `reset-skills`, and `get-battle-statistics`. The formula applies equipped items and passive skills for real. The skills page and the statistics section in `packages/client` call these routes.
+8. Enemy catalog. Static enemies. Each enemy points at item ids, skill ids, and a stat block that already exist. No routes.
+9. Floor catalog. Static floors, tile sheets, and weighted enemies and treasures. No routes.
+10. Progress. Needs floors and the battle-stat formula. `createInitial` from sign-up, `get-floors`, `start-expedition`, and `get-expedition`. Start copies health, mana, and energy maxes and currents onto progress. The explore page in `packages/client` calls these routes.
+11. Battles. Needs enemies, battle stats, and active skills. `Start` and `Get` only. `BattleService.Act` stays unported. `get-battle` is the route. The battle page in `packages/client` calls it. Movement is what creates a battle, so this slice does not start one.
+12. Expedition movement. Needs progress, equipment, battle stats, skills, and battles. The three socket messages, cookie auth, and persist-and-drop on disconnect. Each random battle recomputes combat stats. Battle end still does not write resources back. The expedition page calls the socket and refetches expedition after reconnect.
+
+Then:
+
+13. Focused checks for auth (expiry, logout, rejected cookie), combat math against the C# results, and resource write-back as it works today, including the missing battle sync.
+14. Combat model simplification, only after a gameplay rule is written down.
+15. Remove the C# server, `apps/client`, Orval, and SignalR after the replacement flows work. `packages/client` is then the only client.
+
+Shared contracts are added beside the route that uses them.
 
 ## Next step
 
-Implement one expedition and battle loop. Do not start combat-model simplification in that same change.
+Implement the combat-stat shape and the item catalog. Do not start statistics or the expedition loop in that same change.
