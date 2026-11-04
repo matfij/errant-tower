@@ -85,12 +85,16 @@ export class AuthRoutes {
 
     private static readonly startSignUpBody = z.object({
         email: z.string().email(),
-        username: z.string().min(4).max(16),
+        username: z
+            .string()
+            .min(4)
+            .max(16)
+            .regex(/^[A-Za-z0-9_]+$/),
     });
 
     private static readonly completeSignUpBody = z.object({
         email: z.string().email(),
-        actionCode: z.string().length(6),
+        actionCode: z.string().length(6).regex(/^\d+$/),
     });
 
     private static readonly startSignInBody = z.object({
@@ -99,7 +103,7 @@ export class AuthRoutes {
 
     private static readonly completeSignInBody = z.object({
         email: z.string().email(),
-        actionCode: z.string().length(6),
+        actionCode: z.string().length(6).regex(/^\d+$/),
     });
 
     private readPayload(request: FastifyRequest): SessionPayload | null {

@@ -70,6 +70,8 @@ Catalog enums are strings. Do not keep the C# integer values. HTTP enums for a p
 
 - `HttpError` extends `Error` and is constructed with `new`. Fields, then the constructors, then `body()`. `new HttpError(key)` is 400. `new HttpError(key, statusCode)` sets the status. `new HttpError(statusCode, errors)` is the list form. The error handler sends `error.body()`.
 - `RequestBodyService.parse` infers the body type from the schema argument. Do not pass an explicit type argument or annotate the variable.
+- Keep Zod schemas on the server. Do not share them through `packages/shared` or run them in the UI. The client keeps a small check per field and maps it to a locale key. `packages/shared` stays types only.
+- An action code is six digits (`length(6)` and `/^\d+$/`). Reject any other shape in the request schema, before the attempt counter runs. A username is 4–16 characters matching `/^[A-Za-z0-9_]+$/`.
 - A route handler builds the response object at the return. Do not add a mapper on the route class.
 - Unknown routes use `setNotFoundHandler` and return 404 `{ errors: [{ key: "errors.notFound" }] }`. They do not fall through to the 500 handler.
 - Business and validation errors stay 400. 401 is only a missing or dead session.
