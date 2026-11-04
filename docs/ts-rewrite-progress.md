@@ -1,10 +1,10 @@
 # TypeScript rewrite progress
 
-Living checklist for [SERVER_TS_REWRITE.md](../SERVER_TS_REWRITE.md). Update the status line when a slice merges. Keep gameplay changes out of this list until step 5.
+Living checklist for [SERVER_TS_REWRITE.md](../SERVER_TS_REWRITE.md). Review rules live in [TS_REWRITE_RULES.md](../TS_REWRITE_RULES.md). Update the status line when a slice merges. Keep gameplay changes out of this list until the combat simplification step.
 
 ## Where things stand
 
-- Branch: `server/ts-auth-slice`. Workspace setup is on `main` through PR #130.
+- Branch: `main`. Workspace setup is on `main` through PR #130. Auth is on `main` through PR #132.
 - Side-by-side test: `apps/client` (`@errant/client`, port 5173) calls the C# server at `https://localhost:7135`. `packages/client` (`@errant/client-ts`, port 5174) calls the TypeScript server at `http://localhost:4000`. `packages/server` serves auth on port 4000. `packages/shared` holds the auth request and response types. The C# server stays at `apps/errant-tower-server`. The map editor is `packages/map-editor` (`@errant/map-editor`, Vite port 5175) and is a workspace member.
 - `server/ts-rewrite-phase-0` is not the next base. It duplicates the folder move and commits `.vs`, `obj`, and `appsettings.Development.json`. Leave it.
 
@@ -14,7 +14,9 @@ Session invalidation: one session id on the user document. The signed cookie car
 
 CSRF: JSON-only mutations plus the header `X-Errant-Request: 1`, with the existing CORS allowlist. No token framework.
 
-Combat freeze is decided for the port: do not freeze. Recompute battle stats on each random battle, as `CheckBattle` does now. Revisit only in step 5.
+Combat freeze is decided for the port: do not freeze. Recompute battle stats on each random battle, as `CheckBattle` does now. Revisit only in the combat simplification step.
+
+Port order follows dependencies. A slice does not stub a domain that lands later. Sign-up wires `createInitial` for progress, statistics, and equipment in the slice that adds that domain. Accounts created before that slice have no row for it.
 
 ## Checklist
 
@@ -27,7 +29,7 @@ Combat freeze is decided for the port: do not freeze. Recompute battle stats on 
 - [x] Map editor is `packages/map-editor`, on the shared tsconfig, oxlint, and oxfmt.
 - [ ] Do not revive `server/ts-rewrite-phase-0`.
 
-### 2. Auth slice (this branch)
+### 2. Auth slice
 
 Server:
 
@@ -41,7 +43,7 @@ Server:
 - [x] Reject mutating requests that are not JSON or that omit `X-Errant-Request`.
 - [x] Validate bodies at the boundary. Return `{ errors: [{ key, field? }] }`.
 - [x] Action codes: 15 minutes, 3 attempts, stored hash. Email through Resend (`RESEND_API_KEY`, `EMAIL_FROM_ADDRESS`, `EMAIL_FROM_NAME`).
-- [x] Sign-up completion still creates the initial progress, statistics, and equipment rows. Those creators can be thin ports of the C# inserts. Do not port the rest of those domains here.
+- [x] Sign-up leaves progress, statistics, and equipment uncreated. Those `createInitial` calls stay commented until the domain slice wires them.
 - [x] User reads and writes live in a server-only module. No generic repository.
 
 Client:
@@ -57,28 +59,100 @@ Checks:
 
 Done when: a new user can sign up and sign in through the UI, reload, and still be authenticated, and sign-out kills that cookie.
 
-### 3. Expedition and battle loop
+### 3. Skill catalog
+
+Static only. No Mongo and no routes.
+
+- [x] Skill types, effects, properties, registry, and the skill data files.
+- [x] No HTTP route and no client page in this slice.
+
+Done when: the server can resolve a skill id to its definition, and nothing else in the port depends on a skill stub.
+
+### 4. Combat-stat shape and item catalog (next)
+
+- [ ] `BattleStatistics` and the attribute types.
+- [ ] Item types, the item registry, and the item data.
+- [ ] No HTTP route and no client page in this slice.
+
+Done when: the server can resolve an item id, including its stat block.
+
+### 5. Statistics document and attributes
+
+- [ ] Statistics collection and repository. `createInitial` runs from sign-up completion.
+- [ ] `get-attributes` and `extend-attribute`.
+- [ ] The attributes section in `packages/client` calls these routes. `apps/client` stays on the C# server.
+- [ ] The battle-stat formula is not in this slice.
+
+Done when: a new user gets a statistics row, and the attributes section can read and spend points.
+
+### 6. Equipment
+
+- [ ] Equipment collection and repository. `createInitial` runs from sign-up completion, with the same starter bag as the C# insert.
+- [ ] `get-equipment`, `get-bag`, `equip-item`, and `unequip-item`. Equip checks requirements against the attribute read.
+- [ ] `AwardItems` writes silver and bag items. Nothing calls it until expedition rewards.
+- [ ] The equipment section in `packages/client` calls these routes.
+
+Done when: a new user can see the starter bag and equip a piece through the UI.
+
+### 7. Skills and battle statistics
+
+- [ ] `get-skill-tree`, `learn-skill`, and `reset-skills`, using the statistics document and the skill catalog.
+- [ ] `get-battle-statistics` recomputes from attributes, equipped items, and passive skills.
+- [ ] The skills page and the statistics section in `packages/client` call these routes.
+
+Done when: learning a passive skill changes the battle statistics the character page shows.
+
+### 8. Enemy catalog
+
+- [ ] Enemy types, the enemy registry, and the enemy data. Loot points at item ids. Skills point at skill ids. Stats use `BattleStatistics`.
+- [ ] No HTTP route and no client page in this slice.
+
+Done when: the server can resolve an enemy id.
+
+### 9. Floor catalog
+
+- [ ] Floor types, the floor registry, the floor data, and the tile sheets.
+- [ ] No HTTP route and no client page in this slice.
+
+Done when: the server can resolve a floor id, including its tiles, enemies, and treasures.
+
+### 10. Progress
+
+- [ ] Progress collection and repository. `createInitial` runs from sign-up completion.
+- [ ] `get-floors`, `start-expedition`, and `get-expedition`.
+- [ ] Expedition start copies health, mana, and energy maxes and currents from the computed battle stats onto progress.
+- [ ] The explore page in `packages/client` calls these routes.
+
+Done when: a signed-in user can open the explore page and start an expedition.
+
+### 11. Battles
+
+- [ ] Battle collection. `Start` and `Get` only. `BattleService.Act` is not ported.
+- [ ] `get-battle`.
+- [ ] The battle page in `packages/client` calls this route.
+- [ ] This slice does not start a battle. Expedition movement does that.
+
+Done when: `get-battle` returns a stored battle in the same shape the C# route returns.
+
+### 12. Expedition movement
 
 Port current behavior only.
 
-- [ ] Routes used by that loop: start expedition, get expedition, get battle, and the data they read (progress, statistics, equipment, skills, static floors and enemies).
 - [ ] Socket messages `move`, `moved`, and `error` only. Cookie auth. Persist and drop the session on disconnect.
 - [ ] Client refetches expedition after the socket reconnects.
-- [ ] Expedition start copies resource maxes and currents onto progress.
 - [ ] Each random battle recomputes combat stats from the live character, equipment, and skills.
 - [ ] Battle end does not write resources back (`TODO(#93)` stays).
-- [ ] Shared types are the request and response fields this loop actually sends. Persistence stays in `packages/server`.
-- [ ] `packages/client` calls the TypeScript server for this loop. `apps/client` keeps calling the C# server.
+- [ ] The expedition page in `packages/client` uses this socket. `apps/client` keeps calling the C# server.
 
-Done when: from the existing client, a signed-in user can start an expedition, move, enter a random battle, and see the same results the C# server would produce for the same state.
+Done when: from `packages/client`, a signed-in user can start an expedition, move, enter a random battle, and see the same results the C# server would produce for the same state.
 
-### 4. Focused checks
+### 13. Focused checks
 
 - [ ] Auth cases from step 2 still pass after later routes land.
 - [ ] Combat calculation fixtures compared with the C# results for the same attributes, equipment, and skills.
 - [ ] Resource write-back test documents today's behavior, including the missing battle sync.
 
-### 5. Combat simplification (separate)
+### 14. Combat simplification (separate)
 
 Blocked until someone writes the rule: do equipment and skill changes affect an expedition that is already running?
 
@@ -86,7 +160,7 @@ Blocked until someone writes the rule: do equipment and skill changes affect an 
 - [ ] If stats are frozen, persist the full snapshot the battles need, not only resource maxes and currents.
 - [ ] Names cleaned up in the files this change touches.
 
-### 6. Remove the old stack
+### 15. Remove the old stack
 
 - [ ] C# `apps/errant-tower-server` deleted.
 - [ ] Orval, the generated client, and SignalR removed.
