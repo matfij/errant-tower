@@ -68,15 +68,15 @@ Static only. No Mongo and no routes.
 
 Done when: the server can resolve a skill id to its definition, and nothing else in the port depends on a skill stub.
 
-### 4. Combat-stat shape and item catalog (next)
+### 4. Combat-stat shape and item catalog
 
-- [ ] `BattleStatistics` and the attribute types.
-- [ ] Item types, the item registry, and the item data.
-- [ ] No HTTP route and no client page in this slice.
+- [x] `BattleStatistics` and the attribute types.
+- [x] Item types, the item registry, and the item data.
+- [x] No HTTP route and no client page in this slice.
 
 Done when: the server can resolve an item id, including its stat block.
 
-### 5. Statistics document and attributes
+### 5. Statistics document and attributes (next)
 
 - [ ] Statistics collection and repository. `createInitial` runs from sign-up completion.
 - [ ] `get-attributes` and `extend-attribute`.

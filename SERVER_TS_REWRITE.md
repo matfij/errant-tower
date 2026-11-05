@@ -129,4 +129,4 @@ Shared contracts are added beside the route that uses them.
 
 ## Next step
 
-Implement the combat-stat shape and the item catalog. Do not start statistics or the expedition loop in that same change.
+Implement the statistics document and attributes. The statistics collection, `createInitial` from sign-up, `get-attributes`, and `extend-attribute`. The attributes section in `packages/client` calls these routes. The battle-stat formula stays out: it reads equipped items and passive skills. Do not start equipment in that same change.

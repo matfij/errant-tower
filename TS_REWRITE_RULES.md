@@ -15,9 +15,28 @@ A static catalog is a dictionary plus helpers. It is not a service class. Items,
 - The definition file does not import the registry.
 - Data objects are plain consts. Do not annotate them with an inline object type. The type comes from the define helper.
 - Each data entry uses the enum: `guid: SkillGuid.Scratch`.
+- A data object that lists many entities marks each group with a block comment directly above the first entry. The comment is the block in `dungeon-items.ts`, and the groups there are Weapons, Armors, Charms, and Loots:
+
+    ```ts
+    /*
+     * Weapons
+     */
+    ```
+
+    Do not mark those groups with a `//` line.
 - Write level lists as literal arrays. Do not generate them with `Array.from`, `.map`, or helpers such as `defenseDown` and `percentSteps`.
 - No startup validator. A missing id fails `tsc` through `satisfies`. Do not add an oxlint plugin or tests for array length unless asked. The server has no test suite.
 - The catalog stays in `packages/server`. Shared response types are added beside the route that returns them. Client wiring is that route's slice, not the catalog slice.
+
+## Combat stats
+
+`BattleStatistics`, `UserAttributes`, and the `UserAttribute` string enum live in `domains/statistics/statistics-definition.ts`. That file is the shape only. The statistics collection, `SkillTree`, and `UserSkill` wait for their own slices.
+
+`BattleStatistics` is a full numeric block. Every field is a number. `defineBattleStatistics` in `statistics-utils.ts` fills an omitted field with 0. A draft passes only the fields it sets. A missing stat block on an item is omitted (`statistics?: BattleStatistics`). Do not store `null`.
+
+Item requirements omit a missing attribute (`strength?: number`). Do not store 0 for an attribute the item does not require. `isStackable` defaults to false.
+
+Items follow the skill catalog: `item-definition.ts` (`ItemGuid` first), `item-registry.ts` (`items`, then `getItem`, then the private guard), `item-utils.ts` (`defineItem`), and `data/dungeon-items.ts`. `getItem` throws `HttpError("errors.itemNotDefined")`. The registry does not re-export `ItemGuid`. No item route in the catalog slice.
 
 ## File order
 
