@@ -5,12 +5,15 @@ import { tenacitySkills } from "./data/tenacity-skills.ts";
 import { SkillGuid, type Skill } from "./skill-definition.ts";
 
 export const skills = {
+    // Beast
     [SkillGuid.Scratch]: beastSkills.scratch,
     [SkillGuid.Bite]: beastSkills.bite,
     [SkillGuid.TailWhip]: beastSkills.tailWhip,
     [SkillGuid.Tackle]: beastSkills.tackle,
     [SkillGuid.Cut]: beastSkills.cut,
     [SkillGuid.Peck]: beastSkills.peck,
+
+    // Blade
     [SkillGuid.Slash]: bladeSkills.slash,
     [SkillGuid.SwiftStrike]: bladeSkills.swiftStrike,
     [SkillGuid.TwinEdge]: bladeSkills.twinEdge,
@@ -18,6 +21,8 @@ export const skills = {
     [SkillGuid.FlashStrike]: bladeSkills.flashStrike,
     [SkillGuid.TriEdge]: bladeSkills.triEdge,
     [SkillGuid.BloodthirstyBlade]: bladeSkills.bloodthirstyBlade,
+
+    // Tenacity
     [SkillGuid.GreatVigor]: tenacitySkills.greatVigor,
     [SkillGuid.Armorer]: tenacitySkills.armorer,
     [SkillGuid.Resistance]: tenacitySkills.resistance,

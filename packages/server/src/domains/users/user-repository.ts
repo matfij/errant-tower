@@ -15,37 +15,37 @@ export type UserDocument = {
 };
 
 export type UserRepository = {
-    findById(id: string): Promise<UserEntity | null>;
-    findByEmail(email: string): Promise<UserEntity | null>;
-    findByUsername(username: string): Promise<UserEntity | null>;
-    insert(user: UserEntity): Promise<void>;
-    replace(user: UserEntity): Promise<void>;
+    create(user: UserEntity): Promise<void>;
+    readById(id: string): Promise<UserEntity | null>;
+    readByEmail(email: string): Promise<UserEntity | null>;
+    readByUsername(username: string): Promise<UserEntity | null>;
+    update(user: UserEntity): Promise<void>;
     delete(id: string): Promise<void>;
 };
 
 export class MongoUserRepository implements UserRepository {
     constructor(private readonly usersCollection: Collection<UserDocument>) {}
 
-    async findById(id: string): Promise<UserEntity | null> {
+    async create(user: UserEntity): Promise<void> {
+        await this.usersCollection.insertOne(MongoUserRepository.toUserDocument(user));
+    }
+
+    async readById(id: string): Promise<UserEntity | null> {
         const document = await this.usersCollection.findOne({ _id: id });
         return document === null ? null : MongoUserRepository.toUserEntity(document);
     }
 
-    async findByEmail(email: string): Promise<UserEntity | null> {
+    async readByEmail(email: string): Promise<UserEntity | null> {
         const document = await this.usersCollection.findOne({ Email: email });
         return document === null ? null : MongoUserRepository.toUserEntity(document);
     }
 
-    async findByUsername(username: string): Promise<UserEntity | null> {
+    async readByUsername(username: string): Promise<UserEntity | null> {
         const document = await this.usersCollection.findOne({ Username: username });
         return document === null ? null : MongoUserRepository.toUserEntity(document);
     }
 
-    async insert(user: UserEntity): Promise<void> {
-        await this.usersCollection.insertOne(MongoUserRepository.toUserDocument(user));
-    }
-
-    async replace(user: UserEntity): Promise<void> {
+    async update(user: UserEntity): Promise<void> {
         const result = await this.usersCollection.replaceOne(
             { _id: user.id },
             MongoUserRepository.toUserDocument(user),

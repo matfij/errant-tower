@@ -6,7 +6,7 @@ Workspace setup is already on `main` (PR #129): pnpm, root oxlint / oxfmt / Type
 
 - `apps/client` (`@errant/client`, Vite port 5173) calls the C# server at `https://localhost:7135`.
 - `packages/client` (`@errant/client-ts`, Vite port 5174) calls the TypeScript server at `http://localhost:4000`.
-- The TypeScript server package is `packages/server`. It listens on port 4000 and serves auth.
+- The TypeScript server package is `packages/server`. It listens on port 4000 and serves auth and attributes.
 - The C# server stays at `apps/errant-tower-server`.
 - The map editor is `packages/map-editor` (`@errant/map-editor`, Vite port 5175). It is a workspace member and uses the shared tsconfig, oxlint, and oxfmt.
 
@@ -129,4 +129,4 @@ Shared contracts are added beside the route that uses them.
 
 ## Next step
 
-Implement the statistics document and attributes. The statistics collection, `createInitial` from sign-up, `get-attributes`, and `extend-attribute`. The attributes section in `packages/client` calls these routes. The battle-stat formula stays out: it reads equipped items and passive skills. Do not start equipment in that same change.
+Implement equipment. Needs the item catalog and the attribute read. `createInitial` from sign-up, `get-equipment`, `get-bag`, `equip-item`, and `unequip-item`. `AwardItems` lands here too. It only writes the equipment document. The equipment section in `packages/client` calls these routes. Do not start the battle-stat formula in that same change.

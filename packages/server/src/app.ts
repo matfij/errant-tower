@@ -6,16 +6,22 @@ import type { EmailService } from "./common/email/email-service.ts";
 import { HttpError } from "./common/http/errors.ts";
 import { MutationGuardService } from "./common/http/guard.ts";
 import { LogService } from "./common/log.ts";
+import type { StatisticsRepository } from "./domains/statistics/statistics-repository.ts";
+import { StatisticsService } from "./domains/statistics/statistics-service.ts";
 import type { UserRepository } from "./domains/users/user-repository.ts";
 import { UserService } from "./domains/users/user-service.ts";
 import { AuthOrchestrator } from "./orchestrator/auth-orchestrator.ts";
 import { AuthRoutes } from "./orchestrator/auth-routes.ts";
+import { AuthSessionService } from "./orchestrator/auth-session-service.ts";
+import { StatisticsOrchestrator } from "./orchestrator/statistics-orchestrator.ts";
+import { StatisticsRoutes } from "./orchestrator/statistics-routes.ts";
 
 export type BuildAppOptions = {
     logger: boolean | object;
     corsOrigins: string[];
     cookieSecret: string;
     userRepository: UserRepository;
+    statisticsRepository: StatisticsRepository;
     emailService: EmailService;
 };
 
@@ -48,11 +54,16 @@ export const buildApp = async (options: BuildAppOptions): Promise<FastifyInstanc
 
     MutationGuardService.register(app);
 
-    new AuthRoutes(
-        new AuthOrchestrator(new UserService(options.userRepository, options.emailService)),
-        options.userRepository,
-        options.cookieSecret,
-    ).register(app);
+    const authSessionService = new AuthSessionService(options.userRepository, options.cookieSecret);
+    const userService = new UserService(options.userRepository, options.emailService);
+    const statisticsService = new StatisticsService(options.statisticsRepository);
+    const authOrchestrator = new AuthOrchestrator(userService, statisticsService);
+    const statisticsOrchestrator = new StatisticsOrchestrator(statisticsService);
+    const authRoutes = new AuthRoutes(authOrchestrator, authSessionService);
+    const statisticsRoutes = new StatisticsRoutes(statisticsOrchestrator, authSessionService);
+
+    authRoutes.register(app);
+    statisticsRoutes.register(app);
 
     app.setNotFoundHandler((_request, reply) => {
         return reply.status(404).send(new HttpError("errors.notFound", 404).body());

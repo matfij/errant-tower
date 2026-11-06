@@ -21,7 +21,7 @@ export class UserService {
     }
 
     async startSignUp(email: string, username: string): Promise<void> {
-        const existing = await this.userRepository.findByEmail(email);
+        const existing = await this.userRepository.readByEmail(email);
         const restart =
             existing !== null &&
             !existing.isConfirmed &&
@@ -30,7 +30,7 @@ export class UserService {
             throw new HttpError(existing.isConfirmed ? "errors.emailInUse" : "errors.signUpStarted");
         }
 
-        const usernameOwner = await this.userRepository.findByUsername(username);
+        const usernameOwner = await this.userRepository.readByUsername(username);
         if (usernameOwner !== null && usernameOwner.id !== existing?.id) {
             throw new HttpError("errors.usernameInUse");
         }
@@ -52,7 +52,7 @@ export class UserService {
         };
 
         try {
-            await this.userRepository.insert(user);
+            await this.userRepository.create(user);
         } catch (error) {
             if (error instanceof MongoServerError && error.code === dbErrorCodes.duplicatedKey) {
                 const pattern = error.keyPattern ?? {};
@@ -72,7 +72,7 @@ export class UserService {
     }
 
     async completeSignUp(email: string, actionCode: string): Promise<UserEntity> {
-        const user = await this.userRepository.findByEmail(email);
+        const user = await this.userRepository.readByEmail(email);
         if (user === null) {
             throw new HttpError("errors.userNotFound");
         }
@@ -84,7 +84,7 @@ export class UserService {
         user.isConfirmed = true;
         this.clearActionCode(user);
         user.sessionId = UtilsService.newId();
-        await this.userRepository.replace(user);
+        await this.userRepository.update(user);
         return user;
     }
 
@@ -100,14 +100,14 @@ export class UserService {
         user.actionCodeHash = actionCodeHash;
         user.actionCodeAttempts = 0;
         user.actionCodeExpiresAt = UtilsService.timeNow() + config.actionCodeTtlMs;
-        await this.userRepository.replace(user);
+        await this.userRepository.update(user);
 
         try {
             const email = userEmailTemplates.signIn;
             await this.emailService.send(user.email, email.subject, email.html(user.username, actionCode));
         } catch (error) {
             LogService.error({ err: error, email: user.email }, "Failed to send sign-in email");
-            await this.userRepository.replace({ ...user, ...previous });
+            await this.userRepository.update({ ...user, ...previous });
             throw new HttpError("errors.emailSendFailed");
         }
     }
@@ -117,7 +117,7 @@ export class UserService {
         await this.verifyActionCode(user, actionCode);
         this.clearActionCode(user);
         user.sessionId = UtilsService.newId();
-        await this.userRepository.replace(user);
+        await this.userRepository.update(user);
         return user;
     }
 
@@ -128,7 +128,7 @@ export class UserService {
     }
 
     private async getConfirmedUser(email: string): Promise<UserEntity> {
-        const user = await this.userRepository.findByEmail(email);
+        const user = await this.userRepository.readByEmail(email);
         if (user === null) {
             throw new HttpError("errors.userNotFound");
         }
@@ -150,7 +150,7 @@ export class UserService {
         }
         if (!UserUtilsService.actionCodeMatches(actionCode, user.actionCodeHash)) {
             user.actionCodeAttempts = (user.actionCodeAttempts ?? 0) + 1;
-            await this.userRepository.replace(user);
+            await this.userRepository.update(user);
             throw new HttpError("errors.actionCodeInvalid");
         }
     }

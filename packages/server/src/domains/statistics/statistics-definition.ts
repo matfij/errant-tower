@@ -32,10 +32,3 @@ export type UserAttributes = {
     constitution: number;
     spirit: number;
 };
-
-export enum UserAttribute {
-    Strength = "Strength",
-    Dexterity = "Dexterity",
-    Constitution = "Constitution",
-    Spirit = "Spirit",
-}
