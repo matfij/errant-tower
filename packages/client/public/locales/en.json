@@ -204,6 +204,8 @@
         "fatal": "Something went wrong",
         "notFound": "Not found",
         "unauthorized": "Sign in again",
-        "forbidden": "Request was rejected"
+        "forbidden": "Request was rejected",
+        "statisticsNotFound": "Character statistics were not found",
+        "notEnoughAttributePoints": "Not enough attribute points"
     }
 }

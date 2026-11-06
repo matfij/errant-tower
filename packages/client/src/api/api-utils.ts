@@ -9,24 +9,24 @@ export const useApiRequest = <TArguments, TResult>(request: (args: TArguments) =
     const [isLoading, setIsLoading] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
 
-    const call = (args: TArguments) => {
+    const call = async (args: TArguments): Promise<TResult | undefined> => {
         if (isLoading) {
-            return;
+            return undefined;
         }
         setIsLoading(true);
         setErrors(undefined);
-        void request(args)
-            .then((result) => {
-                setData(result);
-                setIsSuccess(true);
-            })
-            .catch((error: unknown) => {
-                setIsSuccess(false);
-                setErrors(Array.isArray(error) ? (error as ApiError[]) : [{ key: "errors.unknown" }]);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+        try {
+            const result = await request(args);
+            setData(result);
+            setIsSuccess(true);
+            return result;
+        } catch (error: unknown) {
+            setIsSuccess(false);
+            setErrors(parseApiErrors(error));
+            return undefined;
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return { data, errors, isLoading, isSuccess, call };
@@ -53,6 +53,14 @@ export const postJson = async <T>(path: string, body: unknown): Promise<T> => {
     return JSON.parse(text) as T;
 };
 
+export const getJson = async <T>(path: string): Promise<T> => {
+    const response = await apiFetch(path, { method: "GET" });
+    if (!response.ok) {
+        throw await readErrors(response);
+    }
+    return (await response.json()) as T;
+};
+
 export const apiFetch = async (path: string, init: RequestInit): Promise<Response> => {
     try {
         return await fetch(`${appConfig.baseUrl}${path}`, {
@@ -74,4 +82,8 @@ export const readErrors = async (response: Response): Promise<ApiError[]> => {
         // The body was not the error shape.
     }
     return [{ key: "errors.unknown" }];
+};
+
+export const parseApiErrors = (error: unknown): ApiError[] => {
+    return Array.isArray(error) ? (error as ApiError[]) : [{ key: "errors.unknown" }];
 };

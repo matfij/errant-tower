@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { UserAttribute } from "@errant/shared";
+import { useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
-import { wrapMutation, wrapQuery } from "../../api-old/api-proxy";
-import { UserAttribute, type GetAttributesResponse } from "../../api-old/generated/definitions";
-import { useExtendAttribute, useGetAttributes } from "../../api-old/generated/hooks";
+import { useApiRequest } from "../../api/api-utils";
+import { extendAttributeRequest, getAttributesRequest } from "../../api/statistics-api";
 import { AppError } from "../../common/components/app-error";
 import { AppIcon } from "../../common/components/app-icon";
 import { AppTooltip } from "../../common/components/app-tooltip";
@@ -24,27 +24,24 @@ const attributeItems = [
 
 export const AttributesComponent = (props: AttributesComponentProps) => {
     const { t } = useTranslation();
-    const extendAttribute = wrapMutation(useExtendAttribute)();
-    const getAttributes = wrapQuery<GetAttributesResponse>(useGetAttributes)();
-    const [attributes, setAttributes] = useState<GetAttributesResponse>();
+    const getAttributes = useApiRequest(getAttributesRequest);
+    const extendAttribute = useApiRequest(extendAttributeRequest);
+    const attributes = extendAttribute.data ?? getAttributes.data;
 
     const canExtend = (attributes?.attributePoints ?? 0) > 0;
 
     useEffect(() => {
-        if (getAttributes.isSuccess && getAttributes.data) {
-            setAttributes(getAttributes.data);
-        }
-    }, [getAttributes.data]);
+        void getAttributes.call(undefined);
+    }, []);
 
     useEffect(() => {
         if (extendAttribute.isSuccess && extendAttribute.data) {
-            setAttributes(extendAttribute.data);
             props.onAttributesChanged();
         }
-    }, [extendAttribute.data]);
+    }, [extendAttribute.isSuccess, extendAttribute.data]);
 
-    if (getAttributes.errors && getAttributes.errors.length > 0) {
-        return <AppError errors={[...getAttributes.errors]} />;
+    if (getAttributes.errors && getAttributes.errors.length > 0 && attributes === undefined) {
+        return <AppError errors={getAttributes.errors} />;
     }
 
     return (

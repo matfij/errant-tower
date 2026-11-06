@@ -76,16 +76,16 @@ Done when: the server can resolve a skill id to its definition, and nothing else
 
 Done when: the server can resolve an item id, including its stat block.
 
-### 5. Statistics document and attributes (next)
+### 5. Statistics document and attributes
 
-- [ ] Statistics collection and repository. `createInitial` runs from sign-up completion.
-- [ ] `get-attributes` and `extend-attribute`.
-- [ ] The attributes section in `packages/client` calls these routes. `apps/client` stays on the C# server.
-- [ ] The battle-stat formula is not in this slice.
+- [x] Statistics collection and repository. `createInitial` runs from sign-up completion.
+- [x] `get-attributes` and `extend-attribute`.
+- [x] The attributes section in `packages/client` calls these routes. `apps/client` stays on the C# server.
+- [x] The battle-stat formula is not in this slice.
 
 Done when: a new user gets a statistics row, and the attributes section can read and spend points.
 
-### 6. Equipment
+### 6. Equipment (next)
 
 - [ ] Equipment collection and repository. `createInitial` runs from sign-up completion, with the same starter bag as the C# insert.
 - [ ] `get-equipment`, `get-bag`, `equip-item`, and `unequip-item`. Equip checks requirements against the attribute read.

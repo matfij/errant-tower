@@ -24,13 +24,14 @@ A static catalog is a dictionary plus helpers. It is not a service class. Items,
     ```
 
     Do not mark those groups with a `//` line.
+
 - Write level lists as literal arrays. Do not generate them with `Array.from`, `.map`, or helpers such as `defenseDown` and `percentSteps`.
 - No startup validator. A missing id fails `tsc` through `satisfies`. Do not add an oxlint plugin or tests for array length unless asked. The server has no test suite.
 - The catalog stays in `packages/server`. Shared response types are added beside the route that returns them. Client wiring is that route's slice, not the catalog slice.
 
 ## Combat stats
 
-`BattleStatistics`, `UserAttributes`, and the `UserAttribute` string enum live in `domains/statistics/statistics-definition.ts`. That file is the shape only. The statistics collection, `SkillTree`, and `UserSkill` wait for their own slices.
+`BattleStatistics` and `UserAttributes` live in `domains/statistics/statistics-definition.ts`. `UserAttribute` is the shared HTTP enum in `packages/shared`. Callers import it from `@errant/shared`. The definition file does not re-export it. `SkillTree` and `UserSkill` wait for the skills slice.
 
 `BattleStatistics` is a full numeric block. Every field is a number. `defineBattleStatistics` in `statistics-utils.ts` fills an omitted field with 0. A draft passes only the fields it sets. A missing stat block on an item is omitted (`statistics?: BattleStatistics`). Do not store `null`.
 
@@ -43,6 +44,8 @@ Items follow the skill catalog: `item-definition.ts` (`ItemGuid` first), `item-r
 Read top-down: the most important declaration first, then the smaller pieces.
 
 Definition file: id enum, then the top-level type, then the types it contains, then the enums those types use, from the broadest enum to the smallest.
+
+A type that exists only as part of a larger type sits below that type. `LearnedSkill` sits below `StatisticsEntity`. `LearnedSkillDocument` sits below `StatisticsDocument`.
 
 Registry file: the dictionary, then the public lookup, then the private type guard.
 
@@ -67,6 +70,8 @@ Catalog enums are strings. Do not keep the C# integer values. HTTP enums for a p
 ## Classes
 
 - A class that owns collaborators is constructed where the app is wired. Do not thread the same dependency through every call.
+- Assign each constructed service, repository, orchestrator, and route to its own variable. Do not pass `new` inline as an argument.
+- A constant used by one service is a field at the top of that class. Do not declare it at module scope.
 - Constructor parameters use the full name: `userRepository`, not `users`. Rename a store to a repository.
 - Declare fields above the constructor and assign them there. Do not use parameter properties.
 - Private fields come first, then the constructor, then public methods, then private methods.
@@ -80,7 +85,9 @@ Catalog enums are strings. Do not keep the C# integer values. HTTP enums for a p
 
 - Folders follow the C# tree: `domains/<plural>/`, `orchestrator/`, `common/`, `db/`. One file per type: `user-repository.ts`, `user-service.ts`.
 - The connector owns the client, the collections, and the indexes. A repository receives only its own collection and writes only its own entity.
-- The orchestrator creates related rows after the owning service succeeds. Do not put another entity's insert on the user repository.
+- The orchestrator creates related rows after the owning service succeeds. Do not put another entity's create on the user repository.
+- Public repository methods are named and ordered `create`, then `read`, `readAll`, or `readByX`, then `update`, then `delete`. A service method that is only that persistence operation uses the same name and the same order. A domain command keeps its name. `createInitial`, `getStatistics`, and `extendAttribute` stay domain names, in that order.
+- A statistics update writes the whole document, including `LearnedSkills`. `LearnedSkill.guid` is `SkillGuid`. Store that string. Do not keep the C# integer. Do not drop that list while changing attributes.
 - A unique-index failure is handled in the service. Put a well-known Mongo code on `dbErrorCodes` in `db-utils`. Do not catch it in the repository, and do not add a helper whose only job is building that `HttpError`.
 - Document types name the BSON fields. Shared readers such as `readNumber` and `toInt32` live in `db-utils`. Do not add `absent()` casts. Create indexes with the three-argument form.
 - Prefer arrow functions for callbacks and free functions. Class methods stay methods. Overload signatures stay function declarations.
@@ -92,8 +99,10 @@ Catalog enums are strings. Do not keep the C# integer values. HTTP enums for a p
 - Keep Zod schemas on the server. Do not share them through `packages/shared` or run them in the UI. The client keeps a small check per field and maps it to a locale key. `packages/shared` stays types only.
 - An action code is six digits (`length(6)` and `/^\d+$/`). Reject any other shape in the request schema, before the attempt counter runs. A username is 4–16 characters matching `/^[A-Za-z0-9_]+$/`.
 - A route handler builds the response object at the return. Do not add a mapper on the route class.
+- An authenticated route takes `AuthSessionService`. `requireUser` checks the session and slides the cookie. `GET /auth/session` uses it too.
 - Unknown routes use `setNotFoundHandler` and return 404 `{ errors: [{ key: "errors.notFound" }] }`. They do not fall through to the 500 handler.
 - Business and validation errors stay 400. 401 is only a missing or dead session.
+- Error keys use the `errors` prefix, as in `errors.notEnoughAttributePoints`. Do not add a singular `error` key. The C# server still uses `error.notEnoughAttributePoints`. The TypeScript server and `packages/client` locales use `errors`.
 
 ## Auth errors
 
@@ -107,7 +116,9 @@ Catalog enums are strings. Do not keep the C# integer values. HTTP enums for a p
 - New hand-written calls live in `packages/client/src/api`. Orval, `api-proxy`, and `custom-fetch` stay in `api-old` until that page is ported. Do not add new routes under `api-old`. Point Orval at `api-old`.
 - A page calls `useApiRequest(requestFn)`. Do not hide the request inside a named hook such as `useStartSignIn`.
 - `api-utils` holds the shared helpers. A domain file such as `auth-api` holds that domain's requests. `fetchSession` and `signOutRequest` stay plain functions because they are not form state. `signOutRequest` treats 401 as success. `fetchSession` returns null on 401.
-- Prefer those helpers over React Query as each page leaves `api-old`. After a change, call the read again. Do not add cache invalidation. Leave `@tanstack/react-query` installed until those pages are gone.
+- Prefer those helpers over React Query as each page leaves `api-old`. One `useApiRequest` per request. Loading and errors stay on that hook. The handler calls `call` and does not await it. Work that follows a success runs in an effect on `isSuccess` and `data`, as sign-in does. When that `data` is the rendered state, read it from the hook. Do not copy it into another `useState`, and do not call the read again. Do not add cache invalidation. Leave `@tanstack/react-query` installed until those pages are gone.
+- `readRequestErrors` lives in `api-utils` with the other request helpers. Do not define it in a component.
+- Do not render errors from a POST action. The hook still keeps them. Tooltips for those errors come later. A failed GET may still render `AppError`.
 - The session check calls `fetchSession` directly, after the user store hydrates and again when the window gains focus. Sign the user in only when it returns a user. Any other result, including a network or 500 error, clears the persisted user before the gate opens. Sign-in, sign-up, and sign-out write the user store, and that write drops an older in-flight session response.
 
 ## Port constraints that later slices already follow

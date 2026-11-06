@@ -8,16 +8,19 @@ const mongo = await MongoConnector.connect({
     database: config.mongodbDatabase,
 });
 
+const emailService = new EmailService({
+    apiKey: config.resendApiKey,
+    fromAddress: config.emailFromAddress,
+    fromName: config.emailFromName,
+});
+
 const app = await buildApp({
     logger: true,
     corsOrigins: config.corsOrigins,
     cookieSecret: config.cookieSecret,
     userRepository: mongo.userRepository,
-    emailService: new EmailService({
-        apiKey: config.resendApiKey,
-        fromAddress: config.emailFromAddress,
-        fromName: config.emailFromName,
-    }),
+    statisticsRepository: mongo.statisticsRepository,
+    emailService,
 });
 
 for (const signal of ["SIGINT", "SIGTERM"] as const) {
