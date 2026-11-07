@@ -11,7 +11,7 @@ export type UserDocument = {
     ActionCodeExpiresAt: Long | number | null;
     ActionCodeAttempts: Int32 | number | null;
     IsConfirmed: boolean;
-    SessionId?: string | null;
+    SessionId: string | null;
 };
 
 export type UserRepository = {
@@ -67,11 +67,11 @@ export class MongoUserRepository implements UserRepository {
             _id: user.id,
             Email: user.email,
             Username: user.username,
-            SessionId: user.sessionId,
             ActionCodeHash: user.actionCodeHash,
             ActionCodeExpiresAt: user.actionCodeExpiresAt ? Long.fromNumber(user.actionCodeExpiresAt) : null,
             ActionCodeAttempts: user.actionCodeAttempts ? toInt32(user.actionCodeAttempts) : null,
             IsConfirmed: user.isConfirmed,
+            SessionId: user.sessionId,
         };
         return document;
     }

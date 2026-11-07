@@ -1,4 +1,10 @@
-import { ItemSlot, ItemType, type GetBagResponse, type Item } from "@errant/shared";
+import {
+    ItemSlot,
+    ItemType,
+    type GetBagResponse,
+    type GetEquipmentResponse,
+    type Item,
+} from "@errant/shared";
 import { useEffect, useState } from "react";
 
 import { useApiRequest } from "../../api/api-utils";
@@ -19,65 +25,53 @@ interface EquipmentComponentProps {
     onEquipmentChanged: () => void;
 }
 
-type ShownEquipment = "load" | "equip" | "unequip";
-
 export const EquipmentComponent = (props: EquipmentComponentProps) => {
-    const getEquipment = useApiRequest(getEquipmentRequest);
     const getBag = useApiRequest(getBagRequest);
+    const getEquipment = useApiRequest(getEquipmentRequest);
     const equipItem = useApiRequest(equipItemRequest);
     const unequipItem = useApiRequest(unequipItemRequest);
     const [showEquipOptions, setShowEquipOptions] = useState(false);
     const [equipOptions, setEquipOptions] = useState<GetBagResponse["items"]>([]);
-    const [itemSlot, setItemSlot] = useState<ItemSlot>();
-    const [itemInSlot, setItemInSlot] = useState<Item>();
-    const [shownEquipment, setShownEquipment] = useState<ShownEquipment>("load");
+    const [itemSlot, setItemSlot] = useState<ItemSlot | null>(null);
+    const [itemInSlot, setItemInSlot] = useState<Item | null>(null);
+    const [equipment, setEquipment] = useState<GetEquipmentResponse | null>(null);
 
-    const loadedEquipment = getEquipment.data;
-    const equipment =
-        shownEquipment === "equip"
-            ? (equipItem.data ?? loadedEquipment)
-            : shownEquipment === "unequip"
-              ? (unequipItem.data ?? loadedEquipment)
-              : loadedEquipment;
     const bag = getBag.data?.items ?? [];
 
     useEffect(() => {
-        void getEquipment.call();
+        void getEquipment.call().then((equipment) => {
+            if (equipment !== null) {
+                setEquipment(equipment);
+            }
+        });
         void getBag.call();
     }, []);
 
-    useEffect(() => {
-        if (equipItem.isSuccess && equipItem.data) {
-            setShownEquipment("equip");
-            props.onEquipmentChanged();
-            void getBag.call();
+    const updateEquipment = (equipment: GetEquipmentResponse | null) => {
+        if (equipment === null) {
+            return;
         }
-    }, [equipItem.isSuccess, equipItem.data]);
-
-    useEffect(() => {
-        if (unequipItem.isSuccess && unequipItem.data) {
-            setShownEquipment("unequip");
-            props.onEquipmentChanged();
-            void getBag.call();
-        }
-    }, [unequipItem.isSuccess, unequipItem.data]);
+        setEquipment(equipment);
+        props.onEquipmentChanged();
+        void getBag.call();
+    };
 
     const updateEquipOptions = (types: ItemType[], hand?: "left" | "right") => {
         if (types.includes(ItemType.Helmet)) {
-            setItemInSlot(equipment?.headgear ?? undefined);
+            setItemInSlot(equipment?.headgear ?? null);
             setItemSlot(ItemSlot.Headgear);
         } else if (types.includes(ItemType.Armor)) {
-            setItemInSlot(equipment?.armor ?? undefined);
+            setItemInSlot(equipment?.armor ?? null);
             setItemSlot(ItemSlot.Armor);
         } else if (types.includes(ItemType.Boots)) {
-            setItemInSlot(equipment?.footwear ?? undefined);
+            setItemInSlot(equipment?.footwear ?? null);
             setItemSlot(ItemSlot.Footwear);
         } else if (types.includes(ItemType.Charm)) {
-            setItemInSlot(equipment?.charm ?? undefined);
+            setItemInSlot(equipment?.charm ?? null);
             setItemSlot(ItemSlot.Charm);
         } else if (types.some((type) => handItemTypes.includes(type))) {
             const handItem = hand === "left" ? equipment?.leftHand : equipment?.rightHand;
-            setItemInSlot(handItem ?? undefined);
+            setItemInSlot(handItem ?? null);
             setItemSlot(hand === "left" ? ItemSlot.LeftHand : ItemSlot.RightHand);
         }
 
@@ -85,11 +79,11 @@ export const EquipmentComponent = (props: EquipmentComponentProps) => {
         setEquipOptions(bag.filter((item) => types.includes(item.item.type)));
     };
 
-    if (getEquipment.errors && getEquipment.errors.length > 0 && equipment === undefined) {
+    if (getEquipment.errors && getEquipment.errors.length > 0 && equipment === null) {
         return <AppError errors={getEquipment.errors} />;
     }
 
-    if (getBag.errors && getBag.errors.length > 0 && getBag.data === undefined) {
+    if (getBag.errors && getBag.errors.length > 0 && getBag.data === null) {
         return <AppError errors={getBag.errors} />;
     }
 
@@ -145,13 +139,13 @@ export const EquipmentComponent = (props: EquipmentComponentProps) => {
                     equippedItem={itemInSlot}
                     onClose={() => setShowEquipOptions(false)}
                     onEquip={(guid) => {
-                        if (itemSlot) {
-                            equipItem.call({ guid, slot: itemSlot });
+                        if (itemSlot !== null) {
+                            void equipItem.call({ guid, slot: itemSlot }).then(updateEquipment);
                         }
                     }}
                     onTakeOff={() => {
-                        if (itemInSlot && itemSlot) {
-                            unequipItem.call({ slot: itemSlot });
+                        if (itemInSlot !== null && itemSlot !== null) {
+                            void unequipItem.call({ slot: itemSlot }).then(updateEquipment);
                         }
                     }}
                 />

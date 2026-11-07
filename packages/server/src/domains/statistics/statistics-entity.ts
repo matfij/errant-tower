@@ -1,4 +1,4 @@
-import type { SkillGuid } from "../skills/skill-definition.ts";
+import type { SkillGuid } from "@errant/shared";
 
 export type StatisticsEntity = {
     id: string;

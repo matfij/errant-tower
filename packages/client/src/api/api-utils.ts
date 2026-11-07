@@ -6,17 +6,17 @@ import type { ApiError } from "./api-error";
 export const useApiRequest = <TRequest extends (...args: never[]) => Promise<unknown>>(request: TRequest) => {
     type TResult = Awaited<ReturnType<TRequest>>;
 
-    const [data, setData] = useState<TResult>();
-    const [errors, setErrors] = useState<ApiError[]>();
+    const [data, setData] = useState<TResult | null>(null);
+    const [errors, setErrors] = useState<ApiError[] | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
 
-    const call = async (...args: Parameters<TRequest>): Promise<TResult | undefined> => {
+    const call = async (...args: Parameters<TRequest>): Promise<TResult | null> => {
         if (isLoading) {
-            return undefined;
+            return null;
         }
         setIsLoading(true);
-        setErrors(undefined);
+        setErrors(null);
         try {
             const result = (await request(...args)) as TResult;
             setData(result);
@@ -25,7 +25,7 @@ export const useApiRequest = <TRequest extends (...args: never[]) => Promise<unk
         } catch (error: unknown) {
             setIsSuccess(false);
             setErrors(parseApiErrors(error));
-            return undefined;
+            return null;
         } finally {
             setIsLoading(false);
         }
@@ -50,7 +50,7 @@ export const postJson = async <T>(path: string, body: unknown): Promise<T> => {
 
     const text = await response.text();
     if (text === "") {
-        return undefined as T;
+        return null as T;
     }
     return JSON.parse(text) as T;
 };

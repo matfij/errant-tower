@@ -1,0 +1,212 @@
+export enum SkillGuid {
+    // Beast
+    Scratch = "Scratch",
+    Bite = "Bite",
+    TailWhip = "TailWhip",
+    Tackle = "Tackle",
+    Cut = "Cut",
+    Peck = "Peck",
+
+    // Blade
+    Slash = "Slash",
+    SwiftStrike = "SwiftStrike",
+    TwinEdge = "TwinEdge",
+    CrusherBlow = "CrusherBlow",
+    FlashStrike = "FlashStrike",
+    TriEdge = "TriEdge",
+    BloodthirstyBlade = "BloodthirstyBlade",
+
+    // Tenacity
+    GreatVigor = "GreatVigor",
+    Armorer = "Armorer",
+    Resistance = "Resistance",
+    Energizer = "Energizer",
+    Deflect = "Deflect",
+    HeartsResolve = "HeartsResolve",
+}
+
+export type Skill = {
+    guid: SkillGuid;
+    name: string;
+    description: string | null;
+    imageUrl: string;
+    path: SkillPath;
+    tier: number;
+    types: SkillType[];
+    physicalAttackFactor: number[];
+    magicalAttackFactor: number[];
+    physicalDefenseFactor: number[];
+    magicalDefenseFactor: number[];
+    isPassive: boolean;
+    targetSelf: boolean;
+    hitCount: number[];
+    energyCost: number[];
+    manaCost: number[];
+    targetEffects: SkillEffect[];
+    selfEffects: SkillEffect[];
+    targetProperties: SkillProperty[];
+    selfProperties: SkillProperty[];
+    requirements: SkillRequirement[];
+};
+
+export type BattleSkill = {
+    guid: SkillGuid;
+    name: string;
+    description: string | null;
+    imageUrl: string;
+    path: SkillPath;
+    types: SkillType[];
+    physicalAttackFactor: number;
+    magicalAttackFactor: number;
+    physicalDefenseFactor: number;
+    magicalDefenseFactor: number;
+    isPassive: boolean;
+    targetSelf: boolean;
+    hitCount: number;
+    energyCost: number;
+    manaCost: number;
+    targetEffects: BattleSkillEffect[];
+    selfEffects: BattleSkillEffect[];
+    targetProperties: BattleSkillProperty[];
+    selfProperties: BattleSkillProperty[];
+    requirements: SkillRequirement[];
+};
+
+export type SkillEffect = {
+    type: SkillEffectType;
+    values: number[];
+    chances: number[];
+    durations: number[];
+};
+
+export type BattleSkillEffect = {
+    type: SkillEffectType;
+    value: number;
+    chance: number;
+    duration: number;
+};
+
+export type SkillProperty = {
+    effect: SkillPropertyEffect;
+    type: SkillPropertyType;
+    values: number[];
+    duration: number;
+};
+
+export type BattleSkillProperty = {
+    effect: SkillPropertyEffect;
+    type: SkillPropertyType;
+    value: number;
+    duration: number;
+};
+
+export type SkillRequirement = {
+    path: SkillPath;
+    points: number;
+};
+
+export type UserSkill = Skill & {
+    level: number;
+};
+
+export enum SkillPath {
+    None = "None",
+    Blade = "Blade",
+    Tenacity = "Tenacity",
+    Hammer = "Hammer",
+    Bellicosity = "Bellicosity",
+    Lance = "Lance",
+    Vivacity = "Vivacity",
+    Bow = "Bow",
+    Perspicacity = "Perspicacity",
+    Staff = "Staff",
+    Sagacity = "Sagacity",
+}
+
+export enum SkillType {
+    None = "None",
+    Slash = "Slash",
+    Pierce = "Pierce",
+    Blunt = "Blunt",
+    Fire = "Fire",
+    Water = "Water",
+    Earth = "Earth",
+    Wind = "Wind",
+    Electric = "Electric",
+    Light = "Light",
+    Dark = "Dark",
+    Heal = "Heal",
+    Buff = "Buff",
+}
+
+export enum SkillEffectType {
+    Initiative = "Initiative",
+    PhysicalAttack = "PhysicalAttack",
+    MagicalAttack = "MagicalAttack",
+    PhysicalDefense = "PhysicalDefense",
+    MagicalDefense = "MagicalDefense",
+    HealthPoints = "HealthPoints",
+    ManaPoints = "ManaPoints",
+    EnergyPoints = "EnergyPoints",
+    Stun = "Stun",
+    Freeze = "Freeze",
+    Paralyze = "Paralyze",
+    Bleeding = "Bleeding",
+    Poison = "Poison",
+    Barrier = "Barrier",
+}
+
+export enum SkillPropertyType {
+    Initiative = "Initiative",
+    PhysicalAttack = "PhysicalAttack",
+    MagicalAttack = "MagicalAttack",
+    PhysicalDefense = "PhysicalDefense",
+    MagicalDefense = "MagicalDefense",
+    HealthPoints = "HealthPoints",
+    ManaPoints = "ManaPoints",
+    EnergyPoints = "EnergyPoints",
+    CriticalChance = "CriticalChance",
+    PhysicalCriticalPower = "PhysicalCriticalPower",
+    MagicalCriticalPower = "MagicalCriticalPower",
+    PunctureChance = "PunctureChance",
+    DodgeChance = "DodgeChance",
+    ParryChance = "ParryChance",
+    BlockChance = "BlockChance",
+    BlockPower = "BlockPower",
+    CounterChance = "CounterChance",
+    HealthRegen = "HealthRegen",
+    ManaRegen = "ManaRegen",
+    PhysicalDeflect = "PhysicalDeflect",
+    MagicalDeflect = "MagicalDeflect",
+}
+
+export enum SkillPropertyEffect {
+    Additive = "Additive",
+    Multiplicative = "Multiplicative",
+}
+
+export type SkillTreePaths = {
+    blade: UserSkill[];
+    tenacity: UserSkill[];
+    hammer: UserSkill[];
+    bellicosity: UserSkill[];
+    lance: UserSkill[];
+    vivacity: UserSkill[];
+    bow: UserSkill[];
+    perspicacity: UserSkill[];
+    staff: UserSkill[];
+    sagacity: UserSkill[];
+};
+
+export type GetSkillTreeResponse = {
+    skillPoints: number;
+    paths: SkillTreePaths;
+};
+
+export type LearnSkillResponse = GetSkillTreeResponse;
+
+export type ResetSkillsResponse = GetSkillTreeResponse;
+
+export type LearnSkillRequest = {
+    skillGuid: SkillGuid;
+};

@@ -73,8 +73,8 @@ const toItemResponse = (item: Item | null): Item | null => {
         price: item.price,
         isStackable: item.isStackable,
         statistics:
-            item.statistics === undefined
-                ? undefined
+            item.statistics === null
+                ? null
                 : {
                       speed: item.statistics.speed,
                       maxHealthPoints: item.statistics.maxHealthPoints,
@@ -103,8 +103,8 @@ const toItemResponse = (item: Item | null): Item | null => {
                       energyRegen: item.statistics.energyRegen,
                   },
         requirements:
-            item.requirements === undefined
-                ? undefined
+            item.requirements === null
+                ? null
                 : {
                       strength: item.requirements.strength,
                       dexterity: item.requirements.dexterity,
