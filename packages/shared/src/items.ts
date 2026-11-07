@@ -1,4 +1,4 @@
-import type { BattleStatistics } from "../statistics/statistics-definition.ts";
+import type { BattleStatistics } from "./statistics.ts";
 
 export enum ItemGuid {
     // Dungeon

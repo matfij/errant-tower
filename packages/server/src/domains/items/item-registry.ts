@@ -1,6 +1,7 @@
+import { ItemGuid, type Item } from "@errant/shared";
+
 import { HttpError } from "../../common/http/errors.ts";
 import { dungeonItems } from "./data/dungeon-items.ts";
-import { ItemGuid, type Item } from "./item-definition.ts";
 
 export const items = {
     [ItemGuid.WoodenSword]: dungeonItems.woodenSword,

@@ -1,4 +1,5 @@
-import { ItemGuid, ItemRarity, ItemType } from "../item-definition.ts";
+import { ItemGuid, ItemRarity, ItemType } from "@errant/shared";
+
 import { defineItem } from "../item-utils.ts";
 
 export const dungeonItems = {

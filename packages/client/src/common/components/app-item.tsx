@@ -1,4 +1,5 @@
-import { ItemRarity, type Item } from "../../api-old/generated/definitions";
+import { ItemRarity, type Item } from "@errant/shared";
+
 import { colors } from "../theme";
 
 import styles from "./app-item.module.scss";

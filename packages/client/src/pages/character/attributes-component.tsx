@@ -31,7 +31,7 @@ export const AttributesComponent = (props: AttributesComponentProps) => {
     const canExtend = (attributes?.attributePoints ?? 0) > 0;
 
     useEffect(() => {
-        void getAttributes.call(undefined);
+        void getAttributes.call();
     }, []);
 
     useEffect(() => {

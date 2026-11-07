@@ -20,6 +20,7 @@ const app = await buildApp({
     cookieSecret: config.cookieSecret,
     userRepository: mongo.userRepository,
     statisticsRepository: mongo.statisticsRepository,
+    equipmentRepository: mongo.equipmentRepository,
     emailService,
 });
 

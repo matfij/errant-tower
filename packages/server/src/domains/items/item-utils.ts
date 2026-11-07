@@ -1,5 +1,6 @@
+import type { Item, ItemGuid, ItemRarity, ItemRequirements, ItemType } from "@errant/shared";
+
 import { defineBattleStatistics, type BattleStatisticsDraft } from "../statistics/statistics-utils.ts";
-import type { Item, ItemGuid, ItemRarity, ItemRequirements, ItemType } from "./item-definition.ts";
 
 type ItemDraft = {
     guid: ItemGuid;
