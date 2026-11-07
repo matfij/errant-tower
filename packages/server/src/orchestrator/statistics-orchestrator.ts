@@ -1,7 +1,8 @@
 import type { BattleStatistics, SkillGuid, UserAttribute } from "@errant/shared";
 
 import { EquipmentService } from "../domains/equipment/equipment-service.ts";
-import { SkillsService, type SkillTree } from "../domains/statistics/skills-service.ts";
+import { SkillsService } from "../domains/statistics/skills-service.ts";
+import type { SkillTree } from "../domains/statistics/statistics-definition.ts";
 import type { StatisticsEntity } from "../domains/statistics/statistics-entity.ts";
 import { StatisticsService } from "../domains/statistics/statistics-service.ts";
 

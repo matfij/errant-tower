@@ -1,51 +1,15 @@
-import { SkillPath, type GetSkillTreeResponse, type SkillGuid, type UserSkill } from "@errant/shared";
+import type { GetSkillTreeResponse, SkillGuid, UserSkill } from "@errant/shared";
 import { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
 import { useApiRequest } from "../../api/api-utils";
 import { getSkillTreeRequest, learnSkillRequest, resetSkillsRequest } from "../../api/statistics-api";
 import { AppError } from "../../common/components/app-error";
+import { findSkill, PATH_TO_PATH_KEY, toPaths } from "./skill-helpers";
 import { SkillItem } from "./skill-item";
 import { SkillSummary } from "./skill-summary";
 
 import styles from "./skills-page.module.scss";
-
-const PATH_KEYS = [
-    "blade",
-    "tenacity",
-    "hammer",
-    "bellicosity",
-    "lance",
-    "vivacity",
-    "bow",
-    "perspicacity",
-    "staff",
-    "sagacity",
-] as const;
-
-const PATH_TO_PATH_KEY: Record<SkillPath, PathKey | null> = {
-    [SkillPath.None]: null,
-    [SkillPath.Blade]: "blade",
-    [SkillPath.Tenacity]: "tenacity",
-    [SkillPath.Hammer]: "hammer",
-    [SkillPath.Bellicosity]: "bellicosity",
-    [SkillPath.Lance]: "lance",
-    [SkillPath.Vivacity]: "vivacity",
-    [SkillPath.Bow]: "bow",
-    [SkillPath.Perspicacity]: "perspicacity",
-    [SkillPath.Staff]: "staff",
-    [SkillPath.Sagacity]: "sagacity",
-};
-
-type PathKey = (typeof PATH_KEYS)[number];
-
-interface PathData {
-    name: string;
-    skillTiers: Record<number, UserSkill[]>;
-    level: number;
-}
-
-type Paths = Record<PathKey, PathData>;
 
 export const SkillsPage = () => {
     const { t } = useTranslation();
@@ -151,28 +115,4 @@ export const SkillsPage = () => {
             </div>
         </>
     );
-};
-
-const toPaths = (skillTree: GetSkillTreeResponse): Paths => {
-    return PATH_KEYS.reduce((all, key) => {
-        all[key] = {
-            name: `skills.paths.${key}`,
-            skillTiers: skillTree.paths[key].reduce<Record<number, UserSkill[]>>((tiers, skill) => {
-                (tiers[skill.tier] ??= []).push(skill);
-                return tiers;
-            }, {}),
-            level: skillTree.paths[key].reduce((level, skill) => level + skill.level, 0),
-        };
-        return all;
-    }, {} as Paths);
-};
-
-const findSkill = (skillTree: GetSkillTreeResponse, guid: SkillGuid): UserSkill | null => {
-    for (const key of PATH_KEYS) {
-        const skill = skillTree.paths[key].find((item) => item.guid === guid) ?? null;
-        if (skill !== null) {
-            return skill;
-        }
-    }
-    return null;
 };

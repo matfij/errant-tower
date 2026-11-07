@@ -12,7 +12,7 @@ A static catalog is a dictionary plus helpers. It is not a service class. Items,
 - Keep the enum even though the registry repeats each member as a key. Learned skills will be stored, and the string has to stay stable. `keyof typeof skills` is not a replacement. `satisfies Record<SkillGuid, Skill>` is the check that every id is registered.
 - The id enum lives in the definition file, above the types, until a route returns that catalog. The registry imports the data files, so the data files cannot import the registry. That import cycle leaves the enum undefined at runtime.
 - Do not re-export the id enum from the registry. Callers import it from the definition file, or from `@errant/shared` once the route slice moves it. The registry imports it only to build the dictionary keys.
-- Skill ids moved to `packages/shared` with the skill-tree routes. There is no `skill-definition.ts`. Later catalogs stay in the server until a route returns them.
+- Skill ids moved to `packages/shared` with the skill-tree routes. `domains/skills/skill-definition.ts` holds `skillLevel`, the default level arrays, and the draft types. It does not repeat `Skill` or `SkillGuid`. Later catalogs stay in the server until a route returns them.
 - The definition file does not import the registry.
 - Data objects are plain consts. Do not annotate them with an inline object type. The type comes from the define helper.
 - Each data entry uses the enum: `guid: SkillGuid.Scratch`.
@@ -34,7 +34,7 @@ A static catalog is a dictionary plus helpers. It is not a service class. Items,
 
 `UserAttributes` lives in `domains/statistics/statistics-definition.ts`. `UserAttribute` and `BattleStatistics` live in `packages/shared`. Callers import them from `@errant/shared`. The definition file does not re-export them. `BattleStatistics` moved when the equipment routes started returning items.
 
-Skill wire types live in `packages/shared/src/skills.ts`: `SkillGuid`, `Skill`, `BattleSkill`, the effect and property types, and the path enums. `UserSkill` is `Skill` plus `level`. `GetSkillTreeResponse`, `LearnSkillResponse`, and `ResetSkillsResponse` are the same shape. There is no `skill-definition.ts`. The server catalog imports those types. The registry does not re-export `SkillGuid`. `getAllSkills` returns the registry values in insertion order. `SkillsService` owns `getSkillTree`, `learnSkill`, and `resetSkills`. A skill with path `None` cannot be learned. A new skill starts at level 1. Raising a skill checks the level cap of 10 and does not recheck path requirements. Reset clears `LearnedSkills` and adds the sum of those levels back to skill points. The tree response lists every catalog skill except path `None`, with level 0 when it is not learned. Empty paths are `[]`.
+Skill wire types live in `packages/shared/src/skills.ts`: `SkillGuid`, `Skill`, `BattleSkill`, the effect and property types, and the path enums. `UserSkill` is `Skill` plus `level`. `GetSkillTreeResponse`, `LearnSkillResponse`, and `ResetSkillsResponse` are the same shape. `skill-definition.ts` holds the catalog drafts and the default level arrays (`zeroFactors`, `oneFactors`, `emptyEffects`, `emptyProperties`). Those arrays are literals. Do not build them with `Array.from`. The server catalog imports the shared types. The registry does not re-export `SkillGuid`. `getAllSkills` returns the registry values in insertion order. `SkillsService` owns `getSkillTree`, `learnSkill`, and `resetSkills`. A skill with path `None` cannot be learned. A new skill starts at level 1. Raising a skill checks the level cap of 10 and does not recheck path requirements. Reset clears `LearnedSkills` and adds the sum of those levels back to skill points. The tree response lists every catalog skill except path `None`, with level 0 when it is not learned. Empty paths are `[]`.
 
 `BattleStatistics` is a full numeric block. Every field is a number. `defineBattleStatistics` in `statistics-utils.ts` fills an omitted draft field with 0. A draft passes only the fields it sets. A finished item stores a missing stat block as `statistics: null`.
 
@@ -48,7 +48,7 @@ Item requirements on a finished item are `ItemRequirements | null`. Each attribu
 
 Read top-down: the most important declaration first, then the smaller pieces.
 
-Definition file: id enum, then the top-level type, then the types it contains, then the enums those types use, from the broadest enum to the smallest.
+Definition file: id enum, then the top-level type, then the types it contains, then the enums those types use, from the broadest enum to the smallest. An exported domain type lives in that file. Do not export it from the service. `SkillTree` and `SkillTreeSkill` live in `statistics-definition.ts`. Wire types stay in `packages/shared`. `skill-definition.ts` holds `skillLevel`, the default level arrays, then `SkillDraft` and the drafts it contains.
 
 A type that exists only as part of a larger type sits below that type. `LearnedSkill` sits below `StatisticsEntity`. `LearnedSkillDocument` sits below `StatisticsDocument`.
 
@@ -56,9 +56,11 @@ Registry file: the dictionary, then the public lookup, then the private type gua
 
 Utils file, as edited in `skill-utils.ts`:
 
-1. File-level constants, such as `skillLevel`.
+1. File-level constants.
 2. Types, from the whole draft down to the smallest draft.
 3. Functions in that same order. The public function first. Helpers of the same rank stay together. The smallest helpers last.
+
+`skill-utils.ts` keeps `defineSkill` and the fill helpers. `skillLevel`, the default level arrays, and the draft types live in `skill-definition.ts`.
 
 Do not add a helper whose only job is one object inside a `.map` callback. `fillEffect` and `fillProperty` were removed for that reason. The object is written in the callback of `fillEffects` and `fillProperties`.
 
@@ -132,6 +134,7 @@ Catalog enums are strings. Do not keep the C# integer values. HTTP enums for a p
 - `api-utils` holds the shared helpers. A domain file such as `auth-api` holds that domain's requests. `fetchSession` and `signOutRequest` stay plain functions because they are not form state. `signOutRequest` treats 401 as success. `fetchSession` returns null on 401.
 - Prefer those helpers over React Query as each page leaves `api-old`. One `useApiRequest` per request. Loading and errors stay on that hook. A handler calls `call` and does not await it. Work that follows a success and is not the rendered snapshot runs in an effect on `isSuccess` and `data`, as sign-in does. A single request's rendered data stays on the hook, as battle statistics do. When more than one request returns the same snapshot, keep that snapshot in `useState` and set it from the value `call` returns. A null result leaves the previous snapshot. Do not keep a flag for which request is current, and do not call the read again when the write response is that snapshot. Do not add cache invalidation. Leave `@tanstack/react-query` installed until those pages are gone.
 - `readRequestErrors` lives in `api-utils` with the other request helpers. Do not define it in a component.
+- A larger page helper lives in that page's helpers file. `toPaths` and `findSkill` live in `skill-helpers.ts`. Do not leave them in the component file.
 - Do not render errors from a POST action. The hook still keeps them. Tooltips for those errors come later. A failed GET may still render `AppError`.
 - A component body follows `equipment-component.tsx`. Custom hook assignments, then React hook assignments, then plain calculations, then `useEffect`s, then functions, then early returns, then the main return. `useEffect` stays after the values it reads.
 - The session check calls `fetchSession` directly, after the user store hydrates and again when the window gains focus. Sign the user in only when it returns a user. Any other result, including a network or 500 error, clears the persisted user before the gate opens. Sign-in, sign-up, and sign-out write the user store, and that write drops an older in-flight session response.

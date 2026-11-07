@@ -13,7 +13,7 @@ import type { FastifyInstance } from "fastify";
 import { z } from "zod";
 
 import { RequestBodyService } from "../common/http/body.ts";
-import type { SkillTree, SkillTreeSkill } from "../domains/statistics/skills-service.ts";
+import type { SkillTree, SkillTreeSkill } from "../domains/statistics/statistics-definition.ts";
 import type { StatisticsEntity } from "../domains/statistics/statistics-entity.ts";
 import { AuthSessionService } from "./auth-session-service.ts";
 import { StatisticsOrchestrator } from "./statistics-orchestrator.ts";

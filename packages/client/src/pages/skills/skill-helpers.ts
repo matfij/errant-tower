@@ -1,4 +1,12 @@
-import { SkillPath, SkillType, type SkillEffect, type SkillProperty, type UserSkill } from "@errant/shared";
+import {
+    SkillPath,
+    SkillType,
+    type GetSkillTreeResponse,
+    type SkillEffect,
+    type SkillGuid,
+    type SkillProperty,
+    type UserSkill,
+} from "@errant/shared";
 import { useTranslation } from "react-i18next";
 
 import { toLowerFirst, toPercentLabel } from "../../common/utils";
@@ -26,6 +34,43 @@ const SKILL_BASE_ATTRIBUTES = [
     "magicalDefenseFactor",
 ] as const;
 
+const PATH_KEYS = [
+    "blade",
+    "tenacity",
+    "hammer",
+    "bellicosity",
+    "lance",
+    "vivacity",
+    "bow",
+    "perspicacity",
+    "staff",
+    "sagacity",
+] as const;
+
+type PathKey = (typeof PATH_KEYS)[number];
+
+export const PATH_TO_PATH_KEY: Record<SkillPath, PathKey | null> = {
+    [SkillPath.None]: null,
+    [SkillPath.Blade]: "blade",
+    [SkillPath.Tenacity]: "tenacity",
+    [SkillPath.Hammer]: "hammer",
+    [SkillPath.Bellicosity]: "bellicosity",
+    [SkillPath.Lance]: "lance",
+    [SkillPath.Vivacity]: "vivacity",
+    [SkillPath.Bow]: "bow",
+    [SkillPath.Perspicacity]: "perspicacity",
+    [SkillPath.Staff]: "staff",
+    [SkillPath.Sagacity]: "sagacity",
+};
+
+interface PathData {
+    name: string;
+    skillTiers: Record<number, UserSkill[]>;
+    level: number;
+}
+
+type Paths = Record<PathKey, PathData>;
+
 export const getSkillColor = (path: SkillPath, tier?: number) => SKILL_FILLS[path][tier ?? 2];
 
 export const skillPathToLabel = (path: SkillPath) => `skills.paths.${toLowerFirst(path)}`;
@@ -38,6 +83,30 @@ export const skillEffectToLabel = (effect: SkillEffect) => `skills.effects.${toL
 
 export const skillPropertyToLabel = (property: SkillProperty) =>
     `skills.properties.${toLowerFirst(property.type)}`;
+
+export const toPaths = (skillTree: GetSkillTreeResponse): Paths => {
+    return PATH_KEYS.reduce((all, key) => {
+        all[key] = {
+            name: `skills.paths.${key}`,
+            skillTiers: skillTree.paths[key].reduce<Record<number, UserSkill[]>>((tiers, skill) => {
+                (tiers[skill.tier] ??= []).push(skill);
+                return tiers;
+            }, {}),
+            level: skillTree.paths[key].reduce((level, skill) => level + skill.level, 0),
+        };
+        return all;
+    }, {} as Paths);
+};
+
+export const findSkill = (skillTree: GetSkillTreeResponse, guid: SkillGuid): UserSkill | null => {
+    for (const key of PATH_KEYS) {
+        const skill = skillTree.paths[key].find((item) => item.guid === guid) ?? null;
+        if (skill !== null) {
+            return skill;
+        }
+    }
+    return null;
+};
 
 export const useSkillLabels = (skill: UserSkill) => {
     const { t } = useTranslation();

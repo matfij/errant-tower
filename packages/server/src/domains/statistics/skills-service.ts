@@ -1,34 +1,13 @@
-import { SkillPath, type Skill, type SkillGuid } from "@errant/shared";
+import { SkillPath, type SkillGuid } from "@errant/shared";
 
 import { HttpError } from "../../common/http/errors.ts";
+import { skillLevel } from "../skills/skill-definition.ts";
 import { getAllSkills, getSkill } from "../skills/skill-registry.ts";
+import type { SkillTree } from "./statistics-definition.ts";
 import type { StatisticsEntity } from "./statistics-entity.ts";
 import type { StatisticsRepository } from "./statistics-repository.ts";
 
-export type SkillTreeSkill = {
-    skill: Skill;
-    level: number;
-};
-
-export type SkillTree = {
-    skillPoints: number;
-    paths: {
-        blade: SkillTreeSkill[];
-        tenacity: SkillTreeSkill[];
-        hammer: SkillTreeSkill[];
-        bellicosity: SkillTreeSkill[];
-        lance: SkillTreeSkill[];
-        vivacity: SkillTreeSkill[];
-        bow: SkillTreeSkill[];
-        perspicacity: SkillTreeSkill[];
-        staff: SkillTreeSkill[];
-        sagacity: SkillTreeSkill[];
-    };
-};
-
 export class SkillsService {
-    private readonly maxSkillLevel = 10;
-
     private readonly pathField = {
         [SkillPath.Blade]: "blade",
         [SkillPath.Tenacity]: "tenacity",
@@ -81,7 +60,7 @@ export class SkillsService {
             throw new HttpError("errors.cantLearnThisSkill");
         }
         if (targetSkill !== null) {
-            if (targetSkill.level >= this.maxSkillLevel) {
+            if (targetSkill.level >= skillLevel.max) {
                 throw new HttpError("errors.skillAlreadyLearned");
             }
             targetSkill.level += 1;
