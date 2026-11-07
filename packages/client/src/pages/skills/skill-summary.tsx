@@ -24,6 +24,7 @@ export const SkillSummary = (props: SkillSummaryProps) => {
         hasTargetSection,
         getAttributeLabel,
         getEffectLabel,
+        hasNextEffectLevel,
         getPropertyLabel,
     } = useSkillLabels(props.skill);
 
@@ -151,7 +152,7 @@ export const SkillSummary = (props: SkillSummaryProps) => {
                 props.skill.selfEffects.map((effect) => (
                     <p key={effect.type} className={styles.tooltipAttribute}>
                         <span>{getEffectLabel(effect, currentLevel)}</span>
-                        {showNextLevel && effect.values[currentLevel + 1] !== undefined && (
+                        {showNextLevel && hasNextEffectLevel(effect, currentLevel) && (
                             <>
                                 <span className={styles.tooltipAttributeSeparator}>{t("skills.next")}</span>
                                 <span className={styles.tooltipNextAttribute}>
@@ -186,7 +187,7 @@ export const SkillSummary = (props: SkillSummaryProps) => {
                 props.skill.targetEffects.map((effect) => (
                     <p key={effect.type} className={styles.tooltipAttribute}>
                         <span>{getEffectLabel(effect, currentLevel)}</span>
-                        {showNextLevel && effect.values[currentLevel + 1] !== undefined && (
+                        {showNextLevel && hasNextEffectLevel(effect, currentLevel) && (
                             <>
                                 <span className={styles.tooltipAttributeSeparator}>{t("skills.next")}</span>
                                 <span className={styles.tooltipNextAttribute}>

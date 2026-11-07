@@ -75,8 +75,8 @@ export type BattleSkill = {
 export type SkillEffect = {
     type: SkillEffectType;
     values: number[];
-    chance: number;
-    duration: number;
+    chances: number[];
+    durations: number[];
 };
 
 export type BattleSkillEffect = {

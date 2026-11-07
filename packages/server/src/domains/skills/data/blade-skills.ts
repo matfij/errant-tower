@@ -1,6 +1,6 @@
 import { SkillEffectType, SkillGuid, SkillPath, SkillType } from "@errant/shared";
 
-import { zeroFactors } from "../skill-definition.ts";
+import { oneFactors, zeroFactors } from "../skill-definition.ts";
 import { defineSkill } from "../skill-utils.ts";
 
 export const bladeSkills = {
@@ -29,8 +29,8 @@ export const bladeSkills = {
             {
                 type: SkillEffectType.PhysicalDefense,
                 values: [-0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.15],
-                chance: 1,
-                duration: 1,
+                chances: oneFactors,
+                durations: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             },
         ],
         energyCost: [7, 7, 7, 8, 8, 8, 8, 9, 9, 8],
@@ -49,8 +49,8 @@ export const bladeSkills = {
             {
                 type: SkillEffectType.Initiative,
                 values: [1.1, 1.12, 1.14, 1.16, 1.18, 1.2, 1.22, 1.24, 1.26, 1.28],
-                chance: 1,
-                duration: 2,
+                chances: oneFactors,
+                durations: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
             },
         ],
         energyCost: [6, 6, 6, 6, 6, 7, 7, 7, 7, 5],
@@ -69,7 +69,8 @@ export const bladeSkills = {
             {
                 type: SkillEffectType.PhysicalDefense,
                 values: [-0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.1, -0.08],
-                chance: 1,
+                chances: oneFactors,
+                durations: zeroFactors,
             },
         ],
         energyCost: [12, 12, 12, 12, 13, 13, 13, 13, 14, 13],
@@ -88,16 +89,16 @@ export const bladeSkills = {
             {
                 type: SkillEffectType.Paralyze,
                 values: zeroFactors,
-                chance: 0.2,
-                duration: 1,
+                chances: [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2],
+                durations: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             },
         ],
         selfEffects: [
             {
                 type: SkillEffectType.Initiative,
                 values: [1.2, 1.22, 1.24, 1.26, 1.28, 1.3, 1.32, 1.34, 1.36, 1.38],
-                chance: 1,
-                duration: 2,
+                chances: oneFactors,
+                durations: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
             },
         ],
         energyCost: [20, 20, 20, 22, 22, 22, 22, 24, 24, 21],
@@ -117,8 +118,8 @@ export const bladeSkills = {
             {
                 type: SkillEffectType.PhysicalDefense,
                 values: [-0.15, -0.15, -0.15, -0.15, -0.15, -0.12, -0.12, -0.12, -0.12, -0.1],
-                chance: 1,
-                duration: 2,
+                chances: oneFactors,
+                durations: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
             },
         ],
         energyCost: [25, 25, 25, 27, 27, 27, 29, 29, 29, 26],
@@ -137,8 +138,8 @@ export const bladeSkills = {
             {
                 type: SkillEffectType.Bleeding,
                 values: [0.2, 0.21, 0.22, 0.23, 0.24, 0.25, 0.26, 0.27, 0.28, 0.29],
-                chance: 0.4,
-                duration: 3,
+                chances: [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4],
+                durations: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
             },
         ],
         energyCost: [30, 30, 30, 33, 33, 33, 36, 36, 36, 31],

@@ -169,8 +169,8 @@ const toSkillEffect = (effect: SkillEffect): SkillEffect => {
     return {
         type: effect.type,
         values: effect.values,
-        chance: effect.chance,
-        duration: effect.duration,
+        chances: effect.chances,
+        durations: effect.durations,
     };
 };
 

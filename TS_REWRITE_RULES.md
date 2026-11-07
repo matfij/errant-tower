@@ -38,7 +38,7 @@ Skill wire types live in `packages/shared/src/skills.ts`: `SkillGuid`, `Skill`, 
 
 `BattleStatistics` is a full numeric block. Every field is a number. `defineBattleStatistics` in `statistics-utils.ts` fills an omitted draft field with 0. A draft passes only the fields it sets. A finished item stores a missing stat block as `statistics: null`.
 
-A catalog skill effect is one object: `type`, `values` (one number per level), `chance`, and `duration`. Do not repeat the effect on every level. `emptyEffects` is `[]`. `BattleSkillEffect` is that effect at one level, with `value` instead of `values`. Chance and duration stay one number. The skills tooltip reads `values[level]`.
+A catalog skill effect is one object: `type`, `values`, `chances`, and `durations`. Each list is one number per level. Do not repeat the effect on every level. `emptyEffects` is `[]`. `BattleSkillEffect` is that effect at one level, with `value`, `chance`, and `duration`. The skills tooltip reads `values[level]`, `chances[level]`, and `durations[level]`.
 
 A catalog skill property is one object: `effect`, `type`, `values` (one number per level), and `duration`. Do not repeat the property on every level. `emptyProperties` is `[]`. `BattleSkillProperty` is that property at one level, with `value` instead of `values`. Great Vigor, Armorer, Resistance, and Energizer are `Multiplicative` and store the factor (`1.01` is +1%). Deflect and Heart's Resolve stay additive and store the fraction (`0.01`). The skills tooltip shows a multiplicative factor as `factor - 1`, so `1.01` still reads as 1%.
 

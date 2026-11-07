@@ -50,8 +50,8 @@ export type SkillDraft = {
 export type SkillEffectDraft = {
     type: SkillEffectType;
     values: number[];
-    chance?: number;
-    duration?: number;
+    chances: number[];
+    durations: number[];
 };
 
 export type SkillPropertyDraft = {

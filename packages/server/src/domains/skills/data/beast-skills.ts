@@ -16,7 +16,7 @@ export const beastSkills = {
         physicalAttackFactor: [1.2],
         physicalDefenseFactor: [0.8],
         types: [SkillType.Pierce],
-        targetEffects: [{ type: SkillEffectType.Bleeding, values: [0.25], chance: 0.25, duration: 3 }],
+        targetEffects: [{ type: SkillEffectType.Bleeding, values: [0.25], chances: [0.25], durations: [3] }],
     }),
     tailWhip: defineSkill({
         guid: SkillGuid.TailWhip,
@@ -24,7 +24,7 @@ export const beastSkills = {
         physicalAttackFactor: [0.8],
         physicalDefenseFactor: [1.2],
         types: [SkillType.Blunt],
-        targetEffects: [{ type: SkillEffectType.Stun, values: [0], chance: 0.1, duration: 1 }],
+        targetEffects: [{ type: SkillEffectType.Stun, values: [0], chances: [0.1], durations: [1] }],
     }),
     tackle: defineSkill({
         guid: SkillGuid.Tackle,
@@ -32,7 +32,7 @@ export const beastSkills = {
         physicalAttackFactor: [1.0],
         physicalDefenseFactor: [1.0],
         types: [SkillType.Blunt],
-        targetEffects: [{ type: SkillEffectType.Stun, values: [0], chance: 0.2, duration: 1 }],
+        targetEffects: [{ type: SkillEffectType.Stun, values: [0], chances: [0.2], durations: [1] }],
     }),
     cut: defineSkill({
         guid: SkillGuid.Cut,
@@ -40,7 +40,7 @@ export const beastSkills = {
         physicalAttackFactor: [1.2],
         physicalDefenseFactor: [0.8],
         types: [SkillType.Slash],
-        targetEffects: [{ type: SkillEffectType.Bleeding, values: [0.3], chance: 0.3, duration: 3 }],
+        targetEffects: [{ type: SkillEffectType.Bleeding, values: [0.3], chances: [0.3], durations: [3] }],
     }),
     peck: defineSkill({
         guid: SkillGuid.Peck,

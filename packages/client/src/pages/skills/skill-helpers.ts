@@ -145,8 +145,15 @@ export const useSkillLabels = (skill: UserSkill) => {
     const getEffectLabel = (effect: SkillEffect, level: number, skipName?: boolean) =>
         (skipName ? "" : t(skillEffectToLabel(effect)) + ": ") +
         (effect.values[level] !== 0 ? toPercentLabel(effect.values[level]) : t("skills.notApplicable")) +
-        (effect.chance > 0 ? ", " + t("skills.chance", { chance: toPercentLabel(effect.chance) }) : "") +
-        (effect.duration > 0 ? ", " + t("skills.duration", { count: effect.duration }) : "");
+        (effect.chances[level] > 0
+            ? ", " + t("skills.chance", { chance: toPercentLabel(effect.chances[level]) })
+            : "") +
+        (effect.durations[level] > 0 ? ", " + t("skills.duration", { count: effect.durations[level] }) : "");
+
+    const hasNextEffectLevel = (effect: SkillEffect, level: number) =>
+        effect.values[level + 1] !== undefined ||
+        effect.chances[level + 1] !== undefined ||
+        effect.durations[level + 1] !== undefined;
 
     const getPropertyLabel = (property: SkillProperty, level: number, skipName?: boolean) =>
         (skipName ? "" : t(skillPropertyToLabel(property)) + ": ") +
@@ -161,6 +168,7 @@ export const useSkillLabels = (skill: UserSkill) => {
         hasTargetSection,
         getAttributeLabel,
         getEffectLabel,
+        hasNextEffectLevel,
         getPropertyLabel,
     };
 };

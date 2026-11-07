@@ -49,8 +49,8 @@ const fillEffects = (effects: SkillEffectDraft[] | undefined): SkillEffect[] => 
     return effects.map((effect) => ({
         type: effect.type,
         values: effect.values,
-        chance: effect.chance ?? 0,
-        duration: effect.duration ?? 0,
+        chances: effect.chances,
+        durations: effect.durations,
     }));
 };
 
