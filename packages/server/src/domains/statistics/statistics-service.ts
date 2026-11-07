@@ -2,9 +2,9 @@ import {
     SkillPropertyEffect,
     SkillPropertyType,
     UserAttribute,
+    type BattleSkillProperty,
     type BattleStatistics,
     type Item,
-    type SkillProperty,
 } from "@errant/shared";
 
 import { HttpError } from "../../common/http/errors.ts";
@@ -193,19 +193,26 @@ export class StatisticsService {
         total.energyRegen += stats.energyRegen;
     }
 
-    private getPassiveSkillProperties(learnedSkills: LearnedSkill[]): SkillProperty[] {
-        const properties: SkillProperty[] = [];
+    private getPassiveSkillProperties(learnedSkills: LearnedSkill[]): BattleSkillProperty[] {
+        const properties: BattleSkillProperty[] = [];
         for (const learnedSkill of learnedSkills) {
             const skill = getSkill(learnedSkill.guid);
             if (!skill.isPassive) {
                 continue;
             }
-            properties.push(...skill.selfProperties[learnedSkill.level - 1]);
+            for (const property of skill.selfProperties) {
+                properties.push({
+                    effect: property.effect,
+                    type: property.type,
+                    value: property.values[learnedSkill.level - 1],
+                    duration: property.duration,
+                });
+            }
         }
         return properties;
     }
 
-    private applyProperty(statistics: BattleStatistics, property: SkillProperty): void {
+    private applyProperty(statistics: BattleStatistics, property: BattleSkillProperty): void {
         switch (property.type) {
             case SkillPropertyType.Initiative:
                 statistics.speed = this.applyPropertyValue(statistics.speed, property);
@@ -287,7 +294,7 @@ export class StatisticsService {
         }
     }
 
-    private applyPropertyValue(value: number, property: SkillProperty): number {
+    private applyPropertyValue(value: number, property: BattleSkillProperty): number {
         switch (property.effect) {
             case SkillPropertyEffect.Additive:
                 return value + property.value;

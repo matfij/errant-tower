@@ -42,30 +42,26 @@ export const defineSkill = (draft: SkillDraft): Skill => {
     };
 };
 
-const fillEffects = (levels: SkillEffectDraft[][] | undefined): SkillEffect[][] => {
-    if (levels === undefined) {
+const fillEffects = (effects: SkillEffectDraft[] | undefined): SkillEffect[] => {
+    if (effects === undefined) {
         return emptyEffects;
     }
-    return levels.map((level) =>
-        level.map((effect) => ({
-            type: effect.type,
-            value: effect.value ?? 0,
-            chance: effect.chance ?? 0,
-            duration: effect.duration ?? 0,
-        })),
-    );
+    return effects.map((effect) => ({
+        type: effect.type,
+        values: effect.values,
+        chance: effect.chance ?? 0,
+        duration: effect.duration ?? 0,
+    }));
 };
 
-const fillProperties = (levels: SkillPropertyDraft[][] | undefined): SkillProperty[][] => {
-    if (levels === undefined) {
+const fillProperties = (properties: SkillPropertyDraft[] | undefined): SkillProperty[] => {
+    if (properties === undefined) {
         return emptyProperties;
     }
-    return levels.map((level) =>
-        level.map((property) => ({
-            effect: property.effect ?? SkillPropertyEffect.Additive,
-            type: property.type,
-            value: property.value ?? 0,
-            duration: property.duration ?? 0,
-        })),
-    );
+    return properties.map((property) => ({
+        effect: property.effect ?? SkillPropertyEffect.Additive,
+        type: property.type,
+        values: property.values,
+        duration: property.duration ?? 0,
+    }));
 };

@@ -42,10 +42,10 @@ export type Skill = {
     hitCount: number[];
     energyCost: number[];
     manaCost: number[];
-    targetEffects: SkillEffect[][];
-    selfEffects: SkillEffect[][];
-    targetProperties: SkillProperty[][];
-    selfProperties: SkillProperty[][];
+    targetEffects: SkillEffect[];
+    selfEffects: SkillEffect[];
+    targetProperties: SkillProperty[];
+    selfProperties: SkillProperty[];
     requirements: SkillRequirement[];
 };
 
@@ -65,14 +65,21 @@ export type BattleSkill = {
     hitCount: number;
     energyCost: number;
     manaCost: number;
-    targetEffects: SkillEffect[];
-    selfEffects: SkillEffect[];
-    targetProperties: SkillProperty[];
-    selfProperties: SkillProperty[];
+    targetEffects: BattleSkillEffect[];
+    selfEffects: BattleSkillEffect[];
+    targetProperties: BattleSkillProperty[];
+    selfProperties: BattleSkillProperty[];
     requirements: SkillRequirement[];
 };
 
 export type SkillEffect = {
+    type: SkillEffectType;
+    values: number[];
+    chance: number;
+    duration: number;
+};
+
+export type BattleSkillEffect = {
     type: SkillEffectType;
     value: number;
     chance: number;
@@ -80,6 +87,13 @@ export type SkillEffect = {
 };
 
 export type SkillProperty = {
+    effect: SkillPropertyEffect;
+    type: SkillPropertyType;
+    values: number[];
+    duration: number;
+};
+
+export type BattleSkillProperty = {
     effect: SkillPropertyEffect;
     type: SkillPropertyType;
     value: number;

@@ -21,6 +21,8 @@ export type { Item, ItemRequirements } from "./items.ts";
 export { ItemGuid, ItemRarity, ItemType } from "./items.ts";
 export type {
     BattleSkill,
+    BattleSkillEffect,
+    BattleSkillProperty,
     GetSkillTreeResponse,
     LearnSkillRequest,
     LearnSkillResponse,

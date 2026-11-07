@@ -112,16 +112,16 @@ const SkillTooltipContent = memo(({ skill }: { skill: UserSkill }) => {
                     <p className={styles.tooltipSubtitle}>{t("skills.appliesToUser")}</p>
                 </>
             )}
-            {skill.selfEffects[currentLevel].length > 0 &&
-                skill.selfEffects[currentLevel].map((effect) => (
+            {skill.selfEffects.length > 0 &&
+                skill.selfEffects.map((effect) => (
                     <p key={effect.type} className={styles.tooltipAttribute}>
-                        {getEffectLabel(effect)}
+                        {getEffectLabel(effect, currentLevel)}
                     </p>
                 ))}
-            {skill.selfProperties[currentLevel].length > 0 &&
-                skill.selfProperties[currentLevel].map((property) => (
+            {skill.selfProperties.length > 0 &&
+                skill.selfProperties.map((property) => (
                     <p key={property.type} className={styles.tooltipAttribute}>
-                        {getPropertyLabel(property)}
+                        {getPropertyLabel(property, currentLevel)}
                     </p>
                 ))}
 
@@ -131,16 +131,16 @@ const SkillTooltipContent = memo(({ skill }: { skill: UserSkill }) => {
                     <p className={styles.tooltipSubtitle}>{t("skills.appliesToTarget")}</p>
                 </>
             )}
-            {skill.targetEffects[currentLevel].length > 0 &&
-                skill.targetEffects[currentLevel].map((effect) => (
+            {skill.targetEffects.length > 0 &&
+                skill.targetEffects.map((effect) => (
                     <p key={effect.type} className={styles.tooltipAttribute}>
-                        {getEffectLabel(effect)}
+                        {getEffectLabel(effect, currentLevel)}
                     </p>
                 ))}
-            {skill.targetProperties[currentLevel].length > 0 &&
-                skill.targetProperties[currentLevel].map((property) => (
+            {skill.targetProperties.length > 0 &&
+                skill.targetProperties.map((property) => (
                     <p key={property.type} className={styles.tooltipAttribute}>
-                        {getPropertyLabel(property)}
+                        {getPropertyLabel(property, currentLevel)}
                     </p>
                 ))}
         </div>

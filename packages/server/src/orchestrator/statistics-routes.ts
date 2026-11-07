@@ -153,10 +153,10 @@ const toUserSkill = (entry: SkillTreeSkill): UserSkill => {
         hitCount: skill.hitCount,
         energyCost: skill.energyCost,
         manaCost: skill.manaCost,
-        targetEffects: skill.targetEffects.map((level) => level.map(toSkillEffect)),
-        selfEffects: skill.selfEffects.map((level) => level.map(toSkillEffect)),
-        targetProperties: skill.targetProperties.map((level) => level.map(toSkillProperty)),
-        selfProperties: skill.selfProperties.map((level) => level.map(toSkillProperty)),
+        targetEffects: skill.targetEffects.map(toSkillEffect),
+        selfEffects: skill.selfEffects.map(toSkillEffect),
+        targetProperties: skill.targetProperties.map(toSkillProperty),
+        selfProperties: skill.selfProperties.map(toSkillProperty),
         requirements: skill.requirements.map((requirement) => ({
             path: requirement.path,
             points: requirement.points,
@@ -168,7 +168,7 @@ const toUserSkill = (entry: SkillTreeSkill): UserSkill => {
 const toSkillEffect = (effect: SkillEffect): SkillEffect => {
     return {
         type: effect.type,
-        value: effect.value,
+        values: effect.values,
         chance: effect.chance,
         duration: effect.duration,
     };
@@ -178,7 +178,7 @@ const toSkillProperty = (property: SkillProperty): SkillProperty => {
     return {
         effect: property.effect,
         type: property.type,
-        value: property.value,
+        values: property.values,
         duration: property.duration,
     };
 };

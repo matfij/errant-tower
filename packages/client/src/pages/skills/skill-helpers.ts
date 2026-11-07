@@ -1,5 +1,6 @@
 import {
     SkillPath,
+    SkillPropertyEffect,
     SkillType,
     type GetSkillTreeResponse,
     type SkillEffect,
@@ -84,6 +85,14 @@ export const skillEffectToLabel = (effect: SkillEffect) => `skills.effects.${toL
 export const skillPropertyToLabel = (property: SkillProperty) =>
     `skills.properties.${toLowerFirst(property.type)}`;
 
+const toPropertyPercent = (property: SkillProperty, level: number) => {
+    const value = property.values[level];
+    if (property.effect === SkillPropertyEffect.Multiplicative) {
+        return value - 1;
+    }
+    return value;
+};
+
 export const toPaths = (skillTree: GetSkillTreeResponse): Paths => {
     return PATH_KEYS.reduce((all, key) => {
         all[key] = {
@@ -126,24 +135,22 @@ export const useSkillLabels = (skill: UserSkill) => {
         levels: skill[attribute],
     })).filter((attribute) => isRelevant(attribute.levels));
 
-    const hasSelfSection =
-        skill.selfEffects[currentLevel].length > 0 || skill.selfProperties[currentLevel].length > 0;
+    const hasSelfSection = skill.selfEffects.length > 0 || skill.selfProperties.length > 0;
 
-    const hasTargetSection =
-        skill.targetEffects[currentLevel].length > 0 || skill.targetProperties[currentLevel].length > 0;
+    const hasTargetSection = skill.targetEffects.length > 0 || skill.targetProperties.length > 0;
 
     const getAttributeLabel = (name: string, value: number) =>
         t(`skills.attributes.${name}`) + ": " + toPercentLabel(value);
 
-    const getEffectLabel = (effect: SkillEffect, skipName?: boolean) =>
+    const getEffectLabel = (effect: SkillEffect, level: number, skipName?: boolean) =>
         (skipName ? "" : t(skillEffectToLabel(effect)) + ": ") +
-        (effect.value !== 0 ? toPercentLabel(effect.value) : t("skills.notApplicable")) +
+        (effect.values[level] !== 0 ? toPercentLabel(effect.values[level]) : t("skills.notApplicable")) +
         (effect.chance > 0 ? ", " + t("skills.chance", { chance: toPercentLabel(effect.chance) }) : "") +
         (effect.duration > 0 ? ", " + t("skills.duration", { count: effect.duration }) : "");
 
-    const getPropertyLabel = (property: SkillProperty, skipName?: boolean) =>
+    const getPropertyLabel = (property: SkillProperty, level: number, skipName?: boolean) =>
         (skipName ? "" : t(skillPropertyToLabel(property)) + ": ") +
-        toPercentLabel(property.value) +
+        toPercentLabel(toPropertyPercent(property, level)) +
         (property.duration > 0 ? ", " + t("skills.duration", { count: property.duration }) : "");
 
     return {

@@ -26,7 +26,7 @@ export const useUserStore = create<UserStore>()(
             name: "errant-tower-user-store",
             partialize: (state) => ({ user: state.user }),
             merge: (persistedState, currentState) => {
-                const persisted = persistedState as Partial<UserStore>;
+                const persisted = (persistedState ?? {}) as Partial<UserStore>;
                 return {
                     ...currentState,
                     ...persisted,

@@ -19,9 +19,9 @@ export const zeroFactors = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 export const oneFactors = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
-export const emptyEffects: SkillEffect[][] = [[], [], [], [], [], [], [], [], [], []];
+export const emptyEffects: SkillEffect[] = [];
 
-export const emptyProperties: SkillProperty[][] = [[], [], [], [], [], [], [], [], [], []];
+export const emptyProperties: SkillProperty[] = [];
 
 export type SkillDraft = {
     guid: SkillGuid;
@@ -40,16 +40,16 @@ export type SkillDraft = {
     hitCount?: number[];
     energyCost?: number[];
     manaCost?: number[];
-    targetEffects?: SkillEffectDraft[][];
-    selfEffects?: SkillEffectDraft[][];
-    targetProperties?: SkillPropertyDraft[][];
-    selfProperties?: SkillPropertyDraft[][];
+    targetEffects?: SkillEffectDraft[];
+    selfEffects?: SkillEffectDraft[];
+    targetProperties?: SkillPropertyDraft[];
+    selfProperties?: SkillPropertyDraft[];
     requirements?: SkillRequirement[];
 };
 
 export type SkillEffectDraft = {
     type: SkillEffectType;
-    value?: number;
+    values: number[];
     chance?: number;
     duration?: number;
 };
@@ -57,6 +57,6 @@ export type SkillEffectDraft = {
 export type SkillPropertyDraft = {
     effect?: SkillPropertyEffect;
     type: SkillPropertyType;
-    value?: number;
+    values: number[];
     duration?: number;
 };
