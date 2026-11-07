@@ -1,5 +1,5 @@
-import { UserAttribute } from "@errant/shared";
-import { useEffect } from "react";
+import { UserAttribute, type GetAttributesResponse } from "@errant/shared";
+import { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
 import { useApiRequest } from "../../api/api-utils";
@@ -26,21 +26,28 @@ export const AttributesComponent = (props: AttributesComponentProps) => {
     const { t } = useTranslation();
     const getAttributes = useApiRequest(getAttributesRequest);
     const extendAttribute = useApiRequest(extendAttributeRequest);
-    const attributes = extendAttribute.data ?? getAttributes.data;
+    const [attributes, setAttributes] = useState<GetAttributesResponse | null>(null);
 
     const canExtend = (attributes?.attributePoints ?? 0) > 0;
 
     useEffect(() => {
-        void getAttributes.call();
+        void getAttributes.call().then((attributes) => {
+            if (attributes !== null) {
+                setAttributes(attributes);
+            }
+        });
     }, []);
 
-    useEffect(() => {
-        if (extendAttribute.isSuccess && extendAttribute.data) {
-            props.onAttributesChanged();
-        }
-    }, [extendAttribute.isSuccess, extendAttribute.data]);
+    const onExtend = (attribute: UserAttribute) => {
+        void extendAttribute.call({ attribute }).then((attributes) => {
+            if (attributes !== null) {
+                setAttributes(attributes);
+                props.onAttributesChanged();
+            }
+        });
+    };
 
-    if (getAttributes.errors && getAttributes.errors.length > 0 && attributes === undefined) {
+    if (getAttributes.errors && getAttributes.errors.length > 0 && attributes === null) {
         return <AppError errors={getAttributes.errors} />;
     }
 
@@ -76,7 +83,7 @@ export const AttributesComponent = (props: AttributesComponentProps) => {
                         <button
                             type="button"
                             disabled={extendAttribute.isLoading}
-                            onClick={() => extendAttribute.call({ attribute: attribute.attribute })}
+                            onClick={() => onExtend(attribute.attribute)}
                         >
                             +
                         </button>

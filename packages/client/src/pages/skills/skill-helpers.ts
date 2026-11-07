@@ -1,12 +1,14 @@
-import { useTranslation } from "react-i18next";
-
 import {
     SkillPath,
     SkillType,
+    type GetSkillTreeResponse,
     type SkillEffect,
+    type SkillGuid,
     type SkillProperty,
     type UserSkill,
-} from "../../api-old/generated/definitions";
+} from "@errant/shared";
+import { useTranslation } from "react-i18next";
+
 import { toLowerFirst, toPercentLabel } from "../../common/utils";
 
 export const SKILL_MAX_LEVEL = 10;
@@ -32,20 +34,79 @@ const SKILL_BASE_ATTRIBUTES = [
     "magicalDefenseFactor",
 ] as const;
 
+const PATH_KEYS = [
+    "blade",
+    "tenacity",
+    "hammer",
+    "bellicosity",
+    "lance",
+    "vivacity",
+    "bow",
+    "perspicacity",
+    "staff",
+    "sagacity",
+] as const;
+
+type PathKey = (typeof PATH_KEYS)[number];
+
+export const PATH_TO_PATH_KEY: Record<SkillPath, PathKey | null> = {
+    [SkillPath.None]: null,
+    [SkillPath.Blade]: "blade",
+    [SkillPath.Tenacity]: "tenacity",
+    [SkillPath.Hammer]: "hammer",
+    [SkillPath.Bellicosity]: "bellicosity",
+    [SkillPath.Lance]: "lance",
+    [SkillPath.Vivacity]: "vivacity",
+    [SkillPath.Bow]: "bow",
+    [SkillPath.Perspicacity]: "perspicacity",
+    [SkillPath.Staff]: "staff",
+    [SkillPath.Sagacity]: "sagacity",
+};
+
+interface PathData {
+    name: string;
+    skillTiers: Record<number, UserSkill[]>;
+    level: number;
+}
+
+type Paths = Record<PathKey, PathData>;
+
 export const getSkillColor = (path: SkillPath, tier?: number) => SKILL_FILLS[path][tier ?? 2];
 
 export const skillPathToLabel = (path: SkillPath) => `skills.paths.${toLowerFirst(path)}`;
 
 export const skillTypeToLabel = (type: SkillType) => `skills.types.${toLowerFirst(type)}`;
 
-export const skillPassiveToLabel = (isPassive: boolean) =>
-    isPassive ? `skills.passive` : `skills.active`;
+export const skillPassiveToLabel = (isPassive: boolean) => (isPassive ? `skills.passive` : `skills.active`);
 
-export const skillEffectToLabel = (effect: SkillEffect) =>
-    `skills.effects.${toLowerFirst(effect.type)}`;
+export const skillEffectToLabel = (effect: SkillEffect) => `skills.effects.${toLowerFirst(effect.type)}`;
 
 export const skillPropertyToLabel = (property: SkillProperty) =>
     `skills.properties.${toLowerFirst(property.type)}`;
+
+export const toPaths = (skillTree: GetSkillTreeResponse): Paths => {
+    return PATH_KEYS.reduce((all, key) => {
+        all[key] = {
+            name: `skills.paths.${key}`,
+            skillTiers: skillTree.paths[key].reduce<Record<number, UserSkill[]>>((tiers, skill) => {
+                (tiers[skill.tier] ??= []).push(skill);
+                return tiers;
+            }, {}),
+            level: skillTree.paths[key].reduce((level, skill) => level + skill.level, 0),
+        };
+        return all;
+    }, {} as Paths);
+};
+
+export const findSkill = (skillTree: GetSkillTreeResponse, guid: SkillGuid): UserSkill | null => {
+    for (const key of PATH_KEYS) {
+        const skill = skillTree.paths[key].find((item) => item.guid === guid) ?? null;
+        if (skill !== null) {
+            return skill;
+        }
+    }
+    return null;
+};
 
 export const useSkillLabels = (skill: UserSkill) => {
     const { t } = useTranslation();
@@ -69,8 +130,7 @@ export const useSkillLabels = (skill: UserSkill) => {
         skill.selfEffects[currentLevel].length > 0 || skill.selfProperties[currentLevel].length > 0;
 
     const hasTargetSection =
-        skill.targetEffects[currentLevel].length > 0 ||
-        skill.targetProperties[currentLevel].length > 0;
+        skill.targetEffects[currentLevel].length > 0 || skill.targetProperties[currentLevel].length > 0;
 
     const getAttributeLabel = (name: string, value: number) =>
         t(`skills.attributes.${name}`) + ": " + toPercentLabel(value);
@@ -78,9 +138,7 @@ export const useSkillLabels = (skill: UserSkill) => {
     const getEffectLabel = (effect: SkillEffect, skipName?: boolean) =>
         (skipName ? "" : t(skillEffectToLabel(effect)) + ": ") +
         (effect.value !== 0 ? toPercentLabel(effect.value) : t("skills.notApplicable")) +
-        (effect.chance > 0
-            ? ", " + t("skills.chance", { chance: toPercentLabel(effect.chance) })
-            : "") +
+        (effect.chance > 0 ? ", " + t("skills.chance", { chance: toPercentLabel(effect.chance) }) : "") +
         (effect.duration > 0 ? ", " + t("skills.duration", { count: effect.duration }) : "");
 
     const getPropertyLabel = (property: SkillProperty, skipName?: boolean) =>

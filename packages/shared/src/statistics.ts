@@ -19,6 +19,8 @@ export type ExtendAttributeRequest = {
 
 export type ExtendAttributeResponse = GetAttributesResponse;
 
+export type GetBattleStatisticsResponse = BattleStatistics;
+
 export type BattleStatistics = {
     speed: number;
     maxHealthPoints: number;

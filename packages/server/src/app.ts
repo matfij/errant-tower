@@ -8,6 +8,7 @@ import { MutationGuardService } from "./common/http/guard.ts";
 import { LogService } from "./common/log.ts";
 import type { EquipmentRepository } from "./domains/equipment/equipment-repository.ts";
 import { EquipmentService } from "./domains/equipment/equipment-service.ts";
+import { SkillsService } from "./domains/statistics/skills-service.ts";
 import type { StatisticsRepository } from "./domains/statistics/statistics-repository.ts";
 import { StatisticsService } from "./domains/statistics/statistics-service.ts";
 import type { UserRepository } from "./domains/users/user-repository.ts";
@@ -65,12 +66,18 @@ export const buildApp = async (options: BuildAppOptions): Promise<FastifyInstanc
 
     const statisticsService = new StatisticsService(options.statisticsRepository);
 
+    const skillsService = new SkillsService(options.statisticsRepository);
+
     const equipmentService = new EquipmentService(options.equipmentRepository);
 
     const authOrchestrator = new AuthOrchestrator(userService, statisticsService, equipmentService);
     const authRoutes = new AuthRoutes(authOrchestrator, authSessionService);
 
-    const statisticsOrchestrator = new StatisticsOrchestrator(statisticsService);
+    const statisticsOrchestrator = new StatisticsOrchestrator(
+        statisticsService,
+        skillsService,
+        equipmentService,
+    );
     const statisticsRoutes = new StatisticsRoutes(statisticsOrchestrator, authSessionService);
 
     const equipmentOrchestrator = new EquipmentOrchestrator(equipmentService, statisticsService);

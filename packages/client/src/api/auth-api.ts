@@ -8,7 +8,7 @@ import type {
 
 import { apiFetch, postJson, readErrors } from "./api-utils";
 
-export const startSignUpRequest = (body: StartSignUpRequest): Promise<void> => {
+export const startSignUpRequest = (body: StartSignUpRequest): Promise<null> => {
     return postJson("/auth/sign-up-start", body);
 };
 
@@ -16,7 +16,7 @@ export const completeSignUpRequest = (body: CompleteSignUpRequest): Promise<Auth
     return postJson("/auth/sign-up-complete", body);
 };
 
-export const startSignInRequest = (body: StartSignInRequest): Promise<void> => {
+export const startSignInRequest = (body: StartSignInRequest): Promise<null> => {
     return postJson("/auth/sign-in-start", body);
 };
 
@@ -24,7 +24,7 @@ export const completeSignInRequest = (body: CompleteSignInRequest): Promise<Auth
     return postJson("/auth/sign-in-complete", body);
 };
 
-export const signOutRequest = async (): Promise<void> => {
+export const signOutRequest = async (): Promise<null> => {
     const response = await apiFetch("/auth/sign-out", {
         method: "POST",
         headers: {
@@ -35,7 +35,7 @@ export const signOutRequest = async (): Promise<void> => {
     });
 
     if (response.ok || response.status === 401) {
-        return;
+        return null;
     }
     throw await readErrors(response);
 };

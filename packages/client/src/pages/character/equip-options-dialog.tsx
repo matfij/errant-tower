@@ -7,7 +7,7 @@ import styles from "./equip-options-dialog.module.scss";
 
 interface EquipOptionsDialogProps {
     items: BagItemData[];
-    equippedItem?: Item;
+    equippedItem: Item | null;
     onClose: () => void;
     onEquip: (guid: ItemGuid) => void;
     onTakeOff: () => void;
@@ -19,7 +19,7 @@ export const EquipOptionsDialog = (props: EquipOptionsDialogProps) => {
     return (
         <div className={styles.dialogBackdrop} onClick={props.onClose}>
             <div className={styles.dialogContent}>
-                {props.equippedItem && (
+                {props.equippedItem !== null && (
                     <div className={styles.equippedItemWrapper}>
                         <b>{t("equipment.equipped")}</b>
                         <div className={styles.equippedItem}>
@@ -45,7 +45,7 @@ export const EquipOptionsDialog = (props: EquipOptionsDialogProps) => {
                     <button className={styles.closeButton} onClick={props.onClose}>
                         {t("common.close")}
                     </button>
-                    {props.equippedItem && (
+                    {props.equippedItem !== null && (
                         <button className={styles.takeOffButton} onClick={props.onTakeOff}>
                             {t("equipment.takeOff")}
                         </button>

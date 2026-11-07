@@ -6,7 +6,7 @@ Workspace setup is already on `main` (PR #129): pnpm, root oxlint / oxfmt / Type
 
 - `apps/client` (`@errant/client`, Vite port 5173) calls the C# server at `https://localhost:7135`.
 - `packages/client` (`@errant/client-ts`, Vite port 5174) calls the TypeScript server at `http://localhost:4000`.
-- The TypeScript server package is `packages/server`. It listens on port 4000 and serves auth and attributes.
+- The TypeScript server package is `packages/server`. It listens on port 4000 and serves auth, attributes, equipment, the skill tree, and battle statistics.
 - The C# server stays at `apps/errant-tower-server`.
 - The map editor is `packages/map-editor` (`@errant/map-editor`, Vite port 5175). It is a workspace member and uses the shared tsconfig, oxlint, and oxfmt.
 
@@ -124,10 +124,10 @@ Then:
 13. Focused checks for auth (expiry, logout, rejected cookie), combat math against the C# results, and resource write-back as it works today, including the missing battle sync.
 14. Combat model simplification, only after a gameplay rule is written down.
 15. Remove the C# server, `apps/client`, Orval, and SignalR after the replacement flows work. `packages/client` is then the only client.
-16. Absence values. One rule for a missing value, used in documents, responses, and client state. This is not part of a feature slice. An empty equipment slot is `null` on the wire, and `equipment-component.tsx` turns that into `undefined` for `useState<Item>()`. `SessionId` is both optional and `string | null`. A GET `call` takes no argument. Do not start the rest of this while a slice is in progress.
+16. Absence values. Done. A missing domain value is `null` in documents, responses, and client state. The field is present (`T | null`). `undefined` is only a draft field or an optional parameter. `useApiRequest` `data`, `errors`, and `call` use `null`. An empty equipment slot stays `null`, including in `equipment-component.tsx`. `SessionId` is `string | null`. `LearnedSkills` is always stored, and an empty list is `[]`. A GET `call` takes no argument. The rule is in [TS_REWRITE_RULES.md](TS_REWRITE_RULES.md).
 
 Shared contracts are added beside the route that uses them.
 
 ## Next step
 
-Implement equipment. Needs the item catalog and the attribute read. `createInitial` from sign-up, `get-equipment`, `get-bag`, `equip-item`, and `unequip-item`. `AwardItems` lands here too. It only writes the equipment document. The equipment section in `packages/client` calls these routes. Do not start the battle-stat formula in that same change.
+Implement the enemy catalog. Static enemies. Each enemy points at item ids, skill ids, and a stat block that already exist. No routes.

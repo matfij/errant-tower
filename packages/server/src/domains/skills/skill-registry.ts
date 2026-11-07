@@ -1,8 +1,9 @@
+import { SkillGuid, type Skill } from "@errant/shared";
+
 import { HttpError } from "../../common/http/errors.ts";
 import { beastSkills } from "./data/beast-skills.ts";
 import { bladeSkills } from "./data/blade-skills.ts";
 import { tenacitySkills } from "./data/tenacity-skills.ts";
-import { SkillGuid, type Skill } from "./skill-definition.ts";
 
 export const skills = {
     // Beast
@@ -37,5 +38,7 @@ export const getSkill = (guid: string): Skill => {
     }
     return skills[guid];
 };
+
+export const getAllSkills = (): Skill[] => Object.values(skills);
 
 const isSkillGuid = (guid: string): guid is SkillGuid => Object.hasOwn(skills, guid);

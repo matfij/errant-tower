@@ -1,7 +1,7 @@
+import type { UserSkill } from "@errant/shared";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-import type { UserSkill } from "../../api-old/generated/definitions";
 import { AppTooltip } from "../../common/components/app-tooltip";
 import { toPercentLabel } from "../../common/utils";
 import { getSkillColor, SKILL_MAX_LEVEL, skillPathToLabel, useSkillLabels } from "./skill-helpers";
@@ -29,8 +29,7 @@ export const SkillSummary = (props: SkillSummaryProps) => {
 
     const showNextLevel = props.skill.level + 1 <= SKILL_MAX_LEVEL;
 
-    const showCost =
-        props.skill.manaCost[currentLevel] > 0 || props.skill.energyCost[currentLevel] > 0;
+    const showCost = props.skill.manaCost[currentLevel] > 0 || props.skill.energyCost[currentLevel] > 0;
 
     const requirementsTooltipContent = useMemo(() => {
         if (props.canLearn) {
@@ -86,9 +85,7 @@ export const SkillSummary = (props: SkillSummaryProps) => {
                     <hr className={styles.tooltipSeparator} />
                     {props.skill.manaCost[currentLevel] > 0 && (
                         <p className={styles.tooltipAttribute}>
-                            <span>
-                                {t("skills.manaCost", { cost: props.skill.manaCost[currentLevel] })}
-                            </span>
+                            <span>{t("skills.manaCost", { cost: props.skill.manaCost[currentLevel] })}</span>
                             {showNextLevel && (
                                 <>
                                     <span className={styles.tooltipAttributeSeparator}>
@@ -128,9 +125,7 @@ export const SkillSummary = (props: SkillSummaryProps) => {
                     <hr className={styles.tooltipSeparator} />
                     {relevantAttributes.map((attribute) => (
                         <p key={attribute.name} className={styles.tooltipAttribute}>
-                            <span>
-                                {getAttributeLabel(attribute.name, attribute.levels[currentLevel])}
-                            </span>
+                            <span>{getAttributeLabel(attribute.name, attribute.levels[currentLevel])}</span>
                             {showNextLevel && (
                                 <>
                                     <span className={styles.tooltipAttributeSeparator}>
@@ -158,14 +153,9 @@ export const SkillSummary = (props: SkillSummaryProps) => {
                         <span>{getEffectLabel(effect)}</span>
                         {showNextLevel && (
                             <>
-                                <span className={styles.tooltipAttributeSeparator}>
-                                    {t("skills.next")}
-                                </span>
+                                <span className={styles.tooltipAttributeSeparator}>{t("skills.next")}</span>
                                 <span className={styles.tooltipNextAttribute}>
-                                    {getEffectLabel(
-                                        props.skill.selfEffects[currentLevel + 1][index],
-                                        true,
-                                    )}
+                                    {getEffectLabel(props.skill.selfEffects[currentLevel + 1][index], true)}
                                 </span>
                             </>
                         )}
@@ -177,9 +167,7 @@ export const SkillSummary = (props: SkillSummaryProps) => {
                         <span>{getPropertyLabel(property)}</span>
                         {showNextLevel && props.skill.selfProperties[currentLevel + 1]?.[index] && (
                             <>
-                                <span className={styles.tooltipAttributeSeparator}>
-                                    {t("skills.next")}
-                                </span>
+                                <span className={styles.tooltipAttributeSeparator}>{t("skills.next")}</span>
                                 <span className={styles.tooltipNextAttribute}>
                                     {getPropertyLabel(
                                         props.skill.selfProperties[currentLevel + 1][index],
@@ -203,14 +191,9 @@ export const SkillSummary = (props: SkillSummaryProps) => {
                         <span>{getEffectLabel(effect)}</span>
                         {showNextLevel && props.skill.targetEffects[currentLevel + 1]?.[index] && (
                             <>
-                                <span className={styles.tooltipAttributeSeparator}>
-                                    {t("skills.next")}
-                                </span>
+                                <span className={styles.tooltipAttributeSeparator}>{t("skills.next")}</span>
                                 <span className={styles.tooltipNextAttribute}>
-                                    {getEffectLabel(
-                                        props.skill.targetEffects[currentLevel + 1][index],
-                                        true,
-                                    )}
+                                    {getEffectLabel(props.skill.targetEffects[currentLevel + 1][index], true)}
                                 </span>
                             </>
                         )}
@@ -220,20 +203,17 @@ export const SkillSummary = (props: SkillSummaryProps) => {
                 props.skill.targetProperties[currentLevel].map((property, index) => (
                     <p key={property.type} className={styles.tooltipAttribute}>
                         <span>{getPropertyLabel(property)}</span>
-                        {showNextLevel &&
-                            props.skill.targetProperties[currentLevel + 1]?.[index] && (
-                                <>
-                                    <span className={styles.tooltipAttributeSeparator}>
-                                        {t("skills.next")}
-                                    </span>
-                                    <span className={styles.tooltipNextAttribute}>
-                                        {getPropertyLabel(
-                                            props.skill.targetProperties[currentLevel + 1][index],
-                                            true,
-                                        )}
-                                    </span>
-                                </>
-                            )}
+                        {showNextLevel && props.skill.targetProperties[currentLevel + 1]?.[index] && (
+                            <>
+                                <span className={styles.tooltipAttributeSeparator}>{t("skills.next")}</span>
+                                <span className={styles.tooltipNextAttribute}>
+                                    {getPropertyLabel(
+                                        props.skill.targetProperties[currentLevel + 1][index],
+                                        true,
+                                    )}
+                                </span>
+                            </>
+                        )}
                     </p>
                 ))}
 

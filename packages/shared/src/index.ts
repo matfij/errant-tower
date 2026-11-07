@@ -20,9 +20,31 @@ export { ItemSlot } from "./equipment.ts";
 export type { Item, ItemRequirements } from "./items.ts";
 export { ItemGuid, ItemRarity, ItemType } from "./items.ts";
 export type {
+    BattleSkill,
+    GetSkillTreeResponse,
+    LearnSkillRequest,
+    LearnSkillResponse,
+    ResetSkillsResponse,
+    Skill,
+    SkillEffect,
+    SkillProperty,
+    SkillRequirement,
+    SkillTreePaths,
+    UserSkill,
+} from "./skills.ts";
+export {
+    SkillEffectType,
+    SkillGuid,
+    SkillPath,
+    SkillPropertyEffect,
+    SkillPropertyType,
+    SkillType,
+} from "./skills.ts";
+export type {
     BattleStatistics,
     ExtendAttributeRequest,
     ExtendAttributeResponse,
     GetAttributesResponse,
+    GetBattleStatisticsResponse,
 } from "./statistics.ts";
 export { UserAttribute } from "./statistics.ts";

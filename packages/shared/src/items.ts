@@ -24,21 +24,21 @@ export enum ItemGuid {
 export type Item = {
     guid: ItemGuid;
     name: string;
-    description?: string;
+    description: string | null;
     imageUrl: string;
     type: ItemType;
     rarity: ItemRarity;
     price: number;
     isStackable: boolean;
-    statistics?: BattleStatistics;
-    requirements?: ItemRequirements;
+    statistics: BattleStatistics | null;
+    requirements: ItemRequirements | null;
 };
 
 export type ItemRequirements = {
-    strength?: number;
-    dexterity?: number;
-    constitution?: number;
-    spirit?: number;
+    strength: number | null;
+    dexterity: number | null;
+    constitution: number | null;
+    spirit: number | null;
 };
 
 export enum ItemType {
