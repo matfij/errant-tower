@@ -1,4 +1,4 @@
-import { ItemType } from "../../api-old/generated/definitions";
+import { ItemType } from "@errant/shared";
 
 export const handItemTypes: ItemType[] = [
     ItemType.Sword,

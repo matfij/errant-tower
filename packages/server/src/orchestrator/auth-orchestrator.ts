@@ -1,3 +1,4 @@
+import { EquipmentService } from "../domains/equipments/equipment-service.ts";
 import { StatisticsService } from "../domains/statistics/statistics-service.ts";
 import type { UserEntity } from "../domains/users/user-entity.ts";
 import { UserService } from "../domains/users/user-service.ts";
@@ -5,10 +6,16 @@ import { UserService } from "../domains/users/user-service.ts";
 export class AuthOrchestrator {
     private readonly userService: UserService;
     private readonly statisticsService: StatisticsService;
+    private readonly equipmentService: EquipmentService;
 
-    constructor(userService: UserService, statisticsService: StatisticsService) {
+    constructor(
+        userService: UserService,
+        statisticsService: StatisticsService,
+        equipmentService: EquipmentService,
+    ) {
         this.userService = userService;
         this.statisticsService = statisticsService;
+        this.equipmentService = equipmentService;
     }
 
     async startSignUp(email: string, username: string): Promise<void> {
@@ -19,7 +26,7 @@ export class AuthOrchestrator {
         const user = await this.userService.completeSignUp(email, actionCode);
         // await this.progressService.createInitial(user.id, user.username);
         await this.statisticsService.createInitial(user.id);
-        // await this.equipmentService.createInitial(user.id);
+        await this.equipmentService.createInitial(user.id);
         return user;
     }
 

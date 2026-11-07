@@ -124,6 +124,7 @@ Then:
 13. Focused checks for auth (expiry, logout, rejected cookie), combat math against the C# results, and resource write-back as it works today, including the missing battle sync.
 14. Combat model simplification, only after a gameplay rule is written down.
 15. Remove the C# server, `apps/client`, Orval, and SignalR after the replacement flows work. `packages/client` is then the only client.
+16. Absence values. One rule for a missing value, used in documents, responses, and client state. This is not part of a feature slice. An empty equipment slot is `null` on the wire, and `equipment-component.tsx` turns that into `undefined` for `useState<Item>()`. `SessionId` is both optional and `string | null`. Do not start this while a slice is in progress.
 
 Shared contracts are added beside the route that uses them.
 

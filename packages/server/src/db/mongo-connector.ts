@@ -1,6 +1,11 @@
 import { MongoClient } from "mongodb";
 
 import {
+    MongoEquipmentRepository,
+    type EquipmentDocument,
+    type EquipmentRepository,
+} from "../domains/equipments/equipment-repository.ts";
+import {
     MongoStatisticsRepository,
     type StatisticsDocument,
     type StatisticsRepository,
@@ -15,6 +20,7 @@ export class MongoConnector {
     static async connect(options: { uri: string; database: string }): Promise<{
         userRepository: UserRepository;
         statisticsRepository: StatisticsRepository;
+        equipmentRepository: EquipmentRepository;
         close: () => Promise<void>;
     }> {
         const client = new MongoClient(options.uri);
@@ -26,13 +32,16 @@ export class MongoConnector {
         await users.createIndex({ Username: 1 }, { unique: true }, undefined);
 
         const statistics = database.collection<StatisticsDocument>("Statistics");
+        const equipments = database.collection<EquipmentDocument>("Equipments");
 
         const userRepository = new MongoUserRepository(users);
         const statisticsRepository = new MongoStatisticsRepository(statistics);
+        const equipmentRepository = new MongoEquipmentRepository(equipments);
 
         return {
             userRepository,
             statisticsRepository,
+            equipmentRepository,
             close: () => client.close(),
         };
     }

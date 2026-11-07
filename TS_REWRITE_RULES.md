@@ -31,13 +31,13 @@ A static catalog is a dictionary plus helpers. It is not a service class. Items,
 
 ## Combat stats
 
-`BattleStatistics` and `UserAttributes` live in `domains/statistics/statistics-definition.ts`. `UserAttribute` is the shared HTTP enum in `packages/shared`. Callers import it from `@errant/shared`. The definition file does not re-export it. `SkillTree` and `UserSkill` wait for the skills slice.
+`UserAttributes` lives in `domains/statistics/statistics-definition.ts`. `UserAttribute` and `BattleStatistics` live in `packages/shared`. Callers import them from `@errant/shared`. The definition file does not re-export them. `BattleStatistics` moved when the equipment routes started returning items. `SkillTree` and `UserSkill` wait for the skills slice.
 
 `BattleStatistics` is a full numeric block. Every field is a number. `defineBattleStatistics` in `statistics-utils.ts` fills an omitted field with 0. A draft passes only the fields it sets. A missing stat block on an item is omitted (`statistics?: BattleStatistics`). Do not store `null`.
 
 Item requirements omit a missing attribute (`strength?: number`). Do not store 0 for an attribute the item does not require. `isStackable` defaults to false.
 
-Items follow the skill catalog: `item-definition.ts` (`ItemGuid` first), `item-registry.ts` (`items`, then `getItem`, then the private guard), `item-utils.ts` (`defineItem`), and `data/dungeon-items.ts`. `getItem` throws `HttpError("errors.itemNotDefined")`. The registry does not re-export `ItemGuid`. No item route in the catalog slice.
+`ItemGuid`, `Item`, `ItemRequirements`, `ItemType`, and `ItemRarity` live in `packages/shared` because equip requests and equipment responses use them. The server catalog imports those types. Do not keep a second copy in `item-definition.ts`. `item-registry.ts` (`items`, then `getItem`, then the private guard), `item-utils.ts` (`defineItem`), and `data/dungeon-items.ts` stay in the server. `getItem` throws `HttpError("errors.itemNotDefined")`. The registry does not re-export `ItemGuid`. `ItemSlot` lives in `packages/shared` with the equipment routes.
 
 ## File order
 
@@ -63,7 +63,7 @@ A const arrow is not hoisted. A helper that runs while its module is still initi
 
 Handwritten optional fields use `field?: T`. A missing description is omitted. Do not type that as `T | null`.
 
-`null` stays for stored user fields and for not-found results.
+`null` stays for stored user fields and for not-found results. Unifying that with omitted optional fields is step 16 in `SERVER_TS_REWRITE.md`. Do not change existing fields to match during a feature slice.
 
 Catalog enums are strings. Do not keep the C# integer values. HTTP enums for a ported route are also strings, added in `packages/shared` with that route.
 
@@ -89,8 +89,8 @@ Catalog enums are strings. Do not keep the C# integer values. HTTP enums for a p
 - Public repository methods are named and ordered `create`, then `read`, `readAll`, or `readByX`, then `update`, then `delete`. A service method that is only that persistence operation uses the same name and the same order. A domain command keeps its name. `createInitial`, `getStatistics`, and `extendAttribute` stay domain names, in that order.
 - A statistics update writes the whole document, including `LearnedSkills`. `LearnedSkill.guid` is `SkillGuid`. Store that string. Do not keep the C# integer. Do not drop that list while changing attributes.
 - A unique-index failure is handled in the service. Put a well-known Mongo code on `dbErrorCodes` in `db-utils`. Do not catch it in the repository, and do not add a helper whose only job is building that `HttpError`.
-- Document types name the BSON fields. Shared readers such as `readNumber` and `toInt32` live in `db-utils`. Do not add `absent()` casts. Create indexes with the three-argument form.
-- Prefer arrow functions for callbacks and free functions. Class methods stay methods. Overload signatures stay function declarations.
+- Document types name the BSON fields. Shared readers such as `readNumber` and `toInt32` live in `db-utils`. A required `Int32 | number` field is read with `valueOf()`. `readNumber` is for a field that may be null. Do not add a repository helper that throws when a required number is missing. Do not add `absent()` casts. Create indexes with the three-argument form.
+- Prefer arrow functions for callbacks and free functions. Class methods stay methods. A value that may be absent uses one signature whose argument is `T | null`. Do not add overloads to keep a non-null return.
 
 ## HTTP
 
@@ -98,7 +98,7 @@ Catalog enums are strings. Do not keep the C# integer values. HTTP enums for a p
 - `RequestBodyService.parse` infers the body type from the schema argument. Do not pass an explicit type argument or annotate the variable.
 - Keep Zod schemas on the server. Do not share them through `packages/shared` or run them in the UI. The client keeps a small check per field and maps it to a locale key. `packages/shared` stays types only.
 - An action code is six digits (`length(6)` and `/^\d+$/`). Reject any other shape in the request schema, before the attempt counter runs. A username is 4–16 characters matching `/^[A-Za-z0-9_]+$/`.
-- A route handler builds the response object at the return. Do not add a mapper on the route class.
+- A route handler returns a response built by a function in that route file. The function lists each field. Do not return a service object or a shorthand that would send fields added later. A nested item is listed in its own function, and that function accepts null for an empty slot. Do not add a mapper method on the route class. A repository read passes the found document into the entity mapper. That mapper accepts null and returns null. Do not branch on a missing document at the call.
 - An authenticated route takes `AuthSessionService`. `requireUser` checks the session and slides the cookie. `GET /auth/session` uses it too.
 - Unknown routes use `setNotFoundHandler` and return 404 `{ errors: [{ key: "errors.notFound" }] }`. They do not fall through to the 500 handler.
 - Business and validation errors stay 400. 401 is only a missing or dead session.
@@ -119,6 +119,7 @@ Catalog enums are strings. Do not keep the C# integer values. HTTP enums for a p
 - Prefer those helpers over React Query as each page leaves `api-old`. One `useApiRequest` per request. Loading and errors stay on that hook. The handler calls `call` and does not await it. Work that follows a success runs in an effect on `isSuccess` and `data`, as sign-in does. When that `data` is the rendered state, read it from the hook. Do not copy it into another `useState`, and do not call the read again. Do not add cache invalidation. Leave `@tanstack/react-query` installed until those pages are gone.
 - `readRequestErrors` lives in `api-utils` with the other request helpers. Do not define it in a component.
 - Do not render errors from a POST action. The hook still keeps them. Tooltips for those errors come later. A failed GET may still render `AppError`.
+- A component body follows `equipment-component.tsx`. Custom hook assignments, then React hook assignments, then plain calculations, then `useEffect`s, then functions, then early returns, then the main return. `useEffect` stays after the values it reads.
 - The session check calls `fetchSession` directly, after the user store hydrates and again when the window gains focus. Sign the user in only when it returns a user. Any other result, including a network or 500 error, clears the persisted user before the gate opens. Sign-in, sign-up, and sign-out write the user store, and that write drops an older in-flight session response.
 
 ## Port constraints that later slices already follow

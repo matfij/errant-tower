@@ -1,4 +1,4 @@
-import type { BattleStatistics } from "./statistics-definition.ts";
+import type { BattleStatistics } from "@errant/shared";
 
 export type BattleStatisticsDraft = {
     speed?: number;

@@ -1,7 +1,9 @@
+import type { AuthUserResponse } from "@errant/shared";
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
 
 import { RequestBodyService } from "../common/http/body.ts";
+import type { UserEntity } from "../domains/users/user-entity.ts";
 import { AuthOrchestrator } from "./auth-orchestrator.ts";
 import { AuthSessionService } from "./auth-session-service.ts";
 
@@ -27,10 +29,7 @@ export class AuthRoutes {
 
             this.authSessionService.writeSession(reply, user);
 
-            return {
-                userId: user.id,
-                username: user.username,
-            };
+            return toAuthUserResponse(user);
         });
 
         app.post("/auth/sign-in-start", async (request, reply) => {
@@ -45,10 +44,7 @@ export class AuthRoutes {
 
             this.authSessionService.writeSession(reply, user);
 
-            return {
-                userId: user.id,
-                username: user.username,
-            };
+            return toAuthUserResponse(user);
         });
 
         app.post("/auth/sign-out", async (request, reply) => {
@@ -58,10 +54,7 @@ export class AuthRoutes {
 
         app.get("/auth/session", async (request, reply) => {
             const user = await this.authSessionService.requireUser(request, reply);
-            return {
-                userId: user.id,
-                username: user.username,
-            };
+            return toAuthUserResponse(user);
         });
     }
 
@@ -88,3 +81,10 @@ export class AuthRoutes {
         actionCode: z.string().length(6).regex(/^\d+$/),
     });
 }
+
+const toAuthUserResponse = (user: UserEntity): AuthUserResponse => {
+    return {
+        userId: user.id,
+        username: user.username,
+    };
+};

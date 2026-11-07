@@ -32,17 +32,17 @@ export class MongoUserRepository implements UserRepository {
 
     async readById(id: string): Promise<UserEntity | null> {
         const document = await this.usersCollection.findOne({ _id: id });
-        return document === null ? null : MongoUserRepository.toUserEntity(document);
+        return MongoUserRepository.toUserEntity(document);
     }
 
     async readByEmail(email: string): Promise<UserEntity | null> {
         const document = await this.usersCollection.findOne({ Email: email });
-        return document === null ? null : MongoUserRepository.toUserEntity(document);
+        return MongoUserRepository.toUserEntity(document);
     }
 
     async readByUsername(username: string): Promise<UserEntity | null> {
         const document = await this.usersCollection.findOne({ Username: username });
-        return document === null ? null : MongoUserRepository.toUserEntity(document);
+        return MongoUserRepository.toUserEntity(document);
     }
 
     async update(user: UserEntity): Promise<void> {
@@ -67,21 +67,19 @@ export class MongoUserRepository implements UserRepository {
             _id: user.id,
             Email: user.email,
             Username: user.username,
+            SessionId: user.sessionId,
             ActionCodeHash: user.actionCodeHash,
-            ActionCodeExpiresAt:
-                user.actionCodeExpiresAt === null ? null : Long.fromNumber(user.actionCodeExpiresAt),
-            ActionCodeAttempts: user.actionCodeAttempts === null ? null : toInt32(user.actionCodeAttempts),
+            ActionCodeExpiresAt: user.actionCodeExpiresAt ? Long.fromNumber(user.actionCodeExpiresAt) : null,
+            ActionCodeAttempts: user.actionCodeAttempts ? toInt32(user.actionCodeAttempts) : null,
             IsConfirmed: user.isConfirmed,
         };
-
-        if (user.sessionId !== null) {
-            document.SessionId = user.sessionId;
-        }
-
         return document;
     }
 
-    private static toUserEntity(document: UserDocument): UserEntity {
+    private static toUserEntity(document: UserDocument | null): UserEntity | null {
+        if (document === null) {
+            return null;
+        }
         return {
             id: document._id,
             email: document.Email,

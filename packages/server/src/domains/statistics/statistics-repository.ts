@@ -1,7 +1,7 @@
-import { Int32, Long, type Collection } from "mongodb";
+import { Int32, type Collection } from "mongodb";
 
 import { HttpError } from "../../common/http/errors.ts";
-import { readNumber, toInt32 } from "../../db/db-utils.ts";
+import { toInt32 } from "../../db/db-utils.ts";
 import type { SkillGuid } from "../skills/skill-definition.ts";
 import type { StatisticsEntity } from "./statistics-entity.ts";
 
@@ -41,7 +41,7 @@ export class MongoStatisticsRepository implements StatisticsRepository {
 
     async readByUserId(userId: string): Promise<StatisticsEntity | null> {
         const document = await this.statisticsCollection.findOne({ UserId: userId });
-        return document === null ? null : MongoStatisticsRepository.toStatisticsEntity(document);
+        return MongoStatisticsRepository.toStatisticsEntity(document);
     }
 
     async update(statistics: StatisticsEntity): Promise<void> {
@@ -71,31 +71,23 @@ export class MongoStatisticsRepository implements StatisticsRepository {
         };
     }
 
-    private static toStatisticsEntity(document: StatisticsDocument): StatisticsEntity {
+    private static toStatisticsEntity(document: StatisticsDocument | null): StatisticsEntity | null {
+        if (document === null) {
+            return null;
+        }
         return {
             id: document._id,
             userId: document.UserId,
-            attributePoints: MongoStatisticsRepository.readRequired(document.AttributePoints),
-            skillPoints: MongoStatisticsRepository.readRequired(document.SkillPoints),
-            strength: MongoStatisticsRepository.readRequired(document.Strength),
-            dexterity: MongoStatisticsRepository.readRequired(document.Dexterity),
-            constitution: MongoStatisticsRepository.readRequired(document.Constitution),
-            spirit: MongoStatisticsRepository.readRequired(document.Spirit),
+            attributePoints: document.AttributePoints.valueOf(),
+            skillPoints: document.SkillPoints.valueOf(),
+            strength: document.Strength.valueOf(),
+            dexterity: document.Dexterity.valueOf(),
+            constitution: document.Constitution.valueOf(),
+            spirit: document.Spirit.valueOf(),
             learnedSkills: (document.LearnedSkills ?? []).map((skill) => ({
                 guid: skill.Guid,
-                level: MongoStatisticsRepository.readRequired(skill.Level),
+                level: skill.Level.valueOf(),
             })),
         };
-    }
-
-    private static readRequired(value: number | Long | Int32 | null | undefined): number {
-        if (value === undefined) {
-            throw new HttpError("errors.statisticsNotFound");
-        }
-        const number = readNumber(value);
-        if (number === null) {
-            throw new HttpError("errors.statisticsNotFound");
-        }
-        return number;
     }
 }

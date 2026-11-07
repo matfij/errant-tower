@@ -1,6 +1,6 @@
+import type { BagItemData, Item, ItemGuid } from "@errant/shared";
 import { useTranslation } from "react-i18next";
 
-import type { BagItemData, Item, ItemGuid } from "../../api-old/generated/definitions";
 import { AppItem } from "../../common/components/app-item";
 
 import styles from "./equip-options-dialog.module.scss";

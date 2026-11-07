@@ -206,6 +206,11 @@
         "unauthorized": "Sign in again",
         "forbidden": "Request was rejected",
         "statisticsNotFound": "Character statistics were not found",
-        "notEnoughAttributePoints": "Not enough attribute points"
+        "notEnoughAttributePoints": "Not enough attribute points",
+        "equipmentNotFound": "Equipment was not found",
+        "itemNotOwned": "You do not have that item",
+        "insufficientAttributes": "Your attributes are too low to equip this item",
+        "incorrectEquipmentSlot": "That item does not fit this slot",
+        "itemNotDefined": "That item does not exist"
     }
 }

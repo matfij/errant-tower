@@ -85,16 +85,16 @@ Done when: the server can resolve an item id, including its stat block.
 
 Done when: a new user gets a statistics row, and the attributes section can read and spend points.
 
-### 6. Equipment (next)
+### 6. Equipment
 
-- [ ] Equipment collection and repository. `createInitial` runs from sign-up completion, with the same starter bag as the C# insert.
-- [ ] `get-equipment`, `get-bag`, `equip-item`, and `unequip-item`. Equip checks requirements against the attribute read.
-- [ ] `AwardItems` writes silver and bag items. Nothing calls it until expedition rewards.
-- [ ] The equipment section in `packages/client` calls these routes.
+- [x] Equipment collection and repository. `createInitial` runs from sign-up completion, with the same starter bag as the C# insert.
+- [x] `get-equipment`, `get-bag`, `equip-item`, and `unequip-item`. Equip checks requirements against the attribute read.
+- [x] `AwardItems` writes silver and bag items. Nothing calls it until expedition rewards.
+- [x] The equipment section in `packages/client` calls these routes.
 
 Done when: a new user can see the starter bag and equip a piece through the UI.
 
-### 7. Skills and battle statistics
+### 7. Skills and battle statistics (next)
 
 - [ ] `get-skill-tree`, `learn-skill`, and `reset-skills`, using the statistics document and the skill catalog.
 - [ ] `get-battle-statistics` recomputes from attributes, equipped items, and passive skills.
@@ -166,6 +166,14 @@ Blocked until someone writes the rule: do equipment and skill changes affect an 
 - [ ] Orval, the generated client, and SignalR removed.
 - [ ] `apps/client` removed. `packages/client` is the only client and talks only to the TypeScript server.
 - [ ] Smoke pass: auth, expedition, battle.
+
+### 16. Absence values
+
+Not part of a feature slice. Do not start this while a slice is in progress.
+
+- [ ] One rule for a missing value, used in documents, responses, and client state.
+- [ ] An empty equipment slot no longer needs `?? undefined` in `equipment-component.tsx`. Today the response uses `null` and `useState<Item>()` uses `undefined`.
+- [ ] `SessionId` is not both optional and `string | null`.
 
 ## Route inventory (do not grow this during the port)
 

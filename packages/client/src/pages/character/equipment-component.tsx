@@ -1,23 +1,13 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { ItemSlot, ItemType, type GetBagResponse, type Item } from "@errant/shared";
+import { useEffect, useState } from "react";
 
-import { wrapMutation, wrapQuery } from "../../api-old/api-proxy";
+import { useApiRequest } from "../../api/api-utils";
 import {
-    ItemSlot,
-    ItemType,
-    type BagItemData,
-    type GetBagResponse,
-    type GetEquipmentResponse,
-    type Item,
-} from "../../api-old/generated/definitions";
-import {
-    getGetBagQueryKey,
-    getGetEquipmentQueryKey,
-    useEquipItem,
-    useGetBag,
-    useGetEquipment,
-    useUnequipItem,
-} from "../../api-old/generated/hooks";
+    equipItemRequest,
+    getBagRequest,
+    getEquipmentRequest,
+    unequipItemRequest,
+} from "../../api/equipment-api";
 import { AppError } from "../../common/components/app-error";
 import { AppItem } from "../../common/components/app-item";
 import { handItemTypes } from "./character-utils";
@@ -29,41 +19,65 @@ interface EquipmentComponentProps {
     onEquipmentChanged: () => void;
 }
 
+type ShownEquipment = "load" | "equip" | "unequip";
+
 export const EquipmentComponent = (props: EquipmentComponentProps) => {
-    const queryClient = useQueryClient();
-    const equipItem = wrapMutation(useEquipItem)();
-    const unequipItem = wrapMutation(useUnequipItem)();
-    const getEquipment = wrapQuery<GetEquipmentResponse>(useGetEquipment)();
-    const getBag = wrapQuery<GetBagResponse>(useGetBag)();
+    const getEquipment = useApiRequest(getEquipmentRequest);
+    const getBag = useApiRequest(getBagRequest);
+    const equipItem = useApiRequest(equipItemRequest);
+    const unequipItem = useApiRequest(unequipItemRequest);
     const [showEquipOptions, setShowEquipOptions] = useState(false);
-    const [equipOptions, setEquipOptions] = useState<BagItemData[]>([]);
+    const [equipOptions, setEquipOptions] = useState<GetBagResponse["items"]>([]);
     const [itemSlot, setItemSlot] = useState<ItemSlot>();
     const [itemInSlot, setItemInSlot] = useState<Item>();
+    const [shownEquipment, setShownEquipment] = useState<ShownEquipment>("load");
 
-    const equipment = getEquipment.data;
-    const bag: BagItemData[] = getBag.data?.items ?? [];
+    const loadedEquipment = getEquipment.data;
+    const equipment =
+        shownEquipment === "equip"
+            ? (equipItem.data ?? loadedEquipment)
+            : shownEquipment === "unequip"
+              ? (unequipItem.data ?? loadedEquipment)
+              : loadedEquipment;
+    const bag = getBag.data?.items ?? [];
 
-    const onEquipmentChanged = (data: GetEquipmentResponse) => {
-        queryClient.setQueryData(getGetEquipmentQueryKey(), data);
-        void queryClient.invalidateQueries({ queryKey: getGetBagQueryKey() });
-        props.onEquipmentChanged();
-    };
+    useEffect(() => {
+        void getEquipment.call(undefined);
+        void getBag.call(undefined);
+    }, []);
+
+    useEffect(() => {
+        if (equipItem.isSuccess && equipItem.data) {
+            setShownEquipment("equip");
+            props.onEquipmentChanged();
+            void getBag.call(undefined);
+        }
+    }, [equipItem.isSuccess, equipItem.data]);
+
+    useEffect(() => {
+        if (unequipItem.isSuccess && unequipItem.data) {
+            setShownEquipment("unequip");
+            props.onEquipmentChanged();
+            void getBag.call(undefined);
+        }
+    }, [unequipItem.isSuccess, unequipItem.data]);
 
     const updateEquipOptions = (types: ItemType[], hand?: "left" | "right") => {
         if (types.includes(ItemType.Helmet)) {
-            setItemInSlot(equipment?.headgear);
+            setItemInSlot(equipment?.headgear ?? undefined);
             setItemSlot(ItemSlot.Headgear);
         } else if (types.includes(ItemType.Armor)) {
-            setItemInSlot(equipment?.armor);
+            setItemInSlot(equipment?.armor ?? undefined);
             setItemSlot(ItemSlot.Armor);
         } else if (types.includes(ItemType.Boots)) {
-            setItemInSlot(equipment?.footwear);
+            setItemInSlot(equipment?.footwear ?? undefined);
             setItemSlot(ItemSlot.Footwear);
         } else if (types.includes(ItemType.Charm)) {
-            setItemInSlot(equipment?.charm);
+            setItemInSlot(equipment?.charm ?? undefined);
             setItemSlot(ItemSlot.Charm);
         } else if (types.some((type) => handItemTypes.includes(type))) {
-            setItemInSlot(hand === "left" ? equipment?.leftHand : equipment?.rightHand);
+            const handItem = hand === "left" ? equipment?.leftHand : equipment?.rightHand;
+            setItemInSlot(handItem ?? undefined);
             setItemSlot(hand === "left" ? ItemSlot.LeftHand : ItemSlot.RightHand);
         }
 
@@ -71,8 +85,12 @@ export const EquipmentComponent = (props: EquipmentComponentProps) => {
         setEquipOptions(bag.filter((item) => types.includes(item.item.type)));
     };
 
-    if (getEquipment.errors && getEquipment.errors.length > 0) {
-        return <AppError errors={[...getEquipment.errors, ...(getBag.errors ?? [])]} />;
+    if (getEquipment.errors && getEquipment.errors.length > 0 && equipment === undefined) {
+        return <AppError errors={getEquipment.errors} />;
+    }
+
+    if (getBag.errors && getBag.errors.length > 0 && getBag.data === undefined) {
+        return <AppError errors={getBag.errors} />;
     }
 
     return (
@@ -128,12 +146,12 @@ export const EquipmentComponent = (props: EquipmentComponentProps) => {
                     onClose={() => setShowEquipOptions(false)}
                     onEquip={(guid) => {
                         if (itemSlot) {
-                            equipItem.call({ guid: guid, slot: itemSlot }, { onSuccess: onEquipmentChanged });
+                            equipItem.call({ guid, slot: itemSlot });
                         }
                     }}
                     onTakeOff={() => {
                         if (itemInSlot && itemSlot) {
-                            unequipItem.call({ slot: itemSlot }, { onSuccess: onEquipmentChanged });
+                            unequipItem.call({ slot: itemSlot });
                         }
                     }}
                 />
