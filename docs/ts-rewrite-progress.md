@@ -174,6 +174,7 @@ Not part of a feature slice. Do not start this while a slice is in progress.
 - [ ] One rule for a missing value, used in documents, responses, and client state.
 - [ ] An empty equipment slot no longer needs `?? undefined` in `equipment-component.tsx`. Today the response uses `null` and `useState<Item>()` uses `undefined`.
 - [ ] `SessionId` is not both optional and `string | null`.
+- [x] A GET `call` takes no argument. Do not pass `undefined`.
 
 ## Route inventory (do not grow this during the port)
 

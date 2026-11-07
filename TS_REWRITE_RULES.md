@@ -76,6 +76,7 @@ Catalog enums are strings. Do not keep the C# integer values. HTTP enums for a p
 - Declare fields above the constructor and assign them there. Do not use parameter properties.
 - Private fields come first, then the constructor, then public methods, then private methods.
 - A static helper is named `*Service`, and the file name matches the class. Do not add an empty private constructor. Call it on the class name.
+- A helper function starts with a verb. A conversion starts with `to`, as in `toBattleEquipment`. A lookup starts with `get`, as in `getEquippedItem`. Do not name a helper with a noun alone.
 - Ids come from `UtilsService.newId`. Time comes from `UtilsService.timeNow`. Logging goes through `LogService` after `LogService.bind`. Do not inject a logger, a clock, or an id generator into each service.
 - `EmailService` is constructed with `new` and owns the mail client. Templates are plain objects. Do not HTML-escape a value that was already validated.
 - `config` is a plain object. The start script loads `.env`. Do not add a config class or a custom env parser.
@@ -83,7 +84,7 @@ Catalog enums are strings. Do not keep the C# integer values. HTTP enums for a p
 
 ## Persistence
 
-- Folders follow the C# tree: `domains/<plural>/`, `orchestrator/`, `common/`, `db/`. One file per type: `user-repository.ts`, `user-service.ts`.
+- Folders follow the C# tree: `domains/<plural>/`, `orchestrator/`, `common/`, `db/`. One file per type: `user-repository.ts`, `user-service.ts`. Equipment is uncountable, so its folder is `domains/equipment/`. The C# folder is `Domains/Equipments` only to avoid a namespace collision. The Mongo collection stays `Equipments`.
 - The connector owns the client, the collections, and the indexes. A repository receives only its own collection and writes only its own entity.
 - The orchestrator creates related rows after the owning service succeeds. Do not put another entity's create on the user repository.
 - Public repository methods are named and ordered `create`, then `read`, `readAll`, or `readByX`, then `update`, then `delete`. A service method that is only that persistence operation uses the same name and the same order. A domain command keeps its name. `createInitial`, `getStatistics`, and `extendAttribute` stay domain names, in that order.
@@ -114,7 +115,7 @@ Catalog enums are strings. Do not keep the C# integer values. HTTP enums for a p
 ## Client
 
 - New hand-written calls live in `packages/client/src/api`. Orval, `api-proxy`, and `custom-fetch` stay in `api-old` until that page is ported. Do not add new routes under `api-old`. Point Orval at `api-old`.
-- A page calls `useApiRequest(requestFn)`. Do not hide the request inside a named hook such as `useStartSignIn`.
+- A page calls `useApiRequest(requestFn)`. Do not hide the request inside a named hook such as `useStartSignIn`. A request with no body is `() => Promise<T>`. Its `call` takes no argument. Do not pass `undefined`.
 - `api-utils` holds the shared helpers. A domain file such as `auth-api` holds that domain's requests. `fetchSession` and `signOutRequest` stay plain functions because they are not form state. `signOutRequest` treats 401 as success. `fetchSession` returns null on 401.
 - Prefer those helpers over React Query as each page leaves `api-old`. One `useApiRequest` per request. Loading and errors stay on that hook. The handler calls `call` and does not await it. Work that follows a success runs in an effect on `isSuccess` and `data`, as sign-in does. When that `data` is the rendered state, read it from the hook. Do not copy it into another `useState`, and do not call the read again. Do not add cache invalidation. Leave `@tanstack/react-query` installed until those pages are gone.
 - `readRequestErrors` lives in `api-utils` with the other request helpers. Do not define it in a component.

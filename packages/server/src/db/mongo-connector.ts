@@ -4,7 +4,7 @@ import {
     MongoEquipmentRepository,
     type EquipmentDocument,
     type EquipmentRepository,
-} from "../domains/equipments/equipment-repository.ts";
+} from "../domains/equipment/equipment-repository.ts";
 import {
     MongoStatisticsRepository,
     type StatisticsDocument,
@@ -32,11 +32,11 @@ export class MongoConnector {
         await users.createIndex({ Username: 1 }, { unique: true }, undefined);
 
         const statistics = database.collection<StatisticsDocument>("Statistics");
-        const equipments = database.collection<EquipmentDocument>("Equipments");
+        const equipment = database.collection<EquipmentDocument>("Equipments");
 
         const userRepository = new MongoUserRepository(users);
         const statisticsRepository = new MongoStatisticsRepository(statistics);
-        const equipmentRepository = new MongoEquipmentRepository(equipments);
+        const equipmentRepository = new MongoEquipmentRepository(equipment);
 
         return {
             userRepository,

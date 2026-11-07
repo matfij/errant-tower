@@ -1,7 +1,7 @@
 import type { BagItemData, EquipItemRequest, ItemSlot } from "@errant/shared";
 
-import type { BattleEquipment } from "../domains/equipments/equipment-definition.ts";
-import { EquipmentService } from "../domains/equipments/equipment-service.ts";
+import type { BattleEquipment } from "../domains/equipment/equipment-definition.ts";
+import { EquipmentService } from "../domains/equipment/equipment-service.ts";
 import { StatisticsService } from "../domains/statistics/statistics-service.ts";
 
 export class EquipmentOrchestrator {

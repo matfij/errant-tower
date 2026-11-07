@@ -3,7 +3,7 @@ import type { FastifyInstance } from "fastify";
 import { z } from "zod";
 
 import { RequestBodyService } from "../common/http/body.ts";
-import type { BattleEquipment } from "../domains/equipments/equipment-definition.ts";
+import type { BattleEquipment } from "../domains/equipment/equipment-definition.ts";
 import { AuthSessionService } from "./auth-session-service.ts";
 import { EquipmentOrchestrator } from "./equipment-orchestrator.ts";
 

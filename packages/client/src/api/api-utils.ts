@@ -3,20 +3,22 @@ import { useState } from "react";
 import { appConfig } from "../common/config";
 import type { ApiError } from "./api-error";
 
-export const useApiRequest = <TArguments, TResult>(request: (args: TArguments) => Promise<TResult>) => {
+export const useApiRequest = <TRequest extends (...args: never[]) => Promise<unknown>>(request: TRequest) => {
+    type TResult = Awaited<ReturnType<TRequest>>;
+
     const [data, setData] = useState<TResult>();
     const [errors, setErrors] = useState<ApiError[]>();
     const [isLoading, setIsLoading] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
 
-    const call = async (args: TArguments): Promise<TResult | undefined> => {
+    const call = async (...args: Parameters<TRequest>): Promise<TResult | undefined> => {
         if (isLoading) {
             return undefined;
         }
         setIsLoading(true);
         setErrors(undefined);
         try {
-            const result = await request(args);
+            const result = (await request(...args)) as TResult;
             setData(result);
             setIsSuccess(true);
             return result;

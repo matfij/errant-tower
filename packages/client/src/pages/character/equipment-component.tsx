@@ -42,15 +42,15 @@ export const EquipmentComponent = (props: EquipmentComponentProps) => {
     const bag = getBag.data?.items ?? [];
 
     useEffect(() => {
-        void getEquipment.call(undefined);
-        void getBag.call(undefined);
+        void getEquipment.call();
+        void getBag.call();
     }, []);
 
     useEffect(() => {
         if (equipItem.isSuccess && equipItem.data) {
             setShownEquipment("equip");
             props.onEquipmentChanged();
-            void getBag.call(undefined);
+            void getBag.call();
         }
     }, [equipItem.isSuccess, equipItem.data]);
 
@@ -58,7 +58,7 @@ export const EquipmentComponent = (props: EquipmentComponentProps) => {
         if (unequipItem.isSuccess && unequipItem.data) {
             setShownEquipment("unequip");
             props.onEquipmentChanged();
-            void getBag.call(undefined);
+            void getBag.call();
         }
     }, [unequipItem.isSuccess, unequipItem.data]);
 

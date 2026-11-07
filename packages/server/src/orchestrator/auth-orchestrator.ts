@@ -1,4 +1,4 @@
-import { EquipmentService } from "../domains/equipments/equipment-service.ts";
+import { EquipmentService } from "../domains/equipment/equipment-service.ts";
 import { StatisticsService } from "../domains/statistics/statistics-service.ts";
 import type { UserEntity } from "../domains/users/user-entity.ts";
 import { UserService } from "../domains/users/user-service.ts";

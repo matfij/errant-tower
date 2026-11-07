@@ -64,7 +64,7 @@ export class EquipmentService {
 
     async getEquipment(userId: string): Promise<BattleEquipment> {
         const equipment = await this.readEquipment(userId);
-        return this.battleEquipment(equipment);
+        return this.toBattleEquipment(equipment);
     }
 
     async getEquipmentList(userId: string): Promise<Item[]> {
@@ -105,25 +105,25 @@ export class EquipmentService {
             throw new HttpError("errors.incorrectEquipmentSlot");
         }
 
-        const previous = this.equippedGuid(equipment, request.slot);
+        const previous = this.getEquippedGuid(equipment, request.slot);
         if (previous !== null) {
             equipment.bag.push({ itemGuid: previous, quantity: 1 });
         }
         this.assignSlot(equipment, request.slot, item.guid);
-        this.removeQuantityOne(equipment.bag, item.guid);
+        this.removeNonStackable(equipment.bag, item.guid);
         await this.equipmentRepository.update(equipment);
-        return this.battleEquipment(equipment);
+        return this.toBattleEquipment(equipment);
     }
 
     async unequipItem(userId: string, slot: ItemSlot): Promise<BattleEquipment> {
         const equipment = await this.readEquipment(userId);
-        const previous = this.equippedGuid(equipment, slot);
+        const previous = this.getEquippedGuid(equipment, slot);
         if (previous !== null) {
             this.assignSlot(equipment, slot, null);
             equipment.bag.push({ itemGuid: previous, quantity: 1 });
             await this.equipmentRepository.update(equipment);
         }
-        return this.battleEquipment(equipment);
+        return this.toBattleEquipment(equipment);
     }
 
     private async readEquipment(userId: string): Promise<EquipmentEntity> {
@@ -134,18 +134,18 @@ export class EquipmentService {
         return equipment;
     }
 
-    private battleEquipment(equipment: EquipmentEntity): BattleEquipment {
+    private toBattleEquipment(equipment: EquipmentEntity): BattleEquipment {
         return {
-            headgear: this.equippedItem(equipment.headgear),
-            armor: this.equippedItem(equipment.armor),
-            footwear: this.equippedItem(equipment.footwear),
-            charm: this.equippedItem(equipment.charm),
-            rightHand: this.equippedItem(equipment.rightHand),
-            leftHand: this.equippedItem(equipment.leftHand),
+            headgear: this.getEquippedItem(equipment.headgear),
+            armor: this.getEquippedItem(equipment.armor),
+            footwear: this.getEquippedItem(equipment.footwear),
+            charm: this.getEquippedItem(equipment.charm),
+            rightHand: this.getEquippedItem(equipment.rightHand),
+            leftHand: this.getEquippedItem(equipment.leftHand),
         };
     }
 
-    private equippedItem(guid: ItemGuid | null): Item | null {
+    private getEquippedItem(guid: ItemGuid | null): Item | null {
         if (guid === null) {
             return null;
         }
@@ -191,7 +191,7 @@ export class EquipmentService {
         }
     }
 
-    private equippedGuid(equipment: EquipmentEntity, slot: ItemSlot): ItemGuid | null {
+    private getEquippedGuid(equipment: EquipmentEntity, slot: ItemSlot): ItemGuid | null {
         switch (slot) {
             case ItemSlot.Headgear:
                 return equipment.headgear;
@@ -231,8 +231,7 @@ export class EquipmentService {
         }
     }
 
-    // C# BagItem equality includes quantity, so only a row whose quantity is 1 is removed.
-    private removeQuantityOne(bag: BagItem[], guid: ItemGuid): void {
+    private removeNonStackable(bag: BagItem[], guid: ItemGuid): void {
         const index = bag.findIndex((item) => item.itemGuid === guid && item.quantity === 1);
         if (index >= 0) {
             bag.splice(index, 1);
