@@ -28,7 +28,7 @@ export enum SkillGuid {
 export type Skill = {
     guid: SkillGuid;
     name: string;
-    description?: string;
+    description: string | null;
     imageUrl: string;
     path: SkillPath;
     tier: number;
@@ -52,7 +52,7 @@ export type Skill = {
 export type BattleSkill = {
     guid: SkillGuid;
     name: string;
-    description?: string;
+    description: string | null;
     imageUrl: string;
     path: SkillPath;
     types: SkillType[];
@@ -89,6 +89,10 @@ export type SkillProperty = {
 export type SkillRequirement = {
     path: SkillPath;
     points: number;
+};
+
+export type UserSkill = Skill & {
+    level: number;
 };
 
 export enum SkillPath {
@@ -166,3 +170,29 @@ export enum SkillPropertyEffect {
     Additive = "Additive",
     Multiplicative = "Multiplicative",
 }
+
+export type SkillTreePaths = {
+    blade: UserSkill[];
+    tenacity: UserSkill[];
+    hammer: UserSkill[];
+    bellicosity: UserSkill[];
+    lance: UserSkill[];
+    vivacity: UserSkill[];
+    bow: UserSkill[];
+    perspicacity: UserSkill[];
+    staff: UserSkill[];
+    sagacity: UserSkill[];
+};
+
+export type GetSkillTreeResponse = {
+    skillPoints: number;
+    paths: SkillTreePaths;
+};
+
+export type LearnSkillResponse = GetSkillTreeResponse;
+
+export type ResetSkillsResponse = GetSkillTreeResponse;
+
+export type LearnSkillRequest = {
+    skillGuid: SkillGuid;
+};

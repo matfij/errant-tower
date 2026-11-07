@@ -51,8 +51,8 @@ export class EquipmentService {
         equipment.silver += silver;
 
         for (const newItem of newItems) {
-            const existing = equipment.bag.find((item) => item.itemGuid === newItem.itemGuid);
-            if (existing !== undefined && getItem(existing.itemGuid).isStackable) {
+            const existing = equipment.bag.find((item) => item.itemGuid === newItem.itemGuid) ?? null;
+            if (existing !== null && getItem(existing.itemGuid).isStackable) {
                 existing.quantity += newItem.quantity;
             } else {
                 equipment.bag.push(newItem);
@@ -93,7 +93,8 @@ export class EquipmentService {
         attributes: UserAttributes,
     ): Promise<BattleEquipment> {
         const equipment = await this.readEquipment(userId);
-        if (equipment.bag.find((item) => item.itemGuid === request.guid) === undefined) {
+        const owned = equipment.bag.find((item) => item.itemGuid === request.guid) ?? null;
+        if (owned === null) {
             throw new HttpError("errors.itemNotOwned");
         }
 
@@ -152,11 +153,8 @@ export class EquipmentService {
         return getItem(guid);
     }
 
-    private meetsRequirements(
-        requirements: ItemRequirements | undefined,
-        attributes: UserAttributes,
-    ): boolean {
-        if (requirements === undefined) {
+    private meetsRequirements(requirements: ItemRequirements | null, attributes: UserAttributes): boolean {
+        if (requirements === null) {
             return true;
         }
         return (

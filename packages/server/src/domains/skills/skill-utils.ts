@@ -9,7 +9,7 @@ import {
     type SkillPropertyType,
     type SkillRequirement,
     type SkillType,
-} from "./skill-definition.ts";
+} from "@errant/shared";
 
 const skillLevel = {
     min: 1,
@@ -58,7 +58,7 @@ export const defineSkill = (draft: SkillDraft): Skill => {
     return {
         guid: draft.guid,
         name: draft.name,
-        description: draft.description,
+        description: draft.description ?? null,
         imageUrl: draft.imageUrl ?? "blank.png",
         path: draft.path ?? SkillPath.None,
         tier: draft.tier ?? 1,

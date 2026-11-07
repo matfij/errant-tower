@@ -8,4 +8,9 @@ export class UtilsService {
     static newId(): string {
         return randomUUID();
     }
+
+    static round(value: number, precision: number) {
+        const factor = 10 ** precision;
+        return Math.round(factor * value) / factor;
+    }
 }

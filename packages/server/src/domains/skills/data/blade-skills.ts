@@ -1,4 +1,5 @@
-import { SkillEffectType, SkillGuid, SkillPath, SkillType } from "../skill-definition.ts";
+import { SkillEffectType, SkillGuid, SkillPath, SkillType } from "@errant/shared";
+
 import { defineSkill } from "../skill-utils.ts";
 
 export const bladeSkills = {

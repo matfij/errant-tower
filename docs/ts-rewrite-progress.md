@@ -94,15 +94,15 @@ Done when: a new user gets a statistics row, and the attributes section can read
 
 Done when: a new user can see the starter bag and equip a piece through the UI.
 
-### 7. Skills and battle statistics (next)
+### 7. Skills and battle statistics
 
-- [ ] `get-skill-tree`, `learn-skill`, and `reset-skills`, using the statistics document and the skill catalog.
-- [ ] `get-battle-statistics` recomputes from attributes, equipped items, and passive skills.
-- [ ] The skills page and the statistics section in `packages/client` call these routes.
+- [x] `get-skill-tree`, `learn-skill`, and `reset-skills`, using the statistics document and the skill catalog.
+- [x] `get-battle-statistics` recomputes from attributes, equipped items, and passive skills.
+- [x] The skills page and the statistics section in `packages/client` call these routes.
 
 Done when: learning a passive skill changes the battle statistics the character page shows.
 
-### 8. Enemy catalog
+### 8. Enemy catalog (next)
 
 - [ ] Enemy types, the enemy registry, and the enemy data. Loot points at item ids. Skills point at skill ids. Stats use `BattleStatistics`.
 - [ ] No HTTP route and no client page in this slice.
@@ -169,11 +169,13 @@ Blocked until someone writes the rule: do equipment and skill changes affect an 
 
 ### 16. Absence values
 
-Not part of a feature slice. Do not start this while a slice is in progress.
+Done before the skills slice. The rule is in `TS_REWRITE_RULES.md`.
 
-- [ ] One rule for a missing value, used in documents, responses, and client state.
-- [ ] An empty equipment slot no longer needs `?? undefined` in `equipment-component.tsx`. Today the response uses `null` and `useState<Item>()` uses `undefined`.
-- [ ] `SessionId` is not both optional and `string | null`.
+- [x] A missing domain value is `null` in documents, responses, entities, and client state. The field is present (`T | null`).
+- [x] `undefined` is only a draft field or an optional parameter. `useApiRequest` `data`, `errors`, and `call` use `null`.
+- [x] An empty equipment slot is `null` in `equipment-component.tsx`. It does not use `?? undefined`.
+- [x] `SessionId` is `string | null`.
+- [x] `LearnedSkills` is a required array. An empty list is `[]`.
 - [x] A GET `call` takes no argument. Do not pass `undefined`.
 
 ## Route inventory (do not grow this during the port)

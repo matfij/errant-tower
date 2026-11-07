@@ -56,8 +56,8 @@ export class AuthSessionService {
     }
 
     private readPayload(request: FastifyRequest): SessionPayload | null {
-        const token = request.cookies[AuthCookieService.name];
-        if (token === undefined || token === "") {
+        const token = request.cookies[AuthCookieService.name] ?? null;
+        if (token === null || token === "") {
             return null;
         }
         return AuthCookieService.open(token, this.cookieSecret);

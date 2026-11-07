@@ -1,8 +1,8 @@
+import type { SkillGuid } from "@errant/shared";
 import { Int32, type Collection } from "mongodb";
 
 import { HttpError } from "../../common/http/errors.ts";
 import { toInt32 } from "../../db/db-utils.ts";
-import type { SkillGuid } from "../skills/skill-definition.ts";
 import type { StatisticsEntity } from "./statistics-entity.ts";
 
 export type StatisticsDocument = {
@@ -14,7 +14,7 @@ export type StatisticsDocument = {
     Dexterity: Int32 | number;
     Constitution: Int32 | number;
     Spirit: Int32 | number;
-    LearnedSkills?: LearnedSkillDocument[];
+    LearnedSkills: LearnedSkillDocument[];
 };
 
 export type LearnedSkillDocument = {
@@ -84,7 +84,7 @@ export class MongoStatisticsRepository implements StatisticsRepository {
             dexterity: document.Dexterity.valueOf(),
             constitution: document.Constitution.valueOf(),
             spirit: document.Spirit.valueOf(),
-            learnedSkills: (document.LearnedSkills ?? []).map((skill) => ({
+            learnedSkills: document.LearnedSkills.map((skill) => ({
                 guid: skill.Guid,
                 level: skill.Level.valueOf(),
             })),

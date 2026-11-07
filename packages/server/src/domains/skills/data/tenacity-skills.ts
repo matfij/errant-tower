@@ -1,4 +1,5 @@
-import { SkillGuid, SkillPath, SkillPropertyType, SkillType } from "../skill-definition.ts";
+import { SkillGuid, SkillPath, SkillPropertyType, SkillType } from "@errant/shared";
+
 import { defineSkill } from "../skill-utils.ts";
 
 export const tenacitySkills = {

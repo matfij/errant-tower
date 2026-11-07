@@ -1,12 +1,6 @@
+import { SkillPath, SkillType, type SkillEffect, type SkillProperty, type UserSkill } from "@errant/shared";
 import { useTranslation } from "react-i18next";
 
-import {
-    SkillPath,
-    SkillType,
-    type SkillEffect,
-    type SkillProperty,
-    type UserSkill,
-} from "../../api-old/generated/definitions";
 import { toLowerFirst, toPercentLabel } from "../../common/utils";
 
 export const SKILL_MAX_LEVEL = 10;
@@ -38,11 +32,9 @@ export const skillPathToLabel = (path: SkillPath) => `skills.paths.${toLowerFirs
 
 export const skillTypeToLabel = (type: SkillType) => `skills.types.${toLowerFirst(type)}`;
 
-export const skillPassiveToLabel = (isPassive: boolean) =>
-    isPassive ? `skills.passive` : `skills.active`;
+export const skillPassiveToLabel = (isPassive: boolean) => (isPassive ? `skills.passive` : `skills.active`);
 
-export const skillEffectToLabel = (effect: SkillEffect) =>
-    `skills.effects.${toLowerFirst(effect.type)}`;
+export const skillEffectToLabel = (effect: SkillEffect) => `skills.effects.${toLowerFirst(effect.type)}`;
 
 export const skillPropertyToLabel = (property: SkillProperty) =>
     `skills.properties.${toLowerFirst(property.type)}`;
@@ -69,8 +61,7 @@ export const useSkillLabels = (skill: UserSkill) => {
         skill.selfEffects[currentLevel].length > 0 || skill.selfProperties[currentLevel].length > 0;
 
     const hasTargetSection =
-        skill.targetEffects[currentLevel].length > 0 ||
-        skill.targetProperties[currentLevel].length > 0;
+        skill.targetEffects[currentLevel].length > 0 || skill.targetProperties[currentLevel].length > 0;
 
     const getAttributeLabel = (name: string, value: number) =>
         t(`skills.attributes.${name}`) + ": " + toPercentLabel(value);
@@ -78,9 +69,7 @@ export const useSkillLabels = (skill: UserSkill) => {
     const getEffectLabel = (effect: SkillEffect, skipName?: boolean) =>
         (skipName ? "" : t(skillEffectToLabel(effect)) + ": ") +
         (effect.value !== 0 ? toPercentLabel(effect.value) : t("skills.notApplicable")) +
-        (effect.chance > 0
-            ? ", " + t("skills.chance", { chance: toPercentLabel(effect.chance) })
-            : "") +
+        (effect.chance > 0 ? ", " + t("skills.chance", { chance: toPercentLabel(effect.chance) }) : "") +
         (effect.duration > 0 ? ", " + t("skills.duration", { count: effect.duration }) : "");
 
     const getPropertyLabel = (property: SkillProperty, skipName?: boolean) =>

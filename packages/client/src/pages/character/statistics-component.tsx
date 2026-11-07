@@ -1,14 +1,13 @@
+import type { GetBattleStatisticsResponse } from "@errant/shared";
 import { Fragment } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
-import type { GetBattleStatisticsResponse } from "../../api-old/generated/definitions";
 import { appConfig } from "../../common/config";
-import { hasValue } from "../../common/utils";
 
 import styles from "./statistics-component.module.scss";
 
 interface StatisticsComponentProps {
-    statistics?: GetBattleStatisticsResponse;
+    statistics: GetBattleStatisticsResponse;
 }
 
 const statisticGroups = [
@@ -24,8 +23,8 @@ const statisticGroups = [
 export const StatisticsComponent = (props: StatisticsComponentProps) => {
     const { t } = useTranslation();
 
-    const format = (name: string, value?: number) => {
-        if (!hasValue(value)) {
+    const format = (name: string, value: number | null) => {
+        if (value === null) {
             return t("common.empty");
         }
         if (name.includes("Power") || name.includes("Chance")) {
@@ -43,7 +42,7 @@ export const StatisticsComponent = (props: StatisticsComponentProps) => {
                         <div key={name} className={styles.statisticItem}>
                             <Trans
                                 i18nKey={`statistics.${name}`}
-                                values={{ [name]: format(name, props.statistics?.[name]) }}
+                                values={{ [name]: format(name, props.statistics[name]) }}
                                 components={[<b key="b" />]}
                             />
                         </div>
