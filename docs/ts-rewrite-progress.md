@@ -109,14 +109,14 @@ Done when: learning a passive skill changes the battle statistics the character 
 
 Done when: the server can resolve an enemy id.
 
-### 9. Floor catalog (next)
+### 9. Floor catalog
 
-- [ ] Floor types, the floor registry, the floor data, and the tile sheets.
-- [ ] No HTTP route and no client page in this slice.
+- [x] Floor types, the floor registry, the floor data, and the tile sheets.
+- [x] No HTTP route and no client page in this slice.
 
 Done when: the server can resolve a floor id, including its tiles, enemies, and treasures.
 
-### 10. Progress
+### 10. Progress (next)
 
 - [ ] Progress collection and repository. `createInitial` runs from sign-up completion.
 - [ ] `get-floors`, `start-expedition`, and `get-expedition`.

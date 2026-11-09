@@ -130,4 +130,4 @@ Shared contracts are added beside the route that uses them.
 
 ## Next step
 
-Implement the floor catalog. Static floors, tile sheets, and weighted enemies and treasures. No routes.
+Implement progress. Needs floors and the battle-stat formula. `createInitial` from sign-up, `get-floors`, `start-expedition`, and `get-expedition`. Start copies health, mana, and energy maxes and currents onto progress. The explore page in `packages/client` calls these routes.
