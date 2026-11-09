@@ -130,4 +130,4 @@ Shared contracts are added beside the route that uses them.
 
 ## Next step
 
-Implement the enemy catalog. Static enemies. Each enemy points at item ids, skill ids, and a stat block that already exist. No routes.
+Implement the floor catalog. Static floors, tile sheets, and weighted enemies and treasures. No routes.

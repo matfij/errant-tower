@@ -102,14 +102,14 @@ Done when: a new user can see the starter bag and equip a piece through the UI.
 
 Done when: learning a passive skill changes the battle statistics the character page shows.
 
-### 8. Enemy catalog (next)
+### 8. Enemy catalog
 
-- [ ] Enemy types, the enemy registry, and the enemy data. Loot points at item ids. Skills point at skill ids. Stats use `BattleStatistics`.
-- [ ] No HTTP route and no client page in this slice.
+- [x] Enemy types, the enemy registry, and the enemy data. Loot points at item ids. Skills point at skill ids. Stats use `BattleStatistics`.
+- [x] No HTTP route and no client page in this slice.
 
 Done when: the server can resolve an enemy id.
 
-### 9. Floor catalog
+### 9. Floor catalog (next)
 
 - [ ] Floor types, the floor registry, the floor data, and the tile sheets.
 - [ ] No HTTP route and no client page in this slice.

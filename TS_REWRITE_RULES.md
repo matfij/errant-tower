@@ -48,6 +48,8 @@ Item requirements on a finished item are `ItemRequirements | null`. Each attribu
 
 `ItemGuid`, `Item`, `ItemRequirements`, `ItemType`, and `ItemRarity` live in `packages/shared` because equip requests and equipment responses use them. The server catalog imports those types. Do not keep a second copy in `item-definition.ts`. `item-registry.ts` (`items`, then `getItem`, then the private guard), `item-utils.ts` (`defineItem`), and `data/dungeon-items.ts` stay in the server. `getItem` throws `HttpError("errors.itemNotDefined")`. The registry does not re-export `ItemGuid`. `ItemSlot` lives in `packages/shared` with the equipment routes.
 
+`EnemyGuid`, `Enemy`, `EnemyLoot`, and `EnemyRace` live in `domains/enemies/enemy-definition.ts` until a route returns them. The catalog imports `SkillGuid`, `ItemGuid`, and `BattleStatistics` from `@errant/shared`. `enemy-registry.ts` (`enemies`, then `getEnemy`, then the private guard), `enemy-utils.ts` (`defineEnemy`), and `data/dungeon-enemies.ts` stay in the server. `getEnemy` throws `HttpError("errors.enemyNotDefined")`. The registry does not re-export `EnemyGuid`. An omitted title is `null`. An omitted loot list is `[]`. Skills are `SkillGuid[]`. Stats go through `defineBattleStatistics`. A duplicate skill id in that list stays duplicated.
+
 ## File order
 
 Read top-down: the most important declaration first, then the smaller pieces.
