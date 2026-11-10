@@ -21,6 +21,7 @@ const app = await buildApp({
     userRepository: mongo.userRepository,
     statisticsRepository: mongo.statisticsRepository,
     equipmentRepository: mongo.equipmentRepository,
+    expeditionRepository: mongo.expeditionRepository,
     emailService,
 });
 

@@ -1,6 +1,8 @@
+import { FloorGuid } from "@errant/shared";
+
 import { HttpError } from "../../common/http/errors.ts";
 import { dungeonFloors } from "./data/dungeon-floors.ts";
-import { FloorGuid, type Floor } from "./floor-definition.ts";
+import type { Floor } from "./floor-definition.ts";
 
 export const floors = {
     [FloorGuid.Floor1]: dungeonFloors.floor1,

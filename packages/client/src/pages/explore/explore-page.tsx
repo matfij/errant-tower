@@ -1,12 +1,22 @@
-import { wrapQuery } from "../../api-old/api-proxy";
-import type { GetFloorsResponse } from "../../api-old/generated/definitions";
-import { useGetFloors } from "../../api-old/generated/hooks";
+import { useEffect } from "react";
+
+import { useApiRequest } from "../../api/api-utils";
+import { getFloorsRequest } from "../../api/expedition-api";
+import { AppError } from "../../common/components/app-error";
 import { DomainItem } from "./domain-item";
 
 import styles from "./explore-page.module.scss";
 
 export const ExplorePage = () => {
-    const getFloors = wrapQuery<GetFloorsResponse>(useGetFloors)();
+    const getFloors = useApiRequest(getFloorsRequest);
+
+    useEffect(() => {
+        void getFloors.call();
+    }, []);
+
+    if (getFloors.errors && getFloors.errors.length > 0 && getFloors.data === null) {
+        return <AppError errors={getFloors.errors} />;
+    }
 
     return (
         <section className={styles.domainsWrapper}>

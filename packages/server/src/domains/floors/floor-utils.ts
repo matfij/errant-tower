@@ -1,7 +1,7 @@
-import type { ItemGuid } from "@errant/shared";
+import type { FloorDomain, FloorGuid, FloorTileType, ItemGuid } from "@errant/shared";
 
 import type { EnemyGuid } from "../enemies/enemy-definition.ts";
-import type { Floor, FloorDomain, FloorGuid, FloorTileType } from "./floor-definition.ts";
+import type { Floor } from "./floor-definition.ts";
 
 type FloorDraft = {
     guid: FloorGuid;

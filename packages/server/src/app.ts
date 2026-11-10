@@ -8,6 +8,8 @@ import { MutationGuardService } from "./common/http/guard.ts";
 import { LogService } from "./common/log.ts";
 import type { EquipmentRepository } from "./domains/equipment/equipment-repository.ts";
 import { EquipmentService } from "./domains/equipment/equipment-service.ts";
+import type { ExpeditionRepository } from "./domains/expedition/expedition-repository.ts";
+import { ExpeditionService } from "./domains/expedition/expedition-service.ts";
 import { SkillsService } from "./domains/statistics/skills-service.ts";
 import type { StatisticsRepository } from "./domains/statistics/statistics-repository.ts";
 import { StatisticsService } from "./domains/statistics/statistics-service.ts";
@@ -18,6 +20,8 @@ import { AuthRoutes } from "./orchestrator/auth-routes.ts";
 import { AuthSessionService } from "./orchestrator/auth-session-service.ts";
 import { EquipmentOrchestrator } from "./orchestrator/equipment-orchestrator.ts";
 import { EquipmentRoutes } from "./orchestrator/equipment-routes.ts";
+import { ExpeditionOrchestrator } from "./orchestrator/expedition-orchestrator.ts";
+import { ExpeditionRoutes } from "./orchestrator/expedition-routes.ts";
 import { StatisticsOrchestrator } from "./orchestrator/statistics-orchestrator.ts";
 import { StatisticsRoutes } from "./orchestrator/statistics-routes.ts";
 
@@ -28,6 +32,7 @@ export type BuildAppOptions = {
     userRepository: UserRepository;
     statisticsRepository: StatisticsRepository;
     equipmentRepository: EquipmentRepository;
+    expeditionRepository: ExpeditionRepository;
     emailService: EmailService;
 };
 
@@ -61,31 +66,39 @@ export const buildApp = async (options: BuildAppOptions): Promise<FastifyInstanc
     MutationGuardService.register(app);
 
     const userService = new UserService(options.userRepository, options.emailService);
-
     const authSessionService = new AuthSessionService(options.userRepository, options.cookieSecret);
-
     const statisticsService = new StatisticsService(options.statisticsRepository);
-
     const skillsService = new SkillsService(options.statisticsRepository);
-
     const equipmentService = new EquipmentService(options.equipmentRepository);
+    const expeditionService = new ExpeditionService(options.expeditionRepository);
 
-    const authOrchestrator = new AuthOrchestrator(userService, statisticsService, equipmentService);
-    const authRoutes = new AuthRoutes(authOrchestrator, authSessionService);
-
+    const authOrchestrator = new AuthOrchestrator(
+        userService,
+        expeditionService,
+        statisticsService,
+        equipmentService,
+    );
+    const equipmentOrchestrator = new EquipmentOrchestrator(equipmentService, statisticsService);
     const statisticsOrchestrator = new StatisticsOrchestrator(
         statisticsService,
         skillsService,
         equipmentService,
     );
-    const statisticsRoutes = new StatisticsRoutes(statisticsOrchestrator, authSessionService);
+    const expeditionOrchestrator = new ExpeditionOrchestrator(
+        expeditionService,
+        statisticsService,
+        equipmentService,
+    );
 
-    const equipmentOrchestrator = new EquipmentOrchestrator(equipmentService, statisticsService);
+    const authRoutes = new AuthRoutes(authOrchestrator, authSessionService);
+    const statisticsRoutes = new StatisticsRoutes(statisticsOrchestrator, authSessionService);
     const equipmentRoutes = new EquipmentRoutes(equipmentOrchestrator, authSessionService);
+    const expeditionRoutes = new ExpeditionRoutes(expeditionOrchestrator, authSessionService);
 
     authRoutes.register(app);
     statisticsRoutes.register(app);
     equipmentRoutes.register(app);
+    expeditionRoutes.register(app);
 
     app.setNotFoundHandler((_request, reply) => {
         return reply.status(404).send(new HttpError("errors.notFound", 404).body());

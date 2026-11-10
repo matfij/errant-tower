@@ -2,8 +2,9 @@ import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { FloorTileType, type FloorTile } from "@errant/shared";
+
 import { HttpError } from "../../../common/http/errors.ts";
-import { FloorTileType, type FloorTile } from "../floor-definition.ts";
 
 const tilesDirectory = join(dirname(fileURLToPath(import.meta.url)), "tiles");
 
@@ -41,7 +42,7 @@ const isFloorTileType = (value: string): value is FloorTileType => floorTileType
 
 const readTileInt = (value: string): number => {
     if (!/^-?\d+$/.test(value.trim())) {
-        throw new HttpError("errors.tilesInvalid");
+        throw new HttpError("errors.dev.tilesInvalid");
     }
     return Number(value);
 };

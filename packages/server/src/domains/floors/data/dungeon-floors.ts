@@ -1,7 +1,6 @@
-import { ItemGuid } from "@errant/shared";
+import { FloorDomain, FloorGuid, ItemGuid } from "@errant/shared";
 
 import { EnemyGuid } from "../../enemies/enemy-definition.ts";
-import { FloorDomain, FloorGuid } from "../floor-definition.ts";
 import { defineFloor } from "../floor-utils.ts";
 import { readFloorTiles } from "./floor-tiles.ts";
 

@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
-import { wrapQuery } from "../../api-old/api-proxy";
-import type { GetExpeditionResponse } from "../../api-old/generated/definitions";
-import { useGetExpedition } from "../../api-old/generated/hooks";
+import { useApiRequest } from "../../api/api-utils";
+import { getExpeditionRequest } from "../../api/expedition-api";
 import { routes } from "../../common/config";
 import { ExpeditionHub, MoveDirection, type MoveResponse } from "./expedition-hub";
 import { ExpeditionPanel } from "./expedition-panel";
@@ -11,8 +10,8 @@ import { ExpeditionPanel } from "./expedition-panel";
 import styles from "./expedition-page.module.scss";
 
 export const ExpeditionPage = () => {
+    const getExpedition = useApiRequest(getExpeditionRequest);
     const navigate = useNavigate();
-    const expedition = wrapQuery<GetExpeditionResponse>(useGetExpedition)();
     const wrapperRef = useRef<HTMLDivElement>(null);
     const hasInitializedRef = useRef(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -24,6 +23,10 @@ export const ExpeditionPage = () => {
 
     const cameraX = position.x - viewport.width / 2;
     const cameraY = position.y - viewport.height / 2;
+
+    useEffect(() => {
+        void getExpedition.call();
+    }, []);
 
     useEffect(() => {
         ExpeditionHub.connect();
@@ -45,19 +48,19 @@ export const ExpeditionPage = () => {
     }, []);
 
     useEffect(() => {
-        if (expedition.data && !hasInitializedRef.current) {
-            if (expedition.data.battleId) {
+        if (getExpedition.data && !hasInitializedRef.current) {
+            if (getExpedition.data.battleId) {
                 navigate(routes.battle);
                 return;
             }
-            setPosition({ x: expedition.data.x, y: expedition.data.y });
-            setInitiative(expedition.data.initiative);
-            setHealth(expedition.data.health);
-            setMana(expedition.data.mana);
-            setEnergy(expedition.data.energy);
+            setPosition({ x: getExpedition.data.x, y: getExpedition.data.y });
+            setInitiative(getExpedition.data.initiative);
+            setHealth(getExpedition.data.statistics.healthPoints);
+            setMana(getExpedition.data.statistics.manaPoints);
+            setEnergy(getExpedition.data.statistics.energyPoints);
             hasInitializedRef.current = true;
         }
-    }, [expedition.data]);
+    }, [getExpedition.data]);
 
     useEffect(() => {
         const updateViewport = () => {
@@ -113,23 +116,23 @@ export const ExpeditionPage = () => {
             <div ref={wrapperRef} className={styles.mapWrapper}>
                 <img
                     className={styles.mapItem}
-                    src={`images/floors/${expedition.data?.floorImageUrl}`}
+                    src={`images/floors/${getExpedition.data?.floorImageUrl}`}
                     style={{
                         transform: `translate(${-cameraX}px, ${-cameraY}px)`,
                     }}
                 />
                 <div className={styles.userIcon} />
             </div>
-            {expedition.data && (
+            {getExpedition.data && (
                 <ExpeditionPanel
                     initiative={initiative}
-                    maxInitiative={expedition.data.maxInitiative}
+                    maxInitiative={getExpedition.data.maxInitiative}
                     health={health}
-                    maxHealth={expedition.data.maxHealth}
+                    maxHealth={getExpedition.data.statistics.maxHealthPoints}
                     energy={energy}
-                    maxEnergy={expedition.data.maxEnergy}
+                    maxEnergy={getExpedition.data.statistics.maxEnergyPoints}
                     mana={mana}
-                    maxMana={expedition.data.maxMana}
+                    maxMana={getExpedition.data.statistics.maxManaPoints}
                 />
             )}
         </section>

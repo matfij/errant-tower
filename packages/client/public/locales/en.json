@@ -217,8 +217,17 @@
         "cantLearnThisSkill": "This skill cannot be learned",
         "skillAlreadyLearned": "This skill is already at maximum level",
         "skillRequirementsNotMet": "Skill requirements are not met",
+        "expeditionNotFound": "Expedition was not found",
+        "notEnoughStamina": "Not enough stamina",
+        "expeditionInProgress": "An expedition is already in progress",
+        "floorLocked": "That floor is locked",
+        "expeditionNotStarted": "No expedition is in progress",
+        "floorNotDefined": "That floor does not exist",
+        "npcFeatureUnsupported": "That tile is not supported",
         "dev": {
-            "invalidSkillProperty": "Invalid skill property"
+            "invalidSkillProperty": "Invalid skill property",
+            "tilesNotFound": "Floor tiles were not found",
+            "tilesInvalid": "Floor tiles are invalid"
         }
     }
 }

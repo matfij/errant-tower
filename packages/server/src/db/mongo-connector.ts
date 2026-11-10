@@ -6,6 +6,11 @@ import {
     type EquipmentRepository,
 } from "../domains/equipment/equipment-repository.ts";
 import {
+    MongoExpeditionRepository,
+    type ExpeditionDocument,
+    type ExpeditionRepository,
+} from "../domains/expedition/expedition-repository.ts";
+import {
     MongoStatisticsRepository,
     type StatisticsDocument,
     type StatisticsRepository,
@@ -21,6 +26,7 @@ export class MongoConnector {
         userRepository: UserRepository;
         statisticsRepository: StatisticsRepository;
         equipmentRepository: EquipmentRepository;
+        expeditionRepository: ExpeditionRepository;
         close: () => Promise<void>;
     }> {
         const client = new MongoClient(options.uri);
@@ -33,15 +39,18 @@ export class MongoConnector {
 
         const statistics = database.collection<StatisticsDocument>("Statistics");
         const equipment = database.collection<EquipmentDocument>("Equipments");
+        const expeditions = database.collection<ExpeditionDocument>("Expeditions");
 
         const userRepository = new MongoUserRepository(users);
         const statisticsRepository = new MongoStatisticsRepository(statistics);
         const equipmentRepository = new MongoEquipmentRepository(equipment);
+        const expeditionRepository = new MongoExpeditionRepository(expeditions);
 
         return {
             userRepository,
             statisticsRepository,
             equipmentRepository,
+            expeditionRepository,
             close: () => client.close(),
         };
     }
