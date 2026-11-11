@@ -100,7 +100,7 @@ Battle completion does not write resources back to the expedition (`TODO(#93)`).
 
 ## Database access
 
-One small module per domain that is being ported, with the operations that route needs (`findUserByEmail`, `updateProgress`, and so on). Name the fields in the filter. Extract a shared helper only after the same code appears twice.
+One small module per domain that is being ported, with the operations that route needs (`findUserByEmail`, `updateExpedition`, and so on). Name the fields in the filter. Extract a shared helper only after the same code appears twice.
 
 ## Sequence
 

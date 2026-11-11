@@ -35,11 +35,16 @@ export class MongoConnector {
 
         const users = database.collection<UserDocument>("Users");
         await users.createIndex({ Email: 1 }, { unique: true }, undefined);
-        await users.createIndex({ Username: 1 }, { unique: true }, undefined);
+        await users.createIndex({ Username: 1 }, { unique: true }, {});
 
         const statistics = database.collection<StatisticsDocument>("Statistics");
+        await statistics.createIndex({ UserId: 1 }, { unique: true }, undefined);
+
         const equipment = database.collection<EquipmentDocument>("Equipments");
+        await equipment.createIndex({ UserId: 1 }, { unique: true }, undefined);
+
         const expeditions = database.collection<ExpeditionDocument>("Expeditions");
+        await expeditions.createIndex({ UserId: 1 }, { unique: true }, undefined);
 
         const userRepository = new MongoUserRepository(users);
         const statisticsRepository = new MongoStatisticsRepository(statistics);
