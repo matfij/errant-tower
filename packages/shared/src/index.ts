@@ -50,3 +50,12 @@ export type {
     GetBattleStatisticsResponse,
 } from "./statistics.ts";
 export { UserAttribute } from "./statistics.ts";
+export type {
+    DomainFloors,
+    FloorTeaser,
+    FloorTile,
+    GetExpeditionResponse,
+    GetFloorsResponse,
+    StartExpeditionRequest,
+} from "./expedition.ts";
+export { FloorDomain, FloorGuid, FloorTileType } from "./expedition.ts";

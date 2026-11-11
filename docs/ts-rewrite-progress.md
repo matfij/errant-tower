@@ -16,7 +16,7 @@ CSRF: JSON-only mutations plus the header `X-Errant-Request: 1`, with the existi
 
 Combat freeze is decided for the port: do not freeze. Recompute battle stats on each random battle, as `CheckBattle` does now. Revisit only in the combat simplification step.
 
-Port order follows dependencies. A slice does not stub a domain that lands later. Sign-up wires `createInitial` for progress, statistics, and equipment in the slice that adds that domain. Accounts created before that slice have no row for it.
+Port order follows dependencies. A slice does not stub a domain that lands later. Sign-up wires `createInitial` for expedition, statistics, and equipment in the slice that adds that domain. Accounts created before that slice have no row for it.
 
 ## Checklist
 
@@ -43,7 +43,7 @@ Server:
 - [x] Reject mutating requests that are not JSON or that omit `X-Errant-Request`.
 - [x] Validate bodies at the boundary. Return `{ errors: [{ key, field? }] }`.
 - [x] Action codes: 15 minutes, 3 attempts, stored hash. Email through Resend (`RESEND_API_KEY`, `EMAIL_FROM_ADDRESS`, `EMAIL_FROM_NAME`).
-- [x] Sign-up leaves progress, statistics, and equipment uncreated. Those `createInitial` calls stay commented until the domain slice wires them.
+- [x] Sign-up leaves expedition, statistics, and equipment uncreated. Those `createInitial` calls stay commented until the domain slice wires them.
 - [x] User reads and writes live in a server-only module. No generic repository.
 
 Client:
@@ -116,16 +116,16 @@ Done when: the server can resolve an enemy id.
 
 Done when: the server can resolve a floor id, including its tiles, enemies, and treasures.
 
-### 10. Progress (next)
+### 10. Expedition
 
-- [ ] Progress collection and repository. `createInitial` runs from sign-up completion.
-- [ ] `get-floors`, `start-expedition`, and `get-expedition`.
-- [ ] Expedition start copies health, mana, and energy maxes and currents from the computed battle stats onto progress.
-- [ ] The explore page in `packages/client` calls these routes.
+- [x] `Expeditions` collection and repository. `createInitial` runs from sign-up completion. The TypeScript name is expedition. The C# name Progress is not used.
+- [x] `get-floors`, `start-expedition`, and `get-expedition`.
+- [x] Expedition start stores the computed battle statistics on the expedition document. `statistics` is null before a run. `get-expedition` returns that object as `statistics`.
+- [x] The explore page in `packages/client` calls these routes.
 
 Done when: a signed-in user can open the explore page and start an expedition.
 
-### 11. Battles
+### 11. Battles (next)
 
 - [ ] Battle collection. `Start` and `Get` only. `BattleService.Act` is not ported.
 - [ ] `get-battle`.
@@ -184,7 +184,7 @@ Auth: `sign-up-start`, `sign-up-complete`, `sign-in-start`, `sign-in-complete`. 
 
 Statistics: `get-attributes`, `get-battle-statistics`, `extend-attribute`, `get-skill-tree`, `learn-skill`, `reset-skills`.
 
-Progress: `get-floors`, `start-expedition`, `get-expedition`.
+Expedition: `get-floors`, `start-expedition`, `get-expedition`.
 
 Equipment: `get-equipment`, `get-bag`, `equip-item`, `unequip-item`.
 

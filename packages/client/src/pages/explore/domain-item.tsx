@@ -1,10 +1,10 @@
+import type { DomainFloors } from "@errant/shared";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 
-import { wrapMutation } from "../../api-old/api-proxy";
-import type { DomainFloors } from "../../api-old/generated/definitions";
-import { useStartExpedition } from "../../api-old/generated/hooks";
+import { useApiRequest } from "../../api/api-utils";
+import { startExpeditionRequest } from "../../api/expedition-api";
 import { AppSegmentButton } from "../../common/components/app-segment-button";
 import { routes } from "../../common/config";
 import { arabicToRoman } from "../../common/utils";
@@ -18,12 +18,8 @@ interface DomainItemProps {
 export const DomainItem = (props: DomainItemProps) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const startExpedition = wrapMutation(useStartExpedition)();
+    const startExpedition = useApiRequest(startExpeditionRequest);
     const [selectedFloorGuid, setSelectedFloorGuid] = useState(props.domain.floors[0].guid);
-
-    const onStartExpedition = () => {
-        startExpedition.call({ floorGuid: selectedFloorGuid });
-    };
 
     useEffect(() => {
         if (startExpedition.isSuccess) {
@@ -31,14 +27,18 @@ export const DomainItem = (props: DomainItemProps) => {
         }
     }, [startExpedition.isSuccess, navigate]);
 
+    const onStartExpedition = () => {
+        startExpedition.call({ floorGuid: selectedFloorGuid });
+    };
+
+    const domainName = props.domain.domain.replace(/\d+$/, "").toLowerCase();
+
     return (
         <div key={props.domain.domain} className={styles.domainItem}>
-            <p className={styles.domainTitle}>
-                {t(`explore.domains.${props.domain.domain.toLowerCase()}`)}
-            </p>
+            <p className={styles.domainTitle}>{t(`explore.domains.${domainName}`)}</p>
             <hr className={styles.titleDivider} />
             <p className={styles.domainDescription}>
-                {t(`explore.domains.${props.domain.domain.toLowerCase()}Description`)}
+                {t(`explore.domains.${domainName}Description`)}
             </p>
             <div className={styles.actionsWrapper}>
                 <div className={styles.levelWrapper}>
@@ -61,11 +61,6 @@ export const DomainItem = (props: DomainItemProps) => {
                     {t("explore.start")}
                 </button>
             </div>
-            {startExpedition.errors?.map((error) => (
-                <p key={error.key} className={styles.startError}>
-                    {t(error.key)}
-                </p>
-            ))}
         </div>
     );
 };

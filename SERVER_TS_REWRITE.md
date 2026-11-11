@@ -88,26 +88,26 @@ On reconnect, the server does not replay state. The client loads `GET` expeditio
 
 ## Combat behavior to preserve
 
-At expedition start, copy health, mana, and energy maxes and currents from the computed battle stats onto the progress document.
+At expedition start, store the computed battle statistics on the expedition document. `statistics` is null before a run. Do not store separate health, mana, and energy fields. `get-expedition` returns that object as `statistics`.
 
-On each random battle, recompute battle stats from the live character, current equipment, and active skills. Attack and the other combat fields are not stored on the expedition.
+On each random battle, recompute battle stats from the live character, current equipment, and active skills. The stored statistics are the expedition's resource snapshot. Battles do not read the attack fields from it yet.
 
 Equipment and skill changes during an expedition affect the next battle. That is what `ExpeditionService.CheckBattle` does today.
 
 A later change may freeze a full combat snapshot. That needs an explicit gameplay rule, and it is a separate step after the loop is ported.
 
-Battle completion does not write resources back to progress (`TODO(#93)`).
+Battle completion does not write resources back to the expedition (`TODO(#93)`).
 
 ## Database access
 
-One small module per domain that is being ported, with the operations that route needs (`findUserByEmail`, `updateProgress`, and so on). Name the fields in the filter. Extract a shared helper only after the same code appears twice.
+One small module per domain that is being ported, with the operations that route needs (`findUserByEmail`, `updateExpedition`, and so on). Name the fields in the filter. Extract a shared helper only after the same code appears twice.
 
 ## Sequence
 
 Build up from modules that do not need the rest of the game. A slice lands only when every call it makes already exists. Do not add a temporary stub for a domain that comes later.
 
 1. Workspace. Done on `main`.
-2. Auth slice. Done on `main` (PR #132). Fastify on port 4000, MongoDB, the cookie session, the auth routes, boundary validation, and the sign-in and sign-up pages in `packages/client`. That client talks only to the TypeScript server. `apps/client` stays on the C# server. Sign-up does not create progress, statistics, or equipment yet. Each of those domains wires its own `createInitial` when it lands.
+2. Auth slice. Done on `main` (PR #132). Fastify on port 4000, MongoDB, the cookie session, the auth routes, boundary validation, and the sign-in and sign-up pages in `packages/client`. That client talks only to the TypeScript server. `apps/client` stays on the C# server. Sign-up does not create expedition, statistics, or equipment yet. Each of those domains wires its own `createInitial` when it lands.
 3. Skill catalog. Static skill types, effects, the registry, and the data files. No Mongo and no routes. Nothing else in the server imports this until a later slice.
 4. Combat-stat shape and the item catalog. `BattleStatistics`, attribute types, and the item registry. An item stores a stat block and nothing else. No routes.
 5. Statistics document and attributes. The statistics collection, `createInitial` from sign-up, `get-attributes`, and `extend-attribute`. The attributes section in `packages/client` calls these routes. The battle-stat formula stays out: it reads equipped items and passive skills.
@@ -115,9 +115,9 @@ Build up from modules that do not need the rest of the game. A slice lands only 
 7. Skills and battle statistics. Needs the skill catalog, the statistics document, and the equipment list. `get-skill-tree`, `learn-skill`, `reset-skills`, and `get-battle-statistics`. The formula applies equipped items and passive skills for real. The skills page and the statistics section in `packages/client` call these routes.
 8. Enemy catalog. Static enemies. Each enemy points at item ids, skill ids, and a stat block that already exist. No routes.
 9. Floor catalog. Static floors, tile sheets, and weighted enemies and treasures. No routes.
-10. Progress. Needs floors and the battle-stat formula. `createInitial` from sign-up, `get-floors`, `start-expedition`, and `get-expedition`. Start copies health, mana, and energy maxes and currents onto progress. The explore page in `packages/client` calls these routes.
+10. Expedition. Needs floors and the battle-stat formula. `createInitial` from sign-up, `get-floors`, `start-expedition`, and `get-expedition`. Start stores the computed battle statistics on the expedition document. The explore page in `packages/client` calls these routes. The C# name `Progress` is not used in TypeScript.
 11. Battles. Needs enemies, battle stats, and active skills. `Start` and `Get` only. `BattleService.Act` stays unported. `get-battle` is the route. The battle page in `packages/client` calls it. Movement is what creates a battle, so this slice does not start one.
-12. Expedition movement. Needs progress, equipment, battle stats, skills, and battles. The three socket messages, cookie auth, and persist-and-drop on disconnect. Each random battle recomputes combat stats. Battle end still does not write resources back. The expedition page calls the socket and refetches expedition after reconnect.
+12. Expedition movement. Needs the expedition document, equipment, battle stats, skills, and battles. The three socket messages, cookie auth, and persist-and-drop on disconnect. Each random battle recomputes combat stats. Battle end still does not write resources back. The expedition page calls the socket and refetches expedition after reconnect.
 
 Then:
 
@@ -130,4 +130,4 @@ Shared contracts are added beside the route that uses them.
 
 ## Next step
 
-Implement progress. Needs floors and the battle-stat formula. `createInitial` from sign-up, `get-floors`, `start-expedition`, and `get-expedition`. Start copies health, mana, and energy maxes and currents onto progress. The explore page in `packages/client` calls these routes.
+Implement battles. Needs enemies, battle stats, and active skills. `Start` and `Get` only. `BattleService.Act` stays unported. `get-battle` is the route. The battle page in `packages/client` calls it. Movement is what creates a battle, so this slice does not start one.
