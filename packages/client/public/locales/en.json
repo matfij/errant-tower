@@ -223,6 +223,9 @@
         "floorLocked": "That floor is locked",
         "expeditionNotStarted": "No expedition is in progress",
         "floorNotDefined": "That floor does not exist",
+        "notInBattle": "You are not in a battle",
+        "battleAlreadyStarted": "A battle is already in progress",
+        "battleNotFound": "Battle was not found",
         "npcFeatureUnsupported": "That tile is not supported",
         "dev": {
             "invalidSkillProperty": "Invalid skill property",

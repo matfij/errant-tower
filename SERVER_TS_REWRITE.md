@@ -6,7 +6,7 @@ Workspace setup is already on `main` (PR #129): pnpm, root oxlint / oxfmt / Type
 
 - `apps/client` (`@errant/client`, Vite port 5173) calls the C# server at `https://localhost:7135`.
 - `packages/client` (`@errant/client-ts`, Vite port 5174) calls the TypeScript server at `http://localhost:4000`.
-- The TypeScript server package is `packages/server`. It listens on port 4000 and serves auth, attributes, equipment, the skill tree, and battle statistics.
+- The TypeScript server package is `packages/server`. It listens on port 4000 and serves auth, attributes, equipment, the skill tree, battle statistics, expeditions, and battles.
 - The C# server stays at `apps/errant-tower-server`.
 - The map editor is `packages/map-editor` (`@errant/map-editor`, Vite port 5175). It is a workspace member and uses the shared tsconfig, oxlint, and oxfmt.
 
@@ -130,4 +130,4 @@ Shared contracts are added beside the route that uses them.
 
 ## Next step
 
-Implement battles. Needs enemies, battle stats, and active skills. `Start` and `Get` only. `BattleService.Act` stays unported. `get-battle` is the route. The battle page in `packages/client` calls it. Movement is what creates a battle, so this slice does not start one.
+Implement expedition movement. Needs the expedition document, equipment, battle stats, skills, and battles. The three socket messages, cookie auth, and persist-and-drop on disconnect. Each random battle recomputes combat stats and calls `BattleService.start`. Battle end still does not write resources back. The expedition page calls the socket and refetches expedition after reconnect. `BattleService.Act` stays unported.

@@ -1,6 +1,6 @@
-import { ItemGuid, SkillGuid } from "@errant/shared";
+import { EnemyRace, ItemGuid, SkillGuid } from "@errant/shared";
 
-import { EnemyGuid, EnemyRace } from "../enemy-definition.ts";
+import { EnemyGuid } from "../enemy-definition.ts";
 import { defineEnemy } from "../enemy-utils.ts";
 
 export const dungeonEnemies = {

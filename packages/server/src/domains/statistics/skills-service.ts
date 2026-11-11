@@ -1,4 +1,4 @@
-import { SkillPath, type SkillGuid } from "@errant/shared";
+import { SkillPath, type BattleSkill, type Skill, type SkillGuid } from "@errant/shared";
 
 import { HttpError } from "../../common/http/errors.ts";
 import { skillLevel } from "../skills/skill-definition.ts";
@@ -48,6 +48,19 @@ export class SkillsService {
         };
     }
 
+    async getActiveSkills(userId: string): Promise<BattleSkill[]> {
+        const statistics = await this.readStatistics(userId);
+        const skills: BattleSkill[] = [];
+        for (const learnedSkill of statistics.learnedSkills) {
+            const skill = getSkill(learnedSkill.guid);
+            if (skill.isPassive) {
+                continue;
+            }
+            skills.push(this.toBattleSkill(skill, learnedSkill.level));
+        }
+        return skills;
+    }
+
     async learnSkill(userId: string, skillGuid: SkillGuid): Promise<SkillTree> {
         const statistics = await this.readStatistics(userId);
         const targetSkill = statistics.learnedSkills.find((skill) => skill.guid === skillGuid) ?? null;
@@ -85,6 +98,55 @@ export class SkillsService {
         statistics.skillPoints += restoredPoints;
         await this.statisticsRepository.update(statistics);
         return this.getSkillTree(userId);
+    }
+
+    private toBattleSkill(skill: Skill, level: number): BattleSkill {
+        const index = level - 1;
+        return {
+            guid: skill.guid,
+            name: skill.name,
+            description: skill.description,
+            imageUrl: skill.imageUrl,
+            path: skill.path,
+            types: skill.types,
+            physicalAttackFactor: skill.physicalAttackFactor[index],
+            magicalAttackFactor: skill.magicalAttackFactor[index],
+            physicalDefenseFactor: skill.physicalDefenseFactor[index],
+            magicalDefenseFactor: skill.magicalDefenseFactor[index],
+            isPassive: skill.isPassive,
+            targetSelf: skill.targetSelf,
+            hitCount: skill.hitCount[index],
+            energyCost: skill.energyCost[index],
+            manaCost: skill.manaCost[index],
+            targetEffects: skill.targetEffects.map((effect) => ({
+                type: effect.type,
+                value: effect.values[index],
+                chance: effect.chances[index],
+                duration: effect.durations[index],
+            })),
+            selfEffects: skill.selfEffects.map((effect) => ({
+                type: effect.type,
+                value: effect.values[index],
+                chance: effect.chances[index],
+                duration: effect.durations[index],
+            })),
+            targetProperties: skill.targetProperties.map((property) => ({
+                effect: property.effect,
+                type: property.type,
+                value: property.values[index],
+                duration: property.duration,
+            })),
+            selfProperties: skill.selfProperties.map((property) => ({
+                effect: property.effect,
+                type: property.type,
+                value: property.values[index],
+                duration: property.duration,
+            })),
+            requirements: skill.requirements.map((requirement) => ({
+                path: requirement.path,
+                points: requirement.points,
+            })),
+        };
     }
 
     private emptyPaths(): SkillTree["paths"] {
