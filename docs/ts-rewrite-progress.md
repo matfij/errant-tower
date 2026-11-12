@@ -5,7 +5,7 @@ Living checklist for [SERVER_TS_REWRITE.md](../SERVER_TS_REWRITE.md). Review rul
 ## Where things stand
 
 - Branch: `main`. Workspace setup is on `main` through PR #130. Auth is on `main` through PR #132.
-- Side-by-side test: `apps/client` (`@errant/client`, port 5173) calls the C# server at `https://localhost:7135`. `packages/client` (`@errant/client-ts`, port 5174) calls the TypeScript server at `http://localhost:4000`. `packages/server` serves auth on port 4000. `packages/shared` holds the auth request and response types. The C# server stays at `apps/errant-tower-server`. The map editor is `packages/map-editor` (`@errant/map-editor`, Vite port 5175) and is a workspace member.
+- Side-by-side test: `apps/client` (`@errant/client`, port 5173) calls the C# server at `https://localhost:7135`. `packages/client` (`@errant/client-ts`, port 5174) calls the TypeScript server at `http://localhost:4000`. `packages/server` serves the ported routes on port 4000, including `GET /battles/get-battle`. The battle page in `packages/client` calls that route. `packages/shared` holds the contracts for the ported routes. The C# server stays at `apps/errant-tower-server`. The map editor is `packages/map-editor` (`@errant/map-editor`, Vite port 5175) and is a workspace member. Expedition and battles are in the working tree and are not merged. The next slice is expedition movement.
 - `server/ts-rewrite-phase-0` is not the next base. It duplicates the folder move and commits `.vs`, `obj`, and `appsettings.Development.json`. Leave it.
 
 ## Decided
@@ -125,16 +125,22 @@ Done when: the server can resolve a floor id, including its tiles, enemies, and 
 
 Done when: a signed-in user can open the explore page and start an expedition.
 
-### 11. Battles (next)
+### 11. Battles
 
-- [ ] Battle collection. `Start` and `Get` only. `BattleService.Act` is not ported.
-- [ ] `get-battle`.
-- [ ] The battle page in `packages/client` calls this route.
-- [ ] This slice does not start a battle. Expedition movement does that.
+- [x] Battle collection. `Start` and `Get` only. `BattleService.Act` is not ported.
+- [x] `get-battle`.
+- [x] The battle page in `packages/client` calls this route.
+- [x] This slice does not start a battle. Expedition movement does that.
 
 Done when: `get-battle` returns a stored battle in the same shape the C# route returns.
 
-### 12. Expedition movement
+`SkillsService.getActiveSkills` resolves each learned active skill to one `BattleSkill`. Effects and properties use `values[level - 1]`. The battle page calls it only through a stored battle. Nothing in this slice calls `start`.
+
+`Start` matches C#: a finished battle is replaced by `update` with a new id. That update looks up the new id, misses, and throws `errors.battleNotFound`. Nothing sets `isFinished` yet, so that path is unused. The first battle for a user is inserted. A second battle while the first is unfinished throws `errors.battleAlreadyStarted`.
+
+The `Battles` collection has a unique `UserId` index. Nested `User`, `Enemy`, and `Skills` store the shared types directly. `EnemyRace` lives in `packages/shared/src/enemies.ts` because `get-battle` returns it.
+
+### 12. Expedition movement (next)
 
 Port current behavior only.
 

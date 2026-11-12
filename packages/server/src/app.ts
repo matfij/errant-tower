@@ -6,6 +6,8 @@ import type { EmailService } from "./common/email/email-service.ts";
 import { HttpError } from "./common/http/errors.ts";
 import { MutationGuardService } from "./common/http/guard.ts";
 import { LogService } from "./common/log.ts";
+import type { BattleRepository } from "./domains/battles/battle-repository.ts";
+import { BattleService } from "./domains/battles/battle-service.ts";
 import type { EquipmentRepository } from "./domains/equipment/equipment-repository.ts";
 import { EquipmentService } from "./domains/equipment/equipment-service.ts";
 import type { ExpeditionRepository } from "./domains/expedition/expedition-repository.ts";
@@ -18,6 +20,8 @@ import { UserService } from "./domains/users/user-service.ts";
 import { AuthOrchestrator } from "./orchestrator/auth-orchestrator.ts";
 import { AuthRoutes } from "./orchestrator/auth-routes.ts";
 import { AuthSessionService } from "./orchestrator/auth-session-service.ts";
+import { BattleOrchestrator } from "./orchestrator/battle-orchestrator.ts";
+import { BattleRoutes } from "./orchestrator/battle-routes.ts";
 import { EquipmentOrchestrator } from "./orchestrator/equipment-orchestrator.ts";
 import { EquipmentRoutes } from "./orchestrator/equipment-routes.ts";
 import { ExpeditionOrchestrator } from "./orchestrator/expedition-orchestrator.ts";
@@ -33,6 +37,7 @@ export type BuildAppOptions = {
     statisticsRepository: StatisticsRepository;
     equipmentRepository: EquipmentRepository;
     expeditionRepository: ExpeditionRepository;
+    battleRepository: BattleRepository;
     emailService: EmailService;
 };
 
@@ -71,6 +76,7 @@ export const buildApp = async (options: BuildAppOptions): Promise<FastifyInstanc
     const skillsService = new SkillsService(options.statisticsRepository);
     const equipmentService = new EquipmentService(options.equipmentRepository);
     const expeditionService = new ExpeditionService(options.expeditionRepository);
+    const battleService = new BattleService(options.battleRepository);
 
     const authOrchestrator = new AuthOrchestrator(
         userService,
@@ -84,6 +90,7 @@ export const buildApp = async (options: BuildAppOptions): Promise<FastifyInstanc
         skillsService,
         equipmentService,
     );
+    const battleOrchestrator = new BattleOrchestrator(battleService);
     const expeditionOrchestrator = new ExpeditionOrchestrator(
         expeditionService,
         statisticsService,
@@ -94,11 +101,13 @@ export const buildApp = async (options: BuildAppOptions): Promise<FastifyInstanc
     const statisticsRoutes = new StatisticsRoutes(statisticsOrchestrator, authSessionService);
     const equipmentRoutes = new EquipmentRoutes(equipmentOrchestrator, authSessionService);
     const expeditionRoutes = new ExpeditionRoutes(expeditionOrchestrator, authSessionService);
+    const battleRoutes = new BattleRoutes(battleOrchestrator, authSessionService);
 
     authRoutes.register(app);
     statisticsRoutes.register(app);
     equipmentRoutes.register(app);
     expeditionRoutes.register(app);
+    battleRoutes.register(app);
 
     app.setNotFoundHandler((_request, reply) => {
         return reply.status(404).send(new HttpError("errors.notFound", 404).body());

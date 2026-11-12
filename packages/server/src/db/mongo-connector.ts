@@ -1,6 +1,11 @@
 import { MongoClient } from "mongodb";
 
 import {
+    MongoBattleRepository,
+    type BattleDocument,
+    type BattleRepository,
+} from "../domains/battles/battle-repository.ts";
+import {
     MongoEquipmentRepository,
     type EquipmentDocument,
     type EquipmentRepository,
@@ -27,6 +32,7 @@ export class MongoConnector {
         statisticsRepository: StatisticsRepository;
         equipmentRepository: EquipmentRepository;
         expeditionRepository: ExpeditionRepository;
+        battleRepository: BattleRepository;
         close: () => Promise<void>;
     }> {
         const client = new MongoClient(options.uri);
@@ -46,16 +52,21 @@ export class MongoConnector {
         const expeditions = database.collection<ExpeditionDocument>("Expeditions");
         await expeditions.createIndex({ UserId: 1 }, { unique: true }, undefined);
 
+        const battles = database.collection<BattleDocument>("Battles");
+        await battles.createIndex({ UserId: 1 }, { unique: true }, undefined);
+
         const userRepository = new MongoUserRepository(users);
         const statisticsRepository = new MongoStatisticsRepository(statistics);
         const equipmentRepository = new MongoEquipmentRepository(equipment);
         const expeditionRepository = new MongoExpeditionRepository(expeditions);
+        const battleRepository = new MongoBattleRepository(battles);
 
         return {
             userRepository,
             statisticsRepository,
             equipmentRepository,
             expeditionRepository,
+            battleRepository,
             close: () => client.close(),
         };
     }

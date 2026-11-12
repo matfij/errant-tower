@@ -19,6 +19,8 @@ export type {
 export { ItemSlot } from "./equipment.ts";
 export type { Item, ItemRequirements } from "./items.ts";
 export { ItemGuid, ItemRarity, ItemType } from "./items.ts";
+export type { BattleCharacter, BattleStatus, GetBattleResponse } from "./battles.ts";
+export { EnemyRace } from "./enemies.ts";
 export type {
     BattleSkill,
     BattleSkillEffect,

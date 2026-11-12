@@ -1,7 +1,7 @@
-import type { ItemGuid, SkillGuid } from "@errant/shared";
+import type { EnemyRace, ItemGuid, SkillGuid } from "@errant/shared";
 
 import { defineBattleStatistics, type BattleStatisticsDraft } from "../statistics/statistics-utils.ts";
-import type { Enemy, EnemyGuid, EnemyRace } from "./enemy-definition.ts";
+import type { Enemy, EnemyGuid } from "./enemy-definition.ts";
 
 type EnemyDraft = {
     guid: EnemyGuid;

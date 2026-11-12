@@ -1,4 +1,4 @@
-import type { BattleStatistics, ItemGuid, SkillGuid } from "@errant/shared";
+import type { BattleStatistics, EnemyRace, ItemGuid, SkillGuid } from "@errant/shared";
 
 export enum EnemyGuid {
     // Dungeon
@@ -24,20 +24,6 @@ export type Enemy = {
     skills: SkillGuid[];
     loots: EnemyLoot[];
 };
-
-export enum EnemyRace {
-    Vermin = "Vermin",
-    Feline = "Feline",
-    Beast = "Beast",
-    Reptile = "Reptile",
-    Human = "Human",
-    Undead = "Undead",
-    Insect = "Insect",
-    Avian = "Avian",
-    Mechanical = "Mechanical",
-    Spirit = "Spirit",
-    Dragon = "Dragon",
-}
 
 export type EnemyLoot = {
     guid: ItemGuid;
