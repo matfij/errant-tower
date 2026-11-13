@@ -73,6 +73,13 @@ export class StatisticsService {
         return statistics;
     }
 
+    async awardPoints(userId: string, attributePoints: number, skillPoints: number): Promise<void> {
+        const statistics = await this.getStatistics(userId);
+        statistics.attributePoints += attributePoints;
+        statistics.skillPoints += skillPoints;
+        await this.statisticsRepository.update(statistics);
+    }
+
     async getUserBattleStatistics(userId: string, equipment: Item[]): Promise<BattleStatistics> {
         const statistics = await this.getStatistics(userId);
 

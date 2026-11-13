@@ -1,10 +1,11 @@
+import { MoveDirection, type MovedMessage } from "@errant/shared";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
 import { useApiRequest } from "../../api/api-utils";
 import { getExpeditionRequest } from "../../api/expedition-api";
 import { routes } from "../../common/config";
-import { ExpeditionHub, MoveDirection, type MoveResponse } from "./expedition-hub";
+import { ExpeditionHub } from "./expedition-hub";
 import { ExpeditionPanel } from "./expedition-panel";
 
 import styles from "./expedition-page.module.scss";
@@ -13,7 +14,6 @@ export const ExpeditionPage = () => {
     const getExpedition = useApiRequest(getExpeditionRequest);
     const navigate = useNavigate();
     const wrapperRef = useRef<HTMLDivElement>(null);
-    const hasInitializedRef = useRef(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [viewport, setViewport] = useState({ width: 0, height: 0 });
     const [initiative, setInitiative] = useState(0);
@@ -30,8 +30,8 @@ export const ExpeditionPage = () => {
 
     useEffect(() => {
         ExpeditionHub.connect();
-        const updatePosition = (response: MoveResponse) => {
-            if (response.battleId) {
+        const updatePosition = (response: MovedMessage) => {
+            if (response.battleId !== null) {
                 navigate(routes.battle);
                 return;
             }
@@ -48,18 +48,28 @@ export const ExpeditionPage = () => {
     }, []);
 
     useEffect(() => {
-        if (getExpedition.data && !hasInitializedRef.current) {
-            if (getExpedition.data.battleId) {
-                navigate(routes.battle);
-                return;
-            }
-            setPosition({ x: getExpedition.data.x, y: getExpedition.data.y });
-            setInitiative(getExpedition.data.initiative);
-            setHealth(getExpedition.data.statistics.healthPoints);
-            setMana(getExpedition.data.statistics.manaPoints);
-            setEnergy(getExpedition.data.statistics.energyPoints);
-            hasInitializedRef.current = true;
+        const refetch = () => {
+            void getExpedition.call();
+        };
+        ExpeditionHub.onReconnect(refetch);
+        return () => {
+            ExpeditionHub.offReconnect(refetch);
+        };
+    }, [getExpedition.call]);
+
+    useEffect(() => {
+        if (getExpedition.data === null) {
+            return;
         }
+        if (getExpedition.data.battleId !== null) {
+            navigate(routes.battle);
+            return;
+        }
+        setPosition({ x: getExpedition.data.x, y: getExpedition.data.y });
+        setInitiative(getExpedition.data.initiative);
+        setHealth(getExpedition.data.statistics.healthPoints);
+        setMana(getExpedition.data.statistics.manaPoints);
+        setEnergy(getExpedition.data.statistics.energyPoints);
     }, [getExpedition.data]);
 
     useEffect(() => {

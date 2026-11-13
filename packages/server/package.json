@@ -12,6 +12,7 @@
         "@errant/shared": "workspace:*",
         "@fastify/cookie": "^11.1.5",
         "@fastify/cors": "^11.3.1",
+        "@fastify/websocket": "^11.3.7",
         "fastify": "^5.12.7",
         "mongodb": "^7.8.0",
         "resend": "^6.37.0",

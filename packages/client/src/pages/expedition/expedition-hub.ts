@@ -1,56 +1,120 @@
-import { HubConnectionBuilder, HubConnectionState } from "@microsoft/signalr";
+import { MoveDirection, type MovedMessage } from "@errant/shared";
 
 import { appConfig } from "../../common/config";
 
-export enum MoveDirection {
-    Up = 1,
-    Down = 2,
-    Left = 3,
-    Right = 4,
-}
-
-export interface MoveRequest {
-    direction: MoveDirection;
-}
-
-export interface MoveResponse {
-    x: number;
-    y: number;
-    initiative: number;
-    battleId?: string;
-    silver?: number;
-    // summary
-}
+type MovedHandler = (message: MovedMessage) => void;
+type ReconnectHandler = () => void;
 
 export class ExpeditionHub {
-    private static connection = new HubConnectionBuilder()
-        .withUrl(`${appConfig.baseUrl}/hubs/expedition`, { withCredentials: true })
-        .withAutomaticReconnect()
-        .build();
+    private static socket: WebSocket | null = null;
+    private static reconnectTimer: number | null = null;
+    private static hasConnected = false;
+    private static movedHandlers: MovedHandler[] = [];
+    private static reconnectHandlers: ReconnectHandler[] = [];
 
-    static async connect() {
-        if (this.connection.state === HubConnectionState.Disconnected) {
-            await this.connection.start();
+    static connect(): void {
+        ExpeditionHub.open();
+    }
+
+    static move(direction: MoveDirection): void {
+        if (ExpeditionHub.socket === null || ExpeditionHub.socket.readyState !== WebSocket.OPEN) {
+            return;
         }
+        const message = { type: "move", direction };
+        ExpeditionHub.socket.send(JSON.stringify(message));
     }
 
-    static async move(direction: MoveDirection) {
-        if (this.connection.state === HubConnectionState.Connected) {
-            await this.connection.invoke("Move", { direction });
+    static onUserMoved(handler: MovedHandler): void {
+        ExpeditionHub.movedHandlers.push(handler);
+    }
+
+    static offUserMoved(handler: MovedHandler): void {
+        ExpeditionHub.movedHandlers = ExpeditionHub.movedHandlers.filter((item) => item !== handler);
+    }
+
+    static onReconnect(handler: ReconnectHandler): void {
+        ExpeditionHub.reconnectHandlers.push(handler);
+    }
+
+    static offReconnect(handler: ReconnectHandler): void {
+        ExpeditionHub.reconnectHandlers = ExpeditionHub.reconnectHandlers.filter((item) => item !== handler);
+    }
+
+    private static open(): void {
+        if (
+            ExpeditionHub.socket !== null &&
+            (ExpeditionHub.socket.readyState === WebSocket.OPEN ||
+                ExpeditionHub.socket.readyState === WebSocket.CONNECTING)
+        ) {
+            return;
         }
+
+        const socket = new WebSocket(ExpeditionHub.socketUrl());
+        ExpeditionHub.socket = socket;
+        socket.addEventListener("open", () => {
+            if (ExpeditionHub.socket !== socket) {
+                return;
+            }
+            if (ExpeditionHub.hasConnected) {
+                for (const handler of ExpeditionHub.reconnectHandlers) {
+                    handler();
+                }
+            }
+            ExpeditionHub.hasConnected = true;
+        });
+        socket.addEventListener("message", (event) => {
+            const message = ExpeditionHub.readMoved(event.data);
+            if (message === null) {
+                return;
+            }
+            for (const handler of ExpeditionHub.movedHandlers) {
+                handler(message);
+            }
+        });
+        socket.addEventListener("close", () => {
+            if (ExpeditionHub.socket !== socket) {
+                return;
+            }
+            ExpeditionHub.socket = null;
+            ExpeditionHub.scheduleReconnect();
+        });
     }
 
-    static onUserMoved(handler: (event: MoveResponse) => void) {
-        this.connection.on("moved", handler);
-    }
-
-    static offUserMoved(handler: (event: MoveResponse) => void) {
-        this.connection.off("moved", handler);
-    }
-
-    static async disconnect() {
-        if (this.connection.state !== HubConnectionState.Disconnected) {
-            await this.connection.stop();
+    private static scheduleReconnect(): void {
+        if (ExpeditionHub.reconnectTimer !== null) {
+            return;
         }
+        ExpeditionHub.reconnectTimer = window.setTimeout(() => {
+            ExpeditionHub.reconnectTimer = null;
+            ExpeditionHub.open();
+        }, 1000);
+    }
+
+    private static socketUrl(): string {
+        const url = new URL("/hubs/expedition", appConfig.baseUrl);
+        url.protocol = url.protocol === "https:" ? "wss:" : "ws:";
+        return url.toString();
+    }
+
+    private static readMoved(data: unknown): MovedMessage | null {
+        if (typeof data !== "string") {
+            return null;
+        }
+
+        let parsed: unknown;
+        try {
+            parsed = JSON.parse(data);
+        } catch {
+            return null;
+        }
+        if (parsed === null || typeof parsed !== "object") {
+            return null;
+        }
+
+        const message = parsed as MovedMessage;
+        if (message.type !== "moved") {
+            return null;
+        }
+        return message;
     }
 }
