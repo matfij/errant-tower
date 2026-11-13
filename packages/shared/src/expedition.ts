@@ -1,3 +1,4 @@
+import type { ItemGuid } from "./items.ts";
 import type { BattleStatistics } from "./statistics.ts";
 
 export enum FloorGuid {
@@ -57,4 +58,52 @@ export type GetExpeditionResponse = {
     x: number;
     y: number;
     floorTiles: FloorTile[];
+};
+
+export enum MoveDirection {
+    Up = 1,
+    Down = 2,
+    Left = 3,
+    Right = 4,
+}
+
+export type GainedItem = {
+    itemGuid: ItemGuid;
+    quantity: number;
+};
+
+export type ExpeditionSummary = {
+    isSuccess: boolean;
+    hasFinished: boolean;
+    gainedSilver: number;
+    gainedItems: GainedItem[];
+    gainedAttributePoints: number;
+    gainedSkillPoints: number;
+};
+
+export type MoveResult = {
+    x: number;
+    y: number;
+    initiative: number;
+    battleId: string | null;
+    summary: ExpeditionSummary | null;
+};
+
+export type MoveMessage = {
+    type: "move";
+    direction: MoveDirection;
+};
+
+export type MoveReply = {
+    type: "moved";
+    x: number;
+    y: number;
+    initiative: number;
+    battleId: string | null;
+    summary: ExpeditionSummary | null;
+};
+
+export type ExpeditionErrorMessage = {
+    type: "error";
+    key: string;
 };

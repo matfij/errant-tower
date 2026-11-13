@@ -1,5 +1,6 @@
 import cookie from "@fastify/cookie";
 import cors from "@fastify/cors";
+import websocket from "@fastify/websocket";
 import Fastify, { type FastifyInstance } from "fastify";
 
 import type { EmailService } from "./common/email/email-service.ts";
@@ -12,6 +13,7 @@ import type { EquipmentRepository } from "./domains/equipment/equipment-reposito
 import { EquipmentService } from "./domains/equipment/equipment-service.ts";
 import type { ExpeditionRepository } from "./domains/expedition/expedition-repository.ts";
 import { ExpeditionService } from "./domains/expedition/expedition-service.ts";
+import { ExpeditionSessionManager } from "./domains/expedition/expedition-session.ts";
 import { SkillsService } from "./domains/statistics/skills-service.ts";
 import type { StatisticsRepository } from "./domains/statistics/statistics-repository.ts";
 import { StatisticsService } from "./domains/statistics/statistics-service.ts";
@@ -24,6 +26,8 @@ import { BattleOrchestrator } from "./orchestrator/battle-orchestrator.ts";
 import { BattleRoutes } from "./orchestrator/battle-routes.ts";
 import { EquipmentOrchestrator } from "./orchestrator/equipment-orchestrator.ts";
 import { EquipmentRoutes } from "./orchestrator/equipment-routes.ts";
+import { ExpeditionHub } from "./orchestrator/expedition-hub.ts";
+import { ExpeditionMoveOrchestrator } from "./orchestrator/expedition-move-orchestrator.ts";
 import { ExpeditionOrchestrator } from "./orchestrator/expedition-orchestrator.ts";
 import { ExpeditionRoutes } from "./orchestrator/expedition-routes.ts";
 import { StatisticsOrchestrator } from "./orchestrator/statistics-orchestrator.ts";
@@ -59,6 +63,7 @@ export const buildApp = async (options: BuildAppOptions): Promise<FastifyInstanc
     });
 
     await app.register(cookie);
+    await app.register(websocket);
     await app.register(cors, {
         origin: options.corsOrigins,
         credentials: true,
@@ -75,8 +80,9 @@ export const buildApp = async (options: BuildAppOptions): Promise<FastifyInstanc
     const statisticsService = new StatisticsService(options.statisticsRepository);
     const skillsService = new SkillsService(options.statisticsRepository);
     const equipmentService = new EquipmentService(options.equipmentRepository);
-    const expeditionService = new ExpeditionService(options.expeditionRepository);
+    const expeditionSessionManager = new ExpeditionSessionManager(options.expeditionRepository);
     const battleService = new BattleService(options.battleRepository);
+    const expeditionService = new ExpeditionService(options.expeditionRepository);
 
     const authOrchestrator = new AuthOrchestrator(
         userService,
@@ -96,17 +102,32 @@ export const buildApp = async (options: BuildAppOptions): Promise<FastifyInstanc
         statisticsService,
         equipmentService,
     );
+    const expeditionMoveService = new ExpeditionMoveOrchestrator(
+        expeditionSessionManager,
+        expeditionService,
+        equipmentService,
+        statisticsService,
+        skillsService,
+        battleService,
+    );
 
     const authRoutes = new AuthRoutes(authOrchestrator, authSessionService);
     const statisticsRoutes = new StatisticsRoutes(statisticsOrchestrator, authSessionService);
     const equipmentRoutes = new EquipmentRoutes(equipmentOrchestrator, authSessionService);
     const expeditionRoutes = new ExpeditionRoutes(expeditionOrchestrator, authSessionService);
+    const expeditionHub = new ExpeditionHub(
+        expeditionMoveService,
+        expeditionSessionManager,
+        authSessionService,
+        options.corsOrigins,
+    );
     const battleRoutes = new BattleRoutes(battleOrchestrator, authSessionService);
 
     authRoutes.register(app);
     statisticsRoutes.register(app);
     equipmentRoutes.register(app);
     expeditionRoutes.register(app);
+    expeditionHub.register(app);
     battleRoutes.register(app);
 
     app.setNotFoundHandler((_request, reply) => {

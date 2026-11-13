@@ -59,13 +59,14 @@ export class ExpeditionService {
         for (const floor of getAllFloors()) {
             const teaser: FloorTeaser = {
                 guid: floor.guid,
-                isUnlocked: this.readRank(expedition.unlockedFloor) >= this.readRank(floor.guid),
+                isUnlocked: this.readEnumRank(expedition.unlockedFloor) >= this.readEnumRank(floor.guid),
             };
             const existing = groups.find((group) => group.domain === floor.domain) ?? null;
             if (existing === null) {
                 groups.push({
                     domain: floor.domain,
-                    isUnlocked: this.readRank(expedition.unlockedDomain) >= this.readRank(floor.domain),
+                    isUnlocked:
+                        this.readEnumRank(expedition.unlockedDomain) >= this.readEnumRank(floor.domain),
                     floors: [teaser],
                 });
             } else {
@@ -73,7 +74,7 @@ export class ExpeditionService {
             }
         }
 
-        groups.sort((left, right) => this.readRank(left.domain) - this.readRank(right.domain));
+        groups.sort((left, right) => this.readEnumRank(left.domain) - this.readEnumRank(right.domain));
         return groups;
     }
 
@@ -91,7 +92,7 @@ export class ExpeditionService {
         }
 
         const floor = getFloor(floorGuid);
-        if (this.readRank(expedition.unlockedFloor) < this.readRank(floor.guid)) {
+        if (this.readEnumRank(expedition.unlockedFloor) < this.readEnumRank(floor.guid)) {
             throw new HttpError("errors.floorLocked");
         }
 
@@ -136,6 +137,26 @@ export class ExpeditionService {
         };
     }
 
+    async finishExpedition(userId: string, hasFinished: boolean): Promise<void> {
+        const expedition = await this.readExpedition(userId);
+        if (!expedition.isInExpedition) {
+            throw new HttpError("errors.expeditionNotStarted");
+        }
+
+        expedition.isInExpedition = false;
+        if (hasFinished) {
+            expedition.unlockedFloor = this.getNextUnlockedFloor(expedition.unlockedFloor);
+            expedition.unlockedDomain = getFloor(expedition.currentFloor).domain;
+        }
+        await this.expeditionRepository.update(expedition);
+    }
+
+    private getNextUnlockedFloor(current: FloorGuid): FloorGuid {
+        const nextRank = this.readEnumRank(current) + 1;
+        const next = getAllFloors().find((floor) => this.readEnumRank(floor.guid) === nextRank) ?? null;
+        return next === null ? current : next.guid;
+    }
+
     private async readExpedition(userId: string): Promise<ExpeditionEntity> {
         const expedition = await this.expeditionRepository.readByUserId(userId);
         if (expedition === null) {
@@ -144,7 +165,7 @@ export class ExpeditionService {
         return expedition;
     }
 
-    private readRank(value: string): number {
+    private readEnumRank(value: string): number {
         return Number(value.match(/\d+$/)?.[0]);
     }
 

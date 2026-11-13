@@ -92,7 +92,7 @@ At expedition start, store the computed battle statistics on the expedition docu
 
 On each random battle, recompute battle stats from the live character, current equipment, and active skills. The stored statistics are the expedition's resource snapshot. Battles do not read the attack fields from it yet.
 
-Equipment and skill changes during an expedition affect the next battle. That is what `ExpeditionService.CheckBattle` does today.
+Equipment and skill changes during an expedition affect the next battle. That is what `ExpeditionMoveService.checkBattle` does today.
 
 A later change may freeze a full combat snapshot. That needs an explicit gameplay rule, and it is a separate step after the loop is ported.
 
@@ -130,4 +130,4 @@ Shared contracts are added beside the route that uses them.
 
 ## Next step
 
-Implement expedition movement. Needs the expedition document, equipment, battle stats, skills, and battles. The three socket messages, cookie auth, and persist-and-drop on disconnect. Each random battle recomputes combat stats and calls `BattleService.start`. Battle end still does not write resources back. The expedition page calls the socket and refetches expedition after reconnect. `BattleService.Act` stays unported.
+Focused checks. Expedition movement is in the working tree and is not merged. `BattleService.Act` stays unported. Battle end still does not write resources back.
