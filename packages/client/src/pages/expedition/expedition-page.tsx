@@ -44,6 +44,7 @@ export const ExpeditionPage = () => {
         ExpeditionHub.onUserMoved(updatePosition);
         return () => {
             ExpeditionHub.offUserMoved(updatePosition);
+            ExpeditionHub.disconnect();
         };
     }, []);
 

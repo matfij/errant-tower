@@ -92,7 +92,7 @@ At expedition start, store the computed battle statistics on the expedition docu
 
 On each random battle, recompute battle stats from the live character, current equipment, and active skills. The stored statistics are the expedition's resource snapshot. Battles do not read the attack fields from it yet.
 
-Equipment and skill changes during an expedition affect the next battle. That is what `ExpeditionMoveService.checkBattle` does today.
+Equipment and skill changes during an expedition affect the next battle. That is what `ExpeditionMoveOrchestrator.checkBattle` does today.
 
 A later change may freeze a full combat snapshot. That needs an explicit gameplay rule, and it is a separate step after the loop is ported.
 

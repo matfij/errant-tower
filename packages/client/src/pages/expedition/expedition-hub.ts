@@ -16,6 +16,15 @@ export class ExpeditionHub {
         ExpeditionHub.open();
     }
 
+    static disconnect(): void {
+        ExpeditionHub.clearReconnect();
+        const socket = ExpeditionHub.socket;
+        ExpeditionHub.socket = null;
+        if (socket !== null && socket.readyState !== WebSocket.CLOSED) {
+            socket.close();
+        }
+    }
+
     static move(direction: MoveDirection): void {
         if (ExpeditionHub.socket === null || ExpeditionHub.socket.readyState !== WebSocket.OPEN) {
             return;
@@ -88,6 +97,14 @@ export class ExpeditionHub {
             ExpeditionHub.reconnectTimer = null;
             ExpeditionHub.open();
         }, 1000);
+    }
+
+    private static clearReconnect(): void {
+        if (ExpeditionHub.reconnectTimer === null) {
+            return;
+        }
+        window.clearTimeout(ExpeditionHub.reconnectTimer);
+        ExpeditionHub.reconnectTimer = null;
     }
 
     private static socketUrl(): string {

@@ -137,14 +137,16 @@ export class ExpeditionService {
         };
     }
 
-    async finishExpedition(userId: string, hasFinished: boolean): Promise<void> {
+    async finishExpedition(userId: string, isSuccess: boolean): Promise<void> {
         const expedition = await this.readExpedition(userId);
         if (!expedition.isInExpedition) {
             throw new HttpError("errors.expeditionNotStarted");
         }
 
         expedition.isInExpedition = false;
-        if (hasFinished) {
+
+        const advanceFloor = isSuccess && expedition.currentFloor === expedition.unlockedFloor;
+        if (advanceFloor) {
             expedition.unlockedFloor = this.getNextUnlockedFloor(expedition.unlockedFloor);
             expedition.unlockedDomain = getFloor(expedition.currentFloor).domain;
         }
