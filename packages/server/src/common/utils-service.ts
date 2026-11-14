@@ -22,6 +22,10 @@ export class UtilsService {
         return min + Math.floor(Math.random() * (max - min + 1));
     }
 
+    static randomFloat(min: number, max: number): number {
+        return Math.random() * (max - min) + min;
+    }
+
     static pickWeighted<TGuid>(items: { guid: TGuid; chance: number }[]): TGuid {
         const totalChance = items.reduce((total, item) => total + item.chance, 0);
         let targetChance = Math.random() * totalChance;

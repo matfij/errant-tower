@@ -54,10 +54,16 @@ export type {
 export { UserAttribute } from "./statistics.ts";
 export type {
     DomainFloors,
+    ExpeditionErrorMessage,
+    ExpeditionSummary,
     FloorTeaser,
     FloorTile,
+    GainedItem,
     GetExpeditionResponse,
     GetFloorsResponse,
+    MoveMessage,
+    MoveResult,
+    MoveReply as MovedMessage,
     StartExpeditionRequest,
 } from "./expedition.ts";
-export { FloorDomain, FloorGuid, FloorTileType } from "./expedition.ts";
+export { FloorDomain, FloorGuid, FloorTileType, MoveDirection } from "./expedition.ts";

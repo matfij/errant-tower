@@ -15,8 +15,12 @@ export class AuthSessionService {
         this.cookieSecret = cookieSecret;
     }
 
+    async authenticate(request: FastifyRequest): Promise<UserEntity> {
+        return this.authenticatedUser(request);
+    }
+
     async requireUser(request: FastifyRequest, reply: FastifyReply): Promise<UserEntity> {
-        const user = await this.authenticatedUser(request);
+        const user = await this.authenticate(request);
         this.writeSession(reply, user);
         return user;
     }

@@ -5,7 +5,7 @@ Living checklist for [SERVER_TS_REWRITE.md](../SERVER_TS_REWRITE.md). Review rul
 ## Where things stand
 
 - Branch: `main`. Workspace setup is on `main` through PR #130. Auth is on `main` through PR #132.
-- Side-by-side test: `apps/client` (`@errant/client`, port 5173) calls the C# server at `https://localhost:7135`. `packages/client` (`@errant/client-ts`, port 5174) calls the TypeScript server at `http://localhost:4000`. `packages/server` serves the ported routes on port 4000, including `GET /battles/get-battle`. The battle page in `packages/client` calls that route. `packages/shared` holds the contracts for the ported routes. The C# server stays at `apps/errant-tower-server`. The map editor is `packages/map-editor` (`@errant/map-editor`, Vite port 5175) and is a workspace member. Expedition and battles are in the working tree and are not merged. The next slice is expedition movement.
+- Side-by-side test: `apps/client` (`@errant/client`, port 5173) calls the C# server at `https://localhost:7135`. `packages/client` (`@errant/client-ts`, port 5174) calls the TypeScript server at `http://localhost:4000`. `packages/server` serves the ported routes on port 4000, including `GET /battles/get-battle` and the expedition socket. The battle page and the expedition page in `packages/client` call those endpoints. `packages/shared` holds the contracts for the ported routes. The C# server stays at `apps/errant-tower-server`. The map editor is `packages/map-editor` (`@errant/map-editor`, Vite port 5175) and is a workspace member. Expedition, battles, and expedition movement are in the working tree and are not merged. The next slice is the focused checks.
 - `server/ts-rewrite-phase-0` is not the next base. It duplicates the folder move and commits `.vs`, `obj`, and `appsettings.Development.json`. Leave it.
 
 ## Decided
@@ -140,19 +140,21 @@ Done when: `get-battle` returns a stored battle in the same shape the C# route r
 
 The `Battles` collection has a unique `UserId` index. Nested `User`, `Enemy`, and `Skills` store the shared types directly. `EnemyRace` lives in `packages/shared/src/enemies.ts` because `get-battle` returns it.
 
-### 12. Expedition movement (next)
+### 12. Expedition movement
 
 Port current behavior only.
 
-- [ ] Socket messages `move`, `moved`, and `error` only. Cookie auth. Persist and drop the session on disconnect.
-- [ ] Client refetches expedition after the socket reconnects.
-- [ ] Each random battle recomputes combat stats from the live character, equipment, and skills.
-- [ ] Battle end does not write resources back (`TODO(#93)` stays).
-- [ ] The expedition page in `packages/client` uses this socket. `apps/client` keeps calling the C# server.
+- [x] Socket messages `move`, `moved`, and `error` only. Cookie auth. Persist and drop the session on disconnect.
+- [x] Client refetches expedition after the socket reconnects.
+- [x] Each random battle recomputes combat stats from the live character, equipment, and skills.
+- [x] Battle end does not write resources back (`TODO(#93)` stays).
+- [x] The expedition page in `packages/client` uses this socket. `apps/client` keeps calling the C# server.
 
 Done when: from `packages/client`, a signed-in user can start an expedition, move, enter a random battle, and see the same results the C# server would produce for the same state.
 
-### 13. Focused checks
+`Battle` and `Treasure` tiles move and spend initiative. They do not start a battle or award loot. `Start` finishes successfully without completing the floor. `Finish` finishes successfully and completes it. A completed floor advances `unlockedFloor` to the next rank that exists in `FloorGuid`. A rank with no guid leaves the unlock unchanged. `Floor4` stays out of the enum.
+
+### 13. Focused checks (next)
 
 - [ ] Auth cases from step 2 still pass after later routes land.
 - [ ] Combat calculation fixtures compared with the C# results for the same attributes, equipment, and skills.
