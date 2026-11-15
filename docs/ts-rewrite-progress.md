@@ -138,7 +138,7 @@ Done when: `get-battle` returns a stored battle in the same shape the C# route r
 
 `Start` matches C#: a finished battle is replaced by `update` with a new id. That update looks up the new id, misses, and throws `errors.battleNotFound`. Nothing sets `isFinished` yet, so that path is unused. The first battle for a user is inserted. A second battle while the first is unfinished throws `errors.battleAlreadyStarted`.
 
-The `Battles` collection has a unique `UserId` index. Nested `User`, `Enemy`, and `Skills` store the shared types directly. `EnemyRace` lives in `packages/shared/src/enemies.ts` because `get-battle` returns it.
+The `Battles` collection has a unique `userId` index. Nested `user`, `enemy`, and `skills` store the shared types directly. `EnemyRace` lives in `packages/shared/src/enemies.ts` because `get-battle` returns it.
 
 ### 12. Expedition movement
 
@@ -152,7 +152,7 @@ Port current behavior only.
 
 Done when: from `packages/client`, a signed-in user can start an expedition, move, enter a random battle, and see the same results the C# server would produce for the same state.
 
-`Battle` and `Treasure` tiles move and spend initiative. They do not start a battle or award loot. `Start` finishes successfully without completing the floor. `Finish` finishes successfully and completes it. A completed floor advances `unlockedFloor` to the next rank that exists in `FloorGuid`. A rank with no guid leaves the unlock unchanged. `Floor4` stays out of the enum.
+`Battle` and `Treasure` tiles move and spend initiative. They do not start a battle or award loot. `Start` finishes successfully without completing the floor. `Finish` finishes successfully and completes it. A completed floor advances `unlockedFloor` when that floor is the current unlock and the next rank exists in `FloorGuid`. A rank with no guid leaves the unlock unchanged. `Floor4` stays out of the enum.
 
 ### 13. Focused checks (next)
 
@@ -183,7 +183,7 @@ Done before the skills slice. The rule is in `TS_REWRITE_RULES.md`.
 - [x] `undefined` is only a draft field or an optional parameter. `useApiRequest` `data`, `errors`, and `call` use `null`.
 - [x] An empty equipment slot is `null` in `equipment-component.tsx`. It does not use `?? undefined`.
 - [x] `SessionId` is `string | null`.
-- [x] `LearnedSkills` is a required array. An empty list is `[]`.
+- [x] `learnedSkills` is a required array. An empty list is `[]`.
 - [x] A GET `call` takes no argument. Do not pass `undefined`.
 
 ## Route inventory (do not grow this during the port)

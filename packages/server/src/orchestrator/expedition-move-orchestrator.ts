@@ -23,6 +23,8 @@ export class ExpeditionMoveOrchestrator {
     private readonly skillsService: SkillsService;
     private readonly battleService: BattleService;
 
+    private readonly moveChains = new Map<string, Promise<void>>();
+
     constructor(
         expeditionSessionManager: ExpeditionSessionManager,
         expeditionService: ExpeditionService,
@@ -40,6 +42,33 @@ export class ExpeditionMoveOrchestrator {
     }
 
     async move(userId: string, direction: MoveDirection): Promise<MoveResult> {
+        return this.enqueue(userId, () => this.applyMove(userId, direction));
+    }
+
+    async disconnect(userId: string): Promise<void> {
+        return this.enqueue(userId, async () => {
+            await this.expeditionSessionManager.persist(userId);
+            this.expeditionSessionManager.remove(userId);
+        });
+    }
+
+    private enqueue<T>(userId: string, work: () => Promise<T>): Promise<T> {
+        const previous = this.moveChains.get(userId) ?? Promise.resolve();
+        const run = previous.then(work, work);
+        const settled = run.then(
+            () => undefined,
+            () => undefined,
+        );
+        this.moveChains.set(userId, settled);
+        void settled.then(() => {
+            if (this.moveChains.get(userId) === settled) {
+                this.moveChains.delete(userId);
+            }
+        });
+        return run;
+    }
+
+    private async applyMove(userId: string, direction: MoveDirection): Promise<MoveResult> {
         const expedition = await this.expeditionSessionManager.create(userId);
         let newX = expedition.x;
         let newY = expedition.y;

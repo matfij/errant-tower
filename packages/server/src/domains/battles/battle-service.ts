@@ -22,7 +22,7 @@ export class BattleService {
         skills: BattleSkill[],
         enemy: Enemy,
     ): Promise<BattleEntity> {
-        const existing = await this.battleRepository.readByUserId(userId);
+        const existing = await this.battleRepository.readBy("userId", userId);
         if (existing !== null && !existing.isFinished) {
             throw new HttpError("errors.battleAlreadyStarted");
         }
@@ -53,7 +53,7 @@ export class BattleService {
         };
 
         if (existing !== null) {
-            await this.battleRepository.update(battle);
+            await this.battleRepository.replace(battle);
         } else {
             await this.battleRepository.create(battle);
         }
@@ -61,7 +61,7 @@ export class BattleService {
     }
 
     async get(userId: string): Promise<BattleEntity> {
-        const battle = await this.battleRepository.readByUserId(userId);
+        const battle = await this.battleRepository.readBy("userId", userId);
         if (battle === null || battle.isFinished) {
             throw new HttpError("errors.notInBattle");
         }

@@ -28,10 +28,10 @@ export class AuthSessionService {
     async signOut(request: FastifyRequest, reply: FastifyReply): Promise<void> {
         const payload = this.readPayload(request);
         if (payload !== null && AuthCookieService.isCurrent(payload, UtilsService.timeNow())) {
-            const user = await this.userRepository.readById(payload.userId);
+            const user = await this.userRepository.readBy("id", payload.userId);
             if (user !== null && user.sessionId === payload.sessionId) {
                 user.sessionId = UtilsService.newId();
-                await this.userRepository.update(user);
+                await this.userRepository.update(user.id, { sessionId: user.sessionId });
             }
         }
 
@@ -73,7 +73,7 @@ export class AuthSessionService {
             throw new HttpError("errors.unauthorized", 401);
         }
 
-        const user = await this.userRepository.readById(payload.userId);
+        const user = await this.userRepository.readBy("id", payload.userId);
         if (user === null || user.sessionId !== payload.sessionId) {
             throw new HttpError("errors.unauthorized", 401);
         }

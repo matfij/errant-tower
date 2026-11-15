@@ -110,7 +110,21 @@ export class ExpeditionService {
         expedition.statistics = battleStatistics;
         expedition.floorTiles = this.mapFloorTiles(floor, readFloorTiles(floor.tilesUrl));
 
-        await this.expeditionRepository.update(expedition);
+        await this.expeditionRepository.update(expedition.id, {
+            currentFloor: expedition.currentFloor,
+            isInExpedition: expedition.isInExpedition,
+            maxInitiative: expedition.maxInitiative,
+            initiative: expedition.initiative,
+            adrenaline: expedition.adrenaline,
+            battleId: expedition.battleId,
+            gainedSilver: expedition.gainedSilver,
+            gainedItems: expedition.gainedItems,
+            stamina: expedition.stamina,
+            x: expedition.x,
+            y: expedition.y,
+            statistics: expedition.statistics,
+            floorTiles: expedition.floorTiles,
+        });
     }
 
     async getExpedition(userId: string): Promise<GetExpeditionResponse> {
@@ -143,14 +157,17 @@ export class ExpeditionService {
             throw new HttpError("errors.expeditionNotStarted");
         }
 
-        expedition.isInExpedition = false;
-
         const advanceFloor = isSuccess && expedition.currentFloor === expedition.unlockedFloor;
-        if (advanceFloor) {
-            expedition.unlockedFloor = this.getNextUnlockedFloor(expedition.unlockedFloor);
-            expedition.unlockedDomain = getFloor(expedition.currentFloor).domain;
-        }
-        await this.expeditionRepository.update(expedition);
+        await this.expeditionRepository.update(
+            expedition.id,
+            advanceFloor
+                ? {
+                      isInExpedition: false,
+                      unlockedFloor: this.getNextUnlockedFloor(expedition.unlockedFloor),
+                      unlockedDomain: getFloor(expedition.currentFloor).domain,
+                  }
+                : { isInExpedition: false },
+        );
     }
 
     private getNextUnlockedFloor(current: FloorGuid): FloorGuid {
@@ -160,7 +177,7 @@ export class ExpeditionService {
     }
 
     private async readExpedition(userId: string): Promise<ExpeditionEntity> {
-        const expedition = await this.expeditionRepository.readByUserId(userId);
+        const expedition = await this.expeditionRepository.readBy("userId", userId);
         if (expedition === null) {
             throw new HttpError("errors.expeditionNotFound");
         }

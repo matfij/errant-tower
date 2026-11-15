@@ -41,7 +41,7 @@ export class StatisticsService {
     }
 
     async getStatistics(userId: string): Promise<StatisticsEntity> {
-        const statistics = await this.statisticsRepository.readByUserId(userId);
+        const statistics = await this.statisticsRepository.readBy("userId", userId);
         if (statistics === null) {
             throw new HttpError("errors.statisticsNotFound");
         }
@@ -54,30 +54,37 @@ export class StatisticsService {
             throw new HttpError("errors.notEnoughAttributePoints");
         }
 
+        const fields: Partial<
+            Pick<StatisticsEntity, "attributePoints" | "strength" | "dexterity" | "constitution" | "spirit">
+        > = {
+            attributePoints: statistics.attributePoints - 1,
+        };
         switch (attribute) {
             case UserAttribute.Strength:
-                statistics.strength += 1;
+                fields.strength = statistics.strength + 1;
                 break;
             case UserAttribute.Dexterity:
-                statistics.dexterity += 1;
+                fields.dexterity = statistics.dexterity + 1;
                 break;
             case UserAttribute.Constitution:
-                statistics.constitution += 1;
+                fields.constitution = statistics.constitution + 1;
                 break;
             case UserAttribute.Spirit:
-                statistics.spirit += 1;
+                fields.spirit = statistics.spirit + 1;
                 break;
         }
-        statistics.attributePoints -= 1;
-        await this.statisticsRepository.update(statistics);
-        return statistics;
+
+        return this.statisticsRepository.update(statistics.id, fields);
     }
 
     async awardPoints(userId: string, attributePoints: number, skillPoints: number): Promise<void> {
         const statistics = await this.getStatistics(userId);
         statistics.attributePoints += attributePoints;
         statistics.skillPoints += skillPoints;
-        await this.statisticsRepository.update(statistics);
+        await this.statisticsRepository.update(statistics.id, {
+            attributePoints: statistics.attributePoints,
+            skillPoints: statistics.skillPoints,
+        });
     }
 
     async getUserBattleStatistics(userId: string, equipment: Item[]): Promise<BattleStatistics> {

@@ -87,7 +87,10 @@ export class SkillsService {
         }
 
         statistics.skillPoints -= 1;
-        await this.statisticsRepository.update(statistics);
+        await this.statisticsRepository.update(statistics.id, {
+            skillPoints: statistics.skillPoints,
+            learnedSkills: statistics.learnedSkills,
+        });
         return this.getSkillTree(userId);
     }
 
@@ -96,7 +99,10 @@ export class SkillsService {
         const restoredPoints = statistics.learnedSkills.reduce((total, skill) => total + skill.level, 0);
         statistics.learnedSkills = [];
         statistics.skillPoints += restoredPoints;
-        await this.statisticsRepository.update(statistics);
+        await this.statisticsRepository.update(statistics.id, {
+            skillPoints: statistics.skillPoints,
+            learnedSkills: statistics.learnedSkills,
+        });
         return this.getSkillTree(userId);
     }
 
@@ -172,7 +178,7 @@ export class SkillsService {
     }
 
     private async readStatistics(userId: string): Promise<StatisticsEntity> {
-        const statistics = await this.statisticsRepository.readByUserId(userId);
+        const statistics = await this.statisticsRepository.readBy("userId", userId);
         if (statistics === null) {
             throw new HttpError("errors.statisticsNotFound");
         }
