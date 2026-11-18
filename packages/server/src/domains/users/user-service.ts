@@ -5,7 +5,7 @@ import { HttpError } from "../../common/http/errors.ts";
 import { LogService } from "../../common/log.ts";
 import { UtilsService } from "../../common/utils-service.ts";
 import { config } from "../../config.ts";
-import { dbErrorCodes } from "../../db/db-utils.ts";
+import { DbUtils } from "../../db/db-utils.ts";
 import { userEmailTemplates } from "./user-email-templates.ts";
 import type { UserEntity } from "./user-entity.ts";
 import type { UserRepository } from "./user-repository.ts";
@@ -21,7 +21,7 @@ export class UserService {
     }
 
     async startSignUp(email: string, username: string): Promise<void> {
-        const existing = await this.userRepository.readByEmail(email);
+        const existing = await this.userRepository.readBy("email", email);
         const restart =
             existing !== null &&
             !existing.isConfirmed &&
@@ -30,7 +30,7 @@ export class UserService {
             throw new HttpError(existing.isConfirmed ? "errors.emailInUse" : "errors.signUpStarted");
         }
 
-        const usernameOwner = await this.userRepository.readByUsername(username);
+        const usernameOwner = await this.userRepository.readBy("username", username);
         if (usernameOwner !== null && usernameOwner.id !== existing?.id) {
             throw new HttpError("errors.usernameInUse");
         }
@@ -54,9 +54,9 @@ export class UserService {
         try {
             await this.userRepository.create(user);
         } catch (error) {
-            if (error instanceof MongoServerError && error.code === dbErrorCodes.duplicatedKey) {
+            if (error instanceof MongoServerError && error.code === DbUtils.duplicatedKey) {
                 const pattern = error.keyPattern ?? {};
-                throw new HttpError("Username" in pattern ? "errors.usernameInUse" : "errors.emailInUse");
+                throw new HttpError("username" in pattern ? "errors.usernameInUse" : "errors.emailInUse");
             }
             throw error;
         }
@@ -72,7 +72,7 @@ export class UserService {
     }
 
     async completeSignUp(email: string, actionCode: string): Promise<UserEntity> {
-        const user = await this.userRepository.readByEmail(email);
+        const user = await this.userRepository.readBy("email", email);
         if (user === null) {
             throw new HttpError("errors.userNotFound");
         }
@@ -84,8 +84,17 @@ export class UserService {
         user.isConfirmed = true;
         this.clearActionCode(user);
         user.sessionId = UtilsService.newId();
-        await this.userRepository.update(user);
         return user;
+    }
+
+    async saveConfirmedUser(user: UserEntity): Promise<void> {
+        await this.userRepository.update(user.id, {
+            isConfirmed: user.isConfirmed,
+            actionCodeHash: user.actionCodeHash,
+            actionCodeAttempts: user.actionCodeAttempts,
+            actionCodeExpiresAt: user.actionCodeExpiresAt,
+            sessionId: user.sessionId,
+        });
     }
 
     async startSignIn(email: string): Promise<void> {
@@ -100,14 +109,18 @@ export class UserService {
         user.actionCodeHash = actionCodeHash;
         user.actionCodeAttempts = 0;
         user.actionCodeExpiresAt = UtilsService.timeNow() + config.actionCodeTtlMs;
-        await this.userRepository.update(user);
+        await this.userRepository.update(user.id, {
+            actionCodeHash: user.actionCodeHash,
+            actionCodeAttempts: user.actionCodeAttempts,
+            actionCodeExpiresAt: user.actionCodeExpiresAt,
+        });
 
         try {
             const email = userEmailTemplates.signIn;
             await this.emailService.send(user.email, email.subject, email.html(user.username, actionCode));
         } catch (error) {
             LogService.error({ err: error, email: user.email }, "Failed to send sign-in email");
-            await this.userRepository.update({ ...user, ...previous });
+            await this.userRepository.update(user.id, previous);
             throw new HttpError("errors.emailSendFailed");
         }
     }
@@ -117,7 +130,12 @@ export class UserService {
         await this.verifyActionCode(user, actionCode);
         this.clearActionCode(user);
         user.sessionId = UtilsService.newId();
-        await this.userRepository.update(user);
+        await this.userRepository.update(user.id, {
+            actionCodeHash: user.actionCodeHash,
+            actionCodeAttempts: user.actionCodeAttempts,
+            actionCodeExpiresAt: user.actionCodeExpiresAt,
+            sessionId: user.sessionId,
+        });
         return user;
     }
 
@@ -128,7 +146,7 @@ export class UserService {
     }
 
     private async getConfirmedUser(email: string): Promise<UserEntity> {
-        const user = await this.userRepository.readByEmail(email);
+        const user = await this.userRepository.readBy("email", email);
         if (user === null) {
             throw new HttpError("errors.userNotFound");
         }
@@ -150,7 +168,7 @@ export class UserService {
         }
         if (!UserUtilsService.actionCodeMatches(actionCode, user.actionCodeHash)) {
             user.actionCodeAttempts = (user.actionCodeAttempts ?? 0) + 1;
-            await this.userRepository.update(user);
+            await this.userRepository.update(user.id, { actionCodeAttempts: user.actionCodeAttempts });
             throw new HttpError("errors.actionCodeInvalid");
         }
     }

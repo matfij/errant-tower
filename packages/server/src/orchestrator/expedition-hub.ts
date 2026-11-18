@@ -1,33 +1,23 @@
-import {
-    MoveDirection,
-    type ExpeditionErrorMessage,
-    type ExpeditionSummary,
-    type MoveResult,
-    type MovedMessage,
-} from "@errant/shared";
+import { MoveDirection, type ExpeditionErrorMessage, type MovedMessage } from "@errant/shared";
 import type { WebSocket } from "@fastify/websocket";
 import type { FastifyInstance, FastifyRequest } from "fastify";
 
 import { HttpError } from "../common/http/errors.ts";
 import { LogService } from "../common/log.ts";
-import type { ExpeditionSessionManager } from "../domains/expedition/expedition-session.ts";
 import { AuthSessionService } from "./auth-session-service.ts";
 import type { ExpeditionMoveOrchestrator } from "./expedition-move-orchestrator.ts";
 
 export class ExpeditionHub {
     private readonly expeditionMoveService: ExpeditionMoveOrchestrator;
-    private readonly expeditionSessionManager: ExpeditionSessionManager;
     private readonly authSessionService: AuthSessionService;
     private readonly corsOrigins: string[];
 
     constructor(
         expeditionMoveService: ExpeditionMoveOrchestrator,
-        expeditionSessionManager: ExpeditionSessionManager,
         authSessionService: AuthSessionService,
         corsOrigins: string[],
     ) {
         this.expeditionMoveService = expeditionMoveService;
-        this.expeditionSessionManager = expeditionSessionManager;
         this.authSessionService = authSessionService;
         this.corsOrigins = corsOrigins;
     }
@@ -85,7 +75,7 @@ export class ExpeditionHub {
 
         try {
             const result = await this.expeditionMoveService.move(userId, command.direction);
-            this.send(socket, toMovedMessage(result));
+            this.send(socket, { type: "moved", ...result });
         } catch (error: unknown) {
             LogService.error({ err: error, userId }, "Move failed");
             const key = error instanceof HttpError ? error.message : "errors.expeditionMoveFailed";
@@ -95,8 +85,7 @@ export class ExpeditionHub {
 
     private async onClose(userId: string): Promise<void> {
         try {
-            await this.expeditionSessionManager.persist(userId);
-            this.expeditionSessionManager.remove(userId);
+            await this.expeditionMoveService.disconnect(userId);
         } catch (error: unknown) {
             LogService.error({ err: error, userId }, "Expedition persist failed");
         }
@@ -166,29 +155,4 @@ const readText = (data: unknown): string | null => {
         return Buffer.concat(data).toString("utf8");
     }
     return null;
-};
-
-const toMovedMessage = (result: MoveResult): MovedMessage => {
-    return {
-        type: "moved",
-        x: result.x,
-        y: result.y,
-        initiative: result.initiative,
-        battleId: result.battleId,
-        summary: result.summary === null ? null : toSummary(result.summary),
-    };
-};
-
-const toSummary = (summary: ExpeditionSummary): ExpeditionSummary => {
-    return {
-        isSuccess: summary.isSuccess,
-        hasFinished: summary.hasFinished,
-        gainedSilver: summary.gainedSilver,
-        gainedItems: summary.gainedItems.map((item) => ({
-            itemGuid: item.itemGuid,
-            quantity: item.quantity,
-        })),
-        gainedAttributePoints: summary.gainedAttributePoints,
-        gainedSkillPoints: summary.gainedSkillPoints,
-    };
 };

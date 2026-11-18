@@ -37,7 +37,12 @@ export class ExpeditionSessionManager {
         if (expedition === null) {
             return;
         }
-        await this.expeditionRepository.update(expedition);
+        await this.expeditionRepository.update(expedition.id, {
+            x: expedition.x,
+            y: expedition.y,
+            initiative: expedition.initiative,
+            battleId: expedition.battleId,
+        });
     }
 
     remove(userId: string): void {
@@ -45,7 +50,7 @@ export class ExpeditionSessionManager {
     }
 
     private async load(userId: string): Promise<ExpeditionEntity> {
-        const expedition = await this.expeditionRepository.readByUserId(userId);
+        const expedition = await this.expeditionRepository.readBy("userId", userId);
         if (expedition === null || !expedition.isInExpedition) {
             throw new HttpError("errors.expeditionNotStarted");
         }

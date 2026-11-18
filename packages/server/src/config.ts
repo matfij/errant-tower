@@ -19,6 +19,7 @@ export const config = {
         .map((origin) => origin.trim())
         .filter((origin) => origin !== ""),
     cookieSecret: env("COOKIE_SECRET"),
+    useTransactions: process.env.MONGODB_TRANSACTIONS === "true",
     sessionTtlSeconds: 7 * 24 * 60 * 60,
     sessionTtlMs: 7 * 24 * 60 * 60 * 1000,
     actionCodeTtlMs: 15 * 60 * 1000,

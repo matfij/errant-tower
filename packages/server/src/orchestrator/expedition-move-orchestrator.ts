@@ -1,6 +1,7 @@
 import { FloorTileType, MoveDirection, type ExpeditionSummary, type MoveResult } from "@errant/shared";
 
 import { HttpError } from "../common/http/errors.ts";
+import { transactional } from "../db/transaction-service.ts";
 import { UtilsService } from "../common/utils-service.ts";
 import type { BattleService } from "../domains/battles/battle-service.ts";
 import { getEnemy } from "../domains/enemies/enemy-registry.ts";
@@ -23,6 +24,8 @@ export class ExpeditionMoveOrchestrator {
     private readonly skillsService: SkillsService;
     private readonly battleService: BattleService;
 
+    private readonly moveChains = new Map<string, Promise<void>>();
+
     constructor(
         expeditionSessionManager: ExpeditionSessionManager,
         expeditionService: ExpeditionService,
@@ -40,6 +43,33 @@ export class ExpeditionMoveOrchestrator {
     }
 
     async move(userId: string, direction: MoveDirection): Promise<MoveResult> {
+        return this.enqueue(userId, () => this.applyMove(userId, direction));
+    }
+
+    async disconnect(userId: string): Promise<void> {
+        return this.enqueue(userId, async () => {
+            await this.expeditionSessionManager.persist(userId);
+            this.expeditionSessionManager.remove(userId);
+        });
+    }
+
+    private enqueue<T>(userId: string, work: () => Promise<T>): Promise<T> {
+        const previous = this.moveChains.get(userId) ?? Promise.resolve();
+        const run = previous.then(work, work);
+        const settled = run.then(
+            () => undefined,
+            () => undefined,
+        );
+        this.moveChains.set(userId, settled);
+        void settled.then(() => {
+            if (this.moveChains.get(userId) === settled) {
+                this.moveChains.delete(userId);
+            }
+        });
+        return run;
+    }
+
+    private async applyMove(userId: string, direction: MoveDirection): Promise<MoveResult> {
         const expedition = await this.expeditionSessionManager.create(userId);
         let newX = expedition.x;
         let newY = expedition.y;
@@ -148,11 +178,14 @@ export class ExpeditionMoveOrchestrator {
             gainedSkillPoints,
         };
 
-        await Promise.all([
-            this.expeditionService.finishExpedition(expedition.userId, hasFinished),
-            this.equipmentService.awardItems(expedition.userId, gainedSilver, gainedItems),
-            this.statisticsService.awardPoints(expedition.userId, gainedAttributePoints, gainedSkillPoints),
-        ]);
+        await this.storeFinish(
+            expedition.userId,
+            hasFinished,
+            gainedSilver,
+            gainedItems,
+            gainedAttributePoints,
+            gainedSkillPoints,
+        );
         this.expeditionSessionManager.remove(expedition.userId);
 
         return {
@@ -162,6 +195,20 @@ export class ExpeditionMoveOrchestrator {
             battleId: null,
             summary,
         };
+    }
+
+    @transactional
+    private async storeFinish(
+        userId: string,
+        hasFinished: boolean,
+        gainedSilver: number,
+        gainedItems: ExpeditionEntity["gainedItems"],
+        gainedAttributePoints: number,
+        gainedSkillPoints: number,
+    ): Promise<void> {
+        await this.expeditionService.finishExpedition(userId, hasFinished);
+        await this.equipmentService.awardItems(userId, gainedSilver, gainedItems);
+        await this.statisticsService.awardPoints(userId, gainedAttributePoints, gainedSkillPoints);
     }
 
     private async checkBattle(expedition: ExpeditionEntity): Promise<string | null> {

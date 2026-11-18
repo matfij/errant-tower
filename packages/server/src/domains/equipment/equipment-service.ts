@@ -59,7 +59,10 @@ export class EquipmentService {
             }
         }
 
-        await this.equipmentRepository.update(equipment);
+        await this.equipmentRepository.update(equipment.id, {
+            silver: equipment.silver,
+            bag: equipment.bag,
+        });
     }
 
     async getEquipment(userId: string): Promise<BattleEquipment> {
@@ -112,7 +115,10 @@ export class EquipmentService {
         }
         this.assignSlot(equipment, request.slot, item.guid);
         this.removeNonStackable(equipment.bag, item.guid);
-        await this.equipmentRepository.update(equipment);
+        await this.equipmentRepository.update(equipment.id, {
+            bag: equipment.bag,
+            ...this.toSlotUpdate(equipment, request.slot),
+        });
         return this.toBattleEquipment(equipment);
     }
 
@@ -122,13 +128,16 @@ export class EquipmentService {
         if (previous !== null) {
             this.assignSlot(equipment, slot, null);
             equipment.bag.push({ itemGuid: previous, quantity: 1 });
-            await this.equipmentRepository.update(equipment);
+            await this.equipmentRepository.update(equipment.id, {
+                bag: equipment.bag,
+                ...this.toSlotUpdate(equipment, slot),
+            });
         }
         return this.toBattleEquipment(equipment);
     }
 
     private async readEquipment(userId: string): Promise<EquipmentEntity> {
-        const equipment = await this.equipmentRepository.readByUserId(userId);
+        const equipment = await this.equipmentRepository.readBy("userId", userId);
         if (equipment === null) {
             throw new HttpError("errors.equipmentNotFound");
         }
@@ -203,6 +212,28 @@ export class EquipmentService {
                 return equipment.rightHand;
             case ItemSlot.LeftHand:
                 return equipment.leftHand;
+        }
+    }
+
+    private toSlotUpdate(
+        equipment: EquipmentEntity,
+        slot: ItemSlot,
+    ): Partial<
+        Pick<EquipmentEntity, "headgear" | "armor" | "footwear" | "charm" | "rightHand" | "leftHand">
+    > {
+        switch (slot) {
+            case ItemSlot.Headgear:
+                return { headgear: equipment.headgear };
+            case ItemSlot.Armor:
+                return { armor: equipment.armor };
+            case ItemSlot.Footwear:
+                return { footwear: equipment.footwear };
+            case ItemSlot.Charm:
+                return { charm: equipment.charm };
+            case ItemSlot.RightHand:
+                return { rightHand: equipment.rightHand };
+            case ItemSlot.LeftHand:
+                return { leftHand: equipment.leftHand };
         }
     }
 

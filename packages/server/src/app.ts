@@ -115,12 +115,7 @@ export const buildApp = async (options: BuildAppOptions): Promise<FastifyInstanc
     const statisticsRoutes = new StatisticsRoutes(statisticsOrchestrator, authSessionService);
     const equipmentRoutes = new EquipmentRoutes(equipmentOrchestrator, authSessionService);
     const expeditionRoutes = new ExpeditionRoutes(expeditionOrchestrator, authSessionService);
-    const expeditionHub = new ExpeditionHub(
-        expeditionMoveService,
-        expeditionSessionManager,
-        authSessionService,
-        options.corsOrigins,
-    );
+    const expeditionHub = new ExpeditionHub(expeditionMoveService, authSessionService, options.corsOrigins);
     const battleRoutes = new BattleRoutes(battleOrchestrator, authSessionService);
 
     authRoutes.register(app);
