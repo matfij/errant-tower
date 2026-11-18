@@ -1,3 +1,4 @@
+import { transactional } from "../db/transaction-service.ts";
 import { EquipmentService } from "../domains/equipment/equipment-service.ts";
 import { ExpeditionService } from "../domains/expedition/expedition-service.ts";
 import { StatisticsService } from "../domains/statistics/statistics-service.ts";
@@ -28,9 +29,7 @@ export class AuthOrchestrator {
 
     async completeSignUp(email: string, actionCode: string): Promise<UserEntity> {
         const user = await this.userService.completeSignUp(email, actionCode);
-        await this.expeditionService.createInitial(user.id, user.username);
-        await this.statisticsService.createInitial(user.id);
-        await this.equipmentService.createInitial(user.id);
+        await this.persistSignUp(user);
         return user;
     }
 
@@ -40,5 +39,13 @@ export class AuthOrchestrator {
 
     async completeSignIn(email: string, actionCode: string): Promise<UserEntity> {
         return this.userService.completeSignIn(email, actionCode);
+    }
+
+    @transactional
+    private async persistSignUp(user: UserEntity): Promise<void> {
+        await this.userService.saveConfirmedUser(user);
+        await this.expeditionService.createInitial(user.id, user.username);
+        await this.statisticsService.createInitial(user.id);
+        await this.equipmentService.createInitial(user.id);
     }
 }

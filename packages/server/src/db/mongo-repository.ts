@@ -1,4 +1,6 @@
-import { type Collection, type Filter, type OptionalUnlessRequiredId, type UpdateFilter } from "mongodb";
+import { type ClientSession, type Collection, type Filter, type OptionalUnlessRequiredId, type UpdateFilter } from "mongodb";
+
+import { TransactionService } from "./transaction-service.ts";
 
 export type Entity = {
     id: string;
@@ -17,7 +19,10 @@ export class MongoRepository<T extends Entity> {
     }
 
     async create(entity: T): Promise<void> {
-        await this.collection.insertOne(this.toDocument(entity) as OptionalUnlessRequiredId<DocumentOf<T>>);
+        await this.collection.insertOne(
+            this.toDocument(entity) as OptionalUnlessRequiredId<DocumentOf<T>>,
+            this.sessionOptions(),
+        );
     }
 
     async readBy<K extends keyof T>(field: K, value: T[K]): Promise<T | null> {
@@ -30,11 +35,11 @@ export class MongoRepository<T extends Entity> {
     async update(id: string, patch: Partial<Omit<T, "id">>): Promise<T> {
         const document =
             Object.keys(patch).length === 0
-                ? await this.collection.findOne(this.byId(id))
+                ? await this.collection.findOne(this.byId(id), this.sessionOptions())
                 : await this.collection.findOneAndUpdate(
                       this.byId(id),
                       { $set: patch } as UpdateFilter<DocumentOf<T>>,
-                      { returnDocument: "after" },
+                      { returnDocument: "after", ...this.sessionOptions() },
                   );
         if (document === null) {
             throw this.missing();
@@ -46,6 +51,7 @@ export class MongoRepository<T extends Entity> {
         const result = await this.collection.replaceOne(
             this.byId(entity.id),
             this.toDocument(entity) as OptionalUnlessRequiredId<DocumentOf<T>>,
+            this.sessionOptions(),
         );
         if (result.matchedCount === 0) {
             throw this.missing();
@@ -53,14 +59,22 @@ export class MongoRepository<T extends Entity> {
     }
 
     async delete(id: string): Promise<void> {
-        const result = await this.collection.deleteOne(this.byId(id));
+        const result = await this.collection.deleteOne(this.byId(id), this.sessionOptions());
         if (result.deletedCount === 0) {
             throw this.missing();
         }
     }
 
+    protected sessionOptions(): { session?: ClientSession } {
+        const session = TransactionService.currentSession();
+        if (session === undefined) {
+            return {};
+        }
+        return { session };
+    }
+
     private async findOne(filter: Filter<DocumentOf<T>>): Promise<T | null> {
-        const document = await this.collection.findOne(filter);
+        const document = await this.collection.findOne(filter, this.sessionOptions());
         if (document === null) {
             return null;
         }

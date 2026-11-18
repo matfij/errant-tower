@@ -11,6 +11,7 @@ import { StatisticsRepository } from "../domains/statistics/statistics-repositor
 import type { UserEntity } from "../domains/users/user-entity.ts";
 import { UserRepository } from "../domains/users/user-repository.ts";
 import { type DocumentOf } from "./mongo-repository.ts";
+import { TransactionService } from "./transaction-service.ts";
 
 export class MongoConnector {
     static async connect(options: { uri: string; database: string }): Promise<{
@@ -23,6 +24,7 @@ export class MongoConnector {
     }> {
         const client = new MongoClient(options.uri);
         await client.connect();
+        TransactionService.bind(client);
         const database = client.db(options.database);
 
         const users = database.collection<DocumentOf<UserEntity>>("Users");

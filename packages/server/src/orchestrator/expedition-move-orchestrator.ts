@@ -1,6 +1,7 @@
 import { FloorTileType, MoveDirection, type ExpeditionSummary, type MoveResult } from "@errant/shared";
 
 import { HttpError } from "../common/http/errors.ts";
+import { transactional } from "../db/transaction-service.ts";
 import { UtilsService } from "../common/utils-service.ts";
 import type { BattleService } from "../domains/battles/battle-service.ts";
 import { getEnemy } from "../domains/enemies/enemy-registry.ts";
@@ -177,11 +178,14 @@ export class ExpeditionMoveOrchestrator {
             gainedSkillPoints,
         };
 
-        await Promise.all([
-            this.expeditionService.finishExpedition(expedition.userId, hasFinished),
-            this.equipmentService.awardItems(expedition.userId, gainedSilver, gainedItems),
-            this.statisticsService.awardPoints(expedition.userId, gainedAttributePoints, gainedSkillPoints),
-        ]);
+        await this.storeFinish(
+            expedition.userId,
+            hasFinished,
+            gainedSilver,
+            gainedItems,
+            gainedAttributePoints,
+            gainedSkillPoints,
+        );
         this.expeditionSessionManager.remove(expedition.userId);
 
         return {
@@ -191,6 +195,20 @@ export class ExpeditionMoveOrchestrator {
             battleId: null,
             summary,
         };
+    }
+
+    @transactional
+    private async storeFinish(
+        userId: string,
+        hasFinished: boolean,
+        gainedSilver: number,
+        gainedItems: ExpeditionEntity["gainedItems"],
+        gainedAttributePoints: number,
+        gainedSkillPoints: number,
+    ): Promise<void> {
+        await this.expeditionService.finishExpedition(userId, hasFinished);
+        await this.equipmentService.awardItems(userId, gainedSilver, gainedItems);
+        await this.statisticsService.awardPoints(userId, gainedAttributePoints, gainedSkillPoints);
     }
 
     private async checkBattle(expedition: ExpeditionEntity): Promise<string | null> {

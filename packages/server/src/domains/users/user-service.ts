@@ -84,6 +84,10 @@ export class UserService {
         user.isConfirmed = true;
         this.clearActionCode(user);
         user.sessionId = UtilsService.newId();
+        return user;
+    }
+
+    async saveConfirmedUser(user: UserEntity): Promise<void> {
         await this.userRepository.update(user.id, {
             isConfirmed: user.isConfirmed,
             actionCodeHash: user.actionCodeHash,
@@ -91,7 +95,6 @@ export class UserService {
             actionCodeExpiresAt: user.actionCodeExpiresAt,
             sessionId: user.sessionId,
         });
-        return user;
     }
 
     async startSignIn(email: string): Promise<void> {

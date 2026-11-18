@@ -9,7 +9,7 @@ export class UserRepository extends MongoRepository<UserEntity> {
     }
 
     override async delete(id: string): Promise<void> {
-        const result = await this.collection.deleteOne({ _id: id });
+        const result = await this.collection.deleteOne({ _id: id }, this.sessionOptions());
         if (result.deletedCount === 0) {
             throw new Error("errors.userDeleteFailed");
         }
