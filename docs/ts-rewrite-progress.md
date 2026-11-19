@@ -5,7 +5,7 @@ Living checklist for [SERVER_TS_REWRITE.md](../SERVER_TS_REWRITE.md). Review rul
 ## Where things stand
 
 - Branch: `main`. Workspace setup is on `main` through PR #130. Auth is on `main` through PR #132.
-- Side-by-side test: `apps/client` (`@errant/client`, port 5173) calls the C# server at `https://localhost:7135`. `packages/client` (`@errant/client-ts`, port 5174) calls the TypeScript server at `http://localhost:4000`. `packages/server` serves the ported routes on port 4000, including `GET /battles/get-battle` and the expedition socket. The battle page and the expedition page in `packages/client` call those endpoints. `packages/shared` holds the contracts for the ported routes. The C# server stays at `apps/errant-tower-server`. The map editor is `packages/map-editor` (`@errant/map-editor`, Vite port 5175) and is a workspace member. Expedition, battles, and expedition movement are in the working tree and are not merged. The next slice is the focused checks.
+- Side-by-side test: `apps/client` (`@errant/client`, port 5173) calls the C# server at `https://localhost:7135`. `packages/client` (`@errant/client-ts`, port 5174) calls the TypeScript server at `http://localhost:4000`. `packages/server` serves the ported routes on port 4000, including `GET /battles/get-battle` and the expedition socket. The battle page and the expedition page in `packages/client` call those endpoints. `packages/shared` holds the contracts for the ported routes. The C# server stays at `apps/errant-tower-server`. The map editor is `packages/map-editor` (`@errant/map-editor`, Vite port 5175) and is a workspace member. Expedition, battles, and expedition movement are in the working tree and are not merged. Focused checks are in `packages/server/checks`. The next slice is combat simplification, and it stays blocked until the freeze rule is written.
 - `server/ts-rewrite-phase-0` is not the next base. It duplicates the folder move and commits `.vs`, `obj`, and `appsettings.Development.json`. Leave it.
 
 ## Decided
@@ -154,11 +154,13 @@ Done when: from `packages/client`, a signed-in user can start an expedition, mov
 
 `Battle` and `Treasure` tiles move and spend initiative. They do not start a battle or award loot. `Start` finishes successfully without completing the floor. `Finish` finishes successfully and completes it. A completed floor advances `unlockedFloor` when that floor is the current unlock and the next rank exists in `FloorGuid`. A rank with no guid leaves the unlock unchanged. `Floor4` stays out of the enum.
 
-### 13. Focused checks (next)
+### 13. Focused checks
 
-- [ ] Auth cases from step 2 still pass after later routes land.
-- [ ] Combat calculation fixtures compared with the C# results for the same attributes, equipment, and skills.
-- [ ] Resource write-back test documents today's behavior, including the missing battle sync.
+- [x] Auth cases from step 2 still pass after later routes land.
+- [x] Combat calculation fixtures compared with the C# results for the same attributes, equipment, and skills.
+- [x] Resource write-back test documents today's behavior, including the missing battle sync.
+
+`pnpm --filter @errant/server check` runs them. An expired cookie, a rotated session, a bad signature, an expired action code, a fourth attempt, and a form post without `X-Errant-Request` fail on the auth routes and on the later routes. Base attributes, equipment, Deflect, Heart's Resolve, and an active skill match C# `StatisticsService`. Great Vigor, Armorer, Resistance, and Energizer stay on the multiplicative factors in `TS_REWRITE_RULES.md`, and those fixtures record the C# additive results beside them. Damaging a battle changes that battle only. Finish does not copy health, mana, or energy back onto the expedition. `BattleService.Act` stays unported.
 
 ### 14. Combat simplification (separate)
 
