@@ -18,7 +18,6 @@ export class TransactionService {
     }
 
     static async run<T>(work: () => Promise<T>): Promise<T> {
-        console.log('config.useTransactions', config.useTransactions);
         if (!config.useTransactions) {
             return work();
         }
