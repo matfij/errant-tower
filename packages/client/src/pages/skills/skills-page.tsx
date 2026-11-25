@@ -5,7 +5,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useApiRequest } from "../../api/api-utils";
 import { getSkillTreeRequest, learnSkillRequest, resetSkillsRequest } from "../../api/statistics-api";
 import { AppError } from "../../common/components/app-error";
-import { findSkill, PATH_TO_PATH_KEY, toPaths } from "./skill-helpers";
+import { findSkill, PATH_TO_PATH_KEY, toPaths } from "./skill-utils";
 import { SkillItem } from "./skill-item";
 import { SkillSummary } from "./skill-summary";
 

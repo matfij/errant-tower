@@ -3,7 +3,7 @@ import { memo, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { AppTooltip } from "../../common/components/app-tooltip";
-import { getSkillColor, SKILL_FILLS, SKILL_MAX_LEVEL, useSkillLabels } from "./skill-helpers";
+import { getSkillColor, SKILL_FILLS, SKILL_MAX_LEVEL, useSkillLabels } from "./skill-utils";
 
 import styles from "./skills-page.module.scss";
 

@@ -55,6 +55,7 @@ export type BattleSkill = {
     description: string | null;
     imageUrl: string;
     path: SkillPath;
+    tier: number;
     types: SkillType[];
     physicalAttackFactor: number;
     magicalAttackFactor: number;

@@ -6,8 +6,9 @@ import { getBattleRequest } from "../../api/battle-api";
 import { AppError } from "../../common/components/app-error";
 import { AppProgress } from "../../common/components/app-progress";
 import { routes } from "../../common/config";
+import { BattleSkills } from "./battle-skills";
 
-import styles from "./battlle-page.module.scss";
+import styles from "./battle-page.module.scss";
 
 export const BattlePage = () => {
     const getBattle = useApiRequest(getBattleRequest);
@@ -40,49 +41,49 @@ export const BattlePage = () => {
 
     return (
         <div className={styles.mainWrapper}>
-            <div className={styles.characterWrapper}>
-                <img src={`images/avatars/${user.imageUrl}`} alt={user.name} />
-                <p className={styles.characterName}>{user.name}</p>
-                <br />
-                <AppProgress
-                    tone="red"
-                    value={user.statistics.healthPoints}
-                    max={user.statistics.maxHealthPoints}
-                />
-                <AppProgress
-                    tone="secondary"
-                    value={user.statistics.manaPoints}
-                    max={user.statistics.maxManaPoints}
-                />
-                <AppProgress
-                    tone="accent"
-                    value={user.statistics.energyPoints}
-                    max={user.statistics.maxEnergyPoints}
-                />
+            <div className={styles.topRow}>
+                <div className={styles.characterWrapper}>
+                    <img src={`images/avatars/${user.imageUrl}`} alt={user.name} />
+                    <p className={styles.characterName}>{user.name}</p>
+                    <br />
+                    <AppProgress
+                        tone="red"
+                        value={user.statistics.healthPoints}
+                        max={user.statistics.maxHealthPoints}
+                    />
+                    <AppProgress
+                        tone="secondary"
+                        value={user.statistics.manaPoints}
+                        max={user.statistics.maxManaPoints}
+                    />
+                    <AppProgress
+                        tone="accent"
+                        value={user.statistics.energyPoints}
+                        max={user.statistics.maxEnergyPoints}
+                    />
+                </div>
+
+                <div className={styles.logsWrapper}>
+                    {logs.map((log) => (
+                        <div key={log} className={styles.logItem}>
+                            {log}
+                        </div>
+                    ))}
+                </div>
+
+                <div className={styles.characterWrapper}>
+                    <img src={`images/enemies/${enemy.imageUrl}`} alt={enemy.name} />
+                    <p className={styles.characterName}>{enemy.name}</p>
+                    <p className={styles.characterRace}>{enemy.race}</p>
+                    <AppProgress
+                        tone="red"
+                        value={enemy.statistics.healthPoints}
+                        max={enemy.statistics.maxHealthPoints}
+                    />
+                </div>
             </div>
 
-            <div className={styles.logsWrapper}>
-                {logs.map((log) => (
-                    <div key={log} className={styles.logItem}>
-                        {log}
-                    </div>
-                ))}
-            </div>
-
-            <div className={styles.characterWrapper}>
-                <img src={`images/enemies/${enemy.imageUrl}`} alt={enemy.name} />
-                <p className={styles.characterName}>{enemy.name}</p>
-                <p className={styles.characterRace}>{enemy.race}</p>
-                <AppProgress
-                    tone="red"
-                    value={enemy.statistics.healthPoints}
-                    max={enemy.statistics.maxHealthPoints}
-                />
-            </div>
-
-            {getBattle.data?.skills.map((skill) => (
-                <p key={skill.guid}>{skill.name}</p>
-            ))}
+            {getBattle.data?.skills && <BattleSkills skills={getBattle.data?.skills} />}
         </div>
     );
 };
