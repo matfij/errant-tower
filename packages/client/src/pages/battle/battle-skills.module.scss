@@ -2,6 +2,7 @@
 @use "../../common/styles/variables.scss" as *;
 
 .skillsWrapper {
+    width: 99%;
     padding: $spacing-1;
     display: flex;
     align-items: center;

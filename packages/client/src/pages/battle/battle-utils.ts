@@ -7,7 +7,7 @@ export const toUserSkill = (skill: BattleSkill): UserSkill => {
         description: skill.description,
         imageUrl: skill.imageUrl,
         path: skill.path,
-        tier: 0,
+        tier: skill.tier,
         level: 1,
         types: skill.types,
         physicalAttackFactor: [skill.physicalAttackFactor],
