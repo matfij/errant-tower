@@ -103,3 +103,10 @@
         rgba($color-light-200, 0.4)
     );
 }
+
+@mixin cardLarge {
+    padding: $spacing-2;
+    background: rgba($color-dark-400, 0.6);
+    border-radius: $radius-md;
+    border: 1px solid rgba($color-light-100, 0.2);
+}

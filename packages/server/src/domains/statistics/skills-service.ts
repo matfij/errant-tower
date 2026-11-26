@@ -114,6 +114,7 @@ export class SkillsService {
             description: skill.description,
             imageUrl: skill.imageUrl,
             path: skill.path,
+            tier: skill.tier,
             types: skill.types,
             physicalAttackFactor: skill.physicalAttackFactor[index],
             magicalAttackFactor: skill.magicalAttackFactor[index],

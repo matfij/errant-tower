@@ -1,0 +1,21 @@
+@use "../../common/styles/mixins.scss" as *;
+@use "../../common/styles/variables.scss" as *;
+
+.skillsWrapper {
+    width: 99%;
+    padding: $spacing-1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-1;
+    background-color: rgba($color-dark-100, 0.5);
+    border-radius: $radius-md;
+}
+
+.skillItem {
+    border-radius: $radius-md;
+
+    &:hover {
+        background-color: rgba($color-accent-300, 0.5);
+    }
+}

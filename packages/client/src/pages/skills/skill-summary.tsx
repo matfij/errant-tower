@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { AppTooltip } from "../../common/components/app-tooltip";
 import { toPercentLabel } from "../../common/utils";
-import { getSkillColor, SKILL_MAX_LEVEL, skillPathToLabel, useSkillLabels } from "./skill-helpers";
+import { getSkillColor, SKILL_MAX_LEVEL, skillPathToLabel, useSkillLabels } from "./skill-utils";
 
 import styles from "./skills-page.module.scss";
 

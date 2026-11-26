@@ -2,8 +2,21 @@
 @use "../../common/styles/variables.scss" as *;
 
 .mainWrapper {
+    @include cardLarge();
+
     width: 100%;
+    max-width: 64rem;
+    margin: $spacing-2 auto;
     align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.topRow {
+    width: 100%;
+    padding: $spacing-2;
+    align-items: flex-start;
     justify-content: center;
     display: flex;
 }

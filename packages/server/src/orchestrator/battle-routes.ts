@@ -100,6 +100,7 @@ const toBattleSkillResponse = (skill: BattleSkill): BattleSkill => {
         imageUrl: skill.imageUrl,
         path: skill.path,
         types: skill.types,
+        tier: skill.tier,
         physicalAttackFactor: skill.physicalAttackFactor,
         magicalAttackFactor: skill.magicalAttackFactor,
         physicalDefenseFactor: skill.physicalDefenseFactor,
