@@ -1,4 +1,6 @@
-import type { BattleCharacter, BattleSkill } from "@errant/shared";
+import type { BattleCharacter } from "@errant/shared";
+
+import { BattleLog } from "../../../../shared/src/battles";
 
 export type BattleEntity = {
     id: string;
@@ -7,6 +9,6 @@ export type BattleEntity = {
     turnNumber: number;
     user: BattleCharacter;
     enemy: BattleCharacter;
-    skills: BattleSkill[];
-    logs: string[];
+    enemySkillIndex: number;
+    logs: BattleLog[];
 };

@@ -1,5 +1,5 @@
 import type { EnemyRace } from "./enemies.ts";
-import type { BattleSkill, SkillEffectType } from "./skills.ts";
+import type { BattleSkill, SkillEffectType, SkillGuid } from "./skills.ts";
 import type { BattleStatistics } from "./statistics.ts";
 
 export type GetBattleResponse = {
@@ -8,8 +8,7 @@ export type GetBattleResponse = {
     turnNumber: number;
     user: BattleCharacter;
     enemy: BattleCharacter;
-    skills: BattleSkill[];
-    logs: string[];
+    logs: BattleLog[];
 };
 
 export type BattleCharacter = {
@@ -18,11 +17,24 @@ export type BattleCharacter = {
     title: string | null;
     race: EnemyRace;
     statistics: BattleStatistics;
+    initiative: number;
     statuses: BattleStatus[];
+    skills: BattleSkill[];
 };
 
 export type BattleStatus = {
     type: SkillEffectType;
     value: number;
     duration: number;
+};
+
+export type BattleLog = {
+    log: string;
+    isUser: boolean;
+};
+
+export type BattleActRequest = {
+    skillGuid?: SkillGuid;
+    wait?: boolean;
+    escape?: boolean;
 };

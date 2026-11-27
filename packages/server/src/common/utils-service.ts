@@ -37,4 +37,8 @@ export class UtilsService {
         }
         return items[items.length - 1].guid;
     }
+
+    static isNotNull(value: unknown) {
+        return value !== null && value !== undefined;
+    }
 }
