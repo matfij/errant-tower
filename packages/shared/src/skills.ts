@@ -7,6 +7,9 @@ export enum SkillGuid {
     Cut = "Cut",
     Peck = "Peck",
 
+    // Auto
+    Punch = "Punch",
+
     // Blade
     Slash = "Slash",
     SwiftStrike = "SwiftStrike",

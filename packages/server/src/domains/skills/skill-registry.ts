@@ -1,6 +1,7 @@
 import { SkillGuid, type Skill } from "@errant/shared";
 
 import { HttpError } from "../../common/http/errors.ts";
+import { autoSkills } from "./data/auto-skills.ts";
 import { beastSkills } from "./data/beast-skills.ts";
 import { bladeSkills } from "./data/blade-skills.ts";
 import { tenacitySkills } from "./data/tenacity-skills.ts";
@@ -13,6 +14,9 @@ export const skills = {
     [SkillGuid.Tackle]: beastSkills.tackle,
     [SkillGuid.Cut]: beastSkills.cut,
     [SkillGuid.Peck]: beastSkills.peck,
+
+    // Auto
+    [SkillGuid.Punch]: autoSkills.punch,
 
     // Blade
     [SkillGuid.Slash]: bladeSkills.slash,
